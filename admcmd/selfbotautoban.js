@@ -66,9 +66,14 @@ function bs (message) {
               fs.writeFile('./selfbotid.txt',"\n " +id, { flag: 'a' }, err => {})
       
              }).catch()
+             if(temp == message.author){
              message.channel.send(`Ta tentando dar o golpe, parceiro?`);
             }
-            message.channel.send(`Ta querendo se banir? Ta tudo bem? Quer conversar?`);
+
+            }
+            if( member.roles.highest.position >= message.member.roles.highest.position){ 
+
+            message.channel.send(`Ta querendo se banir? Ta tudo bem? Quer conversar?`);}
           }
             }
           if(z==index){fs.writeFileSync('cdl.txt',`0`)}
