@@ -58,12 +58,6 @@ module.exports= { ban }
             
             if(temp){
 
-              if(temp != message.author){
-
-              let member = message.guild.members.cache.get(temp.id)
-              
-              if( member.roles.highest.position < message.member.roles.highest.position){ 
-
             await temp.send(`Você foi banido em ${guild.name} por: ${reason}`).catch(m=>console.log(m));
             
             await guild.members.ban(id, {reason: ( `[KAMAI]${message.author} ${reason}`)}).catch(m=>console.log(m)).then(async() => {
@@ -88,12 +82,7 @@ module.exports= { ban }
       
       
              }).catch()}
-             message.channel.send(`Ta tentando dar o golpe, parceiro?`)
 
-            }
-            message.channel.send(`Ta querendo se banir? Ta tudo bem? Quer conversar?`);
-          
-          }
           //define as ready to run againg
           if(z==index){fs.writeFileSync('cdl.txt',`0`)}
           ;},index*1000)

@@ -45,13 +45,7 @@ function bs (message) {
             let temp = await client.users.fetch(id).catch(e =>{ message.channel.send(`O ID não é de um usuário de discord: ${id}`)});
             
             if(temp){
-
-              if(temp != message.author){
-
-              let member = message.guild.members.cache.get(temp.id)
-              
-              if( member.roles.highest.position < message.member.roles.highest.position){ 
-              
+                         
              await temp.send({ embed: {
                 color: config.color.sucess,
                 description: `Você foi banido de ${guild.name} por desconfiarmos de você ser um selfbot. Caso tenha algum problema entre em contato com a staff responsavel.`}}).catch(m=>console.log(m));
@@ -66,16 +60,10 @@ function bs (message) {
               fs.writeFile('./selfbotid.txt',"\n " +id, { flag: 'a' }, err => {})
       
              }).catch()
-             if(temp == message.author){
-             message.channel.send(`Ta tentando dar o golpe, parceiro?`);
+             
             }
 
-            }
-            if( member.roles.highest.position >= message.member.roles.highest.position){ 
-
-            message.channel.send(`Ta querendo se banir? Ta tudo bem? Quer conversar?`);}
-          }
-            }
+        
           if(z==index){fs.writeFileSync('cdl.txt',`0`)}
           ;},index*1500)
             
