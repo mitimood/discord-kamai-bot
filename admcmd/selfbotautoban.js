@@ -46,11 +46,11 @@ function bs (message) {
             
             if(temp){
 
-              if(temp == message.author){
+              if(temp != message.author){
 
               let member = message.guild.members.cache.get(temp.id)
               
-              if( member.roles.highest.position >= message.member.roles.highest.position){ 
+              if( member.roles.highest.position < message.member.roles.highest.position){ 
               
              await temp.send({ embed: {
                 color: config.color.sucess,
