@@ -46,11 +46,11 @@ function bs (message) {
             
             if(temp){
 
-              if(temp == message.author)return message.channel.send(`Ta querendo se banir? Ta tudo bem? Quer conversar?`);
+              if(temp == message.author){
 
               let member = message.guild.members.cache.get(temp.id)
               
-              if( member.roles.highest.position >= message.member.roles.highest.position)return message.channel.send(`Ta tentando dar o golpe, parceiro?`);
+              if( member.roles.highest.position >= message.member.roles.highest.position){ 
               
              await temp.send({ embed: {
                 color: config.color.sucess,
@@ -66,6 +66,10 @@ function bs (message) {
               fs.writeFile('./selfbotid.txt',"\n " +id, { flag: 'a' }, err => {})
       
              }).catch()
+             message.channel.send(`Ta tentando dar o golpe, parceiro?`);
+            }
+            message.channel.send(`Ta querendo se banir? Ta tudo bem? Quer conversar?`);
+          }
             }
           if(z==index){fs.writeFileSync('cdl.txt',`0`)}
           ;},index*1500)
