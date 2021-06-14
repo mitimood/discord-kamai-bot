@@ -426,7 +426,8 @@ const avatar = [
     "9bad65f1328ec66582b14f7ec9c3e595",
     "0062c48217c970b4cd012b4b415a93ff",
     "bed446838abe234e1fa7e0ce0e8781d0",
-    "fe40fad0eb87d886bc2db2bd42284d2f"
+    "fe40fad0eb87d886bc2db2bd42284d2f",
+    "1c497b17ac46a57aae7b75c9ac756c15"
   ]
 
     if(index.db.db.exists(`/guilds/${guildid}/users/${userid}/muted`))member.roles.add(config.roles.muted)
