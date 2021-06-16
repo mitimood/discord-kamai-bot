@@ -62,13 +62,15 @@ module.exports= { ban }
             
             await guild.members.ban(id, {reason: ( `[KAMAI]${message.author} ${reason}`)}).catch(m=>console.log(m)).then(async() => {
               const canal = client.channels.cache.get(config.channels.modlog)
-              canal.send({embed:{
-                color: config.color.sucess,
-                title:`Expurgado ${temp} ${temp.tag} por:`,
-                description: `${reason} `,
-                thumbnail: {
-                  url: 'https://images.genius.com/93a16c1f0873bdfdfaac3b0b6e23f680.300x300x1.jpg',
+              canal.send({embed: {
+                color: 940000,
+                title:`Expurgado ${temp.tag} por:`,
+                description: `${temp} **${reason}**`,
+                author:{
+                  name:"Kamaitachi ban",
+                  iconURL:"https://images.genius.com/93a16c1f0873bdfdfaac3b0b6e23f680.300x300x1.jpg"
                 },
+
               }})
                             
               message.channel.send({ embed: {
