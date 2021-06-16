@@ -21,7 +21,7 @@ const { client } = require("../index")
     if(memberex.roles.cache.has(config.roles.equipekaraoke)){
     
         changes.forEach(c=>{
-            if(c.key=`mute`){
+            if(c.key==`mute`){
                 const canal = client.channels.cache.get(config.channels.equipekaraoke)
 
                 if(c.new){
