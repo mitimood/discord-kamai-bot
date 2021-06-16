@@ -17,7 +17,7 @@ client.on("guildMemberAdd", (member) => {
     //}
 const verificaIni = ["'nvc","xyz","𝚌𝚍𝚣𝟽'","𝐒𝐇ᵉˡᵇʸ","DD✞","AK'","𝐿𝐿𝐺'","divinity","ƉємƠη","! ¹⁵⁷Greciah🐊","fvck","fxck","wrld","! 𝓚 𝓪 𝓶 𝓲 🐊🏴","! emykjkkkkk","! LESADA🐊👻",
 "gegevis","yfg.belazX$z","tinker bell","A Batata Vegetariana","!ᴰ'ʳᵃᶜ̧ᵃ🗽","!  Prince  🐊🚩","ᴊᴜʟɪᴀシ","Amiizinha ツ","𝐖$","!dz7","RJ$ Natyzinha-Shelby","! Surtɑd𝚊ꪰꪰꪰッ 🔥",
-"! × ₳NINHΛ 👑","! BANDIDA 💱","! Ꭶҡ𝖎 ⛷ ℳℴ𝓇ℯ𝓃𝒶 ❤","! 𝐂herry🍒","! 𝐂𝐞𝐫𝐞𝐣𝐢𝐧𝐡𝐚🍒","$Angel","$Baby","$Manuella","adryany44","agathaxyz","Marinaa <3","juu","ML Rah."];
+"! × ₳NINHΛ 👑","! BANDIDA 💱","! Ꭶҡ𝖎 ⛷ ℳℴ𝓇ℯ𝓃𝒶 ❤","! 𝐂herry🍒","! 𝐂𝐞𝐫𝐞𝐣𝐢𝐧𝐡𝐚🍒","$Angel","$Baby","$Manuella","adryany44","agathaxyz","Marinaa <3","juu","ML Rah.", "catarina ff"];
 const avatar = [    
     "00a463e71de7856d6cd79685eaf84269",
     "0266d23f3b46370a2e5649466de6621e",
