@@ -2,11 +2,9 @@ const config = require("../config");
 const { client } = require("../index")
 
     client.on('voiceStateUpdate', async (oldState, newState) => {
-        
-        if(newState = oldState)return;
+        if(newState == oldState)return;
     
         if(newState.serverMute != undefined){
-            
             const fetchedLogs = await newState.guild.fetchAuditLogs({
                 limit: 1, 
                 type: 'MEMBER_UPDATE'
