@@ -72,7 +72,7 @@ module.exports= { ban }
               }})
                             
               message.channel.send({ embed: {
-                color: 40000,
+                color: 940000,
                 title:`Expurgado ${temp.tag} por:`,
                 description: `${temp} **${reason}**`,
                 author:{
