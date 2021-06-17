@@ -2,7 +2,7 @@ const config = require("../config");
 const { client } = require("../index")
 
     client.on('voiceStateUpdate', async (oldState, newState) => {
-        if(newState == oldState)return;
+        if(newState.serverMute == oldState.serverMute)return;
     
         if(newState.serverMute != undefined){
             const fetchedLogs = await newState.guild.fetchAuditLogs({
@@ -11,7 +11,7 @@ const { client } = require("../index")
             })
 
         const mutado = fetchedLogs.entries.first();
-        if(mutado.createdTimestamp > (Date.now() - 1500)){  
+        if(mutado.createdTimestamp > (Date.now() - 1000)){  
             const { executor, target, changes} = mutado;
        
            const memberex =newState.guild.members.cache.get(executor.id)
