@@ -48,6 +48,10 @@ async function ban(msg){
         \n17- Quebra do ToS do Discord. (https://discordapp.com/terms)
         \n18- Selfbot`
     }})
+
+    msg.channel.send({embed:{
+        title:`**Membros a banir**`,
+        description:`Dentro do servidor: ${(await (result)).members.length}\nFora do servidor: ${(await result).users.length}\nInvalidos: ${(await result).noUser.length}`}})
     const filter = (m)=> /[0-9]+/.test(m.content)&&m.content<=18 && m.author.id == msg.author.id;
     msg.channel.awaitMessages(filter,{max:1,time:30000, errors:['Time up']}).catch(m=>{return msg.channel.send(`O tempo expirou`)}).then(async(collected)=>{
         var reason = ``
@@ -122,7 +126,7 @@ async function ban(msg){
 
         }
 
-        const ChannelLog = client.channels.cache.get(config.channels.modlog)
+        const ChannelLog = client.channels.cache.get(config.channels.modlog);
         const ModloguMem = new Discord.MessageEmbed().setAuthor(`Kamaitachi ban`,`https://images.genius.com/93a16c1f0873bdfdfaac3b0b6e23f680.300x300x1.jpg`).setColor(`PURPLE`)
         const ModloguUser = new Discord.MessageEmbed().setAuthor(`Kamaitachi ban`,`https://images.genius.com/93a16c1f0873bdfdfaac3b0b6e23f680.300x300x1.jpg`).setColor(`PURPLE`)
 
