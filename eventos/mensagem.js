@@ -47,8 +47,8 @@ const config = require("../config")
                                 remove.remove(msg);
                                 break;
                         case "bs":
-                            let ban = require(`../admcmd/ban`);
-                                ban.ban(msg);
+                            let bs = require(`../admcmd/ban`);
+                                bs.ban(msg);
                     }
                 }
                 if (msg.member.roles.cache.has(config.roles.mod)||msg.member.roles.cache.has(config.roles.admin) ) {
