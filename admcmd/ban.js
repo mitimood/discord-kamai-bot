@@ -123,8 +123,8 @@ async function ban(msg){
         }
 
         const ChannelLog = client.channels.cache.get(config.channels.modlog)
-        const ModloguMem = new Discord.MessageEmbed().setAuthor(`Kamaitachi ban`,`https://images.genius.com/93a16c1f0873bdfdfaac3b0b6e23f680.300x300x1.jpg`)
-        const ModloguUser = new Discord.MessageEmbed().setAuthor(`Kamaitachi ban`,`https://images.genius.com/93a16c1f0873bdfdfaac3b0b6e23f680.300x300x1.jpg`)
+        const ModloguMem = new Discord.MessageEmbed().setAuthor(`Kamaitachi ban`,`https://images.genius.com/93a16c1f0873bdfdfaac3b0b6e23f680.300x300x1.jpg`).setColor(`PURPLE`)
+        const ModloguUser = new Discord.MessageEmbed().setAuthor(`Kamaitachi ban`,`https://images.genius.com/93a16c1f0873bdfdfaac3b0b6e23f680.300x300x1.jpg`).setColor(`PURPLE`)
 
         if((await result).members[0]!=undefined){
             
