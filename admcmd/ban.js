@@ -122,7 +122,7 @@ async function ban(msg){
                 (await result).members[i].user.send(`Você foi banido de KAMAITACHI, por: `+reason).catch(e=>console.log(e))
                 await Banning((await result).members[i].user.id, `[${msg.author.id}] `+reason, msg.guild)};
 
-            if((await result).users[i]!=undefined)await Banning((await result).users[i].id, reason, msg.guild);
+            if((await result).users[i]!=undefined)await Banning((await result).users[i].id, `[${msg.author.id}] `+reason, msg.guild);
 
         }
 
