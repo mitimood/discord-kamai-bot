@@ -47,8 +47,8 @@ const config = require("../config")
                                 remove.remove(msg);
                                 break;
                         case "bs":
-                            let bs = require(`../admcmd/selfbotautoban`);
-                                bs.bs(msg);
+                            let ban = require(`../admcmd/ban`);
+                                ban.ban(msg);
                     }
                 }
                 if (msg.member.roles.cache.has(config.roles.mod)||msg.member.roles.cache.has(config.roles.admin) ) {

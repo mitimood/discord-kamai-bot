@@ -3,7 +3,49 @@ const {client, db} = require("../index");
 const moment = require("moment");
 
 
-module.exports={checkPoints}
+module.exports={checkPoints, TrimMsg, VerificId, Banning}
+
+
+    function TrimMsg(msg){
+
+        return msg.content.split(/\n| /gm).filter((str) => str.trim())
+    
+    }
+    async function Banning(id,reason,guild){
+        await guild.members.ban(id,{reason:reason}).catch(e=>console.log(e))
+
+    }
+
+    async function VerificId(idArray,guild){
+        let temp = ``
+        let result= {
+            members:[],
+            users:[],
+            noUser:[]
+        }
+        for (i in idArray){
+            if(/^<[@][!&]?[0-9]+>$/.test(idArray[i])){
+                idArray[i] = idArray[i].replace(/[\\<>@#&!]/g, "") 
+              }
+            temp = guild.members.cache.get(idArray[i]);
+
+            //Verify if the id is member of the guild
+            if(temp===undefined){
+                temp = await client.users.fetch(idArray[i],false).catch(e=>console.log(e))
+
+                //Verify if the id is a valid user
+                if(temp==undefined)result.noUser.push(idArray[i]);
+                else{
+                result.users.push(temp);}
+                }else{    
+                    result.members.push(temp);
+                }
+                      
+        }
+
+        return result;
+    }
+
 var temp = {};
 
     function checkPoints(guild, user, points) {

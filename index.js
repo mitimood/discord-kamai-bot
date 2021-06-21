@@ -7,9 +7,9 @@ const Database = require("./db");
 const db = new Database();
 
 const Database2 = require("./db2");
-const db2 = new Database2();
+const running = new Database2();
 
-module.exports = { client, db, db2 }
+module.exports = { client, db, running, Discord }
 
 const commandAdm = fs.readdirSync(`./admcmd`).filter(file => file.endsWith(`.js`));
 const commandMod = fs.readdirSync(`./modcmd`).filter(file => file.endsWith(`.js`));
@@ -54,11 +54,5 @@ eventos.forEach(events => {
         fs.writeFileSync('bot3.txt',`0`);
         fs.writeFileSync('bot4.txt',`0`);
     })
-
-
-
-
-
-
 
 client.login(config.TOKEN);
