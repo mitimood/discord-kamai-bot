@@ -25,7 +25,7 @@ async function ban(msg){
 
     
     msg.channel.send({embed:{
-        title:`Qual regra o infrator quebrou?`,
+        title:`Qual regra o infrator quebrou? Vocêm tem 30s`,
         description:`**INFRAÇÕES QUE RESULTAM EM ADVERTÊNCIAS:**
         \n1- Flood/spam.
         \n2- Divulgação inadequada.
@@ -119,7 +119,7 @@ async function ban(msg){
         for(let i=0;i<(await result).members.length || i < (await result).users.length; i++){    
 
             if((await result).members[i]!=undefined){
-                (await result).members[i].user.send(`Você foi banido de KAMAITACHI, por:`+reason).catch(e=>console.log(e))
+                (await result).members[i].user.send(`Você foi banido de KAMAITACHI, por: `+reason).catch(e=>console.log(e))
                 await Banning((await result).members[i].user.id, reason, msg.guild)};
 
             if((await result).users[i]!=undefined)await Banning((await result).users[i].id, reason, msg.guild);
@@ -131,7 +131,6 @@ async function ban(msg){
         const ModloguUser = new Discord.MessageEmbed().setAuthor(`Kamaitachi ban`,`https://images.genius.com/93a16c1f0873bdfdfaac3b0b6e23f680.300x300x1.jpg`).setColor(`PURPLE`)
 
         if((await result).members[0]!=undefined){
-            
             ModloguMem.setTitle(msg.author.username)
 
             for(let answer=`**Membros banidos**`,i= 0;(await result).members.length>i ;i++){
@@ -140,18 +139,21 @@ async function ban(msg){
                 }
 
                 if(ModloguMem.fields.length==25){
+
                     ChannelLog.send(ModloguMem);
                     ModloguMem.spliceFields(0,25)
                 }
                 if(answer.length>1800){
+
                 await msg.channel.send(answer);
                     answer = ``;
                 }
-                
                 ModloguMem.addField(reason,(await result).members[i].user.tag+`  `+(await result).members[i].user.id)
                 answer=answer.concat("\n"+(await result).members[i].user.tag+" "+(await result).members[i].user.id)
+
                 if((await result).members.length==i+1){
-                    ChannelLog.send(ModloguUser);                    
+
+                    ChannelLog.send(ModloguMem);                    
                     msg.channel.send(answer)
                 }
             }
