@@ -35,7 +35,7 @@ const { client } = require("../index")
                     canal.send({embed:{
                       title:newState.channel.name,
                       description: `🔊${executor} levou a redenção a ${target} e permitiu  que voltasse a falar.`,
-                      color:config.color.sucess,
+                      color:config.color.err,
                     }})                          
                       let rolecap = newState.guild.roles.cache.get(config.roles.capkaraoke).members.map(m => m.user.id);
        
