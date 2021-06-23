@@ -26,12 +26,14 @@ const { client } = require("../index")
 
                 if(c.new){
                     canal.send({embed:{
-                        description: `🔈\n${target} foi calado por ${executor}\n\n*Um dia encontrará redenção?*`,
+                        title:newState.channel.name,
+                        description: `🔈${target} foi calado por ${executor}\n\n*Um dia encontrará redenção?*`,
                         color:config.color.sucess,
               }})
 
                 }else{
                     canal.send({embed:{
+                      title:newState.channel.name,
                       description: `🔊\n${executor} levou a redenção a ${target} e permitiu  que voltasse a falar.`,
                       color:config.color.sucess,
                     }})                          
@@ -39,6 +41,7 @@ const { client } = require("../index")
        
                     rolecap.forEach(id => {
                      newState.guild.members.cache.get(id).user.send({embed:{
+                        title:newState.channel.name,
                         title:"⚡É melhor verificar", 
                         description:` [${executor.id}]\n${executor.username} levou a redenção a \n\n[${target.id}]\n${target.username} e permitiu que voltasse a falar.\n<#612487253650046976>`}})
                     })
