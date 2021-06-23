@@ -41,8 +41,7 @@ const { client } = require("../index")
        
                     rolecap.forEach(id => {
                      newState.guild.members.cache.get(id).user.send({embed:{
-                        title:newState.channel.name,
-                        title:"⚡É melhor verificar", 
+                        title:"⚡É melhor verificar "+newState.channel.name, 
                         description:` [${executor.id}]\n${executor.username} levou a redenção a \n\n[${target.id}]\n${target.username} e permitiu que voltasse a falar.\n<#612487253650046976>`}})
                     })
                 }
