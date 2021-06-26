@@ -68,7 +68,7 @@ const config = require("../config")
                             break;
                         case "send":
                             let send = require(`../capcmd/say`);
-                            send.say(msg)
+                            send.send(msg)
                             break;
                     }
                 }

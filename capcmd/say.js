@@ -1,6 +1,7 @@
 const { client } = require("../index");
 const config = require("../config");
-module.exports = {say}; 
+
+module.exports = {send}; 
 
 function send (message){
 
