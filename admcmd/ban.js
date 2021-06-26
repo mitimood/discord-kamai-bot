@@ -1,7 +1,6 @@
 const config = require("../config");
-const db = require("../db2");
 const { TrimMsg, VerificId, Banning } = require("../eventos/funções");
-const { running, client, Discord } = require(`../index`)
+const { client, Discord } = require(`../index`)
 const fs = require(`fs`)
 
 module.exports={ban}
