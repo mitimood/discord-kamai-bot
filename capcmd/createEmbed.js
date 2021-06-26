@@ -156,8 +156,7 @@ async function emb(msg,embed = new Discord.MessageEmbed().setDescription(`Descri
                                 var filter = m=> /[0-9]+/.test(m.content)&&parseInt(m.content)<=25
                                 msg.channel.awaitMessages(filter,{max:1,time:120000,errors:[`Time`]}).then(cmprem=>
                                     {
-                                        console.log(embed.fields.length)
-                                        console.log(parseInt(cmprem.first().content))
+
                                         if(embed.fields.length<parseInt(cmprem.first().content))return (msg.channel.send("Nenhum campo nesse valor"),returnemb(embed))
                                         embed.spliceFields(parseInt(cmprem.first().content)-1,1)
                                         a.delete()

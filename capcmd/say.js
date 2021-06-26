@@ -16,7 +16,6 @@ function send (message){
     }else{
     var mensagem = message.content.substring(msgArgs.slice(0, 2).join(" ").length + 1);
         if(mensagem){
-            console.log (1)
             channel.send(`${mensagem}`,{allowedMentions: {roles:[config.roles.event, config.roles.equipekaraoke, config.roles.equipeArte, config.roles.equipeEvent]}});
         };
         message.delete()}

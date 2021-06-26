@@ -64,14 +64,11 @@ module.exports = class db {
     }
 
     addmute(guild,user){
-        console.log(1)
         this.db.push(`/guilds/${guild}/users/${user}/muted`,"1")
 
     }
 
     removemute(guild,user){
-        console.log(2)
-
         
         this.db.delete(`/guilds/${guild}/users/${user}/muted`)
 
