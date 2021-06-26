@@ -6,14 +6,16 @@ client.commands = new Discord.Collection();
 const Database = require("./db");
 const db = new Database();
 
-const Database2 = require("./db2");
-const running = new Database2();
+const Database2 = require("./dbEmbeds");
+const embDb = new Database2();
 
-module.exports = { client, db, running, Discord }
+module.exports = { client, db, embDb, Discord }
 
 const commandAdm = fs.readdirSync(`./admcmd`).filter(file => file.endsWith(`.js`));
 const commandMod = fs.readdirSync(`./modcmd`).filter(file => file.endsWith(`.js`));
 const commandPub = fs.readdirSync(`./commandpub`).filter(file => file.endsWith(`.js`));
+const commandCap = fs.readdirSync(`./capcmd`).filter(file => file.endsWith(`.js`));
+
 const eventos = fs.readdirSync(`./eventos`).filter(file => file.endsWith(`.js`));
 //const musica = fs.readdirSync(`./musica`).filter(file => file.endsWith(`.js`));
 
@@ -30,8 +32,13 @@ commandMod.forEach(modcmd => {
 commandPub.forEach(pubcmd =>{
     require(`${__dirname}/commandpub/${pubcmd}`);})
 
+commandCap.forEach(capcmd => {
+    require(`${__dirname}/capcmd/${capcmd}`);})
+
 eventos.forEach(events => {
     require(`${__dirname}/eventos/${events}`);})
+
+    
 
 //musica.forEach(musica => {
     //require(`${__dirname}/musica/${musica}`);})
@@ -46,13 +53,13 @@ eventos.forEach(events => {
     
 
     client.on("ready",() => {
-        fs.writeFileSync('cdl.txt',`0`);
+        //fs.writeFileSync('cdl.txt',`0`);
         fs.writeFile('./selfbotid.txt',"\n "+today, { flag: 'a' }, err => {});
         console.log("Cliente iniciado")
-        fs.writeFileSync('bot1.txt',`0`);
-        fs.writeFileSync('bot2.txt',`0`);
-        fs.writeFileSync('bot3.txt',`0`);
-        fs.writeFileSync('bot4.txt',`0`);
+        //fs.writeFileSync('bot1.txt',`0`);
+        //fs.writeFileSync('bot2.txt',`0`);
+        //fs.writeFileSync('bot3.txt',`0`);
+        //fs.writeFileSync('bot4.txt',`0`);
     })
 
 client.login(config.TOKEN);

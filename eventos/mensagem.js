@@ -59,6 +59,19 @@ const config = require("../config")
                             break;
                             
                     }
+
+                if (msg.member.roles.cache.has(config.roles.mod)||msg.member.roles.cache.has(config.roles.admin)||msg.member.roles.cache.has(config.roles.capkaraoke)||msg.member.roles.cache.has(config.roles.capArte)||msg.member.roles.cache.has(config.roles.capEvent)){
+                    switch(comando){
+                        case "emb":
+                            let cemb = require(`../capcmd/embed`);
+                            cemb.emb(msg);
+                            break;
+                        case "send":
+                            let send = require(`../capcmd/say`);
+                            send.say(msg)
+                            break;
+                    }
+                }
                     
                 }               
                 switch(comando){
@@ -66,7 +79,7 @@ const config = require("../config")
                         let ping = require(`../commandpub/ping`)
                             ping.ping(msg);
                             break;
-                    case "help":
+                    /*case "help":
                           msg.channel.send({embed:{
                               color:`9333FF`,
                               title:"**Use &play (musica) para chamar um bot novo**",
@@ -117,7 +130,7 @@ const config = require("../config")
                           }
                       }
                       )  
-          
+                      */
                         
                 }
             }
