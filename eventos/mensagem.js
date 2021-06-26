@@ -59,8 +59,9 @@ const config = require("../config")
                             break;
                             
                     }
-
-                if (msg.member.roles.cache.has(config.roles.mod)||msg.member.roles.cache.has(config.roles.admin)||msg.member.roles.cache.has(config.roles.capkaraoke)||msg.member.roles.cache.has(config.roles.capArte)||msg.member.roles.cache.has(config.roles.capEvent)){
+                } 
+                
+                if ((msg.member.roles.cache.has(config.roles.mod)||msg.member.roles.cache.has(config.roles.admin)||msg.member.roles.cache.has(config.roles.capkaraoke)||msg.member.roles.cache.has(config.roles.capArte)||msg.member.roles.cache.has(config.roles.capEvent))){
                     switch(comando){
                         case "emb":
                             let cemb = require(`../capcmd/embed`);
@@ -72,8 +73,6 @@ const config = require("../config")
                             break;
                     }
                 }
-                    
-                }               
                 switch(comando){
                     case "ping":
                         let ping = require(`../commandpub/ping`)
