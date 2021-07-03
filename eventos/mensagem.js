@@ -171,6 +171,7 @@ const config = require("../config")
                                 msg.channel.send({embed:{
                                     color: config.color.blurple,
                                     title:`Utilize o comando emb e siga os passos 😎`,
+                                    description:`Exemplo de como são os campos de um embed`,
                                     image:{url: `https://gblobscdn.gitbook.com/assets%2F-LAEeOAJ8-CJPfZkGKqI%2F-Lh-d6Qc42Rq3BmspE9l%2F-LAEmPBF47FJgnfBD21P%2Fembedexample2.png?alt=media`}
                                 }})
                                 
