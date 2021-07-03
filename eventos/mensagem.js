@@ -79,8 +79,6 @@ const config = require("../config")
                     case "help":
                           msg.channel.send({embed:{
                               color:config.color.blurple,
-                              title:"**Use &play (musica) para chamar um bot novo**",
-                              description:"Use o prefixo na frente do bot invocado para poder interagir com ele",
                               fields:[
                               {
                                   name: 'ADM',
