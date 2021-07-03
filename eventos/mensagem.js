@@ -46,9 +46,7 @@ const config = require("../config")
                             let remove = require("../admcmd/remove");
                                 remove.remove(msg);
                                 break;
-                        case "bs":
-                            let bs = require(`../admcmd/ban`);
-                                bs.ban(msg);
+
                     }
                 }
                 if (msg.member.roles.cache.has(config.roles.mod)||msg.member.roles.cache.has(config.roles.admin) ) {
@@ -60,14 +58,14 @@ const config = require("../config")
                             
                     }
                 } 
-                
+
                 if ((msg.member.roles.cache.has(config.roles.mod)||msg.member.roles.cache.has(config.roles.admin)||msg.member.roles.cache.has(config.roles.capkaraoke)||msg.member.roles.cache.has(config.roles.capArte)||msg.member.roles.cache.has(config.roles.capEvent))){
                     switch(comando){
                         case "emb":
                             let cemb = require(`../capcmd/embed`);
                             cemb.emb(msg);
                             break;
-                        case "send":
+                        case "say":
                             let send = require(`../capcmd/say`);
                             send.send(msg)
                             break;
@@ -78,59 +76,135 @@ const config = require("../config")
                         let ping = require(`../commandpub/ping`)
                             ping.ping(msg);
                             break;
-                    /*case "help":
+                    case "help":
                           msg.channel.send({embed:{
-                              color:`9333FF`,
+                              color:config.color.blurple,
                               title:"**Use &play (musica) para chamar um bot novo**",
                               description:"Use o prefixo na frente do bot invocado para poder interagir com ele",
                               fields:[
                               {
-                                  name: 'play (musica)',
-                                  value: 'inicia musica',
+                                  name: 'ADM',
+                                  value: 'help adm',
                                   
                               },
                               {
-                                  name: `stop`,
-                                  value: `Para a musica`, 
+                                  name:`MOD`,
+                                  value:`help mod`,
+                              },
+                              {
+                                  name: `GERAL`,
+                                  value: `help geral`, 
                                   
                               },
                               {
-                                  name: `queue`,
-                                  value: `Exibe a playlist`, 
+                                  name: `CAPITÃES`,
+                                  value: `help cap`, 
                                   
                               },
                               {
-                                  name: `skip`,
-                                  value: `Pula para a proxima musica`, 
-                                  
-                              },
-                              {
-                                  name: `repeat (0,1,2)`,
-                                  value: `Para repetir: musica 1; playlist 2; parar de repetir 0`, 
-                                  
-                              },
-                              {
-                                  name: `pause`,
-                                  value: `pausa a musica`, 
-                                  
-                              },
-                              {
-                                  name: `resume`,
-                                  value: `Volta a tocar a musica`, 
-                                  
-                              },
-                              {
-                                  name: `mix`,
-                                  value: `Aleatoriza as musicas da playlist`, 
-                                  
-                              },
-                          
+                                  name: `EMBED`,
+                                  value: `help embed`
+                              }
                               ]
                           }
-                      }
-                      )  
-                      */
+                          
+                      })  
+                      break;
+                    case "help adm":
+                        msg.channel.send({embed:
+                        {
+                            description:"Comandos adm: () obrigatório, {}opcional",
+                            color: config.color.blurple,
+                            fieds:
+                            [
+                                {
+                                    name:`BAN, bane os membros utilize:`,
+                                    value:`ban (id) {id} {id} {id} {motivo}`,
+                                },
+                                {
+                                    name:`UNBAN, desbane um usuario:`,
+                                    value:`unban (id do usuario)`,
+                                },
+                                {
+                                    name:`KICK, expulsa o membro:`,
+                                    value:`kick (id) {id} {id} {id} {motivo}`,
+                                },
+                                {
+                                    name:`SAY, o bot envia uma mensagem no canal desejado:`,
+                                    value:`say {id do canal} (mensagem)`,
+                                },
+                                {
+                                    name:`CONTEUDO, pega o conteudo de uma mensagem e envia abaixo:`,
+                                    value:`conteudo (id da mensagem)`,
+                                },
+                                {
+                                    name:`EDIT, edita o conteudo de uma mensage enviada pelo bot:`,
+                                    value:`edit (id do canal) (id da mensagem) (nova mensagem)`,
+                                },
+                                {
+                                    name:`WARN, adiciona uma advertência ao membro:`,
+                                    value:`warn (id do membro) (quantidade de novas advs) (Motivo da(s) adv)`
+                                },
+                                {
+                                    name:`LIST, lista as advertencias de um usuário:`,
+                                    value:`list (id do usuário)`,
+                                },
+                                {
+                                    name:`REMOVE, remove a advertência de um usuário:`,
+                                    value:`remove (id) {numero da advertencia}`,
+                                },
+                                {
+                                    name:`PING, informa o tempo de resposta do bot:`,
+                                    value:`ping`,
+                                },
+
+
+                            ]
+                        }})
+                        break;
+
+                    case `help mod`:
+                        msg.channel.send({embed:{
+                            color: config.color.blurple,
+                            description: `Comandos mod: () obrigatório, {}opcional`,
+                            fields:
+                            [
+                                {
+                                    name:`KICK, expulsa o membro:`,
+                                    value:`kick (id) {id} {id} {id} {motivo}`,
+                                },
+                                {
+                                    name:`PING, informa o tempo de resposta do bot:`,
+                                    value:`ping`,
+                                },
+                            ]
+                        }})
+                        break;
+                    case `help cap`:
+                        msg.channel.send({embed:{
+                            color: config.color.blurple,
+                            description: `Comandos mod: () obrigatório, {}opcional`,
+                            fields:
+                            [
+                                {
+                                    name:`SAY, o bot envia uma mensagem no canal desejado:`,
+                                    value:`say {id do canal} (mensagem)`,
+                                },
+                                {
+                                    name:`PING, informa o tempo de resposta do bot:`,
+                                    value:`ping`,
+                                },
+                            ]
+                        }})
+                        break;
+                    case `help embed`:
+                        msg.channel.send({embed:{
+                            color: config.color.blurple,
+                            description:`utilize o comando emb e siga os passos 😎`,
+                            image: `https://gblobscdn.gitbook.com/assets%2F-LAEeOAJ8-CJPfZkGKqI%2F-Lh-d6Qc42Rq3BmspE9l%2F-LAEmPBF47FJgnfBD21P%2Fembedexample2.png?alt=media`
+                        }})
                         
+                        break;                        
                 }
             }
         }
