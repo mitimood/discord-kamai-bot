@@ -17,7 +17,6 @@ const commandPub = fs.readdirSync(`./commandpub`).filter(file => file.endsWith(`
 const commandCap = fs.readdirSync(`./capcmd`).filter(file => file.endsWith(`.js`));
 
 const eventos = fs.readdirSync(`./eventos`).filter(file => file.endsWith(`.js`));
-//const musica = fs.readdirSync(`./musica`).filter(file => file.endsWith(`.js`));
 
 console.log(commandAdm,commandMod,commandPub,eventos)
 
@@ -38,10 +37,6 @@ commandCap.forEach(capcmd => {
 eventos.forEach(events => {
     require(`${__dirname}/eventos/${events}`);})
 
-    
-
-//musica.forEach(musica => {
-    //require(`${__dirname}/musica/${musica}`);})
 
 
     var today = new Date();
@@ -53,13 +48,8 @@ eventos.forEach(events => {
     
 
     client.on("ready",() => {
-        //fs.writeFileSync('cdl.txt',`0`);
         fs.writeFile('./selfbotid.txt',"\n "+today, { flag: 'a' }, err => {});
         console.log("Cliente iniciado")
-        //fs.writeFileSync('bot1.txt',`0`);
-        //fs.writeFileSync('bot2.txt',`0`);
-        //fs.writeFileSync('bot3.txt',`0`);
-        //fs.writeFileSync('bot4.txt',`0`);
     })
 
 client.login(config.TOKEN);

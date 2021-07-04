@@ -1,20 +1,12 @@
 const {client} = require(`../index`);
 const index = require(`../index`);
 const config = require(`../config`)
-const fs = require(`fs`)
-const Database = require("../Listas/dbs");
-const dbs = new Database();
-
 
 client.on("guildMemberAdd", (member) => {
  
     let userid=member.user.id
     var guildid=member.guild.id
 
-   // if(warnable.dbs.has(member.user.avatar)){
-       // member.roles.add(config.guilds[guildid].roles.selfbot)
-       // fs.writeFile('./selfdetected.txt',"\n " +member.id, { flag: 'a' }, err => {})
-    //}
 const verificaIni = ["'nvc","xyz","𝚌𝚍𝚣𝟽'","𝐒𝐇ᵉˡᵇʸ","DD✞","AK'","𝐿𝐿𝐺'","divinity","ƉємƠη","! ¹⁵⁷Greciah🐊","fvck","fxck","wrld","! 𝓚 𝓪 𝓶 𝓲 🐊🏴","! emykjkkkkk","! LESADA🐊👻",
 "gegevis","yfg.belazX$z","tinker bell","A Batata Vegetariana","!ᴰ'ʳᵃᶜ̧ᵃ🗽","!  Prince  🐊🚩","ᴊᴜʟɪᴀシ","Amiizinha ツ","𝐖$","!dz7","RJ$ Natyzinha-Shelby","! Surtɑd𝚊ꪰꪰꪰッ 🔥",
 "! × ₳NINHΛ 👑","! BANDIDA 💱","! Ꭶҡ𝖎 ⛷ ℳℴ𝓇ℯ𝓃𝒶 ❤","! 𝐂herry🍒","! 𝐂𝐞𝐫𝐞𝐣𝐢𝐧𝐡𝐚🍒","$Angel","$Baby","$Manuella","adryany44","agathaxyz","Marinaa <3","juu","ML Rah.", "catarina ff"];
@@ -452,20 +444,20 @@ const avatar = [
 
         }})
         return
-    })}
+    })}else if(member){
+      verificaIni.forEach(m=>{
+          if(member.user.username.match(m)){
+              member.ban({ days: 0, reason: 'Auto Ban [nome]' }).catch(m=>console.log(m)).then(m=>{
+                  const canal = client.channels.cache.get(config.channels.acacus)
+                  canal.send({embed:{
+                    title: member.user.tag + " aniquilado" ,
+                    description: `Consegui segurar o invasor do reino [nick]`,
+                    color:config.color.sucess,
+      
+                  }})})}})}
 
 
-    if(member){
-    verificaIni.forEach(m=>{
-        if(member.user.username.match(m)){
-            member.ban({ days: 0, reason: 'Auto Ban [nome]' }).catch(m=>console.log(m)).then(m=>{
-                const canal = client.channels.cache.get(config.channels.acacus)
-                canal.send({embed:{
-                  title: member.user.tag + " aniquilado" ,
-                  description: `Consegui segurar o invasor do reino [nick]`,
-                  color:config.color.sucess,
-    
-                }})})}})}
+ 
 
 
 
