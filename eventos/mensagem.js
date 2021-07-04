@@ -84,7 +84,7 @@ const config = require("../config")
                                         case "adm":
                                             msg.channel.send({embed:
                                             {
-                                                title:"Comandos adm: () obrigatório, {}opcional",
+                                                title:"Comandos adm: () obrigatório, {} opcional",
                                                 color: config.color.blurple,
                                                 fields:[
                                                     {
@@ -135,7 +135,7 @@ const config = require("../config")
                                         case `mod`:
                                             msg.channel.send({embed:{
                                                 color: config.color.blurple,
-                                                title: `Comandos mod: () obrigatório, {}opcional`,
+                                                title: `Comandos mod: () obrigatório, {} opcional`,
                                                 fields:
                                                     [
                                                         {
@@ -153,7 +153,7 @@ const config = require("../config")
                                         case `cap`:
                                             msg.channel.send({embed:{
                                                 color: config.color.blurple,
-                                                title: `Comandos mod: () obrigatório, {}opcional`,
+                                                title: `Comandos mod: () obrigatório, {} opcional`,
                                                 fields:
                                                 [
                                                     {
