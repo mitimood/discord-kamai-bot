@@ -8,7 +8,7 @@ const config = require("../config")
               let comando =  msg.content.toLowerCase().split(" ")[0].substr(config.prefixo.length)
                 let args = msg.content.toLowerCase().split(" ");
                 
-                if (msg.member.roles.cache.has(config.roles.admin)) {
+                if (msg.member.roles.cache.has(config.roles.admin)){
                     console.log(`[${msg.member.user.username}] `+ comando)
                     switch(comando){
                         case "ban":
@@ -49,8 +49,9 @@ const config = require("../config")
                                 break;
 
                     }
-                }else{
-                    if (msg.member.roles.cache.has(config.roles.mod)||msg.member.roles.cache.has(config.roles.admin) ) {
+                }
+                if(msg.member.roles.cache.has(config.roles.mod)||msg.member.roles.cache.has(config.roles.admin)){
+                    
                         switch(comando){
                             case "kick":
                                 let kick = require(`../modcmd/kick`);
@@ -58,20 +59,20 @@ const config = require("../config")
                                 break;
                                 
                         }
-                    }else{
-                        if ((msg.member.roles.cache.has(config.roles.mod)||msg.member.roles.cache.has(config.roles.admin)||msg.member.roles.cache.has(config.roles.capkaraoke)||msg.member.roles.cache.has(config.roles.capArte)||msg.member.roles.cache.has(config.roles.capEvent))){
-                            switch(comando){
-                                case "emb":
-                                    let cemb = require(`../capcmd/embed`);
-                                    cemb.emb(msg);
-                                    break;
-                                case "say":
-                                    let send = require(`../capcmd/say`);
-                                    send.send(msg)
-                                    break;
-                            }
-                        }else{
-                            switch(comando){
+                    }
+                if ((msg.member.roles.cache.has(config.roles.mod)||msg.member.roles.cache.has(config.roles.admin)||msg.member.roles.cache.has(config.roles.capkaraoke)||msg.member.roles.cache.has(config.roles.capArte)||msg.member.roles.cache.has(config.roles.capEvent))){
+                    switch(comando){
+                        case "emb":
+                            let cemb = require(`../capcmd/embed`);
+                            cemb.emb(msg);
+                            break;
+                        case "publi":
+                            let send = require(`../capcmd/say`);
+                            send.send(msg)
+                            break;
+                    }
+                }
+                           switch(comando){
                                 case "ping":
                                     let ping = require(`../commandpub/ping`)
                                         ping.ping(msg);
@@ -156,8 +157,8 @@ const config = require("../config")
                                                 fields:
                                                 [
                                                     {
-                                                        name:`SAY, o bot envia uma mensagem no canal desejado:`,
-                                                        value:`say {id do canal} (mensagem)`,
+                                                        name:`publi, o bot envia uma mensagem no canal desejado:`,
+                                                        value:`publi {id do canal} (mensagem)`,
                                                     },
                                                     {
                                                         name:`PING, informa o tempo de resposta do bot:`,
@@ -206,12 +207,11 @@ const config = require("../config")
                                             }
                                             
                                         })
+                                     
                                         break;                            
                                     }                                       
-                            }
+                            }                
                         }
-                    } 
-                }
-            }
-        }
+                        }
+                        
     })
