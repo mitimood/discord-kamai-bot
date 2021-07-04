@@ -157,7 +157,7 @@ const config = require("../config")
                                                 fields:
                                                 [
                                                     {
-                                                        name:`publi, o bot envia uma mensagem no canal desejado:`,
+                                                        name:`PUBLI, o bot publica uma mensagem no canal desejado:`,
                                                         value:`publi {id do canal} (mensagem)`,
                                                     },
                                                     {
