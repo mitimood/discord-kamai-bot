@@ -1,6 +1,6 @@
 var options = {
     // db_name: The name of the file that will save in the folder to hold all user warning data.
-    db_name: "Embeds",
+    db_name: "dbembeds",
     // timezone: The timezone to be used to save and list warnings in... Example format: "Australia/Brisbane"
 }
 const nodejsondb = require("node-json-db").JsonDB;
