@@ -57,6 +57,9 @@ const config = require("../config")
                                 let kick = require(`../modcmd/kick`);
                                 kick.kick(msg);
                                 break;
+                            case "tempmute":
+                                let tempmute = require(`../modcmd/tempmute`);
+                                tempmute.tempmute(msg)
                                 
                         }
                     }
@@ -146,6 +149,10 @@ const config = require("../config")
                                                             name:`PING, informa o tempo de resposta do bot:`,
                                                             value:`ping`,
                                                         },
+                                                        {
+                                                            name:`TEMPMUTE, silencia temporariamente um membro`,
+                                                            value:`tempmute (id) (tempo) {motivo}`
+                                                        }
                                                     ]
                                                 }})
                                                 break;

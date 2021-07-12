@@ -5,6 +5,8 @@ const fs = require("fs");
 client.commands = new Discord.Collection();
 const Database = require("./db");
 const db = new Database();
+const mongodb = require("./mongodb")
+
 
 const Database2 = require("./dbEmbeds");
 const embDb = new Database2();
@@ -50,6 +52,8 @@ eventos.forEach(events => {
     client.on("ready",() => {
         fs.writeFile('./selfbotid.txt',"\n "+today, { flag: 'a' }, err => {});
         console.log("Cliente iniciado")
+        mongodb.client.connect()
+        client.user.setPresence({status:`idle`})
     })
 
 client.login(config.TOKEN);
