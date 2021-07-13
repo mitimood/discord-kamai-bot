@@ -3,7 +3,7 @@ const { client } = require("../index")
 
     client.on('voiceStateUpdate', async (oldState, newState) => {
         if(newState.serverMute == oldState.serverMute)return;
-        if(newState.channel && newState.channel.parentID == config.channels.event && newState.member.roles.cache.has(config.roles.event))
+        if(newState.channel && newState.channel.parentID == config.channels.event && newState.member.roles.cache.has(config.roles.event)) return
         if(newState.serverMute != undefined){
             const fetchedLogs = await newState.guild.fetchAuditLogs({
                 limit: 1, 
