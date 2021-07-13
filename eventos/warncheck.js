@@ -3,7 +3,7 @@ const index = require(`../index`);
 const config = require(`../config`)
 const { CheckMute } = require("../mongodb");
 
-client.on("guildMemberAdd", (member) => {
+client.on("guildMemberAdd", async (member) => {
  
     let userid=member.user.id
     var guildid=member.guild.id
@@ -422,8 +422,9 @@ const avatar = [
     "fe40fad0eb87d886bc2db2bd42284d2f",
     "1c497b17ac46a57aae7b75c9ac756c15"
   ]
-
-    if(CheckMute(member.id))member.roles.add(config.roles.muted, "Mutado por entrar após tempmute")
+    let muted = await CheckMute(member.id)
+    console.log(muted)
+    if(muted)member.roles.add(config.roles.muted, "Mutado por entrar após tempmute")
     //if(index.db.db.exists(`/guilds/${guildid}/users/${userid}/muted`))member.roles.add(config.roles.muted)
 
 

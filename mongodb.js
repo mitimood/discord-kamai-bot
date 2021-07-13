@@ -42,7 +42,6 @@ async function SetUnmute(id) {
         const members_adm = database.collection('member_management');
         let query = {"_id":id}
         let doc = await members_adm.findOne(query);
-        console.log(doc)
         if(doc && doc.muted){
           return true
         }else{
