@@ -17,7 +17,6 @@ const { client } = require("../index")
            const memberex =newState.guild.members.cache.get(executor.id)
 
     if(executor == target) return
-    console.log(memberex.roles.cache.has(config.roles.equipeEvent))
             if(memberex.voice.channel.parentID == config.channels.event && memberex.roles.cache.has(cconfig.roles.equipeEvent)) return
     if(memberex.roles.cache.has(config.roles.equipekaraoke)){
     
