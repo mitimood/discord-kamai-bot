@@ -9,7 +9,7 @@ const { client } = require("../index")
                 limit: 1, 
                 type: 'MEMBER_UPDATE'
             })
-
+        
         const mutado = fetchedLogs.entries.first();
         if(mutado.createdTimestamp > (Date.now() - 1000)){  
             const { executor, target, changes} = mutado;
@@ -17,7 +17,8 @@ const { client } = require("../index")
            const memberex =newState.guild.members.cache.get(executor.id)
 
     if(executor == target) return
-            
+    console.log(memberex.roles.cache.has(config.roles.equipeEvent))
+            if(memberex.voice.channel.parentID == config.channels.event && memberex.roles.cache.has(cconfig.roles.equipeEvent)) return
     if(memberex.roles.cache.has(config.roles.equipekaraoke)){
     
         changes.forEach(c=>{
