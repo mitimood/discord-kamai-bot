@@ -1,4 +1,5 @@
 const config = require("./config")
+const moment = require("moment");
 const { MongoClient } = require("mongodb");
 // Replace the uri string with your MongoDB deployment's connection string.
 const uri = `mongodb+srv://kamaibot:${config.mongo_password}@cluster0.ysdvr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
@@ -43,7 +44,12 @@ async function SetUnmute(id) {
         let query = {"_id":id}
         let doc = await members_adm.findOne(query);
         if(doc && doc.muted){
-          return true
+          if(moment.now() > doc.duration + doc.since){
+            SetUnmute(doc._id)
+            return false
+          }else{
+            return true
+          }
         }else{
           return false
         }

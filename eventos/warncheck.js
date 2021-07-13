@@ -423,7 +423,6 @@ const avatar = [
     "1c497b17ac46a57aae7b75c9ac756c15"
   ]
     let muted = await CheckMute(member.id)
-    console.log(muted)
     if(muted)member.roles.add(config.roles.muted, "Mutado por entrar após tempmute")
     //if(index.db.db.exists(`/guilds/${guildid}/users/${userid}/muted`))member.roles.add(config.roles.muted)
 
