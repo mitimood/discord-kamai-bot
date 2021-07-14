@@ -1,10 +1,11 @@
 const { embDb, client } = require("..");
+const config = require("../config");
 
 module.exports = {emb}
 
 function emb(msg){
 
-    msg.channel.send("**O que deseja fazer com o embed**\n1- Enviar um embed\n2- Criar um embed\n3-Editar um embed\n4- Deletar embed").then(a=>
+    msg.channel.send({embed:{title:"O que deseja fazer com o embed",color: config.color.blurple, description:"1- Enviar um embed\n2- Criar um embed\n3-Editar um embed\n4- Deletar embed"}}).then(a=>
         {
             let filter = m=> /[0-9]+/.test(m.content)&&m.author.id === msg.author.id
             msg.channel.awaitMessages(filter,{max:1,time:120000,errors:[`Time`]}).then(async opc=>
