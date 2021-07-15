@@ -58,7 +58,7 @@ async function emb(msg,embed = new Discord.MessageEmbed().setDescription(`Descri
                                                     msg.channel.send("Envie a url do author, cancelar, ou pular").then(a=>
                                                     {
                                                         let filter= m=>msg.author.id==m.author.id
-                                                        msg.channel.awaitMessages(filter,{max:1,time:120000,errors:[`Time`]}).then(url=>{
+                                                        msg.channel.awaitMessages(filter,{max:1,time:120000,errors:[`Time`]}).then(async url=>{
                                                             if(!["cancelar","pular"].includes(url.first().content.toLowerCase())){
                                                             }
                                                             if(url.first().content.toLowerCase()=="cancelar")return(msg.channel.send("Url cancelada"),returnemb(embed)) 
@@ -289,7 +289,7 @@ async function emb(msg,embed = new Discord.MessageEmbed().setDescription(`Descri
                                                             msg.channel.send(`Envie o link da imagem`).then(async a=>
                                                                 {
                                                                     let filter = m => m.author.id === msg.author.id;
-                                                                    msg.channel.awaitMessages(filter,{max:1,time:120000,errors:[`Time`]}).then(foturl=>
+                                                                    msg.channel.awaitMessages(filter,{max:1,time:120000,errors:[`Time`]}).then(async foturl=>
                                                                         {
                                                                             a.delete()
                                                                             try{
