@@ -7,6 +7,7 @@ const { SetTempMute, SetUnmute } = require("../mongodb");
 // &tempmute <member/user/id> <time to mute> <reason>
     module.exports= {tempmute}
 
+    
     async function tempmute(msg){
         let msgArgs = TrimMsg(msg)
     if(/^<[@][!&]?[0-9]+>$/.test(msgArgs[1]) || /[0-9]+/.test(msgArgs[1])){
