@@ -66,12 +66,12 @@ async function emb(msg,embed = new Discord.MessageEmbed().setDescription(`Descri
                                                             //verify if its a valid url
                                                                 try{
                                                                     embed.setAuthor(nam.first().content, urli.first().content, url.first().content)
-                                                                    msg.channel.send(embed);
+                                                                    await msg.channel.send(embed);
                                                                 }catch{
                                                                     embed.setAuthor(nam.first().content, urli.first().content, null)
                                                                 }finally{
                                                                     a.delete();
-                                                                   return returnemb(embed);
+                                                                    return returnemb(embed);
                                                                 }
                                                                 
 
@@ -236,7 +236,7 @@ async function emb(msg,embed = new Discord.MessageEmbed().setDescription(`Descri
                                             await msg.channel.send(embed);
                                         }catch(err){
                                             embed.setThumbnail(null)
-                                            msg.channel.send(`Imagem invalida`)
+                                            await msg.channel.send(`Imagem invalida`)
                                         }finally{
                                             return returnemb(embed)
                                         }
@@ -253,7 +253,7 @@ async function emb(msg,embed = new Discord.MessageEmbed().setDescription(`Descri
                                         a.delete()
                                         try{
                                             embed.setImage(img.first().content)
-                                            msg.channel.send(embed);
+                                            await msg.channel.send(embed);
                                         }catch{
                                             embed.setImage(null)
                                             await msg.channel.send(`Imagem invalida`)
@@ -294,10 +294,10 @@ async function emb(msg,embed = new Discord.MessageEmbed().setDescription(`Descri
                                                                             a.delete()
                                                                             try{
                                                                                 embed.setFooter(ftx.first().content, foturl.first().content)
-                                                                                msg.channel.send(embed);
+                                                                                await msg.channel.send(embed);
                                                                             }catch{
                                                                                 embed.setFooter(ftx.first().content, null)
-                                                                                msg.channel.send(`Link invalido`)
+                                                                                await msg.channel.send(`Link invalido`)
                                                                             }finally{
                                                                                return returnemb(embed)
                                                                             }
