@@ -121,7 +121,7 @@ async function ban(msg){
                 try{
                     let invite = await client.channels.cache.get(config.ban_recover.log_chnnl).createInvite({unique:true,reason:"ban invite",maxUses:1,maxAge:604800})
 
-                    await (await result).members[i].user.send(`Você foi banido de KAMAITACHI, por: `+reason+ `\nCaso queira recorrer ao seu ban, entre no servidor ${invite.url}`)
+                    await (await result).members[i].user.send(`${msg.author.tag}-----${msg.author.id}\nVocê foi banido de KAMAITACHI, por: `+reason+ `\nCaso queira recorrer ao seu ban, entre no servidor ${invite.url}`)
                 }catch{
 
                 }finally{
