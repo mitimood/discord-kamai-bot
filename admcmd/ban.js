@@ -118,9 +118,15 @@ async function ban(msg){
         for(let i=0;i<(await result).members.length || i < (await result).users.length; i++){    
 
             if((await result).members[i]!=undefined){
-                (await result).members[i].user.send(`Você foi banido de KAMAITACHI, por: `+reason).catch(e=>console.log(e))
-                await Banning((await result).members[i].user.id, `[${msg.author.id}] `+reason, msg.guild)};
+                try{
+                    let invite = await client.channels.cache.get(config.ban_recover.log_chnnl).createInvite({unique:true,reason:"ban invite",maxUses:1})
 
+                    await (await result).members[i].user.send(`Você foi banido de KAMAITACHI, por: `+reason+ `\nCaso queira recorrer ao seu ban, entre no servidor ${invite.url}`)
+                }catch{
+
+                }finally{
+                    await Banning((await result).members[i].user.id, `[${msg.author.id}] `+reason, msg.guild)}
+                }
             if((await result).users[i]!=undefined)await Banning((await result).users[i].id, `[${msg.author.id}] `+reason, msg.guild);
 
         }

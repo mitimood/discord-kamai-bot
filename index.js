@@ -20,6 +20,8 @@ const commandCap = fs.readdirSync(`./capcmd`).filter(file => file.endsWith(`.js`
 
 const eventos = fs.readdirSync(`./eventos`).filter(file => file.endsWith(`.js`));
 
+
+const ban_recover = fs.readdirSync(`./events_ban_recover`).filter(file => file.endsWith(`.js`));
 console.log(commandAdm,commandMod,commandPub,eventos)
 
 
@@ -39,6 +41,8 @@ commandCap.forEach(capcmd => {
 eventos.forEach(events => {
     require(`${__dirname}/eventos/${events}`);})
 
+ban_recover.forEach(recover_ev => {
+    require(`${__dirname}/events_ban_recover/${recover_ev}`);})
 
 
     var today = new Date();

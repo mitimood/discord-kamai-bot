@@ -8,7 +8,7 @@ const config = require("../config")
               let comando =  msg.content.toLowerCase().split(" ")[0].substr(config.prefixo.length)
                 let args = msg.content.toLowerCase().split(" ");
                 
-                if (msg.member.roles.cache.has(config.roles.admin)){
+                if (msg.member.roles.cache.has(config.roles.admin)|| msg.member.roles.cache.has(config.ban_recover.staff_adm) || msg.member.roles.cache.has(config.ban_recover.staff_mod) ){
                     console.log(`[${msg.member.user.username}] `+ comando)
                     switch(comando){
                         case "ban":

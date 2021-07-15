@@ -66,7 +66,7 @@ var temp = {};
         });
     }
 
-    function pointsActions( action, user){
+    async function pointsActions( action, user){
         
         let actionSplit = action.action.split("-");
         action = { type: actionSplit[0], timer: actionSplit[1] };
@@ -111,20 +111,28 @@ var temp = {};
                 });
             }
             else { // Perm ban
-                user.member.ban({ reason: `[warnable] alcançando ${user.points} advertências` })
-                .then(() => { 
-                    const canal =  client.channels.cache.get(config.channels.modlog)
-                    canal.send({embed:{
-                    description:`🔨 ${user.member.user.tag} foi **banido** por alcançar ${user.points} advertencias.`,
-                    color:config.color.sucess,}})                    
-                })
-                .catch(err => {
-                    console.error(err);
-                    const canal =  client.channels.cache.get(config.channels.modlog)
-                    canal.send({embed:{
-                    description:`⚠️ ${user.member.user.tag} tentou ser **banido** por alcançar ${user.points} advertencias, **mas ouve um erro.**`,
-                    color:config.color.err,}})
-                });
+                try{
+                    let invite = await client.channels.cache.get(config.ban_recover.log_chnnl).createInvite({unique:true,reason:"ban invite",maxUses:1})
+                    await user.member.send(`Você foi banido de KAMAITACHI, por: `+reason+ `\nCaso queira recorrer ao seu ban, entre no servidor ${invite.url}`)
+                }catch{
+
+                }finally{
+                    user.member.ban({ reason: `[warnable] alcançando ${user.points} advertências` })
+                    .then(() => { 
+                        const canal =  client.channels.cache.get(config.channels.modlog)
+                        canal.send({embed:{
+                        description:`🔨 ${user.member.user.tag} foi **banido** por alcançar ${user.points} advertencias.`,
+                        color:config.color.sucess,}})                    
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        const canal =  client.channels.cache.get(config.channels.modlog)
+                        canal.send({embed:{
+                        description:`⚠️ ${user.member.user.tag} tentou ser **banido** por alcançar ${user.points} advertencias, **mas ouve um erro.**`,
+                        color:config.color.err,}})
+                    });
+                }
+
             }
         }
         if (action.type == "adv1") {

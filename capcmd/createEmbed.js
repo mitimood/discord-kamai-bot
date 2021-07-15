@@ -1,6 +1,4 @@
 const {Discord, embDb } = require("..");
-const verimg = require('image-url-validator').default;
-const isurl = require(`is-url`)
 const config = require(`../config`)
 module.exports={ emb };
 
@@ -62,7 +60,6 @@ async function emb(msg,embed = new Discord.MessageEmbed().setDescription(`Descri
                                                         let filter= m=>msg.author.id==m.author.id
                                                         msg.channel.awaitMessages(filter,{max:1,time:120000,errors:[`Time`]}).then(url=>{
                                                             if(!["cancelar","pular"].includes(url.first().content.toLowerCase())){
-                                                                if(!isurl(url.first().content)) return (msg.channel.send("**Url invalida**"),returnemb(embed));
                                                             }
                                                             if(url.first().content.toLowerCase()=="cancelar")return(msg.channel.send("Url cancelada"),returnemb(embed)) 
                                                             if(url.first().content.toLowerCase()=="pular")url.first().content=undefined

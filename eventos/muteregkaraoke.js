@@ -2,6 +2,7 @@ const config = require("../config");
 const { client } = require("../index")
 
     client.on('voiceStateUpdate', async (oldState, newState) => {
+        if(newState.guild.id != config.guild_id) return
         if(newState.serverMute == oldState.serverMute)return;
         if(newState.channel && newState.channel.parentID == config.channels.event && newState.member.roles.cache.has(config.roles.event)) return
         if(newState.serverMute != undefined){

@@ -4,7 +4,7 @@ const config = require(`../config`)
 const { CheckMute } = require("../mongodb");
 
 client.on("guildMemberAdd", async (member) => {
- 
+    if(member.guild.id != config.guild_id) return
     let userid=member.user.id
     var guildid=member.guild.id
 
