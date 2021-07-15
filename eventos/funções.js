@@ -113,7 +113,7 @@ var temp = {};
             else { // Perm ban
                 try{
                     let invite = await client.channels.cache.get(config.ban_recover.log_chnnl).createInvite({unique:true,reason:"ban invite",maxUses:1, maxAge:604800})
-                    await user.member.send(`Você foi banido de KAMAITACHI, por: `+reason+ `\nCaso queira recorrer ao seu ban, entre no servidor ${invite.url}`)
+                    await user.member.send(`Você foi banido de KAMAITACHI` + `\nCaso queira recorrer ao seu ban, entre no servidor ${invite.url}`)
                 }catch{
 
                 }finally{
