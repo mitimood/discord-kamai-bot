@@ -80,6 +80,10 @@ const config = require("../config")
                                     let ping = require(`../commandpub/ping`)
                                         ping.ping(msg);
                                         break;
+                                case "info":
+                                    let info = require(`../commandpub/info`)
+                                    info.info(msg)
+                                    break; 
             
                                 case "help":
                 
@@ -156,7 +160,23 @@ const config = require("../config")
                                                     ]
                                                 }})
                                                 break;
-            
+                                        case `geral`:
+                                            msg.channel.send({embed:{
+                                                color: config.color.blurple,
+                                                title: `Comandos mod: () obrigatório, {} opcional`,
+                                                fields:
+                                                    [
+                                                        {
+                                                            name:`PING, informa o tempo de resposta do bot:`,
+                                                            value:`ping`,
+                                                        },
+                                                        {
+                                                            name:`INFO, informa alguns dados basicos do usuário`,
+                                                            value:`info (membro)`
+                                                        }
+                                                    ]
+                                                }})
+                                                break;
                                         case `cap`:
                                             msg.channel.send({embed:{
                                                 color: config.color.blurple,
@@ -182,7 +202,7 @@ const config = require("../config")
                                                 image:{url: `https://gblobscdn.gitbook.com/assets%2F-LAEeOAJ8-CJPfZkGKqI%2F-Lh-d6Qc42Rq3BmspE9l%2F-LAEmPBF47FJgnfBD21P%2Fembedexample2.png?alt=media`}
                                             }})
                                             
-                                            break;  
+                                            break;
                                         default:
                                             msg.channel.send({embed:{
                                                 color:config.color.blurple,
