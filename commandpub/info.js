@@ -42,7 +42,7 @@ function info(msg){
         embed.addField('Criada em:', created_since + `(${created_duration})`, true)
 
         let joined_duration_month = parseInt(date.getTime() / 2592000000)
-        let badges = badge(12)
+        let badges = badge(joined_duration_month)
 
         embed.addField('Badges', badges, true)
 
