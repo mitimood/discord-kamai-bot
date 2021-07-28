@@ -28,8 +28,7 @@ module.exports={ TrimMsg, VerificId, Banning, punishments}
     async function tempmute(duration, unit, member){
         let muteTime = moment(0).add(duration, unit).valueOf()
         var muteRole = member.guild.roles.cache.get(config.roles.muted)
-        let now = moment.utc()
-        let canal =  client.channels.cache.get(config.channels.modlog)
+        let now = moment.utc().valueOf()
 
         SetTempMute(member.id, now, muteTime)
 

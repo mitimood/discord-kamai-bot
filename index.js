@@ -57,7 +57,8 @@ ban_recover.forEach(recover_ev => {
     client.on("ready",async () => {
         fs.writeFile('./selfbotid.txt',"\n "+today, { flag: 'a' }, err => {});
         console.log("Cliente iniciado")
-        await mongodb.client.connect()
+        await mongodb.MongodbClient.connect()
         client.user.setPresence({status:`idle`})
+        mongodb.Check_all_mutes()
     })
 

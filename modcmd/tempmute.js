@@ -23,8 +23,9 @@ const { SetTempMute, SetUnmute } = require("../mongodb");
         if(!msgArgs[2]) return msg.channel.send("Você precisa definir o tempo de mute")
         if(!member||member.roles.highest.position>=msg.member.roles.highest.position)return msg.channel.send("Erro ao mutar o membro")
 
-        let muteTime = moment(0).add(parseInt(msgArgs[2].replace(/[a-z]/g, "")), msgArgs[2].replace(/[0-9]/g, "").valueOf()).valueOf()
-        let nowDate = moment.utc()
+        let muteTime = moment(0).add(parseInt(msgArgs[2].replace(/[a-z]/g, "")), msgArgs[2].replace(/[0-9]/g, "")).valueOf()
+        let nowDate = moment.utc().valueOf()
+
         if(!muteTime) return msg.channel.send("Tempo invalido")
         
         let muteRole = member.guild.roles.cache.get(config.roles.muted)
