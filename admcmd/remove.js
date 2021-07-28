@@ -12,7 +12,7 @@ async function remove (msg) {
     if(msgArgs[1].match(/[0-9]/g)){
        let doc = await warn_remove(msgArgs[1])
        if(doc){
-        msg.channel.send({embed:{description: `Warn de ${doc}\n${msgArgs[1]} apagada com sucesso`,color:config.color.sucess}})
+        msg.channel.send({embed:{description: `Warn de (${doc})\nid: ${msgArgs[1]} apagada com sucesso`,color:config.color.sucess}})
        }else{
         msg.channel.send({embed:{description: `id de warn invalido`,color:config.color.err}})
        }
