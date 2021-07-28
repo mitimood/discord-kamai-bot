@@ -23,10 +23,16 @@ async function open_abbadon(msg) {
         
         }else{
             throw `WrongPassword`
+            
         }
     }catch(e){
         if(e == `WrongPassword`){
-            console.log(1)
+                question.delete()
+                msg.channel.send({embed:{
+                    description:"A voz da sua alma ira te guiar por um caminho. Escute o seu interior",
+                    title: "Você não tem noção do que diz",
+                    color: config.color.red
+                }})
         }else{
             question.delete()
             msg.channel.send({embed:{
