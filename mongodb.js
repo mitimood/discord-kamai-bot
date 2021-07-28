@@ -73,7 +73,6 @@ async function warn_add(target_id, executor_id, points, reason) {
 
 async function warn_remove(warn_id) {
   warn_id=parseInt(warn_id)
-
   const database = MongodbClient.db('kamaibot');
   const member_management = database.collection('member_management');
   try {
@@ -108,16 +107,16 @@ async function warn_list(user_id) {
 
         }
       });
+
+      let warnings = { "points": Total_points, "warns": warns }
+
+      return warnings
     } else {
       return false
     }
 
   } catch (err) {
     console.log(err)
-  } finally {
-    let warnings = { "points": Total_points, "warns": warns }
-
-    return warnings
   }
 }
 
