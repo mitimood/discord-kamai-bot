@@ -1,53 +1,29 @@
 // Warnable 2.0.0 - Command
-const config = require(`../config`);
-const index = require(`../index`);
+const { client } = require("../");
+const { TrimMsg } = require("../eventos/funções");
+const mongoDB = require("../mongodb");
 
 module.exports= { list }
 
-function list (msg){
-    var msgArgs = msg.content.split(" ");
-    if (/^<[@][!&]?[0-9]+>$/.test(msgArgs[1]) || /[0-9]+/.test(msgArgs[1])) {
-        var userid = (msg.mentions.members.first()) ? msg.mentions.members.first().user.id : msgArgs[1].match(/[0-9]+/)[0];
-        var page = (msgArgs[2]) ? msgArgs[2] : "1";
-        if (!isNaN(page)) {
-            page = parseInt(page) - 1;
-            index.db.getWarnings(msg.guild.id, userid)
-            .then(warnings => {
-                if (warnings.length == 0) return msg.channel.send("", { embed: {
-                    color: config.color.err,
-                    description: `No warnings found for <@${userid}>`
-                }});
-                var array_chunks = Array(Math.ceil(warnings.length / 5)).fill().map((_, index) => index * 5).map(begin => warnings.slice(begin, begin + 5));
-                if (page > -1 && array_chunks.length > page) {
-                    let memberTitle = msg.guild.members.cache.get(userid) ? `${msg.guild.members.cache.get(userid).user.tag} (${userid})` : userid
-                    msg.channel.send({ embed: {
-                        color: config.color.sucess,
-                        author: {
-                            name: `Warnings for ${memberTitle}`
-                        },
-                        title: `Total: ${warnings.length} (${warnings.reduce((prev, val) => prev + val.points, 0)}) | Page: ${page + 1}/${array_chunks.length}`,
-                        description: array_chunks[page].map((warning, index) => `**${index + 1}) ${warning.reason}**\n└  ‎Points: ${warning.points}‎ | By: <@${warning.issuer}> | Time: ${(warning.time) ? warning.time : "Unknown"}`).join("\n")
-                    }});
-                }
-                else {
-                    msg.channel.send({ embed: {
-                        color: config.color.err,
-                        description: "Page out of range."
-                    }});
-                }
-            });
-        }
-        else {
-            msg.channel.send({ embed: {
-                color: config.color.err,
-                description: "Page argument must be a number"
-            }});
-        }
+async function list(msg){
+
+    let msgArgs = TrimMsg(msg)
+    if(!msgArgs[1] || !msgArgs[1].match(/[0-9]+/) && !msg.mentions.members.first())return msg.channel.send("Mencione um usuário")
+    let userid = (msg.mentions.members.first()) ? msg.mentions.members.first().user.id : msgArgs[1].match(/[0-9]+/)[0];
+
+    let warns_list = await mongoDB.warn_list(userid)
+    if(warns_list){
+        let user = await client.users.fetch(userid, true)
+         
+        msg.channel.send({embed:{
+            author:{name:user.tag, url: user.displayAvatarURL() },
+            description: warns_list,
+            footer:{
+                text:userid,
+            }
+        }})
+    }else{
+        return msg.channel.send("Não existe registro de advertencias para esse membro")
     }
-    else {
-        msg.channel.send({ embed: {
-            color: config.color.err,
-            description: "A user must be specified."
-        }});
-    }
-};
+
+}

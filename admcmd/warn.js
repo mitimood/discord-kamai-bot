@@ -1,55 +1,32 @@
 // Warnable 2.0.0 - Command
-const index = require(`../index`);
+const mongoDB = require(`../mongodb`);
 const config = require(`../config`);
-const {client} = require(`../index`);
-const {checkPoints}= require(`../eventos/funções`)
+const { TrimMsg, punishments}= require(`../eventos/funções`)
 
-module.exports = { warn }
+module.exports = {warn}
 
-async function warn (msg) {
-    let msgArgs = msg.content.split(" ");
-    if ((/^<[@][!&]?[0-9]+>$/.test(msgArgs[1]) || /[0-9]+/.test(msgArgs[1])) && /^[-]?[0-9]+$/.test(msgArgs[2])) {
-        let userid = (msg.mentions.members.first()) ? msg.mentions.members.first().user.id : msgArgs[1].match(/[0-9]+/)[0];
-        let points = parseInt(msgArgs[2]);
-        let reason = (msgArgs[3]) ? msg.content.substring(msgArgs.slice(0, 3).join(" ").length + 1) : "Sem motivo";
-        let issuer = msg.author.id;
+/*
+   0       1     2     3
+comando pessoa ponto motivo
+*/
+async function warn(msg){
+    let msgArgs = TrimMsg(msg)
 
-        let temp = await client.users.fetch(userid).catch(async(e) =>{ await msg.channel.send(`O ID não é de um usuário de discord: ${userid}`);return false});
-        if(temp){
-        if ((msg.mentions.members.first())  ? !msg.mentions.members.first().roles.cache.has(config.roles.admin) : true) {
-            index.db.addWarning(msg.guild.id, userid, points, reason, issuer)
-            .then(data => {
-                const canal =  client.channels.cache.get(config.channels.modlog)
-                canal.send({embed:{
-                    description:`**Nova advertencia**\n<@${userid}> (Advertência: ${data}) foi advertido por <@${issuer}>\n Motivo: \`${reason}\` por **${points} advertencia${(!(points == 1 || points == -1)) ? "s" : ""}**`,
-                    color:config.color.sucess,
-              }})    
-                if (points > 0) {
-                    checkPoints(msg.guild, userid, data);
+    if(!msgArgs[1] || !msgArgs[2].match(/[0-9]/g) || !msgArgs[1].match(/[0-9]+/) && !msg.mentions.members.first())return msg.channel.send("Utilize: warn user pontos motivo")
 
-                        msg.guild.members.cache.get(userid).user.send({embed:{
-                            description: "Você foi advertido com: "+ points + "\nPor: "+reason+", agora tendo um total de:" + data,
-                            color: config.color.sucess
-                        }});
-                    
-                }
-                if (msg.channel.id !== config.channels.modlog) msg.channel.send({ embed: {
-                    color: config.color.sucess,
-                    description: `**${points} advertência${(!(points == 1 || points == -1)) ? "s" : ""}** aplicada ao <@${userid}> por \`${reason}\``
-                }});
-            });
-        }
-        else {
-            msg.channel.send({ embed: {
-                color: config.color.err,
-                description: "Não é possivel advertir admins."
-            }});
-        }
-    }
-    else {
-        msg.channel.send({ embed: {
-            color: config.color.err,
-            description: "Faltando usuários ou pontos"
-        }});
-    }
-};}
+
+    let userid = (msg.mentions.members.first()) ? msg.mentions.members.first().user.id : msgArgs[1].match(/[0-9]+/)[0];
+    let reason = (msgArgs[3]) ? msg.content.substring(msgArgs.slice(0, 3).join(" ").length + 3) : "Motivo não informado";
+
+    await mongoDB.warn_add(userid, msg.author.id, msgArgs[2])
+    let warns = await mongoDB.warn_list(userid);
+    let mod_log = msg.guild.channels.cache.get(config.channels.modlog)
+    mod_log.send({embed:{
+        description: `**Nova advertencian**\n<@${userid}> (Advertência: ${warns["points"]}) foi advertido por <@${msg.author.id}>\n`+ "Motivo:`"+ reason + "`"+ `por ${msgArgs[2]} advertência`,
+        color:config.color.sucess
+    }})
+    punishments(userid, warns["points"], msg.guild, msg.author)
+    
+
+}
+    

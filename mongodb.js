@@ -1,59 +1,63 @@
-const config = require("./config")
-const moment = require("moment");
-const { MongoClient } = require("mongodb");
-// Replace the uri string with your MongoDB deployment's connection string.
-const uri = `mongodb+srv://kamaibot:${config.mongo_password}@cluster0.ysdvr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
-const client = new MongoClient(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-module.exports={client,SetTempMute, SetUnmute, CheckMute }
+const Discord = require("discord.js");
+const config = require("./config");
+const client = new Discord.Client();
+const fs = require("fs");   
+client.commands = new Discord.Collection();
+const Database = require("./db");
+const db = new Database();
+const mongodb = require("./mongodb")
 
-async function SetTempMute(id,since, duration) {
-  try {              
-    const database = client.db('kamaibot');
-    const members_adm = database.collection('member_management');
-    let config = {"upsert":true}
-    let insert = {"$set":{"_id":id,"muted":true,"duration":duration,"since":since}}
-    let query = {"_id":id}
-    await members_adm.updateOne(query, insert, config);
- 
-  } finally {
-    // Ensures that the client will close when you finish/error
-  }
-}
 
-async function SetUnmute(id) {
-    try {              
-      const database = client.db('kamaibot');
-      const members_adm = database.collection('member_management');
-      let config = {"upsert":true}
-      let insert = {"$set":{"_id":id,"muted":false,"duration":null,"since":null}}
-      let query = {"_id":id}
-      await members_adm.updateOne(query, insert, config);
-   
-    } finally {
-      // Ensures that the client will close when you finish/error
-    }
-  }
+const Database2 = require("./dbEmbeds");
+const embDb = new Database2();
 
-  async function CheckMute(id) {
-    try {
-        const database = client.db('kamaibot');
-        const members_adm = database.collection('member_management');
-        let query = {"_id":id}
-        let doc = await members_adm.findOne(query);
-        if(doc && doc.muted){
-          if(moment.now() > doc.duration + doc.since){
-            SetUnmute(doc._id)
-            return false
-          }else{
-            return true
-          }
-        }else{
-          return false
-        }
-    } finally {
-      // Ensures that the client will close when you finish/error
-    }
-  }
+module.exports = { client, db, embDb, Discord }
+
+const commandAdm = fs.readdirSync(`./admcmd`).filter(file => file.endsWith(`.js`));
+const commandMod = fs.readdirSync(`./modcmd`).filter(file => file.endsWith(`.js`));
+const commandPub = fs.readdirSync(`./commandpub`).filter(file => file.endsWith(`.js`));
+const commandCap = fs.readdirSync(`./capcmd`).filter(file => file.endsWith(`.js`));
+
+const eventos = fs.readdirSync(`./eventos`).filter(file => file.endsWith(`.js`));
+
+
+const ban_recover = fs.readdirSync(`./events_ban_recover`).filter(file => file.endsWith(`.js`));
+console.log(commandAdm,commandMod,commandPub,eventos)
+
+
+
+commandAdm.forEach(admcmd => {
+    require(`${__dirname}/admcmd/${admcmd}`);})
+    
+commandMod.forEach(modcmd => {
+    require(`${__dirname}/modcmd/${modcmd}`);})
+
+commandPub.forEach(pubcmd =>{
+    require(`${__dirname}/commandpub/${pubcmd}`);})
+
+commandCap.forEach(capcmd => {
+    require(`${__dirname}/capcmd/${capcmd}`);})
+
+eventos.forEach(events => {
+    require(`${__dirname}/eventos/${events}`);})
+
+ban_recover.forEach(recover_ev => {
+    require(`${__dirname}/events_ban_recover/${recover_ev}`);})
+
+
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    
+    today = dd + '/' + mm + '/' + yyyy;
+    
+
+    client.on("ready",async () => {
+        fs.writeFile('./selfbotid.txt',"\n "+today, { flag: 'a' }, err => {});
+        console.log("Cliente iniciado")
+        await mongodb.client.connect()
+        client.user.setPresence({status:`idle`})
+    })
+
+client.login(config.TOKEN);
