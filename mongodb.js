@@ -72,6 +72,7 @@ async function warn_add(target_id, executor_id, points, reason) {
 
 
 async function warn_remove(warn_id) {
+  warn_id=parseInt(warn_id)
 
   const database = MongodbClient.db('kamaibot');
   const member_management = database.collection('member_management');
