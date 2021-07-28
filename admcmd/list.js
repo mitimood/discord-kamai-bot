@@ -1,5 +1,6 @@
 // Warnable 2.0.0 - Command
 const { client } = require("../");
+const config = require("../config");
 const { TrimMsg } = require("../eventos/funções");
 const mongoDB = require("../mongodb");
 
@@ -17,10 +18,11 @@ async function list(msg){
          
         msg.channel.send({embed:{
             author:{name:user.tag, url: user.displayAvatarURL() },
-            description: warns_list,
+            description: warns_list["warns"],
             footer:{
                 text:userid,
-            }
+            },
+            color: config.color.sucess
         }})
     }else{
         return msg.channel.send("Não existe registro de advertencias para esse membro")

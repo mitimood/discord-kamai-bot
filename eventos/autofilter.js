@@ -1,8 +1,6 @@
 const { client } = require("..");
 const config = require("../config");
 
-
-
 client.on("message", async msg =>{
 
     if(['steancomunnity.ru',`stmeacomunnitty.ru`,`stearncomminuty.ru`,"http://  discordnitro.host/"].includes(msg.content)){
@@ -15,10 +13,6 @@ client.on("message", async msg =>{
         }catch{
         }finally{
             msg.member.ban({reason:`Steancommunnity Scam`});
-
         }
-
     }
-
-
 })

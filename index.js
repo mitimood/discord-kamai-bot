@@ -10,6 +10,7 @@ const mongodb = require("./mongodb")
 
 const Database2 = require("./dbEmbeds");
 const embDb = new Database2();
+client.login(config.TOKEN);
 
 module.exports = { client, db, embDb, Discord }
 
@@ -53,11 +54,10 @@ ban_recover.forEach(recover_ev => {
     today = dd + '/' + mm + '/' + yyyy;
     
 
-    client.on("ready",() => {
+    client.on("ready",async () => {
         fs.writeFile('./selfbotid.txt',"\n "+today, { flag: 'a' }, err => {});
         console.log("Cliente iniciado")
-        mongodb.client.connect()
+        await mongodb.client.connect()
         client.user.setPresence({status:`idle`})
     })
 
-client.login(config.TOKEN);

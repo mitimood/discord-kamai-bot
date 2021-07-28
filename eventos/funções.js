@@ -16,6 +16,14 @@ module.exports={ TrimMsg, VerificId, Banning, punishments}
         await guild.members.ban(id,{reason:reason}).catch(e=>console.log(e))
 
     }
+    async function ban_member_send_message(id,reason,guild, executor){
+        try{
+            let invite = await client.channels.cache.get(config.ban_recover.log_chnnl).createInvite({unique:true,reason:"ban invite",maxUses:1, maxAge:604800})
+            await guild.members.cache.get(id).send(`Aplicado por(${executor.tag}-----${executor.id})\n\nVocê foi banido de KAMAITACHI, por: `+reason+ `\nCaso queira recorrer ao seu ban, entre no servidor ${invite.url}`)
+            await guild.members.ban(id,{reason:reason}).catch(e=>console.log(e))
+        }catch{
+        }
+    }
 
     async function tempmute(duration, unit, member){
         let muteTime = moment(0).add(duration, unit).valueOf()
