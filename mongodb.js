@@ -157,6 +157,7 @@ async function CheckMute(id) {
       if (doc.muted) {
         if (moment.utc().valueOf() >= doc["duration"] + doc["since"]) {
           SetUnmute(id)
+          return false
         } else {
           return true
         }

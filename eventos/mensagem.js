@@ -60,9 +60,23 @@ const config = require("../config")
                             case "tempmute":
                                 let tempmute = require(`../modcmd/tempmute`);
                                 tempmute.tempmute(msg)
+                                break;
                                 
                         }
                     }
+                if(msg.member.roles.cache.has(config.roles.staff_call)||msg.member.roles.cache.has(config.roles.admin)||msg.member.roles.cache.has(config.roles.mod)){
+
+                    switch(comando){
+                        case "abrir":
+                            let abrir = require(`../staffcmd/open_abaddon`);
+                            abrir.open_abbadon(msg)
+                            break;
+                        case "fechar":
+                            let fechar = require(`../staffcmd/close_abaddon`);
+                            fechar.close_abaddon(msg)
+                            break;
+                    }
+                }
                 if ((msg.member.roles.cache.has(config.roles.mod)||msg.member.roles.cache.has(config.roles.admin)||msg.member.roles.cache.has(config.roles.capkaraoke)||msg.member.roles.cache.has(config.roles.capArte)||msg.member.roles.cache.has(config.roles.capEvent))){
                     switch(comando){
                         case "emb":
@@ -194,6 +208,23 @@ const config = require("../config")
                                                 ]
                                             }})
                                             break;
+                                        case `call`:
+                                            msg.channel.send({embed:{
+                                                color: config.color.blurple,
+                                                title: `Comandos call staff: () obrigatório, {} opcional`,
+                                                fields:
+                                                [
+                                                    {
+                                                        name:`FECHAR, abre a sala de abaddon:`,
+                                                        value:`fechar`,
+                                                    },
+                                                    {
+                                                        name:`ABRIR, fecha a sala de abaddon:`,
+                                                        value:`abrir`,
+                                                    },
+                                                ]
+                                            }})
+                                            break;
                                         case `embed`:
                                             msg.channel.send({embed:{
                                                 color: config.color.blurple,
@@ -215,6 +246,10 @@ const config = require("../config")
                                                 {
                                                     name:`MOD`,
                                                     value:`help mod`,
+                                                },
+                                                {
+                                                    name:`STAFF CALL`,
+                                                    value:`help call`
                                                 },
                                                 {
                                                     name: `GERAL`,
