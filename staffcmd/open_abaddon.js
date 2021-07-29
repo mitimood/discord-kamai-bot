@@ -56,7 +56,7 @@ async function open(msg){
         thumbnail:{url:"https://media2.giphy.com/media/6G118Ea8ppWuCAhMDw/giphy.gif?cid=790b761104af5a82e6d44948502f7b25dd42bc4e6931159d&rid=giphy.gif&ct=s"},
         image:{url:"https://i.imgur.com/dFlhEmM.png"},
         description:"`Estou fazendo os preparativos`",
-        title: "Bom velo por aqui!",
+        title: "Bom vê-lo por aqui!",
         color: config.color.red
     }})
     setTimeout(()=>{
