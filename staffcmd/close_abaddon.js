@@ -4,7 +4,7 @@ const config = require("../config")
 module.exports = {close_abaddon}
 
 async function close_abaddon(msg) {
-    if(!await LocalDb.get_channel(config.channels.abaddon_voice)) return msg.channel.send("<#"+config.channels.abaddon_voice+">")
+    if(!await LocalDb.get_channel(config.channels.abaddon_voice) || !await LocalDb.get_channel(config.channels.abaddon_voice)["state"]) return msg.channel.send("<#"+config.channels.abaddon_voice+">")
     LocalDb.set_channel_state(config.channels.abaddon_voice, false)
     msg.channel.send({embed:{
         thumbnail:{url:"https://i.imgur.com/dFlhEmM.png"},
