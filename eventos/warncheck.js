@@ -1,6 +1,6 @@
 const {client} = require(`../index`);
 const config = require(`../config`)
-const { CheckMute, warn_list } = require("../mongodb");
+const { CheckMute, warn_list, check_roles } = require("../mongodb");
 
 client.on("guildMemberAdd", async (member) => {
     if(member.guild.id != config.guild_id) return
@@ -10,6 +10,9 @@ client.on("guildMemberAdd", async (member) => {
     if(muted)member.roles.add(config.roles.muted, "Mutado por entrar após tempmute")
     //if(index.db.db.exists(`/guilds/${guildid}/users/${userid}/muted`))member.roles.add(config.roles.muted)
 
+
+    let roles = await check_roles(member.id)
+    if(roles)member.roles.add(roles)
 
     let warns = warn_list(userid) 
     

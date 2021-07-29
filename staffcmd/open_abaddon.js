@@ -1,5 +1,6 @@
 const { LocalDb } = require("..");
 const config = require("../config");
+const config_secret = require("../config_secret")
 
 module.exports = { open_abbadon }
 
@@ -17,7 +18,7 @@ async function open_abbadon(msg) {
         let filter = x=> msg.author == x.author
         let password = await msg.channel.awaitMessages(filter,{time:10000,max:1})
 
-        if(password.first().content.toLowerCase() == config.passwords.abaddon){
+        if(password.first().content.toLowerCase() == config_secret.passwords.abaddon){
             question.delete()
             open(password.first())
         

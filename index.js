@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 const config = require("./config");
+const config_secret = require("./config_secret")
 const client = new Discord.Client();
 const fs = require("fs");   
 client.commands = new Discord.Collection();
@@ -10,7 +11,6 @@ const mongodb = require("./mongodb")
 
 const Database2 = require("./dbEmbeds");
 const embDb = new Database2();
-client.login(config.TOKEN);
 
 module.exports = { client, LocalDb, embDb, Discord }
 
@@ -67,5 +67,23 @@ ban_recover.forEach(recover_ev => {
         await mongodb.MongodbClient.connect()
         client.user.setPresence({status:`idle`})
         mongodb.Check_all_mutes()
+
+        client.guilds.cache.get(config.guild_id).roles.cache.get(config.storage_role.troph1).members.forEach(m=>{
+        mongodb.role_register_add(m.id, config.storage_role.troph1)})
+
+        client.guilds.cache.get(config.guild_id).roles.cache.get(config.storage_role.troph2).members.forEach(m=>{
+        mongodb.role_register_add(m.id, config.storage_role.troph2)})
+
+        client.guilds.cache.get(config.guild_id).roles.cache.get(config.storage_role.troph3).members.forEach(m=>{
+        mongodb.role_register_add(m.id, config.storage_role.troph3)})  
+
+        client.guilds.cache.get(config.guild_id).roles.cache.get(config.storage_role.troph4).members.forEach(m=>{
+        mongodb.role_register_add(m.id, config.storage_role.troph4)})  
+
+        client.guilds.cache.get(config.guild_id).roles.cache.get(config.storage_role.troph5).members.forEach(m=>{
+        mongodb.role_register_add(m.id, config.storage_role.troph5)})  
+
+        
     })
 
+client.login(config_secret.TOKEN);

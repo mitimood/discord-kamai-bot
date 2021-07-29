@@ -85,7 +85,15 @@ const config = require("../config")
                             break;
                         case "publi":
                             let send = require(`../capcmd/say`);
-                            send.send(msg)
+                            send.send(msg);
+                            break;
+                        case "reward":
+                            let reward = require(`../capcmd/trophie_add`);
+                            reward.addtrophie(msg);
+                            break;
+                        case "rewardrmv":
+                            let rewardrmv = require(`../capcmd/trophie_rmv`);
+                            rewardrmv.rmvtrophie(msg);
                             break;
                     }
                 }
@@ -202,25 +210,16 @@ const config = require("../config")
                                                         value:`publi {id do canal} (mensagem)`,
                                                     },
                                                     {
+                                                        name:`REWARD, adiciona o cargo de trofeu no membro:`,
+                                                        value:`reward (membro)`,
+                                                    },
+                                                    {
+                                                        name:`REWARDRMV, remove o cargo de trofeu no membro:`,
+                                                        value:`rewardrmv (membro)`,
+                                                    },
+                                                    {
                                                         name:`PING, informa o tempo de resposta do bot:`,
                                                         value:`ping`,
-                                                    },
-                                                ]
-                                            }})
-                                            break;
-                                        case `call`:
-                                            msg.channel.send({embed:{
-                                                color: config.color.blurple,
-                                                title: `Comandos call staff: () obrigatório, {} opcional`,
-                                                fields:
-                                                [
-                                                    {
-                                                        name:`FECHAR, abre a sala de abaddon:`,
-                                                        value:`fechar`,
-                                                    },
-                                                    {
-                                                        name:`ABRIR, fecha a sala de abaddon:`,
-                                                        value:`abrir`,
                                                     },
                                                 ]
                                             }})
@@ -246,10 +245,6 @@ const config = require("../config")
                                                 {
                                                     name:`MOD`,
                                                     value:`help mod`,
-                                                },
-                                                {
-                                                    name:`STAFF CALL`,
-                                                    value:`help call`
                                                 },
                                                 {
                                                     name: `GERAL`,

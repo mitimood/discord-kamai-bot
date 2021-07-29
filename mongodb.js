@@ -1,12 +1,13 @@
 const config = require("./config")
+const config_secret = require("./config_secret")
 const { MongoClient } = require("mongodb");
 // Replace the uri string with your MongoDB deployment's connection string.
-const uri = `mongodb+srv://kamaibot:${config.mongo_password}@cluster0.ysdvr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://kamaibot:${config_secret.mongo_password}@cluster0.ysdvr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const MongodbClient = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-module.exports = { MongodbClient, SetTempMute, SetUnmute, CheckMute, transferdb, warn_list, warn_remove, warn_add, Check_all_mutes }
+module.exports = { MongodbClient, SetTempMute, SetUnmute, CheckMute, transferdb, warn_list, warn_remove, warn_add, Check_all_mutes, role_register_add, role_register_remove, check_roles }
 const moment = require("moment-timezone");
 
 async function transferdb() {
@@ -190,3 +191,40 @@ async function Check_all_mutes() {
   } catch {
   }
 }
+
+async function role_register_add(user_id, role_id) {
+  const database = MongodbClient.db('kamaibot');
+  const members_adm = database.collection('member_management');
+
+  try{
+    let querry = {"_id":user_id}
+    let insert = {"$set":{"_id":user_id,},"$addToSet":{"roles":role_id}}
+    await members_adm.findOneAndUpdate(querry, insert, {upsert:true})
+  }catch(err){
+    console.log(err)
+  }
+}
+
+async function role_register_remove(user_id, role_id) {
+  const database = MongodbClient.db('kamaibot');
+  const members_adm = database.collection('member_management');
+
+  try{
+    let querry = {"_id":user_id}
+    let insert = {"$set":{"_id":user_id,},"$pull":{"roles":{"$in":[role_id]}}}
+    await members_adm.findOneAndUpdate(querry, insert, {upsert:true})
+  }catch(err){
+    console.log(err)
+  }
+}
+
+async function check_roles(user_id) {
+  const database = MongodbClient.db('kamaibot');
+  const members_adm = database.collection('member_management');
+  try {
+    let doc = await members_adm.findOne({"_id":user_id, "roles":{"$exists":true}})
+    return doc["roles"]
+    
+}catch{
+
+}}
