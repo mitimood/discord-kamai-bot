@@ -26,7 +26,7 @@ async function warn(msg){
         color:config.color.sucess
     }})
     mod_log.send({embed:{
-        description: `**Nova advertencian**\n<@${userid}> (Advertência: ${warns["points"]}) foi advertido por <@${msg.author.id}>\n`+ "Motivo:`"+ reason + "`"+ `por ${msgArgs[2]} advertência`,
+        description: `**Nova advertência**\n<@${userid}> (Advertência: ${warns["points"]}) foi advertido por <@${msg.author.id}>\n`+ "Motivo:`"+ reason + "`"+ `por ${msgArgs[2]} advertência`,
         color:config.color.sucess
     }})
     punishments(userid, warns["points"], msg.guild, msg.author)

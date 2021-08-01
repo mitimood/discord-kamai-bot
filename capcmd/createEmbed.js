@@ -280,7 +280,7 @@ async function emb(msg,embed = new Discord.MessageEmbed().setDescription(`Descri
                                                         if(rea.first().emoji.name==`❌`)
                                                         {
                                                             a.delete();
-                                                            embed.setFooter(ftx.first().contet)
+                                                            embed.setFooter(ftx.first().content)
                                                             msg.channel.send(embed)
                                                             returnemb(embed);
                                                         }else
