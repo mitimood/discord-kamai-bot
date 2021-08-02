@@ -26,15 +26,19 @@ module.exports={ TrimMsg, VerificId, Banning, punishments}
     }
 
     async function tempmute(duration, unit, member){
-        let muteTime = moment(0).add(duration, unit).valueOf()
+        let muteTime = moment(0).add(unit, duration,).valueOf()
         member.roles.add(config.roles.muted, "Warn mute")
         let now = moment.utc().valueOf()
 
         SetTempMute(member.id, now, muteTime)
 
         setTimeout(()=>{
-            SetUnmute(member.id)
-            member.roles.remove(config.roles.muted, "Tempo se esgotou")
+            try{
+                SetUnmute(member.id)
+                member.roles.remove(config.roles.muted, "Tempo se esgotou")
+            }catch{
+                
+            }
         },muteTime)
     }
 

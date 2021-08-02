@@ -61,6 +61,10 @@ const config = require("../config")
                                 let tempmute = require(`../modcmd/tempmute`);
                                 tempmute.tempmute(msg)
                                 break;
+                            case "unmute":
+                                let unmute = require(`../modcmd/unmute`);
+                                unmute.unmute(msg)
+                                break;
                                 
                         }
                     }
@@ -178,6 +182,10 @@ const config = require("../config")
                                                         {
                                                             name:`TEMPMUTE, silencia temporariamente um membro`,
                                                             value:`tempmute (id) (tempo) {motivo}`
+                                                        },
+                                                        {
+                                                            name:`UNMUTE, desmuta o membro previamente mutado`,
+                                                            value:`unmute (id)`
                                                         }
                                                     ]
                                                 }})
