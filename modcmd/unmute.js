@@ -5,8 +5,13 @@ module.exports = {unmute}
 
 async function unmute(msg){
     let msgArgs = TrimMsg(msg)
-    let member = msg.guild.members.cache.get(msgArgs[1])
-    
+
+    if(!msgArgs[1] || !msgArgs[1].match(/[0-9]+/) && !msg.mentions.members.first())return msg.channel.send("Mencione um usuário")
+    let userid = (msg.mentions.members.first()) ? msg.mentions.members.first().user.id : msgArgs[1].match(/[0-9]+/)[0];
+
+    let member = msg.guild.members.cache.get(userid)
+
+
     if (member){
         if (member.roles.cache.has(config.roles.muted)){
             member.roles.remove(config.roles.muted)
