@@ -30,7 +30,7 @@ async function warn(msg){
         color:config.color.sucess
     }})
     punishments(userid, warns["points"], msg.guild, msg.author)
-    
+
 
 }
     

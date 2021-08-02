@@ -3,6 +3,19 @@ const { TrimMsg, VerificId, Banning } = require("../eventos/funções");
 const { client, Discord } = require(`../index`)
 const fs = require(`fs`)
 
+/* 
+This should be a module that contains a function that performs the banishment of a user
+First of all it will set every word/id in a array
+than the ids will be sorted as users, members, non users
+all the members and users will be banneds from the guild that the message was sent, but before that
+the bot will try to send a message on pv, that contains the ban reason, the mod that sent the command
+and an single use invite, that they can use for applyng for unban.
+
+
+usage => ban id id id id id id
+*/
+
+
 module.exports={ban}
 
 async function ban(msg){
@@ -26,28 +39,28 @@ async function ban(msg){
     msg.channel.send({embed:{
         title:`Qual regra o infrator quebrou? Vocêm tem 30s`,
         description:`**INFRAÇÕES QUE RESULTAM EM ADVERTÊNCIAS:**
-        \n1- Flood/spam.
-        \n2- Divulgação inadequada.
-        \n3- Utilização de comandos de bots fora do #👾・comandos 
-        \n4- Menção desnecessária de membros e cargos.
-        \n5- Provocação e brigas.
-        \n6- Poluição sonora (qualquer tipo de ruído que possa causar desconforto aos membros)
-        \n7- Atrapalhar o andamento do Karaokê.
-        \n8- Denúncias falsas 
-        \n9- Linguagem discriminatória
-        \n
-        \n**INFRAÇÕES QUE RESULTAM EM BANIMENTO:**
-        \n10- Exposição de membros/ Assédio 
-        \n11- Preconceito, discriminação, difamação e/ou desrespeito.
-        \n12- Planejar ou exercer raids no servidor.
-        \n13- NSFW/ (+18).
-        \n14- Estimular ou praticar atividades ilegais ou que cause banimento de membros.
-        \n15- Evasão de punição.
-        \n16- Conteúdos graficamente chocantes.
-        \n17- Quebra do ToS do Discord. (https://discordapp.com/terms)
-        \n18- Selfbot`
+        1- Flood/spam.
+        2- Divulgação inadequada.
+        3- Utilização de comandos de bots fora do #👾・comandos 
+        4- Menção desnecessária de membros e cargos.
+        5- Provocação e brigas.
+        6- Poluição sonora (qualquer tipo de ruído que possa causar desconforto aos membros)
+        7- Atrapalhar o andamento do Karaokê.
+        8- Denúncias falsas 
+        9- Linguagem discriminatória
+        
+        **INFRAÇÕES QUE RESULTAM EM BANIMENTO:**
+        10- Exposição de membros/ Assédio 
+        11- Preconceito, discriminação, difamação e/ou desrespeito.
+        12- Planejar ou exercer raids no servidor.
+        13- NSFW/ (+18).
+        14- Estimular ou praticar atividades ilegais ou que cause banimento de membros.
+        15- Evasão de punição.
+        16- Conteúdos graficamente chocantes.
+        17- Quebra do ToS do Discord. (https://discordapp.com/terms)
+        18- Selfbot`
     }})
-
+    // chosing the ban reason based on kamaitachi rules
     msg.channel.send({embed:{
         title:`**Membros a banir**`,
         description:`Dentro do servidor: ${(await (result)).members.length}\nFora do servidor: ${(await result).users.length}\nInvalidos: ${(await result).noUser.length}`}})
@@ -114,7 +127,7 @@ async function ban(msg){
             break;
         }
 
-
+        // ban the users
         for(let i=0;i<(await result).members.length || i < (await result).users.length; i++){    
 
             if((await result).members[i]!=undefined){
@@ -130,7 +143,7 @@ async function ban(msg){
             if((await result).users[i]!=undefined)await Banning((await result).users[i].id, `[${msg.author.id}] `+reason, msg.guild);
 
         }
-
+        // Log all the information, and send it on pv
         const ChannelLog = client.channels.cache.get(config.channels.modlog);
         const ModloguMem = new Discord.MessageEmbed().setAuthor(`Kamaitachi ban`,`https://images.genius.com/93a16c1f0873bdfdfaac3b0b6e23f680.300x300x1.jpg`).setColor(`PURPLE`)
         const ModloguUser = new Discord.MessageEmbed().setAuthor(`Kamaitachi ban`,`https://images.genius.com/93a16c1f0873bdfdfaac3b0b6e23f680.300x300x1.jpg`).setColor(`PURPLE`)

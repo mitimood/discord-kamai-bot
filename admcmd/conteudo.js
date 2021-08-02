@@ -1,5 +1,10 @@
 const config = require("../config");
 
+
+
+
+
+
 module.exports = { conteudo };
 
 function conteudo(message){
