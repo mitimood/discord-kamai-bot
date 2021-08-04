@@ -85,8 +85,8 @@ const config = require("../config")
                             cemb.emb(msg);
                             break;
                         case "publi":
-                            let send = require(`../capcmd/say`);
-                            send.send(msg);
+                            let publi = require(`../capcmd/publi`);
+                            publi.publi(msg);
                             break;
                         case "reward":
                             let reward = require(`../capcmd/trophie_add`);
