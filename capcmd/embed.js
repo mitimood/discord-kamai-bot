@@ -23,6 +23,7 @@ function emb(msg){
                             embListed.forEach(emb => {
                                 msg.channel.send(emb)
                             });
+                            break;
                         case 2:
                             msg.channel.send("Envie o id do embed que deseja enviar")
                             let filter2 = m=> m.author.id === msg.author.id && /[0-9]/.test( m.content);
