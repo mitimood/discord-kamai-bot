@@ -1,48 +1,50 @@
 const config = require(`../config`);
-const {client, db} = require("../index");
+const { client } = require("../index");
 const moment = require("moment");
 const { SetTempMute, SetUnmute } = require("../mongodb");
 
 
-module.exports={ TrimMsg, VerificId, Banning, punishments}
+module.exports={
 
-
-    function TrimMsg(msg){
+// receives a message and than returns an array with every of the message
+    TrimMsg(msg){
 
         return msg.content.split(/\n| /gm).filter((str) => str.trim())
-    
-    }
-    async function Banning(id,reason,guild){
+    },
+
+// ban a member
+    async Banning(id,reason,guild){
         await guild.members.ban(id,{reason:reason}).catch(e=>console.log(e))
 
-    }
-    async function ban_member_send_message(id,reason,guild, executor){
+    },
+
+// ban a member and send a message on pv
+    async  ban_member_send_message(id,reason,guild, executor){
         try{
             let invite = await client.channels.cache.get(config.ban_recover.log_chnnl).createInvite({unique:true,reason:"ban invite",maxUses:1, maxAge:604800})
             await guild.members.cache.get(id).send(`Aplicado por(${executor.tag}-----${executor.id})\n\nVocê foi banido de KAMAITACHI, por: `+reason+ `\nCaso queira recorrer ao seu ban, entre no servidor ${invite.url}`)
-            await guild.members.ban(id,{reason:reason}).catch(e=>console.log(e))
+            guild.members.ban(id,{reason:reason}).catch(e=>console.log(e))
         }catch{
         }
-    }
+   },
 
-    async function tempmute(duration, unit, member){
-        let muteTime = moment(0).add(unit, duration,).valueOf()
+// Tempmutes a user
+
+    async  tempmute(duration, unit, member){
+        let muteTime = moment(0).add(duration, unit).valueOf()
         member.roles.add(config.roles.muted, "Warn mute")
         let now = moment.utc().valueOf()
 
         SetTempMute(member.id, now, muteTime)
 
         setTimeout(()=>{
-            try{
-                SetUnmute(member.id)
-                member.roles.remove(config.roles.muted, "Tempo se esgotou")
-            }catch{
-                
-            }
+            SetUnmute(member.id)
+            member.roles.remove(config.roles.muted, "Tempo se esgotou")
         },muteTime)
-    }
+    },
 
-    async function VerificId(idArray,guild){
+// Verify the passed ids if they are a user, member or is a invalid user
+    async  VerificId(idArray,guild){
         let temp = ``
         let result= {
             members:[],
@@ -68,9 +70,11 @@ module.exports={ TrimMsg, VerificId, Banning, punishments}
                 }        
         }
         return result;
-    }
+    },
     
-    function punishments(target_id, points, guild, executor) {
+// apply all the punishment based on the user points
+
+    punishments(target_id, points, guild, executor) {
 
         let member = guild.members.cache.get(target_id)
         if(!member) return false
@@ -93,4 +97,9 @@ module.exports={ TrimMsg, VerificId, Banning, punishments}
                     }
             }
         }
+    },
+    // returns an array of entries separated
+    message_limit_embeds_2000(msg_content){
+        
     }
+}

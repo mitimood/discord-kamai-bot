@@ -2,6 +2,9 @@ var fs = require('fs');
 const { client } = require("../index");
 const config = require("../config")
 
+// kicks multiple members
+// kick (ids) (reason)
+
 module.exports= { kick }
 
   function kick (message){

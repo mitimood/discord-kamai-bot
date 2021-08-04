@@ -1,6 +1,11 @@
 const config = require("../config.js");
 const { client } = require("../index");
 
+/*
+Edit a message previously sent by the bot
+
+edit (channel id) (id of the message) (new message content)
+*/
 
 module.exports = { edit }
 

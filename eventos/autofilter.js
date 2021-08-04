@@ -1,6 +1,10 @@
 const { client } = require("..");
 const config = require("../config");
 
+/* 
+Filters all the messages sent searching for scam links 
+*/
+
 client.on("message", async msg =>{
 
     if(['steancomunnity.ru',`stmeacomunnitty.ru`,`stearncomminuty.ru`,"http://  discordnitro.host/"].includes(msg.content)){

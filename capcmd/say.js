@@ -5,6 +5,12 @@ module.exports = {send};
 
 function send (message){
 
+/*
+    say command, will reply a message content inside the especified channel
+
+say (channel id) (message content)
+*/
+
     
     var msgArgs = message.content.split(" ");
     if(/[0-9]+/.test(msgArgs[1])){

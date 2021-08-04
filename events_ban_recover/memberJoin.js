@@ -1,6 +1,8 @@
 const config = require("../config");
 const { client } = require("../index");
 
+// Creates an exclusive ticket for a user when joining in the baneds server
+
 client.on("guildMemberAdd", async member=>{
     if(member.guild.id != config.ban_recover.guild_id) return
     member.guild.channels.cache.get(config.ban_recover.log_chnnl).send("👉" + member.user.tag+ " entrou na guilda")

@@ -15,7 +15,6 @@ and an single use invite, that they can use for applyng for unban.
 usage => ban id id id id id id
 */
 
-
 module.exports={ban}
 
 async function ban(msg){
@@ -48,7 +47,7 @@ async function ban(msg){
         7- Atrapalhar o andamento do Karaokê.
         8- Denúncias falsas 
         9- Linguagem discriminatória
-        
+        \n
         **INFRAÇÕES QUE RESULTAM EM BANIMENTO:**
         10- Exposição de membros/ Assédio 
         11- Preconceito, discriminação, difamação e/ou desrespeito.
@@ -58,13 +57,14 @@ async function ban(msg){
         15- Evasão de punição.
         16- Conteúdos graficamente chocantes.
         17- Quebra do ToS do Discord. (https://discordapp.com/terms)
-        18- Selfbot`
+        18- Selfbot`,
+        color: config.color.red
     }})
-    // chosing the ban reason based on kamaitachi rules
+
     msg.channel.send({embed:{
         title:`**Membros a banir**`,
         description:`Dentro do servidor: ${(await (result)).members.length}\nFora do servidor: ${(await result).users.length}\nInvalidos: ${(await result).noUser.length}`}})
-    const filter = (m)=> m.author.id == msg.author.id && /[0-9]+/.test(m.content)&&m.content<=18;
+    const filter = (m)=> /[0-9]+/.test(m.content)&&m.content<=18 && m.author.id == msg.author.id;
     msg.channel.awaitMessages(filter,{max:1,time:30000, errors:['Time up']}).catch(m=>{return msg.channel.send(`O tempo expirou`)}).then(async(collected)=>{
         var reason = ``
         switch (collected.first().content){
@@ -127,7 +127,7 @@ async function ban(msg){
             break;
         }
 
-        // ban the users
+
         for(let i=0;i<(await result).members.length || i < (await result).users.length; i++){    
 
             if((await result).members[i]!=undefined){
@@ -143,7 +143,7 @@ async function ban(msg){
             if((await result).users[i]!=undefined)await Banning((await result).users[i].id, `[${msg.author.id}] `+reason, msg.guild);
 
         }
-        // Log all the information, and send it on pv
+
         const ChannelLog = client.channels.cache.get(config.channels.modlog);
         const ModloguMem = new Discord.MessageEmbed().setAuthor(`Kamaitachi ban`,`https://images.genius.com/93a16c1f0873bdfdfaac3b0b6e23f680.300x300x1.jpg`).setColor(`PURPLE`)
         const ModloguUser = new Discord.MessageEmbed().setAuthor(`Kamaitachi ban`,`https://images.genius.com/93a16c1f0873bdfdfaac3b0b6e23f680.300x300x1.jpg`).setColor(`PURPLE`)

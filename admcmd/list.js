@@ -1,8 +1,13 @@
-// Warnable 2.0.0 - Command
 const { client } = require("../");
 const config = require("../config");
 const { TrimMsg } = require("../eventos/funções");
 const mongoDB = require("../mongodb");
+
+/*
+show a list of user warnings
+
+list (id of user)
+*/
 
 module.exports= { list }
 

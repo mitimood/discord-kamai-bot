@@ -1,4 +1,3 @@
-// Warnable 2.0.0 - Command
 const mongoDB = require(`../mongodb`);
 const config = require(`../config`);
 const { TrimMsg, punishments}= require(`../eventos/funções`)
@@ -6,6 +5,8 @@ const { TrimMsg, punishments}= require(`../eventos/funções`)
 module.exports = {warn}
 
 /*
+    adds a warn to a specific user adding some points to it
+
    0       1     2     3
 comando pessoa ponto motivo
 */
@@ -26,11 +27,11 @@ async function warn(msg){
         color:config.color.sucess
     }})
     mod_log.send({embed:{
-        description: `**Nova advertência**\n<@${userid}> (Advertência: ${warns["points"]}) foi advertido por <@${msg.author.id}>\n`+ "Motivo:`"+ reason + "`"+ `por ${msgArgs[2]} advertência`,
+        description: `**Nova advertencian**\n<@${userid}> (Advertência: ${warns["points"]}) foi advertido por <@${msg.author.id}>\n`+ "Motivo:`"+ reason + "`"+ ` por ${msgArgs[2]} advertência`,
         color:config.color.sucess
     }})
     punishments(userid, warns["points"], msg.guild, msg.author)
-
+    
 
 }
     

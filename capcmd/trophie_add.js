@@ -2,6 +2,12 @@ const config = require("../config")
 const { TrimMsg } = require("../eventos/funções")
 const { role_register_add } = require("../mongodb")
 
+/*
+    Adds a trophie to a user and save its to a external db
+
+reward (id user)
+*/
+
 module.exports = {addtrophie}
 
 async function addtrophie(msg) {
@@ -15,26 +21,32 @@ async function addtrophie(msg) {
 
         if(member._roles.includes(config.storage_role.troph5)){
             msg.channel.send("O membro já possui o cargo maximo")
+
         }else if(member._roles.includes(config.storage_role.troph4)){
             member.roles.add(config.storage_role.troph5)
             role_register_add(member.id, config.storage_role.troph5)
             msg.channel.send("O membro recebeu o cargo 5")
+
         }else if(member._roles.includes(config.storage_role.troph3)){
             member.roles.add(config.storage_role.troph4)
             role_register_add(member.id, config.storage_role.troph4)
             msg.channel.send("O membro recebeu o cargo 4")
+
         }else if(member._roles.includes(config.storage_role.troph2)){
             member.roles.add(config.storage_role.troph3)
             role_register_add(member.id, config.storage_role.troph3)
             msg.channel.send("O membro recebeu o cargo 3")
+
         }else if(member._roles.includes(config.storage_role.troph1)){
             member.roles.add(config.storage_role.troph2)
             role_register_add(member.id, config.storage_role.troph2)
             msg.channel.send("O membro recebeu o cargo 2")
+
         }else{
             member.roles.add(config.storage_role.troph1)
             role_register_add(member.id, config.storage_role.troph1)
             msg.channel.send("O membro recebeu o cargo 1")
+
         }
         
     

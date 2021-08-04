@@ -1,5 +1,9 @@
 const config = require("../config");
 
+/*
+ returns the latency of the bot
+*/
+
 module.exports = { ping }
 
 async function ping(msg){

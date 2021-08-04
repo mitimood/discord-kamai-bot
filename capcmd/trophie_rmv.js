@@ -2,6 +2,12 @@ const config = require("../config")
 const { TrimMsg } = require("../eventos/funções")
 const { role_register_remove } = require("../mongodb")
 
+/*
+    Removies a trophie to a user and save its to a external db
+
+rewardrmv (id user)
+*/
+
 module.exports = {rmvtrophie}
 
 async function rmvtrophie(msg) {

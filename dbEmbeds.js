@@ -52,16 +52,22 @@ module.exports = class dbemb {
         if(this.dbemb.exists(`/embeds/`)){
             var embeds = await this.dbemb.getObject(`/embeds/`);
             var temp = Object.values(embeds);
-            var embs = "---Lista de embeds---\n";
+            var emb_person = "";
+            let embs = []
             
             for (var x=0;temp.length>x;x++){
                 if(!temp[x].last){
-               embs = embs + `ID: [${temp[x].embeds.id}]  ${temp[x].embeds.embName} Por:${temp[x].embeds.embCreator}\n`}
+                    if(emb_person.length<1000){
+                        emb_person += `ID: [${temp[x].embeds.id}]  ${temp[x].embeds.embName} Por:${temp[x].embeds.embCreator}\n`
+
+                    }else{
+                        embs.push(emb_person)
+                        emb_person = ""
+                    }          
+                }    
             }
-
-        return embs
-        }
-
-        
+            if(emb_person) embs.push(emb_person)
+            return embs
+        }        
      }
 }

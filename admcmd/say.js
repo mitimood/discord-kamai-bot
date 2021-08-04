@@ -2,6 +2,12 @@ const { client } = require("../index");
 const config = require("../config")
 module.exports = {say}; 
 
+/*
+    say command, will reply a message content inside the especified channel
+
+say (channel id) (message content)
+*/
+
 function say (message){
 
     

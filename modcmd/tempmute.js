@@ -19,7 +19,6 @@ const { SetTempMute, SetUnmute } = require("../mongodb");
         let i = 3
         let reason = (msgArgs[i]) ? msg.content.substring(msgArgs.slice(0, i).join(" ").length + 1) : "Motivo não informado";
 
-
         if(!msgArgs[2]) return msg.channel.send("Você precisa definir o tempo de mute")
         if(!member||member.roles.highest.position>=msg.member.roles.highest.position)return msg.channel.send("Erro ao mutar o membro")
 
@@ -45,8 +44,5 @@ const { SetTempMute, SetUnmute } = require("../mongodb");
                 color:config.color.sucess,
             }})
         },muteTime)
-
     }
     }
-    
-

@@ -1,5 +1,10 @@
 const config = require("../config");
 
+/*
+  Unban a user from the server
+
+  unban (id of the user)
+*/
 
 module.exports = {unban}
 function unban(message) {

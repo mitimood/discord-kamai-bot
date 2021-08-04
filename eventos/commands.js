@@ -1,14 +1,15 @@
 const index  = require("../index");
 const config = require("../config")
 
-    
+    // defines all commands of the bot
     index.client.on("message", msg =>{
+        
         if(!msg.author.bot && msg.guild){
             if(msg.content.startsWith(config.prefixo)){
               let comando =  msg.content.toLowerCase().split(" ")[0].substr(config.prefixo.length)
                 let args = msg.content.toLowerCase().split(" ");
                 
-                if (msg.member.roles.cache.has(config.roles.admin)|| msg.member.roles.cache.has(config.ban_recover.staff_adm) || msg.member.roles.cache.has(config.ban_recover.staff_mod) ){
+                if (msg.member.roles.cache.find(role => [config.roles.staff.admin, config.ban_recover.staff_adm].includes(role.id))){
                     console.log(`[${msg.member.user.username}] `+ comando)
                     switch(comando){
                         case "ban":
@@ -50,7 +51,7 @@ const config = require("../config")
 
                     }
                 }
-                if(msg.member.roles.cache.has(config.roles.mod)||msg.member.roles.cache.has(config.roles.admin)){
+                if(msg.member.roles.cache.find(role => [config.roles.staff.admin, config.roles.staff.mod, config.ban_recover.staff_adm].includes(role.id))){
                     
                         switch(comando){
                             case "kick":
@@ -61,14 +62,10 @@ const config = require("../config")
                                 let tempmute = require(`../modcmd/tempmute`);
                                 tempmute.tempmute(msg)
                                 break;
-                            case "unmute":
-                                let unmute = require(`../modcmd/unmute`);
-                                unmute.unmute(msg)
-                                break;
                                 
                         }
                     }
-                if(msg.member.roles.cache.has(config.roles.staff_call)||msg.member.roles.cache.has(config.roles.admin)||msg.member.roles.cache.has(config.roles.mod)){
+                if(msg.member.roles.cache.find(role=> Object.values(config.roles.staff).includes(role.id))){
 
                     switch(comando){
                         case "abrir":
@@ -81,7 +78,7 @@ const config = require("../config")
                             break;
                     }
                 }
-                if ((msg.member.roles.cache.has(config.roles.mod)||msg.member.roles.cache.has(config.roles.admin)||msg.member.roles.cache.has(config.roles.capkaraoke)||msg.member.roles.cache.has(config.roles.capArte)||msg.member.roles.cache.has(config.roles.capEvent)||msg.member.roles.cache.has(config.roles.capPoems))){
+                if ((msg.member.roles.cache.find(role=>  Object.values(config.roles.teams.caps).includes(role.id) || Object.values(config.roles.staff).includes(role.id) ))){
                     switch(comando){
                         case "emb":
                             let cemb = require(`../capcmd/embed`);
@@ -182,10 +179,6 @@ const config = require("../config")
                                                         {
                                                             name:`TEMPMUTE, silencia temporariamente um membro`,
                                                             value:`tempmute (id) (tempo) {motivo}`
-                                                        },
-                                                        {
-                                                            name:`UNMUTE, desmuta o membro previamente mutado`,
-                                                            value:`unmute (id)`
                                                         }
                                                     ]
                                                 }})

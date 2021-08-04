@@ -1,6 +1,8 @@
 const config = require("../config");
 const { client } = require("../index")
 
+// log when a used is muted by an karaoke organizer
+
     client.on('voiceStateUpdate', async (oldState, newState) => {
         if(newState.guild.id != config.guild_id) return
         if(newState.serverMute == oldState.serverMute)return;

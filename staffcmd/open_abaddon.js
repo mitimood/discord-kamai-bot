@@ -4,7 +4,9 @@ const config_secret = require("../config_secret")
 
 module.exports = { open_abbadon }
 
-
+/*
+    Open the abbadon channel channel requiring a password
+*/
 async function open_abbadon(msg) {
  
     try{

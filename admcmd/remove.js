@@ -1,8 +1,10 @@
-// Warnable 2.0.0 - Command
 const config = require(`../config`);
 const { TrimMsg } = require("../eventos/funções");
 const { warn_remove } = require("../mongodb");
 
+/*
+    Removes a warn from the user
+*/
 
 module.exports={ remove };
 

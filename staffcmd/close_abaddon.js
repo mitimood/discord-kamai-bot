@@ -3,6 +3,9 @@ const config = require("../config")
 
 module.exports = {close_abaddon}
 
+
+// Close the abaddon channel
+
 async function close_abaddon(msg) {
     if(!await LocalDb.get_channel(config.channels.abaddon_voice) || !await LocalDb.get_channel(config.channels.abaddon_voice)["state"]) return msg.channel.send("<#"+config.channels.abaddon_voice+">")
     LocalDb.set_channel_state(config.channels.abaddon_voice, false)

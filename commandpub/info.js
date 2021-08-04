@@ -1,7 +1,14 @@
-const { GuildMember } = require('discord.js');
-const {client, Discord} = require('..');
+const { Discord } = require('..');
 const config = require('../config');
 const { TrimMsg } = require('../eventos/funções');
+
+/*
+    Say some informations about a specific member
+    - When the accontou was created
+    - How much time since the account was created
+    - When the account joined the guild
+    - How much time since the account joined in the guild
+*/
 
 module.exports = {info}
 
@@ -43,10 +50,10 @@ function info(msg){
 
         let joined_duration_month = parseInt(date.getTime() / 2592000000)
         let badges = badge(joined_duration_month)
-        if(badges){
+        if(badges!= undefined){
             embed.addField('Badges', badges, true)
         }
-
+        embed.addField('Kamaicoins', "0.00", false)
         msg.channel.send(msg.author,{embed:embed})
     }else{
         msg.channel.send(`<@${msg.author.id}>` + "O usuário não faz parte do servidor")
