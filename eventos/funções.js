@@ -82,17 +82,17 @@ module.exports={
         if(points>=4){ ban_member_send_message(target_id,"4 advertencias", guild, executor)}
         if(points>=3){ 
             member.roles.add(config.roles.adv3)
-            tempmute(2, "d", member)
+            this.tempmute(2, "d", member)
         }
         if(!member.roles.cache.has(config.roles.adv2)){
             if(points>=2){
                 member.roles.add(config.roles.adv2)
-                tempmute(2, "h", member)
+                this.tempmute(2, "h", member)
             }
             if(!member.roles.cache.has(config.roles.adv1)){
                     if(points>=1){ 
                         member.roles.add(config.roles.adv1)
-                        tempmute(30, "m", member)
+                        this.tempmute(30, "m", member)
 
                     }
             }
