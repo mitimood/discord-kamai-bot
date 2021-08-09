@@ -166,7 +166,7 @@ module.exports={
 
                     if(ModloguMem.fields.length==25){
 
-                        ChannelLog.send(ModloguMem);
+                        ChannelLog.send({embeds:[ModloguMem]});
                         ModloguMem.spliceFields(0,25)
                     }
                     if(answer.length>1800){
@@ -179,7 +179,7 @@ module.exports={
 
                     if((await result).members.length==i+1){
 
-                        ChannelLog.send(ModloguMem);                    
+                        ChannelLog.send({embeds:[ModloguMem]});                    
                         msg.channel.send(answer)
                     }
                 }
