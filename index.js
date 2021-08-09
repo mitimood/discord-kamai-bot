@@ -1,12 +1,12 @@
 const Discord = require("discord.js");
+const Intents = Discord.Intents
+const client = new Discord.Client({intents:["GUILDS", "GUILD_MEMBERS", "GUILD_BANS", "GUILD_EMOJIS_AND_STICKERS", "GUILD_INVITES", "GUILD_VOICE_STATES", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS",  ]})
 const config = require("./config");
 const config_secret = require("./config_secret")
-const client = new Discord.Client();
 const fs = require("fs");   
 const Database = require("./localdb");
 const LocalDb = new Database();
 const mongodb = require("./mongodb")
-
 
 const Database2 = require("./dbEmbeds");
 const embDb = new Database2();
@@ -39,8 +39,6 @@ ban_recover.forEach(recover_ev => {
         await mongodb.MongodbClient.connect()
         client.user.setPresence({status:`idle`})
         mongodb.Check_all_mutes()
-
-        
     })
 
 client.login(config_secret.TOKEN);

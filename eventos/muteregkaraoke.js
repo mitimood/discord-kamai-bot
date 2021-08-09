@@ -28,24 +28,24 @@ const { client } = require("../index")
                 const canal = client.channels.cache.get(config.channels.equipekaraoke)
 
                 if(c.new){
-                    canal.send({embed:{
+                    canal.send({embeds:[{
                         title:newState.channel.name,
                         description: `🔈${target} foi calado por ${executor}\n\n*Um dia encontrará redenção?*`,
                         color:config.color.sucess,
-              }})
+              }]})
 
                 }else{
-                    canal.send({embed:{
+                    canal.send({embeds:[{
                       title:newState.channel.name,
                       description: `🔊${executor} levou a redenção a ${target} e permitiu  que voltasse a falar.`,
                       color:config.color.err,
-                    }})                          
+                    }]})                          
                       let rolecap = newState.guild.roles.cache.get(config.roles.capkaraoke).members.map(m => m.user.id);
        
                     rolecap.forEach(id => {
-                     newState.guild.members.cache.get(id).user.send({embed:{
+                     newState.guild.members.cache.get(id).user.send({embeds:[{
                         title:"⚡É melhor verificar "+newState.channel.name, 
-                        description:` [${executor.id}]\n${executor.username} levou a redenção a \n\n[${target.id}]\n${target.username} e permitiu que voltasse a falar.\n<#612487253650046976>`}})
+                        description:` [${executor.id}]\n${executor.username} levou a redenção a \n\n[${target.id}]\n${target.username} e permitiu que voltasse a falar.\n<#612487253650046976>`}]})
                     })
                 }
             }

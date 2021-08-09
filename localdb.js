@@ -30,5 +30,44 @@ module.exports = class db {
             console.log(err)
         }
     }
+
+    scam_link_add(link){
+        try{
+            if(this.db.exists(`/links/scams/links_scams[0]`)){
+                if(this.db.getData(`/links/scams/links_scams`).includes(link)){
+                    return "exist" 
+
+                }else{
+                    this.db.push(`/links/scams/links_scams[]`, link, false)
+                } 
+            }else{
+                this.db.push(`/links/scams/links_scams[]`, link, false)
+            }
+        }catch(err){
+            console.log(err)
+        }
+    }
+
+    scam_link_remove(link){
+        try{
+            if(!this.db.getData(`/links/scams/links_scams`).includes(link)) return false
+
+            this.db.delete(`/links/scams/links_scams[${this.db.getIndex("/links/scams/links_scams",link)}]`)
+        }catch(err){
+            console.log(err)
+            return "error"
+        }
+    }
+
+    scams_get(){
+        try{
+            if(!this.db.exists(`/links/scams/links_scams`)) return "empty"
+
+            return this.db.getData(`/links/scams/links_scams`)
+        }catch(err){
+            console.log(err)
+            return "error"
+        }
+    }
     
     }      

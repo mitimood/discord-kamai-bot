@@ -1,6 +1,6 @@
 const { Discord } = require('..');
 const config = require('../config');
-const { TrimMsg } = require('../eventos/funções');
+const { TrimMsg } = require('../funções/funções');
 
 /*
     Say some informations about a specific member
@@ -10,58 +10,59 @@ const { TrimMsg } = require('../eventos/funções');
     - How much time since the account joined in the guild
 */
 
-module.exports = {info}
+module.exports={
+    name: "info",
+    aliases: [],
+    description: "",
 
-function info(msg){
-    const embed = new Discord.MessageEmbed()
-    embed.setDescription(`⠀`)
-    if(msg.author.bot) return
-    
-    let msgArgs = TrimMsg(msg)
-    if(!msgArgs[1] || !msgArgs[1].match(/[0-9]+/) && !msg.mentions.members.first())return
+    async execute(msg){
+        const embed = new Discord.MessageEmbed()
+        embed.setDescription(`⠀`)
+        if(msg.author.bot) return
+        
+        let msgArgs = TrimMsg(msg)
+        if(!msgArgs[1] || !msgArgs[1].match(/[0-9]+/) && !msg.mentions.members.first())return
 
 
-    let userid = (msg.mentions.members.first()) ? msg.mentions.members.first().user.id : msgArgs[1].match(/[0-9]+/)[0];
-    let member = msg.guild.members.cache.get(userid)
-    
-    if(member){
-        embed.setColor(config.color.blurple)
-        if(member.user.flags){
-            let flags = separate_flags(member.user.flags.toArray())
-            embed.setTitle(flags[0] + member.user.username)
+        let userid = (msg.mentions.members.first()) ? msg.mentions.members.first().user.id : msgArgs[1].match(/[0-9]+/)[0];
+        let member = msg.guild.members.cache.get(userid)
+        
+        if(member){
+            embed.setColor(config.color.blurple)
+            if(member.user.flags){
+                let flags = separate_flags(member.user.flags.toArray())
+                embed.setTitle(flags[0] + member.user.username)
+            }else{
+                embed.setTitle( member.user.username)
+            }
+
+
+            embed.setThumbnail(member.user.displayAvatarURL())
+            embed.setFooter(`id: ${member.id}`)
+
+            let date = new Date(Date.now() - member.joinedAt)
+            let date_duration = new Date(Date.now() - new Date(member.user.createdTimestamp))
+
+            let joined_duration = format_date_created(date)
+            let joined_since = format_date(member.joinedAt)
+            let created_since = format_date(new Date(member.user.createdTimestamp))
+            let created_duration = format_date_created(date_duration)
+
+            embed.addField('Entrada:', joined_since + `(${joined_duration})`, true)
+            embed.addField('Criada em:', created_since + `(${created_duration})`, true)
+
+            let joined_duration_month = parseInt(date.getTime() / 2592000000)
+            let badges = badge(joined_duration_month)
+            if(badges!= undefined){
+                embed.addField('Badges', badges, true)
+            }
+            embed.addField('Kamaicoins', "0.00", false)
+            msg.channel.send(msg.author,{embed:embed})
         }else{
-            embed.setTitle( member.user.username)
+            msg.channel.send(`<@${msg.author.id}>` + "O usuário não faz parte do servidor")
         }
-
-
-        embed.setThumbnail(member.user.displayAvatarURL())
-        embed.setFooter(`id: ${member.id}`)
-
-        let date = new Date(Date.now() - member.joinedAt)
-        let date_duration = new Date(Date.now() - new Date(member.user.createdTimestamp))
-
-        let joined_duration = format_date_created(date)
-        let joined_since = format_date(member.joinedAt)
-        let created_since = format_date(new Date(member.user.createdTimestamp))
-        let created_duration = format_date_created(date_duration)
-
-        embed.addField('Entrada:', joined_since + `(${joined_duration})`, true)
-        embed.addField('Criada em:', created_since + `(${created_duration})`, true)
-
-        let joined_duration_month = parseInt(date.getTime() / 2592000000)
-        let badges = badge(joined_duration_month)
-        if(badges!= undefined){
-            embed.addField('Badges', badges, true)
-        }
-        embed.addField('Kamaicoins', "0.00", false)
-        msg.channel.send(msg.author,{embed:embed})
-    }else{
-        msg.channel.send(`<@${msg.author.id}>` + "O usuário não faz parte do servidor")
     }
-    
-
 }
-
 function badge(duration){
     let badges = []
 
