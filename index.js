@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
-const Intents = Discord.Intents
-const client = new Discord.Client({intents:["GUILDS", "GUILD_MEMBERS", "GUILD_BANS", "GUILD_EMOJIS_AND_STICKERS","GUILD_INTEGRATIONS" ,"GUILD_INVITES", "GUILD_VOICE_STATES", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "GUILD_PRESENCES" ]})
+const {Client, Intents} = require("discord.js");
+const client = new Client({intents:[Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS]})
 const config = require("./config");
 const config_secret = require("./config_secret")
 const fs = require("fs");   

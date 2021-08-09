@@ -26,5 +26,4 @@ client.on("guildMemberAdd", async (member) => {
         ban_member_send_message(member.id,"Netuno", member.guild, client.user)
         member.guild.channels.cache.get(config.channels.acacus).send("Segurei um possivel invasor ==> " + member.displayName)
     }
-    
 })
