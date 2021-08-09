@@ -24,7 +24,7 @@ client.on("guildMemberAdd", async (member) => {
 
     if((member.displayName.toLowerCase()).match("netuno")||(member.displayName.toLowerCase()).match("netunin")){
         ban_member_send_message(member.id,"Netuno", member.guild, client.user)
-        member.guild.channels.cache.get(config.channels.acacus).send("Segurei um possivel invasor" + member.displayName)
+        member.guild.channels.cache.get(config.channels.acacus).send("Segurei um possivel invasor ==> " + member.displayName)
     }
     
 })
