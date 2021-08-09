@@ -15,7 +15,7 @@ module.exports={
         5- Deletar embed`}]}).then(a=>
             {
                 let filter = m=> /[0-9]+/.test(m.content)&&m.author.id === msg.author.id
-                msg.channel.awaitMessages(filter,{max:1,time:120000,errors:[`Time`]}).then(async opc=>
+                msg.channel.awaitMessages({filter,max:1,time:120000,errors:[`Time`]}).then(async opc=>
                     {
                         switch (parseInt(opc.first().content)){
                             case 1:
@@ -30,7 +30,7 @@ module.exports={
                             case 2:
                                 msg.channel.send("Envie o id do embed que deseja enviar")
                                 let filter2 = m=> m.author.id === msg.author.id && /[0-9]/.test(m.content);
-                                msg.channel.awaitMessages(filter2,{max:1,time:120000,errors:[`time`]}).then(async embs=>
+                                msg.channel.awaitMessages({filter2,max:1,time:120000,errors:[`time`]}).then(async embs=>
                                     {
                                         var recvdb = embDb.getEmb(embs.first().content)
                                         if(await recvdb != null){
@@ -38,7 +38,7 @@ module.exports={
                                             msg.channel.send(`Envie id do canal que deseja enviar a mensagem`).then(a=>
                                                 {
                                                     var filter = m => /[0-9]+/.test(m.content)&&m.author.id === msg.author.id
-                                                    msg.channel.awaitMessages(filter,{max:1,time:120000,errors:[`Time`]}).then(async chanCol=>
+                                                    msg.channel.awaitMessages({filter,max:1,time:120000,errors:[`Time`]}).then(async chanCol=>
                                                         {
                                                             let channel=client.channels.cache.get(chanCol.first().content)
                                                             if (channel){
@@ -62,7 +62,7 @@ module.exports={
                                 msg.channel.send(await embDb.EmbList()).then(a=>
                                     {
                                         let filter = m=> /[0-9]+/.test(m.content)&&m.author.id === msg.author.id;
-                                        msg.channel.awaitMessages(filter,{max:1,time:120000,errors:[`time`]}).then(async embs=>
+                                        msg.channel.awaitMessages({filter,max:1,time:120000,errors:[`time`]}).then(async embs=>
                                             {
                                                 var recvdb = embDb.getEmb(embs.first().content)
                                                 if(await recvdb != null){
@@ -83,7 +83,7 @@ module.exports={
                                 msg.channel.send(await embDb.EmbList()).then(a=>
                                     {
                                         let filter = m=> /[0-9]+/.test(m.content)&&m.author.id === msg.author.id;
-                                        msg.channel.awaitMessages(filter,{max:1,time:120000,errors:['time']}).then(delCol=>
+                                        msg.channel.awaitMessages({filter,max:1,time:120000,errors:['time']}).then(delCol=>
                                             {
                                                 if(embDb.delEmb(delCol.first().content)===null){
                                                     msg.channel.send(`**ID ERRADO**`)

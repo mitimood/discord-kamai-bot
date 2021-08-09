@@ -23,13 +23,13 @@ async function emb(msg,embed = new Discord.MessageEmbed().setDescription(`Descri
         }]}).then(m=>{
 
             var filter = (m)=> /[0-9]+/.test(m.content)&&m.content<=10 && m.author.id == msg.author.id;
-            msg.channel.awaitMessages(filter,{max:1,time:120000, errors:['Time']}).then((opc)=>{
+            msg.channel.awaitMessages({filter,max:1,time:120000, errors:['Time']}).then((opc)=>{
                 switch(parseInt(opc.first().content)){
                     case 1:
                         msg.channel.send("Envie agora o nome do author, ou cancelar").then(a=>
                             {
                                 let filter = m=>m.author.id==msg.author.id;
-                                msg.channel.awaitMessages(filter,{max:1,time:120000,errors:[`Time`]}).then(nam=>
+                                msg.channel.awaitMessages({filter,max:1,time:120000,errors:[`Time`]}).then(nam=>
                                 {
                                     if(nam.first().content.toLowerCase()=="cancelar")return(msg.channel.send("Author cancelado"),returnemb(emb)) 
                                     embed.setAuthor(nam.first().content);
@@ -37,7 +37,7 @@ async function emb(msg,embed = new Discord.MessageEmbed().setDescription(`Descri
                                     msg.channel.send("Envie o link da imagem do autor, cancelar, ou pular").then(a=>
                                     {
                                         let filter= m=>msg.author.id==m.author.id
-                                        msg.channel.awaitMessages(filter,{max:1,time:120000,errors:[`Time`]}).then(async urli=>
+                                        msg.channel.awaitMessages({filter,max:1,time:120000,errors:[`Time`]}).then(async urli=>
                                             {
                                                 //verify if its a valid image
                                                 if(!["pular","cancelar"].includes(urli.first().content.toLowerCase())){
@@ -58,7 +58,7 @@ async function emb(msg,embed = new Discord.MessageEmbed().setDescription(`Descri
                                                     msg.channel.send("Envie a url do author, cancelar, ou pular").then(a=>
                                                     {
                                                         let filter= m=>msg.author.id==m.author.id
-                                                        msg.channel.awaitMessages(filter,{max:1,time:120000,errors:[`Time`]}).then(async url=>{
+                                                        msg.channel.awaitMessages({filter,max:1,time:120000,errors:[`Time`]}).then(async url=>{
                                                             if(!["cancelar","pular"].includes(url.first().content.toLowerCase())){
                                                             }
                                                             if(url.first().content.toLowerCase()=="cancelar")return(msg.channel.send("Url cancelada"),returnemb(embed)) 
@@ -88,7 +88,7 @@ async function emb(msg,embed = new Discord.MessageEmbed().setDescription(`Descri
                         msg.channel.send("Envie o título").then(a=>
                             {   
                                 var filter = m=>m.author.id == msg.author.id
-                                msg.channel.awaitMessages(filter,{max:1,time:120000,errors:["Time"]}).then(title=>{
+                                msg.channel.awaitMessages({filter,max:1,time:120000,errors:["Time"]}).then(title=>{
                                     if(title.first().content=="cancelar")return (msg.channel.send("Titulo cancelado"),returnemb(embed))
                                         embed.setTitle(title.first().content);
                                         a.delete();
@@ -104,7 +104,7 @@ async function emb(msg,embed = new Discord.MessageEmbed().setDescription(`Descri
                                     a.react(config.emojis.check)
                                     a.react(config.emojis.false)
                                     var filter = (reaction,user)=>{return user.id === msg.author.id}
-                                    a.awaitReactions(filter,{max:1,time:120000,errors:["Time"]}).then(recemp=>
+                                    a.awaitReactions({filter,max:1,time:120000,errors:["Time"]}).then(recemp=>
                                         {
                                             if(recemp.first().emoji.name==`✔`)
                                             {
@@ -118,12 +118,12 @@ async function emb(msg,embed = new Discord.MessageEmbed().setDescription(`Descri
                                                     {
                                                         
                                                         var filter = m=> m.author.id == msg.author.id
-                                                        msg.channel.awaitMessages(filter,{max:1,time:120000,errors:["Time"]}).then(nom=>
+                                                        msg.channel.awaitMessages({filter,max:1,time:120000,errors:["Time"]}).then(nom=>
                                                             {
                                                                 a.delete()
                                                                 msg.channel.send("Insira o valor do campo").then(a=>
                                                                     {
-                                                                        msg.channel.awaitMessages(filter,{max:1,time:120000,errors:["Time"]}).then(val=>
+                                                                        msg.channel.awaitMessages({filter,max:1,time:120000,errors:["Time"]}).then(val=>
                                                                             {
                                                                                 a.delete()
                     
@@ -132,7 +132,7 @@ async function emb(msg,embed = new Discord.MessageEmbed().setDescription(`Descri
                                                                                         a.react(config.emojis.check)
                                                                                         a.react(config.emojis.false)
                                                                                         var filter = (reaction,user)=>{return  user.id === msg.author.id}
-                                                                                        a.awaitReactions(filter,{max:1,time:120000,errors:["Time"]}).then(reac=>
+                                                                                        a.awaitReactions({filter,max:1,time:120000,errors:["Time"]}).then(reac=>
                                                                                             {
                                                                                                 if(reac.first().emoji.name==`❌`)
                                                                                                 {
@@ -165,7 +165,7 @@ async function emb(msg,embed = new Discord.MessageEmbed().setDescription(`Descri
                         msg.channel.send("Qual a posição do campo que você quer remover?(1,2,3...)").then(a=>
                             {
                                 var filter = m=> /[0-9]+/.test(m.content)&&parseInt(m.content)<=25
-                                msg.channel.awaitMessages(filter,{max:1,time:120000,errors:[`Time`]}).then(cmprem=>
+                                msg.channel.awaitMessages({filter,max:1,time:120000,errors:[`Time`]}).then(cmprem=>
                                     {
 
                                         if(embed.fields.length<parseInt(cmprem.first().content))return (msg.channel.send("Nenhum campo nesse valor"),returnemb(embed))
@@ -185,7 +185,7 @@ async function emb(msg,embed = new Discord.MessageEmbed().setDescription(`Descri
                                         +"5- Blurple").then(a=>
                             {
                                 var filter= m=> m.author.id == msg.author.id && /[0-9]+/.test(m.content);
-                                msg.channel.awaitMessages(filter,{max:1,time:120000,errors:[`Time`]}).then(col=>
+                                msg.channel.awaitMessages({filter,max:1,time:120000,errors:[`Time`]}).then(col=>
                                     {
                                         switch(parseInt(col.first().content))
                                         {
@@ -215,7 +215,7 @@ async function emb(msg,embed = new Discord.MessageEmbed().setDescription(`Descri
                         msg.channel.send('Digite a descrição do embed').then(a=>
                             {
                                 let filter = m=> m.author.id === msg.author.id;
-                                msg.channel.awaitMessages(filter,{max:1,time:120000,errors:[`Time`]}).then(desc=>
+                                msg.channel.awaitMessages({filter,max:1,time:120000,errors:[`Time`]}).then(desc=>
                                     {
                                         embed.setDescription(desc.first().content);
                                         a.delete();
@@ -228,7 +228,7 @@ async function emb(msg,embed = new Discord.MessageEmbed().setDescription(`Descri
                         msg.channel.send(`Envie agora a url da imagem da thumbnali`).then(a=>
                             {
                                 let filter = m=> m.author.id === msg.author.id;
-                                msg.channel.awaitMessages(filter,{max:1,time:120000,errors:[`Time`]}).then(async thumb=>
+                                msg.channel.awaitMessages({filter,max:1,time:120000,errors:[`Time`]}).then(async thumb=>
                                     {
                                         a.delete();
                                         try{
@@ -248,7 +248,7 @@ async function emb(msg,embed = new Discord.MessageEmbed().setDescription(`Descri
                         msg.channel.send(`Envie agora a url da imagem`).then(a=>
                             {
                                 let filter = m=> m.author.id === msg.author.id;
-                                msg.channel.awaitMessages(filter,{max:1,time:120000,errors:[`Time`]}).then(async img=>
+                                msg.channel.awaitMessages({filter,max:1,time:120000,errors:[`Time`]}).then(async img=>
                                     {
                                         a.delete()
                                         try{
@@ -267,7 +267,7 @@ async function emb(msg,embed = new Discord.MessageEmbed().setDescription(`Descri
                         msg.channel.send(`Digite o texto do rodapé`).then(a=>
                             {
                                 let filter = m=> m.author.id === msg.author.id;
-                                msg.channel.awaitMessages(filter,{max:1,time:120000,errors:[`Time`]}).then(ftx=>
+                                msg.channel.awaitMessages({filter,max:1,time:120000,errors:[`Time`]}).then(ftx=>
                                     {
                                         a.delete()
                                         msg.channel.send(`Deseja inserir uma imagem no rodapé?`).then(a=>
@@ -275,7 +275,7 @@ async function emb(msg,embed = new Discord.MessageEmbed().setDescription(`Descri
                                                 a.react(config.emojis.check)
                                                 a.react(config.emojis.false)
                                                 let filter = (reaction,user)=>{return  user.id === msg.author.id}
-                                                a.awaitReactions(filter,{max:1,time:120000,errors:[`Time`]}).then(rea=>
+                                                a.awaitReactions({filter,max:1,time:120000,errors:[`Time`]}).then(rea=>
                                                     {
                                                         if(rea.first().emoji.name==`❌`)
                                                         {
@@ -289,7 +289,7 @@ async function emb(msg,embed = new Discord.MessageEmbed().setDescription(`Descri
                                                             msg.channel.send(`Envie o link da imagem`).then(async a=>
                                                                 {
                                                                     let filter = m => m.author.id === msg.author.id;
-                                                                    msg.channel.awaitMessages(filter,{max:1,time:120000,errors:[`Time`]}).then(async foturl=>
+                                                                    msg.channel.awaitMessages({filter,max:1,time:120000,errors:[`Time`]}).then(async foturl=>
                                                                         {
                                                                             a.delete()
                                                                             try{
@@ -315,7 +315,7 @@ async function emb(msg,embed = new Discord.MessageEmbed().setDescription(`Descri
                         msg.channel.send(`Envie o nome do seu embed`).then(a=>
                             {
                                 let filter = m=> m.author.id === msg.author.id
-                                msg.channel.awaitMessages(filter, {max:1,time:120000,errors:[`Time`]}).then(savem=>
+                                msg.channel.awaitMessages({filter, max:1,time:120000,errors:[`Time`]}).then(savem=>
                                     {
                                         embDb.saveEmb(embed,savem.first().content,msg.author.username)
                                         msg.channel.send(`Seu embed foi salvo`)
@@ -326,14 +326,9 @@ async function emb(msg,embed = new Discord.MessageEmbed().setDescription(`Descri
 
                         break
                     case 0:
-                        return msg.channel.send("Embed cancelado")
-                        
+                        return msg.channel.send("Embed cancelado")  
                 }
-
-            
-            
             }).catch(m=>msg.channel.send("**Tempo esgotado**"))
-
     })
     }
 }

@@ -34,7 +34,5 @@ module.exports={
             color:config.color.sucess
         }]})
         punishments(userid, warns["points"], msg.guild, msg.author)
-        
-
     }
 }

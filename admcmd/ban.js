@@ -60,7 +60,8 @@ module.exports={
             15- Evasão de punição.
             16- Conteúdos graficamente chocantes.
             17- Quebra do ToS do Discord. (https://discordapp.com/terms)
-            18- Selfbot`,
+            18- Selfbot
+            19- Scam`,
             color: config.color.red
         }]})
 
@@ -68,7 +69,7 @@ module.exports={
             title:`**Membros a banir**`,
             description:`Dentro do servidor: ${(await (result)).members.length}\nFora do servidor: ${(await result).users.length}\nInvalidos: ${(await result).noUser.length}`}]})
         const filter = (m)=> /[0-9]+/.test(m.content)&&m.content<=19 && m.author.id == msg.author.id;
-        msg.channel.awaitMessages(filter,{max:1,time:30000, errors:['Time up']}).catch(m=>{return msg.channel.send(`O tempo expirou`)}).then(async(collected)=>{
+        msg.channel.awaitMessages({filter,max:1,time:30000, errors:['Time up']}).catch(m=>{return msg.channel.send(`O tempo expirou`)}).then(async(collected)=>{
             var reason = ``
             switch (collected.first().content){
 

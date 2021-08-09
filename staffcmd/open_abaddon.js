@@ -21,7 +21,7 @@ module.exports={
                 color: config.color.red
             }]})
             let filter = x=> msg.author == x.author
-            let password = await msg.channel.awaitMessages(filter,{time:10000,max:1})
+            let password = await msg.channel.awaitMessages({filter,time:10000,max:1})
 
             if(password.first().content.toLowerCase() == config_secret.passwords.abaddon){
                 question.delete()
