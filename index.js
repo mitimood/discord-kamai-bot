@@ -35,10 +35,10 @@ ban_recover.forEach(recover_ev => {
         fs.writeFile('./selfbotid.txt',"\n "+today, { flag: 'a' }, err => {});
         await mongodb.MongodbClient.connect()
         client.user.setPresence({status:`idle`})
-        mongodb.Check_all_mutes()
         for( let id_guild of client.guilds.cache.keys()){
             await client.guilds.cache.get(id_guild).members.fetch()
         }
+        await mongodb.Check_all_mutes()
         console.log("Cliente iniciado")
     })
 

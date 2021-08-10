@@ -21,7 +21,6 @@ module.exports={
                             case 1:
 
                                 let embListed = await embDb.EmbList()
-                                console.log(embListed)
                                 if(!embListed) return msg.channel.send({embeds:[{description:"Nenhum embed registrado ainda", color: config.color.err}]})
                                 embListed.forEach(emb => {
                                     msg.channel.send(emb)

@@ -58,7 +58,6 @@ module.exports={
                 aliases = pub_module.aliases.join(", ")
             }
         })
-        console.log(help_desc)
 
             if(help_desc){
                 msg.channel.send({embeds:[{content: msg.author.toString(), color: config.color.blurple, description: `**${help_name}**` +  (aliases ? `[${aliases}] ` : "") + `
