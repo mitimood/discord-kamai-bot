@@ -11,8 +11,8 @@ const { TrimMsg } = require('../funções/funções');
 */
 
 module.exports={
-    name: "info",
-    aliases: ["userinfo","profile"],
+    name: "embed",
+    aliases: ["emb","embes"],
     description: "informa alguns dados do usuário",
 
     async execute(msg){
