@@ -11,23 +11,27 @@ module.exports={
     aliases: [],
     description: "o bot envia uma mensagem no canal desejado",
 
-    execute (message){
+    async execute (message){
 
     
     var msgArgs = message.content.split(" ");
     if(/[0-9]+/.test(msgArgs[1])){
     const canal =  client.channels.cache.find(channel =>channel.id === msgArgs[1])
     if(canal==undefined){
-        message.channel.send({embeds:[{
+        message.channel.send({content: msg.author.toString(),embeds:[{
             description:"Não foi possivel achar o canal no servidor",
             color: config.color.err,
         }]})
     }else{
         var mensagem = message.content.substring(msgArgs.slice(0, 2).join(" ").length + 1);
-        if(mensagem){
-        canal.send(mensagem);
-        };
-        message.delete()}
+        if(mensagem && mensagem.length <= 2000){
+        await canal.send(mensagem);
+        await message.delete()
+        message.channel.send(msg.author.toString()+" Mensagem enviada com sucesso em " + canal.name )
+        }else{
+           return message.channel.send(msg.author.toString()+" Mensagem invalida. Verifique o seu conteudo")
+        }
+        }
     }
         else{
             var mensagem = message.content.substring(msgArgs.slice(0, 1).join(" ").length + 1);
@@ -35,7 +39,7 @@ module.exports={
             message.channel.send(mensagem);
             message.delete()
             }else{
-                message.channel.send({embeds:[{
+                message.channel.send({content: msg.author.toString(), embeds:[{
                     description:"Você não informou a mensagem para que eu possa portá-la",
                     color:config.color.err,
                 }]});
