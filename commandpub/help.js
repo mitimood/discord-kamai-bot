@@ -61,8 +61,7 @@ module.exports={
         console.log(help_desc)
 
             if(help_desc){
-                console.log(1)
-                msg.channel.send({embeds:[{description: `**${help_name}** [${aliases}] 
+                msg.channel.send({embeds:[{content: msg.author.toString(), color: config.color.blurple, description: `**${help_name}**` +  (aliases ? `[${aliases}] ` : "") + `
                 ${help_desc}` }]})
                 
             }else{
@@ -126,5 +125,5 @@ function full_help(msg){
             }
         }
     }
-    msg.channel.send({embeds:[{description: emb_description, color: config.color.blurple}]})
+    msg.channel.send({content: msg.author.toString() ,embeds:[{description: emb_description, color: config.color.blurple}]})
 }

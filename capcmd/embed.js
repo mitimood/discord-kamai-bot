@@ -4,11 +4,11 @@ const config = require("../config");
 module.exports={
     name: "embed",
     aliases: ["emb"],
-    description: "Utilize o comando emb e siga os passos 😎",
+    description: "Utilize o comando emb e siga os passos",
 
     execute(msg){
 
-        msg.channel.send({embeds:[{title:"O que deseja fazer com o embed",color: config.color.blurple, description:`1- Listar embeds
+        msg.channel.send({embeds:[{content: msg.author.toString() ,title:"O que deseja fazer com o embed",color: config.color.blurple, description:`1- Listar embeds
         2- Enviar um embed
         3- Criar um embed
         4- Editar um embed
@@ -22,7 +22,7 @@ module.exports={
 
                                 let embListed = await embDb.EmbList()
                                 console.log(embListed)
-                                if(!embListed) return msg.channel.send({embeds:[{description:"Nenhum embed registrado ainda", color: config.color.err}]})
+                                if(!embListed) return msg.channel.send({content: msg.author.toString() ,embeds:[{description:"Nenhum embed registrado ainda", color: config.color.err}]})
                                 embListed.forEach(emb => {
                                     msg.channel.send(emb)
                                 });

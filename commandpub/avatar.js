@@ -16,6 +16,6 @@ module.exports={
         let member = await msg.guild.members.fetch({user:userid, force: false})
         embed.setImage(member.user.displayAvatarURL({size:1024}))
         embed.setColor(member.displayHexColor)
-        msg.channel.send({embeds: [embed]})
+        msg.channel.send({content: msg.author.toString() , embeds: [embed]})
     }
 }

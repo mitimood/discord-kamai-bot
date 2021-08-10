@@ -14,7 +14,7 @@ module.exports={
         color: config.color.sucess,
         description: "Pinging..."
     }]});
-    pingingMsg.edit({ embeds: [{
+    pingingMsg.edit({content: msg.author.toString() , embeds: [{
         color: config.color.sucess,
         description: `**Pong!** Corri até valhalla e voltei em ${pingingMsg.createdTimestamp - msg.createdTimestamp}ms`
     }]});
