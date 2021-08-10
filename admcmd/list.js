@@ -12,7 +12,7 @@ list (id of user)
 module.exports={
     name: "list",
     aliases: [],
-    description: "",
+    description: "Lista as advertencias de um usuário",
 
     async execute (msg){
 

@@ -10,7 +10,7 @@ edit (channel id) (id of the message) (new message content)
 module.exports={
     name: "edit",
     aliases: [],
-    description: "",
+    description: "edita o conteudo de uma mensage enviada pelo bot",
 
     execute (message) {
         var msgArgs = message.content.split(" ");

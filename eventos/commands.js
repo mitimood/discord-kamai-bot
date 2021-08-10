@@ -7,7 +7,7 @@ client.on("messageCreate", msg=>{
 
     if(!msg.author.bot && msg.guild && msg.content.startsWith(config.prefixo)){
     var command =  msg.content.toLowerCase().split(" ")[0].substr(config.prefixo.length)
-    console.log(`[${command}] ${msg.author.tag}`)
+    console.log(`[${msg.author.tag}] ${command}`)
     // Staffs commands
     if (msg.member.roles.cache.find(role => [config.roles.staff.admin, config.ban_recover.staff_adm].includes(role.id))){
         const admcmd = fs.readdirSync(`./admcmd`).filter(file => file.endsWith(`.js`));

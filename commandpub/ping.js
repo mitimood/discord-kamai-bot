@@ -7,7 +7,7 @@ const config = require("../config");
 module.exports={
     name: "ping",
     aliases: [],
-    description: "",
+    description: "informa o tempo de resposta do bot",
 
     async execute(msg){
     let pingingMsg = await msg.channel.send({ embeds: [{

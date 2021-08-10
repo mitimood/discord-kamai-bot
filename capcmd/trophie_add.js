@@ -11,7 +11,7 @@ reward (id user)
 module.exports={
     name: "reward",
     aliases: [],
-    description: "",
+    description: "adiciona o cargo de trofeu no membro",
 
     async execute(msg) {
     

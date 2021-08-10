@@ -11,7 +11,7 @@ comando pessoa ponto motivo
 module.exports={
     name: "warn",
     aliases: [],
-    description: "",
+    description: "adiciona uma advertência ao membro",
 
     async execute (msg){
         let msgArgs = TrimMsg(msg)

@@ -1,7 +1,5 @@
 const Discord = require("discord.js");
-const {Client, Intents} = require("discord.js");
-const client = new Client({intents:[Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS]})
-const config = require("./config");
+const client = new Discord.Client({intents:1735})
 const config_secret = require("./config_secret")
 const fs = require("fs");   
 const Database = require("./localdb");
@@ -35,10 +33,13 @@ ban_recover.forEach(recover_ev => {
 
     client.on("ready",async () => {
         fs.writeFile('./selfbotid.txt',"\n "+today, { flag: 'a' }, err => {});
-        console.log("Cliente iniciado")
         await mongodb.MongodbClient.connect()
         client.user.setPresence({status:`idle`})
         mongodb.Check_all_mutes()
+        for( let id_guild of client.guilds.cache.keys()){
+            await client.guilds.cache.get(id_guild).members.fetch()
+        }
+        console.log("Cliente iniciado")
     })
 
 client.login(config_secret.TOKEN);

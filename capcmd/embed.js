@@ -4,7 +4,7 @@ const config = require("../config");
 module.exports={
     name: "embed",
     aliases: ["emb"],
-    description: "",
+    description: "Utilize o comando emb e siga os passos 😎",
 
     execute(msg){
 

@@ -8,7 +8,7 @@ const { SetTempMute, SetUnmute } = require("../mongodb");
 module.exports={
     name: "tempmute",
     aliases: [],
-    description: "",
+    description: "silencia temporariamente um membro",
     
     async execute(msg){
         let msgArgs = TrimMsg(msg)

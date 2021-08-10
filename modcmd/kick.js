@@ -8,7 +8,7 @@ const config = require("../config")
 module.exports={
   name: "kick",
   aliases: [],
-  description: "",
+  description: "expulsa o membro",
 
   async execute (message){
     //Verifies if the ban command is still running, avoiding spamming the discord API

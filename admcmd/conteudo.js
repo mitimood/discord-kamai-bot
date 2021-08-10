@@ -8,7 +8,7 @@ emojis, user mentions, bold...
 module.exports={
     name: "conteudo",
     aliases: [],
-    description: "",
+    description: "pega o conteudo de uma mensagem e envia abaixo",
 
     execute (message){
 

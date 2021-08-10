@@ -4,7 +4,7 @@ const config = require("../config")
 module.exports={
     name: "open",
     aliases: [],
-    description: "",
+    description: "abre a sala do abaddon",
 
     async execute (msg){
         if(!await LocalDb.get_channel(config.channels.abaddon_voice) || !await LocalDb.get_channel(config.channels.abaddon_voice)["state"]) return msg.channel.send("<#"+config.channels.abaddon_voice+">")

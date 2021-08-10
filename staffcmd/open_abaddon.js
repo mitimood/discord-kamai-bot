@@ -9,7 +9,7 @@ const config_secret = require("../config_secret")
 module.exports={
     name: "close",
     aliases: [],
-    description: "", 
+    description: "Fecha a sala de abaddon", 
     async execute(){
  
         try{

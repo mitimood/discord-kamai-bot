@@ -9,7 +9,7 @@ say (channel id) (message content)
 module.exports={
     name: "say",
     aliases: [],
-    description: "",
+    description: "o bot envia uma mensagem no canal desejado",
 
     execute (message){
 

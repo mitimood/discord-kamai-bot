@@ -4,7 +4,7 @@ const { TrimMsg } = require("../funções/funções")
 module.exports={
     name: "unmute",
     aliases: [],
-    description: "",
+    description: "desmuta o membro previamente mutado",
 
     async unmute(msg){
         let msgArgs = TrimMsg(msg)

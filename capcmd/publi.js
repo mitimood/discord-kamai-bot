@@ -10,7 +10,7 @@ publi (channel id) (message content)
 module.exports={
     name: "report",
     aliases: ["publi"],
-    description: "",
+    description: "o bot publica uma mensagem no canal desejado",
 
     execute (message){
 

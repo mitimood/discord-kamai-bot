@@ -11,7 +11,7 @@ rewardrmv (id user)
 module.exports={
     name: "rewardrmv",
     aliases: [],
-    description: "",
+    description: "remove o cargo de trofeu no membro",
     
     async execute(msg) {
     

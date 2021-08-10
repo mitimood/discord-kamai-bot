@@ -9,7 +9,7 @@ const { warn_remove } = require("../mongodb");
 module.exports={
     name: "remove",
     aliases: [],
-    description: "",
+    description: "remove a advertência de um usuário",
 
     async execute (msg) {
         
