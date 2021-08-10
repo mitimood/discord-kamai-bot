@@ -22,10 +22,14 @@ module.exports={
         let msgArgs = TrimMsg(msg)
 
         let userid = (msg.mentions.members.first()) ? msg.mentions.members.first().user.id : msgArgs[1] ? msgArgs[1].match(/[0-9]+/)[0] : msg.member.id;
-        let member = msg.guild.members.cache.get(userid)
+        let member = await msg.guild.members.fetch({user:userid, force: false})
         
         embed.setColor(config.color.blurple)
-        let flags = separate_flags(member.user.flags.toArray())
+        var flags = null
+        if(!member) member = msg.member
+        if(member.user.flags){
+            flags = separate_flags(member.user.flags.toArray())
+        }
         embed.setTitle((flags ? flags.join("") : "") + member.user.username )
         
 
