@@ -1,170 +1,102 @@
-const { Discord } = require('..');
-const config = require('../config');
-const { TrimMsg } = require('../funções/funções');
-
-/*
-    Say some informations about a specific member
-    - When the accontou was created
-    - How much time since the account was created
-    - When the account joined the guild
-    - How much time since the account joined in the guild
-*/
+const { embDb, client, Discord } = require("..");
+const config = require("../config");
 
 module.exports={
     name: "embed",
-    aliases: ["emb","embes"],
-    description: "informa alguns dados do usuário",
+    aliases: ["emb"],
+    description: "Utilize o comando emb e siga os passos 😎",
 
-    async execute(msg){
-        const embed = new Discord.MessageEmbed()
-        embed.setDescription(`⠀`)
-        
-        let msgArgs = TrimMsg(msg)
+    execute(msg){
 
-        let userid = (msg.mentions.members.first()) ? msg.mentions.members.first().user.id : msgArgs[1] ? msgArgs[1].match(/[0-9]+/)[0] : msg.member.id;
-        let member = msg.guild.members.cache.get(userid)
-        
-        embed.setColor(config.color.blurple)
-        var flags = null 
-        if(member.user.flags){
-            flags = separate_flags(member.user.flags.toArray())
-        }
-        embed.setTitle((flags ? flags.join("") : "") + member.user.username )
-        
+        msg.channel.send({embeds:[{title:"O que deseja fazer com o embed",color: config.color.blurple, description:`1- Listar embeds
+        2- Enviar um embed
+        3- Criar um embed
+        4- Editar um embed
+        5- Deletar embed`}]}).then(a=>
+            {
+                let filter = m=> /[0-9]+/.test(m.content)&&m.author.id === msg.author.id
+                msg.channel.awaitMessages({filter,max:1,time:120000,errors:[`Time`]}).then(async opc=>
+                    {
+                        switch (parseInt(opc.first().content)){
+                            case 1:
 
-
-        embed.setThumbnail(member.user.displayAvatarURL())
-        embed.setFooter(`id: ${member.id}`)
-
-        let date = new Date(Date.now() - member.joinedAt)
-        let date_duration = new Date(Date.now() - new Date(member.user.createdTimestamp))
-
-        let joined_duration = format_date_created(date)
-        let joined_since = format_date(member.joinedAt)
-        let created_since = format_date(new Date(member.user.createdTimestamp))
-        let created_duration = format_date_created(date_duration)
-
-        embed.addField('Entrada:', joined_since + `(${joined_duration})`, true)
-        embed.addField('Criada em:', created_since + `(${created_duration})`, true)
-
-        let joined_duration_month = parseInt(date.getTime() / 2592000000)
-        let badges = badge(joined_duration_month)
-        if(badges){
-            embed.addField('Badges', badges, true)
-        }
-        embed.addField('Kamaicoins', "0.00", false)
-        msg.channel.send({content: msg.author.toString(),embeds:[embed]})
+                                let embListed = await embDb.EmbList()
+                                console.log(embListed)
+                                if(!embListed) return msg.channel.send({embeds:[{description:"Nenhum embed registrado ainda", color: config.color.err}]})
+                                embListed.forEach(emb => {
+                                    msg.channel.send(emb)
+                                });
+                                break;
+                            case 2:
+                                msg.channel.send("Envie o id do embed que deseja enviar")
+                                let filter2 = m=> m.author.id === msg.author.id && /[0-9]/.test(m.content);
+                                msg.channel.awaitMessages({filter2,max:1,time:120000,errors:[`time`]}).then(async embs=>
+                                    {
+                                        var recvdb = embDb.getEmb(embs.first().content)
+                                        if(await recvdb != null){
+                                            msg.channel.send({embeds:[await recvdb]})
+                                            msg.channel.send(`Envie id do canal que deseja enviar a mensagem`).then(a=>
+                                                {
+                                                    var filter = m => /[0-9]+/.test(m.content)&&m.author.id === msg.author.id
+                                                    msg.channel.awaitMessages({filter,max:1,time:120000,errors:[`Time`]}).then(async chanCol=>
+                                                        {
+                                                            let channel=client.channels.cache.get(chanCol.first().content)
+                                                            if (channel){
+                                                                channel.send({embeds:[await recvdb]})
+                                                            }else{
+                                                                msg.channel.send("Id de canal invalido")
+                                                            }
+                                                        }).catch(err=>msg.channel.send("**Tempo esgotado**"))
+                                                })
+                                        }else{
+                                            msg.channel.send(`Id invalido`)
+                                        }
+                                    }).catch(err=>msg.channel.send("**Tempo esgotado**"))
+                            break;
+                            case 3:
+                                let createmb = require(`../funções/createEmbed`)
+                                createmb.emb(msg);
+                                break;
+                            case 4:
+                                msg.channel.send(`Escolha o id do embed que deseja editar`)
+                                msg.channel.send(await embDb.EmbList()).then(a=>
+                                    {
+                                        let filter = m=> /[0-9]+/.test(m.content)&&m.author.id === msg.author.id;
+                                        msg.channel.awaitMessages({filter,max:1,time:120000,errors:[`time`]}).then(async embs=>
+                                            {
+                                                var recvdb = embDb.getEmb(embs.first().content)
+                                                if(await recvdb != null){
+                                                    let embedb = await recvdb
+                                                    embedb.embed=embedb.embed
+                                                    msg.channel.send({embeds:[embedb]}).then(a=>{
+                                                        let createmb = require(`../funções/createEmbed`)
+                                                        createmb.emb(msg,a.embeds[0]);    
+                                                    })
+                                                }else{
+                                                    msg.channel.send(`Id invalido`)
+                                                }
+                                            }).catch(err=>msg.channel.send("**Tempo esgotado**"))
+                                    })
+                                break;
+                            case 5:
+                                msg.channel.send(`Escolha o id do embed que deseja deletar`)
+                                msg.channel.send(await embDb.EmbList()).then(a=>
+                                    {
+                                        let filter = m=> /[0-9]+/.test(m.content)&&m.author.id === msg.author.id;
+                                        msg.channel.awaitMessages({filter,max:1,time:120000,errors:['time']}).then(delCol=>
+                                            {
+                                                if(embDb.delEmb(delCol.first().content)===null){
+                                                    msg.channel.send(`**ID ERRADO**`)
+                                                }else{
+                                                    msg.channel.send(`**Embed deletado**`)
+                                                }
+                                            }).catch(err=>msg.channel.send("**Tempo esgotado**"))        
+                                    })
+                                break;
+                        }
+                    }).catch(err=>{
+                        console.log(err)
+                        msg.channel.send("**Tempo esgotado**")})
+            })
     }
 }
-function badge(duration){
-    let badges = []
-
-    if(duration>2)badges.push(`<:cabelo_arcoiris:868301567646896198>`)
-    if(duration>4)badges.push(`<:kamaitachi_chifrinho:868302636422684734>`)
-    if(duration>6)badges.push(`<:Juliet:868301567860801586>`)
-    if(duration>8)badges.push(`<:Pendurado:868301567827271680>`)
-    if(duration>10)badges.push(`<:Homemtorto:868301568833904650>`)
-    if(duration>12)badges.push(`<:jhonny:868301567890161685>`)
-
-    badges=badges.join("")
-    return badges;
-}
-
-
-function format_user(member){
-
-    let description = `${member.user.tag}`
-    
-    let date = Date.now() - member.joinedAt 
-    let joined_at = format_date_created(new Date(date))
-
-    description += '\nEntrou a: '+ joined_at
-    description += '\nkamaicoins = *null*'
-    description += ''
-    return description
-    
-}
-
-
-function separate_flags(flagsArray){
-    let flag_emojis = []
-    flagsArray.forEach(flag =>{
-        switch (flag){
-
-            case 'DISCORD_EMPLOYEE':
-                flag_emojis.push('<:Discordstaff:868239676765524055>')
-                break;
-            case 'PARTNERED_SERVER_OWNER':
-                flag_emojis.push('<:New_partner_badge:868239677222682694>')
-                break;
-            case 'HYPESQUAD_EVENTS':
-                flag_emojis.push('<:hypesquad:868260206172319765>')
-                break;
-            case 'BUGHUNTER_LEVEL_1':
-                flag_emojis.push('<:Bug_hunter_badge:868239677256237106>')
-                break;
-            case 'HOUSE_BRAVERY':
-                flag_emojis.push('<:Hypesquad_bravery_badge:868239677075890206>')
-                break;
-            case 'HOUSE_BRILLIANCE':
-                flag_emojis.push('<:Hypesquad_brilliance_badge:868239677373681674>')
-                break;
-            case 'HOUSE_BALANCE':
-                flag_emojis.push('<:Hypesquad_balance_badge:868239677096865892>')
-                break;
-            case 'EARLY_SUPPORTER':
-                flag_emojis.push('<:Early_supporter_badge:868239677268844544>')
-                break;
-            case 'TEAM_USER':
-                flag_emojis.push('<:Bug_hunter_badge:868239677256237106>')
-                break;
-            case 'SYSTEM':
-                flag_emojis.push('<:Bug_hunter_badge:868239677256237106>')
-                break;
-            case 'BUGHUNTER_LEVEL_2':
-                flag_emojis.push('<:Bug_buster_badge:868239677214298133>')
-                break;
-            case 'VERIFIED_BOT':
-                flag_emojis.push('<:Verified_developer_badge:868239676887146497>')
-                break;
-            case 'EARLY_VERIFIED_BOT_DEVELOPER':
-                flag_emojis.push('<:Verified_developer_badge:868239676887146497>')
-                break;
-    
-    
-        }
-
-    })
-    return flag_emojis
-}
-
-
-function format_date_created(date){
-    
-    let date_formated = []
-
-        
-    if(date.getMinutes()) date_formated.push(date.getMinutes()+`${(!(date.getMinutes() == 1)) ? " minutos " : " minuto "}`)
-    if(date.getHours()) date_formated.push(date.getHours()+ `${(!(date.getHours() == 1)) ? " horas " : " hora "}`)
-    if(date.getDay()) date_formated.push(date.getDay()+ `${(!(date.getDay() == 1)) ? " dias " : " dia "}`)
-    if(date.getMonth()) date_formated.push(date.getMonth()+ `${(!(date.getMonth() == 1)) ? " meses " : " mês "}`)
-    if(date.getFullYear() - 1970) date_formated.push(date.getFullYear()- 1970+`${(!(date.getFullYear()- 1970 == 1)) ? " anos " : " ano "}`)  
-
-    return date_formated.reverse().join('');
-}
-
-function format_date(date){
-    
-    let date_formated = []
-
-
-    if(date.getMinutes()) date_formated.push(date.getMinutes()+`${(!(date.getMinutes() == 1)) ? " minutos " : " minuto "}`)
-    if(date.getHours()) date_formated.push(date.getHours() + `${(!(date.getHours() == 1)) ? " horas, e " : " hora, e "}`)
-    if(date.getFullYear()) date_formated.push(date.getFullYear()+", as ")
-    if(date.getMonth()+1) date_formated.push(date.getMonth()+1+ "/")
-    if(date.getDay()) date_formated.push(date.getDay()+ "/")
-
-
-    return date_formated.reverse().join('');
-}
-
