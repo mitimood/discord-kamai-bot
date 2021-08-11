@@ -37,7 +37,7 @@ module.exports={
                             return;
                         }else   
                         messagem.edit(msgedit);
-                        message.channel.send(message.author.toString()+" Mensagem edita com sucesso em " + message.channel.name)
+                        message.channel.send(message.author.toString()+" Mensagem edita com sucesso em " + messagem.channel.name)
                     })
                     
                     }
