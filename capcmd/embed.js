@@ -6,42 +6,40 @@ module.exports={
     aliases: ["emb"],
     description: "Utilize o comando emb e siga os passos 😎",
 
-    execute(msg){
-
-        msg.channel.send({embeds:[{title:"O que deseja fazer com o embed",color: config.color.blurple, description:`1- Listar embeds
-        2- Enviar um embed
-        3- Criar um embed
-        4- Editar um embed
-        5- Deletar embed`}]}).then(a=>
+    async execute(msg){
+        let embListed = await embDb.EmbList()
+        msg.channel.send({embeds:[{title:"O que deseja fazer com o embed",color: config.color.blurple, description:`
+        1- Enviar um embed
+        2- Criar um embed
+        3- Editar um embed
+        4- Deletar embed`}]}).then(a=>
             {
                 let filter = m=> /[0-9]+/.test(m.content)&&m.author.id === msg.author.id
                 msg.channel.awaitMessages({filter,max:1,time:120000,errors:[`Time`]}).then(async opc=>
                     {
                         switch (parseInt(opc.first().content)){
+                        
                             case 1:
-
-                                let embListed = await embDb.EmbList()
                                 if(!embListed) return msg.channel.send({embeds:[{description:"Nenhum embed registrado ainda", color: config.color.err}]})
                                 embListed.forEach(emb => {
                                     msg.channel.send(emb)
                                 });
-                                break;
-                            case 2:
                                 msg.channel.send("Envie o id do embed que deseja enviar")
-                                let filter2 = m=> m.author.id === msg.author.id && /[0-9]/.test(m.content);
-                                msg.channel.awaitMessages({filter2,max:1,time:120000,errors:[`time`]}).then(async embs=>
+                                var filter = (m) => m.author.id == msg.author.id && /[0-9]/.test(m.content)
+                                msg.channel.awaitMessages({filter,max:1,time:120000,errors:[`time`]}).then(async embs=>
                                     {
-                                        var recvdb = embDb.getEmb(embs.first().content)
-                                        if(await recvdb != null){
-                                            msg.channel.send({embeds:[await recvdb]})
+                                        console.log(embs.first().content)
+                                        var recvdb = await embDb.getEmb(embs.first().content)
+                                        if(recvdb){
+                                            msg.channel.send({embeds:[recvdb.embed]})
                                             msg.channel.send(`Envie id do canal que deseja enviar a mensagem`).then(a=>
                                                 {
-                                                    var filter = m => /[0-9]+/.test(m.content)&&m.author.id === msg.author.id
+                                                        filter = m => /[0-9]+/.test(m.content) && m.author.id === msg.author.id
                                                     msg.channel.awaitMessages({filter,max:1,time:120000,errors:[`Time`]}).then(async chanCol=>
                                                         {
-                                                            let channel=client.channels.cache.get(chanCol.first().content)
+                                                            let channel = client.channels.cache.get(chanCol.first().content)
                                                             if (channel){
-                                                                channel.send({embeds:[await recvdb]})
+                                                                channel.send({embeds:[recvdb.embed]})
                                                             }else{
                                                                 msg.channel.send("Id de canal invalido")
                                                             }
@@ -52,45 +50,46 @@ module.exports={
                                         }
                                     }).catch(err=>msg.channel.send("**Tempo esgotado**"))
                             break;
-                            case 3:
+                            case 2:
                                 let createmb = require(`../funções/createEmbed`)
                                 createmb.emb(msg);
                                 break;
-                            case 4:
-                                msg.channel.send(`Escolha o id do embed que deseja editar`)
-                                msg.channel.send(await embDb.EmbList()).then(a=>
-                                    {
-                                        let filter = m=> /[0-9]+/.test(m.content)&&m.author.id === msg.author.id;
+                            case 3:
+                                if(!embListed) return msg.channel.send({embeds:[{description:"Nenhum embed registrado ainda", color: config.color.err}]})
+                                embListed.forEach(emb => {
+                                    msg.channel.send(emb)
+                                });
+                                msg.channel.send("Envie o id do embed que deseja editar")
+
+                                        filter = m => /[0-9]+/.test(m.content)&&m.author.id === msg.author.id;
                                         msg.channel.awaitMessages({filter,max:1,time:120000,errors:[`time`]}).then(async embs=>
                                             {
-                                                var recvdb = embDb.getEmb(embs.first().content)
-                                                if(await recvdb != null){
-                                                    let embedb = await recvdb
-                                                    embedb.embed=embedb.embed
-                                                    msg.channel.send({embeds:[embedb]}).then(a=>{
+                                                const recvdb = await embDb.getEmb(embs.first().content)
+                                                if(recvdb){
+                                                    msg.channel.send({embeds:[embedb.embed]}).then(a=>{
                                                         let createmb = require(`../funções/createEmbed`)
-                                                        createmb.emb(msg,a.embeds[0]);    
+                                                        createmb.emb(msg,recvdb.embed);    
                                                     })
                                                 }else{
                                                     msg.channel.send(`Id invalido`)
                                                 }
                                             }).catch(err=>msg.channel.send("**Tempo esgotado**"))
-                                    })
                                 break;
-                            case 5:
-                                msg.channel.send(`Escolha o id do embed que deseja deletar`)
-                                msg.channel.send(await embDb.EmbList()).then(a=>
+                            case 4:
+                                if(!embListed) return msg.channel.send({embeds:[{description:"Nenhum embed registrado ainda", color: config.color.err}]})
+                                embListed.forEach(emb => {
+                                    msg.channel.send(emb)
+                                });
+                                msg.channel.send("Envie o id do embed que deseja deletar")                                   
+                                filter = m=> /[0-9]+/.test(m.content)&&m.author.id === msg.author.id;
+                                msg.channel.awaitMessages({filter,max:1,time:120000,errors:['time']}).then(delCol=>
                                     {
-                                        let filter = m=> /[0-9]+/.test(m.content)&&m.author.id === msg.author.id;
-                                        msg.channel.awaitMessages({filter,max:1,time:120000,errors:['time']}).then(delCol=>
-                                            {
-                                                if(embDb.delEmb(delCol.first().content)===null){
-                                                    msg.channel.send(`**ID ERRADO**`)
-                                                }else{
-                                                    msg.channel.send(`**Embed deletado**`)
-                                                }
-                                            }).catch(err=>msg.channel.send("**Tempo esgotado**"))        
-                                    })
+                                        if(!embDb.delEmb(delCol.first().content)){
+                                            msg.channel.send(`**ID ERRADO**`)
+                                        }else{
+                                            msg.channel.send(`**Embed deletado**`)
+                                        }
+                                    }).catch(err=>msg.channel.send("**Tempo esgotado**"))        
                                 break;
                         }
                     }).catch(err=>{
