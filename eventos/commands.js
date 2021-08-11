@@ -93,26 +93,6 @@ client.on("messageCreate", msg=>{
                 pub_module.execute(msg)
             }
         })  
-
-    //cap commands
-    }else if (msg.member.roles.cache.find(role => Object.values(config.roles.teams.caps).includes(role.id))){
-
-        const capcmd = fs.readdirSync(`./capcmd`).filter(file => file.endsWith(`.js`));
-        capcmd.forEach(command_file_name => {
-            let cap_module = require(`../capcmd/${command_file_name}`);
-            if(command == cap_module.name || cap_module.aliases.includes(command)){
-                cap_module.execute(msg)
-            }
-        })
-        
-        const pubcmd = fs.readdirSync(`./commandpub`).filter(file => file.endsWith(`.js`));
-        pubcmd.forEach(command_file_name => {
-            let pub_module = require(`../commandpub/${command_file_name}`);
-            if(command == pub_module.name || pub_module.aliases.includes(command)){
-                pub_module.execute(msg)
-            }
-        })  
-
     //public commands
     }else{
         const pubcmd = fs.readdirSync(`./commandpub`).filter(file => file.endsWith(`.js`));
@@ -122,6 +102,15 @@ client.on("messageCreate", msg=>{
                 pub_module.execute(msg)
             }
         })  
+    }
+    if (msg.member.roles.cache.find(role => Object.values(config.roles.teams.caps).includes(role.id))){
+        const capcmd = fs.readdirSync(`./capcmd`).filter(file => file.endsWith(`.js`));
+        capcmd.forEach(command_file_name => {
+            let cap_module = require(`../capcmd/${command_file_name}`);
+            if(command == cap_module.name || cap_module.aliases.includes(command)){
+                cap_module.execute(msg)
+            }
+        })
     }
 
     }
