@@ -39,6 +39,7 @@ module.exports={
                                                         {
                                                             let channel = client.channels.cache.get(chanCol.first().content)
                                                             if (channel){
+                                                                msg.channel.send("Embed enviado em " + channel.name)
                                                                 channel.send({embeds:[recvdb.embed]})
                                                             }else{
                                                                 msg.channel.send("Id de canal invalido")
