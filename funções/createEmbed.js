@@ -54,7 +54,6 @@ async function emb(msg,embed = new Discord.MessageEmbed().setDescription(`Descri
                                                 if(urli.first().content.toLowerCase()=="cancelar")return(msg.channel.send("Url cancelada"),returnemb(embed)) 
                                                 if(urli.first().content.toLowerCase()=="pular") urli.first().content = undefined
                                                     
-                                                    a.delete()
                                                     msg.channel.send("Envie a url do author, cancelar, ou pular").then(a=>
                                                     {
                                                         let filter= m=>msg.author.id==m.author.id
@@ -67,10 +66,11 @@ async function emb(msg,embed = new Discord.MessageEmbed().setDescription(`Descri
                                                                 try{
                                                                     embed.setAuthor(nam.first().content, urli.first().content, url.first().content)
                                                                     await msg.channel.send({embeds:[embed]});
+                                                                
                                                                 }catch{
                                                                     embed.setAuthor(nam.first().content, urli.first().content, null)
                                                                 }finally{
-                                                                    a.delete();
+                                                                   
                                                                     return returnemb(embed);
                                                                 }
                                                                 
