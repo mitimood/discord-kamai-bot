@@ -34,14 +34,6 @@ client.on("messageCreate", msg=>{
             }
         })
 
-        const capcmd = fs.readdirSync(`./capcmd`).filter(file => file.endsWith(`.js`));
-        capcmd.forEach(command_file_name => {
-            let cap_module = require(`../capcmd/${command_file_name}`);
-            if(command == cap_module.name || cap_module.aliases.includes(command)){
-                cap_module.execute(msg)
-            }
-        })
-
         const pubcmd = fs.readdirSync(`./commandpub`).filter(file => file.endsWith(`.js`));
         pubcmd.forEach(command_file_name => {
             let pub_module = require(`../commandpub/${command_file_name}`);
