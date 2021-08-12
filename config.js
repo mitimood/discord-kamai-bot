@@ -64,5 +64,8 @@ module.exports = {
         staff_adm:`865019490033860618`,
         log_chnnl: `865037313901723659`
         },
+    mongo:{
+        db_geral:"kamaibot"
+    }
 
 }

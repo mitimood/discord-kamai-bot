@@ -7,13 +7,13 @@ const MongodbClient = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-module.exports = { MongodbClient, SetTempMute, SetUnmute, CheckMute, transferdb, warn_list, warn_remove, warn_add, Check_all_mutes, role_register_add, role_register_remove, check_roles }
+module.exports = { MongodbClient, SetTempMute, SetUnmute, CheckMute, transferdb, warn_list, warn_remove, warn_add, Check_all_mutes, role_register_add, role_register_remove, check_roles, create_canary_db }
 const moment = require("moment-timezone");
 
 async function transferdb() {
   try {
 
-    const database = MongodbClient.db('kamaibot');
+    const database = MongodbClient.db(config.mongo.db_geral);
     const members_adm = database.collection('member_management');
     let warndb = require(`./warnregister.json`)
     for (let id in warndb["guilds"]["612117634909208576"][`users`]) {
@@ -46,7 +46,7 @@ async function transferdb() {
 }
 
 async function warn_add(target_id, executor_id, points, reason) {
-  const database = MongodbClient.db('kamaibot');
+  const database = MongodbClient.db(config.mongo.db_geral);
   const member_management = database.collection('member_management');
 
   try {
@@ -73,8 +73,8 @@ async function warn_add(target_id, executor_id, points, reason) {
 
 
 async function warn_remove(warn_id) {
-  warn_id=parseInt(warn_id)
-  const database = MongodbClient.db('kamaibot');
+  warn_id = parseInt(warn_id)
+  const database = MongodbClient.db(config.mongo.db_geral);
   const member_management = database.collection('member_management');
   try {
 
@@ -92,7 +92,7 @@ async function warn_remove(warn_id) {
 async function warn_list(user_id) {
 
   try {
-    const database = MongodbClient.db('kamaibot');
+    const database = MongodbClient.db(config.mongo.db_geral);
     const member_management = database.collection('member_management');
     let doc = await member_management.findOne({ "_id": user_id })
     var Total_points = 0
@@ -123,7 +123,7 @@ async function warn_list(user_id) {
 
 async function SetTempMute(id, since_stamp, duration_stamp) {
   try {
-    const database = MongodbClient.db('kamaibot');
+    const database = MongodbClient.db(config.mongo.db_geral);
     const members_adm = database.collection('member_management');
     let config = { "upsert": true }
     let insert = { "$set": { "_id": id, "muted": true, "since": since_stamp, "duration": duration_stamp } }
@@ -136,7 +136,7 @@ async function SetTempMute(id, since_stamp, duration_stamp) {
 
 async function SetUnmute(id) {
   try {
-    const database = MongodbClient.db('kamaibot');
+    const database = MongodbClient.db(config.mongo.db_geral);
     const members_adm = database.collection('member_management');
     let config = { "upsert": true }
     let insert = { "$set": { "_id": id, "muted": false, "duration": null, "since": null } }
@@ -150,7 +150,7 @@ async function SetUnmute(id) {
 
 async function CheckMute(id) {
   try {
-    const database = MongodbClient.db('kamaibot');
+    const database = MongodbClient.db(config.mongo.db_geral);
     const members_adm = database.collection('member_management');
     let query = { "_id": id }
     let doc = await members_adm.findOne(query);
@@ -172,7 +172,7 @@ async function CheckMute(id) {
 }
 
 async function Check_all_mutes() {
-  const database = MongodbClient.db('kamaibot');
+  const database = MongodbClient.db(config.mongo.db_geral);
   const members_adm = database.collection('member_management');
   try {
     let docs = members_adm.find({ "muted": true })
@@ -193,38 +193,62 @@ async function Check_all_mutes() {
 }
 
 async function role_register_add(user_id, role_id) {
-  const database = MongodbClient.db('kamaibot');
+  const database = MongodbClient.db(config.mongo.db_geral);
   const members_adm = database.collection('member_management');
 
-  try{
-    let querry = {"_id":user_id}
-    let insert = {"$set":{"_id":user_id,},"$addToSet":{"roles":role_id}}
-    await members_adm.findOneAndUpdate(querry, insert, {upsert:true})
-  }catch(err){
+  try {
+    let querry = { "_id": user_id }
+    let insert = { "$set": { "_id": user_id, }, "$addToSet": { "roles": role_id } }
+    await members_adm.findOneAndUpdate(querry, insert, { upsert: true })
+  } catch (err) {
     console.log(err)
   }
 }
 
 async function role_register_remove(user_id, role_id) {
-  const database = MongodbClient.db('kamaibot');
+  const database = MongodbClient.db(config.mongo.db_geral);
   const members_adm = database.collection('member_management');
 
-  try{
-    let querry = {"_id":user_id}
-    let insert = {"$set":{"_id":user_id,},"$pull":{"roles":{"$in":[role_id]}}}
-    await members_adm.findOneAndUpdate(querry, insert, {upsert:true})
-  }catch(err){
+  try {
+    let querry = { "_id": user_id }
+    let insert = { "$set": { "_id": user_id, }, "$pull": { "roles": { "$in": [role_id] } } }
+    await members_adm.findOneAndUpdate(querry, insert, { upsert: true })
+  } catch (err) {
     console.log(err)
   }
 }
 
 async function check_roles(user_id) {
-  const database = MongodbClient.db('kamaibot');
+  const database = MongodbClient.db(config.mongo.db_geral);
   const members_adm = database.collection('member_management');
   try {
-    let doc = await members_adm.findOne({"_id":user_id, "roles":{"$exists":true}})
+    let doc = await members_adm.findOne({ "_id": user_id, "roles": { "$exists": true } })
     return doc["roles"]
-    
-}catch{
 
-}}
+  } catch {
+
+  }
+}
+
+async function create_canary_db() {
+
+
+  const database = MongodbClient.db(config.mongo.db_geral);
+  const databaseB = MongodbClient.db('kamaibot_canary');
+
+  const members_adm = await database.collection('member_management').find().toArray();
+  databaseB.collection('member_management').insertMany(members_adm)
+
+  const activitypoems = await database.collection('activitypoems').find().toArray();
+  databaseB.collection('activitypoems').insertMany(activitypoems)
+
+  const activitykaraoke = await database.collection('activitykaraoke').find().toArray();
+  databaseB.collection('activitykaraoke').insertMany(activitykaraoke)
+
+  const activityarte = await database.collection('activityarte').find().toArray();
+  databaseB.collection('activityarte').insertMany(activityarte)
+
+}
+
+
+
