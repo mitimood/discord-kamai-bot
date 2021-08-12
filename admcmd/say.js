@@ -18,7 +18,7 @@ module.exports={
     if(/[0-9]+/.test(msgArgs[1])){
     const canal =  client.channels.cache.find(channel =>channel.id === msgArgs[1])
     if(canal==undefined){
-        message.channel.send({content: msg.author.toString(),embeds:[{
+        message.channel.send({content: message.author.toString(),embeds:[{
             description:"Não foi possivel achar o canal no servidor",
             color: config.color.err,
         }]})
@@ -27,9 +27,9 @@ module.exports={
         if(mensagem && mensagem.length <= 2000){
         await canal.send(mensagem);
         await message.delete()
-        message.channel.send(msg.author.toString()+" Mensagem enviada com sucesso em " + canal.name )
+        message.channel.send(message.author.toString()+" Mensagem enviada com sucesso em " + canal.name )
         }else{
-           return message.channel.send(msg.author.toString()+" Mensagem invalida. Verifique o seu conteudo")
+           return message.channel.send(message.author.toString()+" Mensagem invalida. Verifique o seu conteudo")
         }
         }
     }
@@ -39,7 +39,7 @@ module.exports={
             message.channel.send(mensagem);
             message.delete()
             }else{
-                message.channel.send({content: msg.author.toString(), embeds:[{
+                message.channel.send({content: message.author.toString(), embeds:[{
                     description:"Você não informou a mensagem para que eu possa portá-la",
                     color:config.color.err,
                 }]});
