@@ -42,6 +42,7 @@ module.exports = class dbemb {
 
         if(this.dbemb.exists(`/embeds/${id}`)){
             this.dbemb.delete(`/embeds/${id}`)
+            return true
         }else{
             return null
         }
