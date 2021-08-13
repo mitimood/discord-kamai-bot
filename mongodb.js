@@ -125,10 +125,10 @@ async function SetTempMute(id, since_stamp, duration_stamp) {
   try {
     const database = MongodbClient.db(config.mongo.db_geral);
     const members_adm = database.collection('member_management');
-    let config = { "upsert": true }
+    let configuration = { "upsert": true }
     let insert = { "$set": { "_id": id, "muted": true, "since": since_stamp, "duration": duration_stamp } }
     let query = { "_id": id }
-    await members_adm.updateOne(query, insert, config);
+    await members_adm.updateOne(query, insert, configuration);
   } finally {
     // Ensures that the MongodbClient will close when you finish/error
   }
@@ -138,10 +138,10 @@ async function SetUnmute(id) {
   try {
     const database = MongodbClient.db(config.mongo.db_geral);
     const members_adm = database.collection('member_management');
-    let config = { "upsert": true }
+    let configuration = { "upsert": true }
     let insert = { "$set": { "_id": id, "muted": false, "duration": null, "since": null } }
     let query = { "_id": id }
-    await members_adm.updateOne(query, insert, config);
+    await members_adm.updateOne(query, insert, configuration);
 
   } finally {
     // Ensures that the MongodbClient will close when you finish/error
