@@ -305,7 +305,8 @@ async function get_xp(id) {
     }
 
   } else {
-    xp = undefined
+    xp.chat = undefined
+    xp.voice = undefined
   }
   return xp
 
