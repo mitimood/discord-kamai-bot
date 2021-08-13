@@ -1,5 +1,5 @@
 const config = require("../config");
-
+const moment = require(`moment-timezone`)
 /*
  returns the latency of the bot
 */
@@ -10,6 +10,9 @@ module.exports={
     description: "informa o tempo de resposta do bot",
 
     async execute(msg){
+
+    // Adds the user to the set so that they can't talk for a minute
+    
     let pingingMsg = await msg.channel.send({ embeds: [{
         color: config.color.sucess,
         description: "Pinging..."
