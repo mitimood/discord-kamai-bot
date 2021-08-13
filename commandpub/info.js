@@ -48,12 +48,12 @@ module.exports={
         embed.setThumbnail(member.user.displayAvatarURL())
         embed.setFooter(`id: ${member.id}`)
 
-        let date = new Date(Date.now() - member.joinedAt)
-        let date_duration = new Date(Date.now() - new Date(member.user.createdTimestamp))
+        let date = new Date(Date.now() - member.joinedAt - new Date(10800000))
+        let date_duration = new Date(Date.now() - new Date(member.user.createdTimestamp) - new Date(10800000))
 
         let joined_duration = format_date_created(date)
-        let joined_since = format_date(member.joinedAt)
-        let created_since = format_date(new Date(member.user.createdTimestamp))
+        let joined_since = format_date(member.joinedAt - new Date(10800000))
+        let created_since = format_date(new Date(member.user.createdTimestamp)- new Date(10800000))
         let created_duration = format_date_created(date_duration)
 
         embed.addField('🛎Entrada:', joined_since + `(${joined_duration})`, true)
@@ -68,11 +68,11 @@ module.exports={
 
         let xp = await xp_info(userid)
         embed.setDescription(`**Chat lvl**: ${xp.chat ? xp.chat.level : 0 }
-        ${xp.chat ? xp.chat.xpChatBar : "<‏‏‎          >"}
+        ${xp.chat ? xp.chat.xpChatBar : "<‏‏‎          >"} ${xp.chat.percentage * 100}%
         
         **Voz lvl**: ${xp.voice ? xp.voice.level : 0 } 
         ${xp.voice ? `(${xp.voice.time.getHours()+ "h" + xp.voice.time.getMinutes()+"m"})` : ""} 
-        ${xp.voice ? xp.voice.xpVoiceBar : "<‎‎‎‎‎‎‎‏‏‎          ‎>"}`)
+        ${xp.voice ? xp.voice.xpVoiceBar : "<‎‎‎‎‎‎‎‏‏‎          ‎>"} ${xp.voice.percentage * 100}%`)
 
         msg.channel.send({content: msg.author.toString(),embeds:[embed]})
 
