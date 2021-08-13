@@ -68,11 +68,11 @@ module.exports={
 
         let xp = await xp_info(userid)
         embed.setDescription(`**Chat lvl**: ${xp.chat ? xp.chat.level : 0 }
-        ${xp.chat ? xp.chat.xpChatBar : "<‏‏‎          >"} ${xp.chat ? xp.chat.percentage * 100 : "0"}%
+        ${xp.chat ? xp.chat.xpChatBar : "<‏‏‎          >"} ${xp.chat ? parseInt(xp.chat.percentage * 100) : "0"}%
         
         **Voz lvl**: ${xp.voice ? xp.voice.level : 0 } 
         ${xp.voice ? `(${xp.voice.time.getHours()+ "h" + xp.voice.time.getMinutes()+"m"})` : ""} 
-        ${xp.voice ? xp.voice.xpVoiceBar : "<‎‎‎‎‎‎‎‏‏‎          ‎>"} ${xp.voice ? xp.voice.percentage * 100 : "0"}%`)
+        ${xp.voice ? xp.voice.xpVoiceBar : "<‎‎‎‎‎‎‎‏‏‎          ‎>"} ${xp.voice ? parseInt(xp.voice.percentage * 100) : "0"}%`)
 
         msg.channel.send({content: msg.author.toString(),embeds:[embed]})
 
