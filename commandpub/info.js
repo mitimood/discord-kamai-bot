@@ -48,12 +48,12 @@ module.exports={
         embed.setThumbnail(member.user.displayAvatarURL())
         embed.setFooter(`id: ${member.id}`)
 
-        let date = new Date(Date.now() - member.joinedAt - new Date(10800000))
-        let date_duration = new Date(Date.now() - new Date(member.user.createdTimestamp) - new Date(10800000))
+        let date = new Date(Date.now() - member.joinedAt )
+        let date_duration = new Date(Date.now() - new Date(member.user.createdTimestamp))
 
         let joined_duration = format_date_created(date)
-        let joined_since = format_date(member.joinedAt - new Date(10800000))
-        let created_since = format_date(new Date(member.user.createdTimestamp)- new Date(10800000))
+        let joined_since = format_date(member.joinedAt )
+        let created_since = format_date(new Date(member.user.createdTimestamp))
         let created_duration = format_date_created(date_duration)
 
         embed.addField('🛎Entrada:', joined_since + `(${joined_duration})`, true)
