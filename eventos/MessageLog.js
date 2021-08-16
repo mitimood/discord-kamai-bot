@@ -10,8 +10,7 @@ client.on("messageUpdate", (oldMessage, newMessage)=>{
 
         oldEmb.setDescription("Mensagem antiga em: " + "<#" + oldMessage.channel.id + ">\n\n" + "```\n" + oldMessage.content + "\n```").setColor("GREY").setAuthor(oldMessage.author.username, oldMessage.author.avatarURL(), oldMessage.author.avatarURL()).setTimestamp(oldMessage.createdTimestamp).setTitle(oldMessage.channel.name )
         newEmb.setDescription("Mensagem nova em: " + "<#" + newMessage.channel.id + ">\n\n" + "```\n" + newMessage.content + "\n```").setColor("GREEN").setAuthor(newMessage.author.username, newMessage.author.avatarURL(), newMessage.author.avatarURL()).setTimestamp(newMessage.createdTimestamp).setTitle(newMessage.channel.name )
-        console.log(oldMessage.content)
-        console.log(newMessage.content)
+
         newMessage.guild.channels.cache.get(config.channels.msglog).send({embeds:[oldEmb, newEmb]})
 
     }catch(err){

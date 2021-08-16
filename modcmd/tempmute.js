@@ -40,11 +40,16 @@ module.exports={
             }]})
             setTimeout(()=>{
                 SetUnmute(member.id)
-                member.roles.remove(muteRole, "Tempo se esgotou")
-                canal.send({embeds:[{
-                    description:`🤫 ${member} foi desmutado.`,
-                    color:config.color.sucess,
-                }]})
+                try{
+                    member.roles.remove(muteRole, "Tempo se esgotou")
+                    canal.send({embeds:[{
+                        description:`🤫 ${member} foi desmutado.`,
+                        color:config.color.sucess,
+                    }]})
+                }catch(err){
+                    console.log(err)
+                }
+
             },muteTime)
         }
     }
