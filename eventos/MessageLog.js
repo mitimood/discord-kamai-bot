@@ -3,6 +3,7 @@ const { client } = require("..");
 const config = require("../config");
 
 client.on("messageUpdate", (oldMessage, newMessage)=>{
+    if (newMessage.author.bot) return
     try{
         let newEmb = new MessageEmbed()
         let oldEmb = new MessageEmbed()
@@ -19,6 +20,7 @@ client.on("messageUpdate", (oldMessage, newMessage)=>{
 })
 
 client.on("messageDelete", (delMessage)=>{
+    if (delMessage.author.bot) return
     try{
         let delemb = new MessageEmbed()
 
