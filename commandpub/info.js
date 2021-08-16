@@ -78,6 +78,7 @@ module.exports={
 
     }
 }
+
 function badge(duration){
     let badges = []
 
