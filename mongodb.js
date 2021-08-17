@@ -182,7 +182,7 @@ async function Check_all_mutes() {
       if (moment.utc().valueOf() >= doc["duration"] + doc["since"]) {
         SetUnmute(doc["_id"])
         try {
-          index.client.guilds.cache.get(config.guild_id).members.cache.get(doc["_id"]).roles.remove(config.roles.muted)
+          await index.client.guilds.cache.get(config.guild_id).members.cache.get(doc["_id"]).roles.remove(config.roles.muted)
         } catch (err) {
           console.log(err)
         }

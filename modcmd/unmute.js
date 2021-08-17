@@ -17,7 +17,7 @@ module.exports={
 
         if (member){
             if (member.roles.cache.has(config.roles.muted)){
-                member.roles.remove(config.roles.muted)
+                await member.roles.remove(config.roles.muted)
                 if(member.voice){
                     member.voice.setMute(false)
                 }

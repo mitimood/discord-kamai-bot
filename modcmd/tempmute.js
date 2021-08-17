@@ -38,10 +38,10 @@ module.exports={
                 description:`🤫 ${member} foi **mutado temporariamente** por ${msgArgs[2]}: ${reason}.`,
                 color:config.color.sucess,
             }]})
-            setTimeout(()=>{
+            setTimeout(async ()=>{
                 SetUnmute(member.id)
                 try{
-                    member.roles.remove(muteRole, "Tempo se esgotou")
+                    await member.roles.remove(muteRole, "Tempo se esgotou")
                     canal.send({embeds:[{
                         description:`🤫 ${member} foi desmutado.`,
                         color:config.color.sucess,

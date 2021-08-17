@@ -37,10 +37,10 @@ module.exports={TrimMsg, Banning, ban_member_send_message, tempmute, VerificId, 
 
         SetTempMute(member.id, now, muteTime)
 
-        setTimeout(()=>{
+        setTimeout(async ()=>{
             try{
                 SetUnmute(member.id)
-                member.roles.remove(config.roles.muted, "Tempo se esgotou")
+                await member.roles.remove(config.roles.muted, "Tempo se esgotou")
             }catch(err){
                 console.log(err)
             }

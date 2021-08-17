@@ -21,29 +21,34 @@ module.exports={
         let userid = (msg.mentions.members.first()) ? msg.mentions.members.first().user.id : msgArgs[1].match(/[0-9]+/)[0];
 
         let member = msg.guild.members.cache.get(userid)
-
+        
+        if(member){
             if(member._roles.includes(config.storage_role.troph5)){
-                member.roles.remove(config.storage_role.troph5)
+                await member.roles.remove(config.storage_role.troph5)
                 role_register_remove(member.id, config.storage_role.troph5)
                 msg.channel.send("O membro perdeu o cargo 5")
             }else if(member._roles.includes(config.storage_role.troph4)){
-                member.roles.remove(config.storage_role.troph4)
+                await member.roles.remove(config.storage_role.troph4)
                 role_register_remove(member.id, config.storage_role.troph4)
                 msg.channel.send("O membro perdeu o cargo 4")
             }else if(member._roles.includes(config.storage_role.troph3)){
-                member.roles.remove(config.storage_role.troph3)
+                await member.roles.remove(config.storage_role.troph3)
                 role_register_remove(member.id, config.storage_role.troph3)
                 msg.channel.send("O membro recebeu o cargo 3")
             }else if(member._roles.includes(config.storage_role.troph2)){
-                member.roles.remove(config.storage_role.troph2)
+                await member.roles.remove(config.storage_role.troph2)
                 role_register_remove(member.id, config.storage_role.troph2)
                 msg.channel.send("O membro recebeu o cargo 2")
             }else if(member._roles.includes(config.storage_role.troph1)){
-                member.roles.remove(config.storage_role.troph1)
+                await member.roles.remove(config.storage_role.troph1)
                 role_register_remove(member.id, config.storage_role.troph1)
                 msg.channel.send("O membro recebeu o cargo 1")
             }else{
                 msg.channel.send("O membro não possui cargos a remover")
             }
+        }else{
+            msg.channel.send("Membro não encontrado")
+        }
+            
     }
 }
