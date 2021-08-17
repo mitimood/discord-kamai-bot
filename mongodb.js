@@ -178,7 +178,7 @@ async function Check_all_mutes() {
     let docs = members_adm.find({ "muted": true })
     const index = require(`./`)
 
-    docs.forEach(doc => {
+    docs.forEach( async doc => {
       if (moment.utc().valueOf() >= doc["duration"] + doc["since"]) {
         SetUnmute(doc["_id"])
         try {
