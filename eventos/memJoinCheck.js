@@ -15,7 +15,7 @@ client.on("guildMemberAdd", async (member) => {
     let roles = await check_roles(member.id)
     if(roles)member.roles.add(roles)
 
-    let warns = warn_list(userid) 
+    let warns = await warn_list(userid) 
     
             if (warns["points"] == 0) return 
             if (warns["points"] >= 1) {member.roles.add(config.roles.adv1);
