@@ -34,9 +34,6 @@ bot1.manager = new Manager({
       host: "localhost",
       port: 2333,
       password: "discloud",
-      identifier: "1",
-      clientName: "bot1",
-      clientId: config_secret.musica.bot1,
     }],
     autoPlay: true,
     send: (id, payload) => {
