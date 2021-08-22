@@ -33,7 +33,7 @@ bot1.manager = new Manager({
     nodes: [{
       host: "localhost",
       port: 2333,
-      password: "lavalink1234",
+      password: "discloud",
       identifier: "1",
       clientName: "bot1",
       clientId: config_secret.musica.bot1,
