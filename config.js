@@ -68,6 +68,12 @@ module.exports = {
         },
     mongo:{
         db_geral:"kamaibot"
+    },
+    music:{
+        color1: 0xff884d,
+        color2: 0x66004d,
+        color3: 0x66004d,
+        color4: 0x993d00,
     }
 
 }

@@ -15,7 +15,7 @@ const { client } = require("../index")
             })
         
         const mutado = fetchedLogs.entries.first();
-        if(mutado.createdTimestamp > (Date.now() - 1000)){  
+        if(mutado && mutado.createdTimestamp > (Date.now() - 1000)){  
             const { executor, target, changes} = mutado;
        
             const memberex =newState.guild.members.cache.get(executor.id)

@@ -8,7 +8,7 @@ module.exports={TrimMsg, Banning, ban_member_send_message, tempmute, VerificId, 
     
 // receives a message and than returns an array with every of the message
     function TrimMsg(msg){
-
+        
         return msg.content.split(/\n| /gm).filter((str) => str.trim())
     }
 

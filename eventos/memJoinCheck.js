@@ -17,10 +17,11 @@ client.on("guildMemberAdd", async (member) => {
 
     let warns = await warn_list(userid) 
     
-            if (warns["points"] == 0) return 
-            if (warns["points"] >= 1) {member.roles.add(config.roles.adv1);
-            {if (warns["points"] >= 2) member.roles.add(config.roles.adv2);
-            if (warns["points"] >= 3) member.roles.add(config.roles.adv3);}}
+            if (warns["points"] == 1)  member.roles.add(config.roles.adv1)
+            if (warns["points"] == 2)  member.roles.add([config.roles.adv1, config.roles.adv2])
+            if (warns["points"] == 3)  member.roles.add([config.roles.adv1, config.roles.adv2, config.roles.adv3])
+
+
 
     if((member.displayName.toLowerCase()).match("netuno")||(member.displayName.toLowerCase()).match("netunin")){
         ban_member_send_message(member.id,"Netuno", member.guild, client.user)

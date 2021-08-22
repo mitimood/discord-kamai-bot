@@ -31,7 +31,31 @@ module.exports = class db {
         }
     }
 
-    scam_link_add(link){
+    set_bot_state(bot_id, boolean_state){
+        try{
+            this.db.push(`/bot/${bot_id}`,{"state": boolean_state}, true)
+            
+        }catch(err){
+            console.log(err)
+        }
+    }
+
+    get_bot(){
+        try{
+            if(this.db.exists(`/bot`)){
+                const bot = this.db.getData(`/bot/${bot_id}`)
+                console.log(bot)
+            
+            }else{
+                return 1
+            }
+        }catch(err){
+            console.log(err)
+        }
+    }
+
+
+/*    scam_link_add(link){
         try{
             if(this.db.exists(`/links/scams/links_scams[0]`)){
                 if(this.db.getData(`/links/scams/links_scams`).includes(link)){
@@ -68,6 +92,6 @@ module.exports = class db {
             console.log(err)
             return "error"
         }
-    }
+    }*/
     
     }      

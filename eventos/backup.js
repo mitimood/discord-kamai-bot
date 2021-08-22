@@ -16,48 +16,47 @@ const nodejsondb = require("node-json-db").JsonDB;
 
 
 
-try{
-  console.log("Backup iniciado")
-  await MongodbClient.connect()
+    try{
+      console.log("Backup iniciado")
+      await MongodbClient.connect()
 
-  const database = MongodbClient.db('kamaibot');
-  const members_adm = database.collection('member_management');
-  const members_admb = new nodejsondb(`./mongo_backup/members_adm`, true, true);
-  
-  const activitypoems = database.collection('activitypoems');
-  const activitypoemsb = new nodejsondb(`./mongo_backup/activitypoems`, true, true);
-  
-  const activitykaraoke = database.collection('activitykaraoke');
-  const activitykaraokeb = new nodejsondb(`./mongo_backup/activitykaraoke`, true, true);
-  
-  const activityarte = database.collection('activityarte');
-  const activityarteb = new nodejsondb(`./mongo_backup/activityarte`, true, true);
-  
+      const database = MongodbClient.db('kamaibot');
+      const members_adm = database.collection('member_management');
+      const members_admb = new nodejsondb(`./mongo_backup/members_adm`, true, true);
+      
+      const activitypoems = database.collection('activitypoems');
+      const activitypoemsb = new nodejsondb(`./mongo_backup/activitypoems`, true, true);
+      
+      const activitykaraoke = database.collection('activitykaraoke');
+      const activitykaraokeb = new nodejsondb(`./mongo_backup/activitykaraoke`, true, true);
+      
+      const activityarte = database.collection('activityarte');
+      const activityarteb = new nodejsondb(`./mongo_backup/activityarte`, true, true);
+      
 
-  members_adm.find().forEach(doc=>{
-    members_admb.push(`/${doc["_id"]}/`, doc, true)
+      members_adm.find().forEach(doc=>{
+        members_admb.push(`/${doc["_id"]}/`, doc, true)
 
-  })
+      })
 
-  activitypoems.find().forEach(doc=>{
-    activitypoemsb.push(`/${doc["_id"]}/`, doc, true)
+      activitypoems.find().forEach(doc=>{
+        activitypoemsb.push(`/${doc["_id"]}/`, doc, true)
 
-  })
+      })
 
-  activitykaraoke.find().forEach(doc=>{
-    activitykaraokeb.push(`/${doc["_id"]}/`, doc, true)
+      activitykaraoke.find().forEach(doc=>{
+        activitykaraokeb.push(`/${doc["_id"]}/`, doc, true)
 
-  })
+      })
 
-  activityarte.find().forEach(doc=>{
-    activityarteb.push(`/${doc["_id"]}/`, doc, true)
+      activityarte.find().forEach(doc=>{
+        activityarteb.push(`/${doc["_id"]}/`, doc, true)
 
-  })
-  console.log("Backup Terminado com sucesso!")
-}catch(err){
-  console.log("Ouve um erro no backup")
-    console.log(err)
-}finally{
-}
+      })
+      console.log("Backup Terminado com sucesso!")
+    }catch(err){
+        console.log("Ouve um erro no backup")
+        console.log(err)
     }
+}
 );

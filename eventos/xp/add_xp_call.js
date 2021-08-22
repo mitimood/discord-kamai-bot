@@ -7,7 +7,6 @@ const { add_voice_xp } = require('../../mongodb');
 var ids = []
 xp_chat_Add()
 
-
 function xp_chat_Add(){
     setTimeout(()=>{
         const voice = client.guilds.cache.get(config.guild_id).channels.cache.filter(channels => channels.isVoice())
