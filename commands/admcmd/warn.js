@@ -31,8 +31,7 @@ module.exports={
             color:config.color.sucess
         }]})
         mod_log.send({embeds:[{
-            description: `**Nova advertencian**\n<@${userid}> (Advertência: ${warns["points"]}) foi advertido por <@${msg.author.id}>\n`+ "Motivo:`"+ reason + "`"+ ` por ${msgArgs[2]} advertência`,
-            color:config.color.sucess
+            description: `**Nova advertencia**\n<@${userid}> (Advertência: ${warns["points"]}) foi advertido por <@${msg.author.id}>\n`+ "Motivo:`"+ reason + "`"+ ` por ${msgArgs[2]} advertência`,            color:config.color.sucess
         }]})
         punishments(userid, warns["points"], msg.guild, msg.author)
     }
