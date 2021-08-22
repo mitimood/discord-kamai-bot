@@ -16,15 +16,15 @@ client.on("messageCreate", msg=>{
             pub_module.execute(msg)
         }
     })
-    const music = fs.readdirSync('./commands/music').filter(file => file.endsWith(`.js`));
+    /*const music = fs.readdirSync('./commands/music').filter(file => file.endsWith(`.js`));
     music.forEach(command_file_name => {
         let pub_module = require(`../commands/music/${command_file_name}`);
         if(command == pub_module.name || pub_module.aliases.includes(command)){
             pub_module.execute(msg)
         }
-    })
+    })*/
 
-    // Staffs commands
+    // Adm commands
     if (msg.member.roles.cache.find(role => [config.roles.staff.admin, config.ban_recover.staff_adm].includes(role.id))){
         const admcmd = fs.readdirSync(`./commands/admcmd`).filter(file => file.endsWith(`.js`));
         admcmd.forEach(command_file_name => {
@@ -67,8 +67,7 @@ client.on("messageCreate", msg=>{
                 staff_module.execute(msg)
             }
         })
-
-    //staff commands
+        //staff commands
     }else if (msg.member.roles.cache.find(role => [config.roles.staff.staff_call].includes(role.id))){
         const staffcmd = fs.readdirSync(`./commands/staffcmd`).filter(file => file.endsWith(`.js`));
         staffcmd.forEach(command_file_name => {
@@ -78,9 +77,9 @@ client.on("messageCreate", msg=>{
             }
         })
 
-    //public commands
+    
     }
-
+    //cap commands
     if (msg.member.roles.cache.find(role => Object.values(config.roles.teams.caps).includes(role.id))){
         const capcmd = fs.readdirSync(`./commands/capcmd`).filter(file => file.endsWith(`.js`));
         capcmd.forEach(command_file_name => {
