@@ -7,7 +7,7 @@ const { warn_add } = require("../../mongodb")
 module.exports={
     name: "notify",
     aliases: ["ntf", "aviso"],
-    description: "notica o membro, sobre uma infração",
+    description: "notifica o membro sobre uma infração",
     
     async execute(msg){
 

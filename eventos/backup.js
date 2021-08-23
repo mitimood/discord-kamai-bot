@@ -17,7 +17,7 @@ const nodejsondb = require("node-json-db").JsonDB;
 
 
     try{
-      console.log("Backup iniciado")
+      console.log("Backup iniciado " + Date.now().toString() )
       await MongodbClient.connect()
 
       const database = MongodbClient.db('kamaibot');

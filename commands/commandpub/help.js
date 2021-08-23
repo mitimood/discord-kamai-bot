@@ -14,7 +14,7 @@ module.exports={
         let help_desc = ""
         let aliases = ""
 
-        const admcmd = fs.readdirSync(`./admcmd`).filter(file => file.endsWith(`.js`));
+        const admcmd = fs.readdirSync(`./commands/admcmd`).filter(file => file.endsWith(`.js`));
         admcmd.forEach(command_file_name => {
             let adm_module = require(`../admcmd/${command_file_name}`);
             if(help_name == adm_module.name || adm_module.aliases.includes(help_name)){
@@ -23,7 +23,7 @@ module.exports={
             }
         })
 
-        const modcmd = fs.readdirSync(`./modcmd`).filter(file => file.endsWith(`.js`));
+        const modcmd = fs.readdirSync(`./commands/modcmd`).filter(file => file.endsWith(`.js`));
         modcmd.forEach(command_file_name => {
             let mod_module = require(`../modcmd/${command_file_name}`);
             if(help_name == mod_module.name || mod_module.aliases.includes(help_name)){
@@ -32,7 +32,7 @@ module.exports={
             }
         })
 
-        const staffcmd = fs.readdirSync(`./staffcmd`).filter(file => file.endsWith(`.js`));
+        const staffcmd = fs.readdirSync(`./commands/staffcmd`).filter(file => file.endsWith(`.js`));
         staffcmd.forEach(command_file_name => {
             let staff_module = require(`../staffcmd/${command_file_name}`);
             if(help_name == staff_module.name || staff_module.aliases.includes(help_name)){
@@ -41,7 +41,7 @@ module.exports={
             }
         })
 
-        const capcmd = fs.readdirSync(`./capcmd`).filter(file => file.endsWith(`.js`));
+        const capcmd = fs.readdirSync(`./commands/capcmd`).filter(file => file.endsWith(`.js`));
         capcmd.forEach(command_file_name => {
             let cap_module = require(`../capcmd/${command_file_name}`);
             if(help_name == cap_module.name || cap_module.aliases.includes(help_name)){
@@ -50,7 +50,7 @@ module.exports={
             }
         })
 
-        const pubcmd = fs.readdirSync(`./commandpub`).filter(file => file.endsWith(`.js`));
+        const pubcmd = fs.readdirSync(`./commands/commandpub`).filter(file => file.endsWith(`.js`));
         pubcmd.forEach(command_file_name => {
             let pub_module = require(`../commandpub/${command_file_name}`);
             if(help_name == pub_module.name || pub_module.aliases.includes(help_name)){
@@ -75,36 +75,35 @@ module.exports={
 
 function full_help(msg){
     let help_commands = []
-
-    const admcmd = fs.readdirSync(`./admcmd`).filter(file => file.endsWith(`.js`));
+    const admcmd = fs.readdirSync(`./commands/admcmd`).filter(file => file.endsWith(`.js`));
     help_commands.push({adm_cmd:{name: "Administração"}})
     admcmd.forEach(command_file_name => {
         let adm_module = require(`../admcmd/${command_file_name}`);
         help_commands[0].adm_cmd[adm_module.name] = {aliases: adm_module.aliases ? adm_module.aliases.join(" ") : null, description: adm_module.description ? adm_module.description: null}
     })
     
-    const modcmd = fs.readdirSync(`./modcmd`).filter(file => file.endsWith(`.js`));
+    const modcmd = fs.readdirSync(`./commands/modcmd`).filter(file => file.endsWith(`.js`));
     help_commands.push({mod_cmd:{name: "Moderação"}})
     modcmd.forEach(command_file_name => {
         let mod_module = require(`../modcmd/${command_file_name}`);
         help_commands[1].mod_cmd[mod_module.name] = {aliases: mod_module.aliases ? mod_module.aliases.join(" ") : null, description: mod_module.description ? mod_module.description: null}
     })
 
-    const staffcmd = fs.readdirSync(`./staffcmd`).filter(file => file.endsWith(`.js`));
+    const staffcmd = fs.readdirSync(`./commands/staffcmd`).filter(file => file.endsWith(`.js`));
     help_commands.push({staff_cmd:{name: "Staff"}})
     staffcmd.forEach(command_file_name => {
         let staff_module = require(`../staffcmd/${command_file_name}`);
         help_commands[2].staff_cmd[staff_module.name] = {aliases: staff_module.aliases ? staff_module.aliases.join(" ") : null, description: staff_module.description ? staff_module.description: null}
     })
 
-    const capcmd = fs.readdirSync(`./capcmd`).filter(file => file.endsWith(`.js`));
+    const capcmd = fs.readdirSync(`./commands/capcmd`).filter(file => file.endsWith(`.js`));
     help_commands.push({cap_cmd:{name: "Capitães"}})
     capcmd.forEach(command_file_name => {
         let cap_module = require(`../capcmd/${command_file_name}`);
         help_commands[3].cap_cmd[cap_module.name] = {aliases: cap_module.aliases ? cap_module.aliases.join(" ") : null, description: cap_module.description ? cap_module.description: null}  
     })
 
-    const pubcmd = fs.readdirSync(`./commandpub`).filter(file => file.endsWith(`.js`));
+    const pubcmd = fs.readdirSync(`./commands/commandpub`).filter(file => file.endsWith(`.js`));
     help_commands.push({pub_cmd:{name: "Públicos"}})
     pubcmd.forEach(command_file_name => {
         let pub_module = require(`../commandpub/${command_file_name}`);
