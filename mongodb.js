@@ -79,7 +79,7 @@ async function warn_remove(warn_id) {
   const member_management = database.collection('member_management');
   try {
 
-    let deleted_doc = await member_management.findOneAndUpdate({ "warnings": { "$elemMatch": { "warn_id": warn_id } } }, { "$unset": { "warnings.$": { "warn_id": warn_id } } })
+    let deleted_doc = await member_management.findOneAndUpdate({ "warnings": { "$elemMatch": { "warn_id": warn_id } } }, { "$pull": { "warnings": { "warn_id": warn_id } } })
     if (deleted_doc["value"]["warnings"]) {
       return deleted_doc["value"]["_id"]
     }
@@ -95,11 +95,11 @@ async function warn_list(user_id) {
   try {
     const database = MongodbClient.db(config.mongo.db_geral);
     const member_management = database.collection('member_management');
-    let doc = await member_management.findOne({ "_id": user_id })
-    var Total_points = 0
+    const doc = await member_management.findOne({ "_id": user_id })
+    let Total_points = 0
     if (doc && doc["warnings"] && doc["warnings"].find(warn => warn != null)) {
-      var warns = ""
-      warns += `Advertencias (${doc["warnings"].length})\n`
+      let warns = ""
+      let notifications = 0
 
       doc["warnings"].forEach((element, i) => {
         if (element) {
@@ -108,7 +108,11 @@ async function warn_list(user_id) {
           warns += `\n↳ ${element["points"]} ponto${(!(element["points"] == 1)) ? "s" : ""} | Por: <@${element["issuer"]}>| Em: ${moment.tz(element["time"], 'MMM Do YYYY, h:mm a', 'America/Sao_Paulo').format(`DD-MM-YYYY HH:mm`)}\n`
 
         }
+        if(parseInt(element["points"]) === 0){
+          ++notifications
+        }
       });
+      warns = `Advertencias (${Total_points}) Notificações (${notifications})\n` + warns
 
       let warnings = { "points": Total_points, "warns": warns }
 

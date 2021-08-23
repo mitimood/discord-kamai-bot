@@ -37,13 +37,15 @@ module.exports={
                             await msg.guild.members.cache.get(id).send({embeds: [emb]})
                             
                             mod_log.send({ embeds:[emb] })
+                            msg.channel.send({ content: `O usuário <@${id}> foi notificado pelo motivo: \`${reason}\``})
                         }catch{
                             mod_log.send({content: `Ouve um erro, ao enviar para o privado ${user.toString()}`, embeds:[emb] })
+                            msg.channel.send({ content: `O usuário <@${id}> foi notificado pelo motivo: \`${reason}\` \nmas ouve um erro ao notificar no privado!`})
                         }
-                        msg.channel.send({ content: `O usuário <@${id}> foi notificado pelo motivo: \`${reason}\` \nmas ouve um erro ao notificar no privado!`})
+                        
                     }else{
                         mod_log.send({ embeds:[emb] })
-                        msg.channel.send({ content: `O usuário <@${id}> foi notificado pelo motivo: \`${reason}\` \n mas não esta no servidor mais!`})
+                        msg.channel.send({ content: `O usuário <@${id}> foi notificado pelo motivo: \`${reason}\` \nmas não esta no servidor mais!`})
                     }
 
                 }
