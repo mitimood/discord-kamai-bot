@@ -29,6 +29,7 @@ module.exports={
                     const emb = new MessageEmbed()
                     emb.setColor(config.color.sucess)
                     emb.setDescription(`**Notificação**\n${user.tag} foi notificado por <@${msg.author.id}>\n`+ "Motivo:`"+ reason + "`")
+                    emb.setFooter(`id: ${user.id}`)
                     let mod_log = client.channels.cache.get(config.channels.modlog)
                     
                     

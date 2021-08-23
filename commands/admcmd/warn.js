@@ -34,7 +34,8 @@ module.exports={
         
         mod_log.send({embeds:[{
             description: `**Nova advertencian**\n<@${userid}> (Advertência: ${warns["points"]}) foi advertido por <@${msg.author.id}>\n`+ "Motivo:`"+ reason + "`"+ ` por ${msgArgs[2]} advertência`,
-            color:config.color.orange
+            color:config.color.orange,
+            footer:{ text: `id: ${userid}` }
         }]})
         punishments(userid, warns["points"], msg.guild, msg.author)
     }
