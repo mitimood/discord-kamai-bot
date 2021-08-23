@@ -10,7 +10,7 @@ module.exports={
     name: "close",
     aliases: [],
     description: "Fecha a sala de abaddon", 
-    async execute(){
+    async execute(msg){
  
         try{
             if(await LocalDb.get_channel(config.channels.abaddon_voice)["state"]) return msg.channel.send("<#"+config.channels.abaddon_voice+">")

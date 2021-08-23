@@ -64,7 +64,7 @@ module.exports={TrimMsg, Banning, ban_member_send_message, tempmute, VerificId, 
 
             //Verify if the id is member of the guild
             if(temp===undefined){
-                temp = await client.users.fetch(idArray[i],false).catch(e=>console.log(e))
+                temp = await client.users.fetch(idArray[i],{ force: false, cache:true }).catch(e=>console.log(e))
 
                 //Verify if the id is a valid user
                 if(temp==undefined)result.noUser.push(idArray[i]);

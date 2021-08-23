@@ -23,15 +23,18 @@ module.exports={
         let reason = (msgArgs[3]) ? msg.content.substring(msgArgs.slice(0, 3).join(" ").length + 1) : "Motivo não informado";
 
         await mongoDB.warn_add(userid, msg.author.id,msgArgs[2], reason)
+        
         let warns = await mongoDB.warn_list(userid);
         let mod_log = msg.guild.channels.cache.get(config.channels.modlog)
-        console.log(warns)
+        
         msg.channel.send({embeds:[{
             description: `**Membro advertido**\n<@${userid}> (Advertência total: ${warns["points"]})\n`+ "Motivo:`"+ reason + "`"+ `por ${msgArgs[2]} advertência`,
             color:config.color.sucess
         }]})
+        
         mod_log.send({embeds:[{
-            description: `**Nova advertencia**\n<@${userid}> (Advertência: ${warns["points"]}) foi advertido por <@${msg.author.id}>\n`+ "Motivo:`"+ reason + "`"+ ` por ${msgArgs[2]} advertência`,            color:config.color.sucess
+            description: `**Nova advertencian**\n<@${userid}> (Advertência: ${warns["points"]}) foi advertido por <@${msg.author.id}>\n`+ "Motivo:`"+ reason + "`"+ ` por ${msgArgs[2]} advertência`,
+            color:config.color.orange
         }]})
         punishments(userid, warns["points"], msg.guild, msg.author)
     }

@@ -74,6 +74,7 @@ async function warn_add(target_id, executor_id, points, reason) {
 
 async function warn_remove(warn_id) {
   warn_id = parseInt(warn_id)
+  if(!warn_id) return false
   const database = MongodbClient.db(config.mongo.db_geral);
   const member_management = database.collection('member_management');
   try {

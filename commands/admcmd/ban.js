@@ -37,6 +37,13 @@ module.exports = {
 
         if (result.members[0] === undefined && result.users[0] === undefined && result.noUser[0] === undefined) return msg.channel.send(`Nenhum id passado`)
 
+        if(result.members){
+            for(member of result.members){
+                if(member.roles.highest.position >= msg.member.roles.highest.position){
+                    return msg.channel.send({content:  `${msg.author.toString()}\nVocê não pode banir alguem com o mesmo cargo que você, ou a cima! ${member.user.tag}`} )
+                }
+            }
+        }
 
         msg.channel.send({
             embeds: [{
@@ -44,7 +51,7 @@ module.exports = {
                 description: `**INFRAÇÕES QUE RESULTAM EM ADVERTÊNCIAS:**
             1- Flood/spam.
             2- Divulgação inadequada.
-            3- Utilização de comandos de bots fora do #👾・comandos 
+            3- Off topic/mensagem fora de tópico.
             4- Menção desnecessária de membros e cargos.
             5- Provocação e brigas.
             6- Poluição sonora (qualquer tipo de ruído que possa causar desconforto aos membros)
@@ -159,8 +166,8 @@ module.exports = {
             }
 
             const ChannelLog = client.channels.cache.get(config.channels.modlog);
-            const ModloguMem = new Discord.MessageEmbed().setAuthor(`Kamaitachi ban`, `https://images.genius.com/93a16c1f0873bdfdfaac3b0b6e23f680.300x300x1.jpg`).setColor(`PURPLE`)
-            const ModloguUser = new Discord.MessageEmbed().setAuthor(`Kamaitachi ban`, `https://images.genius.com/93a16c1f0873bdfdfaac3b0b6e23f680.300x300x1.jpg`).setColor(`PURPLE`)
+            const ModloguMem = new Discord.MessageEmbed().setAuthor(`Kamaitachi ban`, `https://images.genius.com/93a16c1f0873bdfdfaac3b0b6e23f680.300x300x1.jpg`).setColor(config.color.red)
+            const ModloguUser = new Discord.MessageEmbed().setAuthor(`Kamaitachi ban`, `https://images.genius.com/93a16c1f0873bdfdfaac3b0b6e23f680.300x300x1.jpg`).setColor(config.color.red)
 
             if (result.members[0] != undefined) {
                 ModloguMem.setTitle(msg.author.username)
