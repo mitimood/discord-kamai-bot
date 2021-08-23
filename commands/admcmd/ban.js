@@ -54,11 +54,11 @@ module.exports = {
             3- Off topic/mensagem fora de tópico.
             4- Menção desnecessária de membros e cargos.
             5- Provocação e brigas.
-            6- Poluição sonora (qualquer tipo de ruído que possa causar desconforto aos membros)
+            6- Poluição sonora
             7- Atrapalhar o andamento do Karaokê.
             8- Denúncias falsas 
             9- Linguagem discriminatória
-            \n
+            
             **INFRAÇÕES QUE RESULTAM EM BANIMENTO:**
             10- Exposição de membros/ Assédio 
             11- Preconceito, discriminação, difamação e/ou desrespeito.
@@ -93,7 +93,7 @@ module.exports = {
                     reason = `Divulgação inadequada`;
                     break;
                 case `3`:
-                    reason = `Utilização de comandos de bots fora do <#612121513960669227>`;
+                    reason = `Off topic/mensagem fora de tópico.`;
                     break;
                 case `4`:
                     reason = `Menção desnecessária de membros e cargos`;
