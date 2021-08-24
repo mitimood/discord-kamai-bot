@@ -11,7 +11,7 @@ const MongodbClient = new MongoClient(uri, {
 
 // Replace the uri string with your MongoDB deployment's connection string.
 
-const job = schedule.scheduleJob('* 4 * * *', async function(){
+const job = schedule.scheduleJob('0 4 * * *', async function(){
 const nodejsondb = require("node-json-db").JsonDB;
 
 

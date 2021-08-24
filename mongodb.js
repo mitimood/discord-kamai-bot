@@ -261,10 +261,10 @@ async function create_canary_db() {
 async function add_voice_xp(ids, xp) {
 
   const database = MongodbClient.db(config.mongo.db_geral);
-  const members_management = database.collection('member_management');
+  const members_management = database.collection('xpManagement');
 
   let query = { "_id": { "$in": ids } }
-  let insert = { "$inc": { "xp.xp_voice": xp } }
+  let insert = { "$inc": { "xp_voice": xp } }
 
   members_management.updateMany(query, insert, { upsert: true })
 }
@@ -274,10 +274,10 @@ async function add_voice_xp(ids, xp) {
 async function add_chat_xp(ids, xp) {
 
   const database = MongodbClient.db(config.mongo.db_geral);
-  const members_management = database.collection('member_management');
+  const members_management = database.collection('xpManagement');
 
   let query = { "_id": ids }
-  let insert = { "$inc": { "xp.xp_chat": xp } }
+  let insert = { "$inc": { "xp_chat": xp } }
 
   members_management.updateMany(query, insert, { upsert: true })
 }
@@ -286,27 +286,27 @@ async function add_chat_xp(ids, xp) {
 async function get_xp(id) {
 
   const database = MongodbClient.db(config.mongo.db_geral);
-  const members_management = database.collection('member_management');
+  const members_management = database.collection('xpManagement');
 
   let query = { "_id": id }
 
-  let doc = await members_management.findOne(query)
+  const doc = await members_management.findOne(query)
 
   let xp = new Object()
 
-  if (doc.xp) {
-    if (doc.xp.xp_chat) {
+  if (doc) {
+    if (doc.xp_chat) {
       xp.chat = new Object()
-      xp.chat.total = doc.xp.xp_chat
-      xp.chat.level = parseInt(Math.log2(doc.xp.xp_chat))
-      xp.chat.percentage = parseInt(100 * (Math.log2(doc.xp.xp_chat) - parseInt(Math.log2(doc.xp.xp_chat))))/100
+      xp.chat.total = doc.xp_chat
+      xp.chat.level = parseInt(Math.log2(doc.xp_chat))
+      xp.chat.percentage = parseInt(100 * (Math.log2(doc.xp_chat) - parseInt(Math.log2(doc.xp_chat))))/100
 
     }
-    if (doc.xp.xp_voice) {
+    if (doc?.xp?.xp_voice) {
       xp.voice = new Object()
-      xp.voice.total = doc.xp.xp_voice
-      xp.voice.level = parseInt(Math.log2(doc.xp.xp_voice))
-      xp.voice.percentage = parseInt(100 * (Math.log2(doc.xp.xp_voice) - parseInt(Math.log2(doc.xp.xp_voice))))/100
+      xp.voice.total = doc.xp_voice
+      xp.voice.level = parseInt(Math.log2(doc.xp_voice))
+      xp.voice.percentage = parseInt(100 * (Math.log2(doc.xp_voice) - parseInt(Math.log2(doc.xp_voice))))/100
     }
 
   } else {
