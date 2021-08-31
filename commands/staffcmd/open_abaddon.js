@@ -26,6 +26,8 @@ module.exports={
                 question.delete()
                 open(password.first())
             
+            
+            
             }else{
                 throw `WrongPassword`
                 

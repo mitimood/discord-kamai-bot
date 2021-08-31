@@ -294,7 +294,7 @@ async function get_xp(id) {
   let xp = new Object()
 
   if (doc) {
-    if (doc.xp.xp_chat) {
+    if (doc?.xp?.xp_chat) {
       xp.chat = new Object()
       xp.chat.total = doc.xp.xp_chat
       xp.chat.level = parseInt(Math.log2(doc.xp.xp_chat))
