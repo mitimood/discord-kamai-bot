@@ -7,7 +7,7 @@ const MongodbClient = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-module.exports = { MongodbClient, SetTempMute, SetUnmute, CheckMute, transferdb, warn_list, warn_remove, warn_add, Check_all_mutes, role_register_add, role_register_remove, check_roles, create_canary_db,add_voice_xp, add_chat_xp, get_xp, daily_get, daily_set, moneyGet }
+module.exports = { MongodbClient, SetTempMute, SetUnmute, CheckMute, transferdb, warn_list, warn_remove, warn_add, Check_all_mutes, role_register_add, role_register_remove, check_roles, add_voice_xp, add_chat_xp, get_xp, daily_get, daily_set, moneyGet }
 const moment = require("moment-timezone");
 const databaseSite = require("./mongoDbSite");
 const dbSite = new databaseSite()
