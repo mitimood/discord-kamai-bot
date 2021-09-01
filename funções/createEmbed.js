@@ -212,9 +212,9 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
                                                 }catch{
                                                     embed.setColor()
                                                     msg.channel.send(`${msg.author.toString()} Cor invalida`)
+                                                    await msg.channel.send({embeds:[embed]})
                                                 }finally{
                                                     a.delete();
-                                                    msg.channel.send({ embeds: [embed] });
                                                     returnemb(embed);
                                                 }
 
