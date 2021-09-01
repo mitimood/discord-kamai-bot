@@ -9,8 +9,6 @@ const MongodbClient = new MongoClient(uri, {
 });
 module.exports = { MongodbClient, SetTempMute, SetUnmute, CheckMute, transferdb, warn_list, warn_remove, warn_add, Check_all_mutes, role_register_add, role_register_remove, check_roles, add_voice_xp, add_chat_xp, get_xp, daily_get, daily_set, moneyGet }
 const moment = require("moment-timezone");
-const databaseSite = require("./mongoDbSite");
-const dbSite = new databaseSite()
 
 async function transferdb() {
   try {
