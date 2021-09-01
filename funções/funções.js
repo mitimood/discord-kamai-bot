@@ -92,12 +92,12 @@ module.exports={TrimMsg, Banning, ban_member_send_message, tempmute, VerificId, 
         if(!member.roles.cache.has(config.roles.adv2)){
             if(points>=2){
                 member.roles.add(config.roles.adv2)
-                tempmute(2, "h", member)
+                tempmute(12, "h", member)
             }
             if(!member.roles.cache.has(config.roles.adv1)){
                     if(points>=1){ 
                         member.roles.add(config.roles.adv1)
-                        tempmute(30, "m", member)
+                        tempmute(2, "h", member)
                     }
             }
         }

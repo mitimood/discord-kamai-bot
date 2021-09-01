@@ -166,7 +166,8 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
                             + "2- Vermelho\n"
                             + "3- Roxo\n"
                             + "4- Azul\n"
-                            + "5- Blurple").then(a => {
+                            + "5- Blurple"
+                            + "6- Sua cor em hex").then(a => {
                                 var filter = m => m.author.id == msg.author.id && /[0-9]+/.test(m.content);
                                 msg.channel.awaitMessages({ filter, max: 1, time: 120000, errors: [`Time`] }).then(col => {
                                     switch (parseInt(col.first().content)) {
@@ -185,6 +186,20 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
                                         case 5:
                                             embed.setColor(config.color.blurple);
                                             break;
+                                        case 6:
+                                            msg.channel.send( msg.author.toString() + "Envie a cor em hex agora")
+                                            filter = m => m.author.id == msg.author.id ;
+                                            msg.channel.awaitMessages({ filter, max: 1, time: 120000, errors: [`Time`] }).then(async col => {
+                                                
+                                                try{
+                                                    embed.setColor(col.first().content)
+                                                    await msg.channel.send({embeds:[embed]})
+                                                }catch{
+                                                    embed.setColor()
+                                                    msg.channel.send(`${msg.author.toString()} Cor invalida`)
+                                                }
+
+                                            })
                                     }
                                     a.delete();
                                     msg.channel.send({ embeds: [embed] });

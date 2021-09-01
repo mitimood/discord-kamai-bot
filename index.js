@@ -48,7 +48,7 @@ client.on("ready", async () => {
     try{
         await mongodb.MongodbClient.connect()
         await mongodb.Check_all_mutes()
-    }catch(err){
+    } catch (err)   {
         console.log(err)
     }
 
