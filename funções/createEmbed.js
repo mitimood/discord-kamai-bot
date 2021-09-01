@@ -200,6 +200,7 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
                                                 }
 
                                             })
+                                            break;
                                     }
                                     a.delete();
                                     msg.channel.send({ embeds: [embed] });
