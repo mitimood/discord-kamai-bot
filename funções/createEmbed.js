@@ -173,18 +173,33 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
                                     switch (parseInt(col.first().content)) {
                                         case 1:
                                             embed.setColor(config.color.green);
+                                            a.delete();
+                                            msg.channel.send({ embeds: [embed] });
+                                            returnemb(embed);
                                             break;
                                         case 2:
                                             embed.setColor(config.color.red);
+                                            a.delete();
+                                            msg.channel.send({ embeds: [embed] });
+                                            returnemb(embed);
                                             break;
                                         case 3:
                                             embed.setColor(config.color.purple);
+                                            a.delete();
+                                            msg.channel.send({ embeds: [embed] });
+                                            returnemb(embed);
                                             break;
                                         case 4:
                                             embed.setColor(config.color.blue);
+                                            a.delete();
+                                            msg.channel.send({ embeds: [embed] });
+                                            returnemb(embed);
                                             break;
                                         case 5:
                                             embed.setColor(config.color.blurple);
+                                            a.delete();
+                                            msg.channel.send({ embeds: [embed] });
+                                            returnemb(embed);
                                             break;
                                         case 6:
                                             msg.channel.send( msg.author.toString() + "Envie a cor em hex agora")
@@ -197,14 +212,16 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
                                                 }catch{
                                                     embed.setColor()
                                                     msg.channel.send(`${msg.author.toString()} Cor invalida`)
+                                                }finally{
+                                                    a.delete();
+                                                    msg.channel.send({ embeds: [embed] });
+                                                    returnemb(embed);
                                                 }
 
                                             })
                                             break;
                                     }
-                                    a.delete();
-                                    msg.channel.send({ embeds: [embed] });
-                                    returnemb(embed);
+                                   
                                 })
                             })
                         break;
