@@ -7,8 +7,10 @@ const MongodbClient = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-module.exports = { MongodbClient, SetTempMute, SetUnmute, CheckMute, transferdb, warn_list, warn_remove, warn_add, Check_all_mutes, role_register_add, role_register_remove, check_roles, create_canary_db,add_voice_xp, add_chat_xp, get_xp }
+module.exports = { MongodbClient, SetTempMute, SetUnmute, CheckMute, transferdb, warn_list, warn_remove, warn_add, Check_all_mutes, role_register_add, role_register_remove, check_roles, create_canary_db,add_voice_xp, add_chat_xp, get_xp, daily_get, daily_set, moneyGet }
 const moment = require("moment-timezone");
+const databaseSite = require("./mongoDbSite");
+const dbSite = new databaseSite()
 
 async function transferdb() {
   try {
@@ -73,11 +75,12 @@ async function warn_add(target_id, executor_id, points, reason) {
 
 
 async function warn_remove(warn_id) {
-  warn_id = parseInt(warn_id)
-  if(!warn_id) return false
-  const database = MongodbClient.db(config.mongo.db_geral);
-  const member_management = database.collection('member_management');
+
   try {
+    warn_id = parseInt(warn_id)
+    if(!warn_id) return false
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const member_management = database.collection('member_management');
 
     let deleted_doc = await member_management.findOneAndUpdate({ "warnings": { "$elemMatch": { "warn_id": warn_id } } }, { "$pull": { "warnings": { "warn_id": warn_id } } })
     if (deleted_doc["value"]["warnings"]) {
@@ -97,6 +100,7 @@ async function warn_list(user_id) {
     const member_management = database.collection('member_management');
     const doc = await member_management.findOne({ "_id": user_id })
     let Total_points = 0
+
     if (doc && doc["warnings"] && doc["warnings"].find(warn => warn != null)) {
       let warns = ""
       let notifications = 0
@@ -134,6 +138,8 @@ async function SetTempMute(id, since_stamp, duration_stamp) {
     let insert = { "$set": { "_id": id, "muted": true, "since": since_stamp, "duration": duration_stamp } }
     let query = { "_id": id }
     await members_adm.updateOne(query, insert, configuration);
+  }catch(err){
+    console.log(err)
   } finally {
     // Ensures that the MongodbClient will close when you finish/error
   }
@@ -148,6 +154,8 @@ async function SetUnmute(id) {
     let query = { "_id": id }
     await members_adm.updateOne(query, insert, configuration);
 
+  }catch(err){
+    console.log(err)
   } finally {
     // Ensures that the MongodbClient will close when you finish/error
   }
@@ -171,15 +179,19 @@ async function CheckMute(id) {
     } else {
       return false
     }
+  } catch (err){
+    console.log(err)
   } finally {
     // Ensures that the MongodbClient will close when you finish/error
   }
 }
 
 async function Check_all_mutes() {
-  const database = MongodbClient.db(config.mongo.db_geral);
-  const members_adm = database.collection('member_management');
+
   try {
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const members_adm = database.collection('member_management');
+    
     let docs = members_adm.find({ "muted": true })
     const index = require(`./`)
 
@@ -193,15 +205,17 @@ async function Check_all_mutes() {
         }
       }
     })
-  } catch {
+  } catch(err) {
+    console.log(err)
   }
 }
 
 async function role_register_add(user_id, role_id) {
-  const database = MongodbClient.db(config.mongo.db_geral);
-  const members_adm = database.collection('member_management');
 
   try {
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const members_adm = database.collection('member_management');
+
     let querry = { "_id": user_id }
     let insert = { "$set": { "_id": user_id, }, "$addToSet": { "roles": role_id } }
     await members_adm.findOneAndUpdate(querry, insert, { upsert: true })
@@ -211,10 +225,11 @@ async function role_register_add(user_id, role_id) {
 }
 
 async function role_register_remove(user_id, role_id) {
-  const database = MongodbClient.db(config.mongo.db_geral);
-  const members_adm = database.collection('member_management');
 
   try {
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const members_adm = database.collection('member_management');
+
     let querry = { "_id": user_id }
     let insert = { "$set": { "_id": user_id, }, "$pull": { "roles": { "$in": [role_id] } } }
     await members_adm.findOneAndUpdate(querry, insert, { upsert: true })
@@ -224,18 +239,21 @@ async function role_register_remove(user_id, role_id) {
 }
 
 async function check_roles(user_id) {
-  const database = MongodbClient.db(config.mongo.db_geral);
-  const members_adm = database.collection('member_management');
+
   try {
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const members_adm = database.collection('member_management');
+
     let doc = await members_adm.findOne({ "_id": user_id, "roles": { "$exists": true } })
     return doc["roles"]
 
-  } catch {
+  } catch (err) {
+    console.log(err)
 
   }
 }
 
-async function create_canary_db() {
+/*async function create_canary_db() {
 
 
   const database = MongodbClient.db(config.mongo.db_geral);
@@ -255,43 +273,55 @@ async function create_canary_db() {
 
 }
 
+*/
 
 
 async function add_voice_xp(ids, xp) {
 
-  const database = MongodbClient.db(config.mongo.db_geral);
-  const xpManagement = database.collection('member_management');
+  try{
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const xpManagement = database.collection('member_management');
+  
+    let query = { "_id": { "$in": ids } }
+    let insert = { "$inc": { "xp.xp_voice": xp } }
 
-  let query = { "_id": { "$in": ids } }
-  let insert = { "$inc": { "xp.xp_voice": xp } }
+    await xpManagement.updateMany(query, insert, { upsert: true })
 
-  xpManagement.updateMany(query, insert, { upsert: true })
+  }catch (err) {
+    console.log(err)
+  }
 }
 
 
 
 async function add_chat_xp(ids, xp) {
 
+  try{
+    
   const database = MongodbClient.db(config.mongo.db_geral);
   const xpManagement = database.collection('member_management');
 
   let query = { "_id": ids }
   let insert = { "$inc": { "xp.xp_chat": xp } }
 
-  xpManagement.updateMany(query, insert, { upsert: true })
+    await xpManagement.updateMany(query, insert, { upsert: true })
+
+  }catch(err){
+    console.log(err)
+  }
 }
 
 
 async function get_xp(id) {
+  try{
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const xpManagement = database.collection('member_management');
+  
+    let query = { "_id": id }
 
-  const database = MongodbClient.db(config.mongo.db_geral);
-  const xpManagement = database.collection('member_management');
+    const doc = await xpManagement.findOne(query)
 
-  let query = { "_id": id }
-
-  const doc = await xpManagement.findOne(query)
-
-  let xp = new Object()
+    let xp = new Object()
 
   if (doc) {
     if (doc?.xp?.xp_chat) {
@@ -313,5 +343,112 @@ async function get_xp(id) {
     xp.voice = undefined
   }
   return xp
+
+  }catch(err){
+    console.log(err)
+  }
+}
+
+/*async function data_convert(){
+  const database = MongodbClient.db(config.mongo.db_geral);
+  const xpManagement = database.collection('xpManagement');
+
+  const xpDocs = await xpManagement.find().toArray()
+  const memberManagement = database.collection('member_management');
+
+  for(xpDoc of xpDocs){
+
+    if(xpDoc.xp_voice && xpDoc.xp_chat){
+      await memberManagement.updateOne( {_id:xpDoc._id}, {"$set":{_id:xpDoc._id, xp:{xp_chat: xpDoc.xp_chat , xp_voice:xpDoc.xp_voice }}}, {upsert:true} )
+
+    }else if(xpDoc.xp_voice){
+      await memberManagement.updateOne( {_id:xpDoc._id}, {"$set":{_id:xpDoc._id, xp:{xp_voice:xpDoc.xp_voice }}}, {upsert:true} )
+
+    }else if(xpDoc.xp_chat){
+      await memberManagement.updateOne( {_id:xpDoc._id}, {"$set":{_id:xpDoc._id, xp:{xp_chat: xpDoc.xp_chat}}}, {upsert:true} )
+
+    }
+    
+  }
+  console.log("Done")
+}*/
+
+async function daily_set(id){
+  try{
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const members_management = database.collection('member_management');
+    
+    let dailyDoc =  await members_management.findOne( { "_id":id } )
+  
+    if ( dailyDoc?.economy?.daily?.last + 172800000 >= Date.now() ){
+      let money = parseInt( Math.log2(dailyDoc.economy.daily.streak) * 100 )
+      let streak = 1 + dailyDoc?.economy?.daily?.streak
+      await members_management.updateOne( { "_id":id }, { "$setOnInsert":{ "_id":id }, "$set":{ "economy.daily": { last : Date.now()} },"$inc":{ "economy.money":money, "economy.daily.streak": 1 } }, { upsert: true } )
+      //send the same data to db site
+      dbSite.addDaily(id , money, dailyDoc.streak + 1)
+      return { money: money, streak: streak}
+  
+    } else{
+      let money = 100
+      let streak = 1
+      await members_management.updateOne( { "_id":id }, { "$setOnInsert":{ "_id":id }, "$set":{ "economy.daily": { last : Date.now(),  streak: streak } }, "$inc":{ "economy.money":money } }, { upsert: true } )
+      dbSite.addDaily(id , money, 1)
+      return { money: money, streak: streak}
+    }
+
+  }catch(err){
+    console.log(err)
+  }
+  
+}
+
+async function daily_get(id){
+  try{
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const members_management = database.collection('member_management');
+  
+    let dailyDoc = await members_management.findOne( { "_id":id } )
+  
+    if ( dailyDoc?.economy?.daily?.last ){
+      return { last:dailyDoc.economy.daily.last }
+    }else{
+      return { last: null }
+    }
+  }catch(err){
+    console.log(err)
+  }
+
+}
+
+
+async function moneyAdd(id, money){
+  try{
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const members_management = database.collection('member_management');
+  }catch(err){
+    console.log(err)
+  }
+
+}
+
+async function moneyRemove(id, money){
+  try{
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const members_management = database.collection('member_management');
+  }catch(err){
+    console.log(err)
+  }
+}
+
+async function moneyGet(id){
+  try{
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const members_management = database.collection('member_management');
+  
+    const moneyDoc = await members_management.findOne( { "_id": id } )
+    return moneyDoc?.economy?.money
+  }catch(err){
+    console.log(err)
+  }
 
 }

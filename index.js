@@ -36,8 +36,8 @@ today = dd + '/' + mm + '/' + yyyy;
 
 
 client.on("ready", async () => {
+
     fs.writeFile('./selfbotid.txt', "\n " + today, { flag: 'a' }, err => { });
-    await mongodb.MongodbClient.connect()
     eventos_folder.forEach(events => {
         require(`${__dirname}/eventos/xp/${events}`);
     })
@@ -45,7 +45,13 @@ client.on("ready", async () => {
     for( let id_guild of client.guilds.cache.keys()){
         await client.guilds.cache.get(id_guild).members.fetch()
     }
-    await mongodb.Check_all_mutes()
+    try{
+        await mongodb.MongodbClient.connect()
+        await mongodb.Check_all_mutes()
+    }catch(err){
+        console.log(err)
+    }
+
     console.log("Cliente iniciado")
 })
 
