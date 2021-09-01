@@ -166,7 +166,7 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
                             + "2- Vermelho\n"
                             + "3- Roxo\n"
                             + "4- Azul\n"
-                            + "5- Blurple"
+                            + "5- Blurple\n"
                             + "6- Sua cor em hex").then(a => {
                                 var filter = m => m.author.id == msg.author.id && /[0-9]+/.test(m.content);
                                 msg.channel.awaitMessages({ filter, max: 1, time: 120000, errors: [`Time`] }).then(col => {
