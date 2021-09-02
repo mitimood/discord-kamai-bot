@@ -9,7 +9,7 @@ module.exports={
         let msgArgs = TrimMsg(msg)
 
         if ( msgArgs[1]?.match(/[0-9]/) ){
-            let deletedMsg = await bulkdelete( msg.channel , msgArgs[1])
+            let deletedMsg = await bulkdelete( msg.channel , msgArgs[1] + 1 )
             if ( deletedMsg ){
                 return msg.channel.send({ content: `${msg.author.toString()} ${msgArgs[1]} mensagens apagadas`})
 
@@ -23,8 +23,12 @@ module.exports={
 
 
 async function bulkdelete( channel, quantity ){
+    /**
+     * @channel
+     * @quantity
+     */
     try{
-       let deletedMsgs = await channel.bulkDelete(quantity)
+       let deletedMsgs = await channel.bulkDelete(quantity, true)
        return deletedMsgs
 
     }catch(err){
