@@ -7,7 +7,7 @@ const MongodbClient = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-module.exports = { MongodbClient, SetTempMute, SetUnmute, CheckMute, transferdb, warn_list, warn_remove, warn_add, Check_all_mutes, role_register_add, role_register_remove, check_roles, add_voice_xp, add_chat_xp, get_xp, daily_get, daily_set, moneyGet }
+module.exports = { MongodbClient, SetTempMute, SetUnmute, CheckMute, transferdb, warn_list, notifyList, warn_remove, warn_add, Check_all_mutes, role_register_add, role_register_remove, check_roles, add_voice_xp, add_chat_xp, get_xp, daily_get, daily_set, moneyGet }
 const moment = require("moment-timezone");
 
 async function transferdb() {
@@ -127,6 +127,41 @@ async function warn_list(user_id) {
     console.log(err)
   }
 }
+
+async function notifyList(user_id) {
+
+  try {
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const member_management = database.collection('member_management');
+    const doc = await member_management.findOne({ "_id": user_id })
+
+    if (doc && doc["warnings"] && doc["warnings"].find(warn => warn != null)) {
+      let ntf = ""
+      let notifications = 0
+
+      doc["warnings"].forEach((element, i) => {
+
+        if(parseInt(element["points"]) === 0){
+          ++notifications
+          ntf += `**${i + 1} - ${element["reason"]}** (id: ${element["warn_id"]})`
+          ntf += `\n↳ ${element["points"]} ponto${(!(element["points"] == 1)) ? "s" : ""} | Por: <@${element["issuer"]}>| Em: ${moment.utc(element["time"], 'MMM Do YYYY, h:mm a', 'America/Sao_Paulo').format(`DD-MM-YYYY HH:mm`)}\n`
+
+        }
+      });
+      ntf = `Notificações (${notifications})\n` + ntf
+
+      let warnings = { "warns": ntf }
+
+      return warnings
+    } else {
+      return false
+    }
+
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 
 async function SetTempMute(id, since_stamp, duration_stamp) {
   try {
