@@ -11,7 +11,7 @@ module.exports={
         if ( msgArgs[1]?.match(/[0-9]/) ){
             let deletedMsg = await bulkdelete( msg.channel , msgArgs[1])
             if ( deletedMsg ){
-                return msg.channel.send({ content: `${msg.author.toString()} ${deletedMsg.length} mensagens apagadas`})
+                return msg.channel.send({ content: `${msg.author.toString()} ${msgArgs[1]} mensagens apagadas`})
 
             }else{
                 return msg.channel.send({ content: `${msg.author.toString()} Ouve um erro ao apagar as mensagens`})
