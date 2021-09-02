@@ -10,15 +10,15 @@ client.on("messageUpdate", (oldMessage, newMessage)=>{
 
         let oldImageUrl = '';
 
-        for( atach of oldMessage.attachments ){
-            oldImageUrl +=  `\n${atach[1].attachment}`
+        for( let atach of oldMessage.attachments ){
+            oldImageUrl += `\n${atach[1].attachment}`
         }
 
         oldEmb.setDescription("Mensagem antiga em: " + "<#" + oldMessage.channel.id + ">\n\n" + "```\n" + oldMessage.content + "\n```" + oldImageUrl).setColor("GREY").setAuthor(oldMessage.author.username, oldMessage.author.avatarURL(), oldMessage.author.avatarURL()).setTimestamp(oldMessage.createdTimestamp).setTitle(oldMessage.channel.name ).setFooter(oldMessage.member.id)
         
         let newImageUrl = '';
 
-        for( atach of newMessage.attachments ){
+        for( let atach of newMessage.attachments ){
             newImageUrl +=  `\n${atach[1].attachment}`
         }
         
@@ -49,4 +49,21 @@ client.on("messageDelete", (delMessage)=>{
     }catch(err){
         console.log(err)
     }
+})
+const fs = require('fs')
+
+client.on('messageDeleteBulk', async mapMsg =>{
+    let bulkText = ""
+
+    for(let msg of mapMsg ){
+        bulkText += `[${Date(msg[1].createdTimestamp)}] ${msg[1].author.username} => ${msg[1].content}`
+        for ( let atach of msg[1].attachments ){
+            bulkText += atach[1].attachment
+        }
+        bulkText += "\n"
+    }
+
+    let bulkDeletedMessages = await new Buffer.from(bulkText, "utf-8")
+
+    client.channels.cache.get(config.channels.msglog).send({files: [{ attachment:bulkDeletedMessages, name: "mensagensApagadas.txt"}]})
 })
