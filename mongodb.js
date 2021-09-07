@@ -168,7 +168,7 @@ async function SetTempMute(id, since_stamp, duration_stamp) {
     const database = MongodbClient.db(config.mongo.db_geral);
     const members_adm = database.collection('member_management');
     let configuration = { "upsert": true }
-    let insert = { "$set": { "_id": id, "muted": true, "since": since_stamp, "duration": duration_stamp } }
+    let insert = { "$set": { "_id": id, "chatMuted": true, "since": since_stamp, "duration": duration_stamp } }
     let query = { "_id": id }
     await members_adm.updateOne(query, insert, configuration);
   }catch(err){
@@ -183,7 +183,7 @@ async function SetUnmute(id) {
     const database = MongodbClient.db(config.mongo.db_geral);
     const members_adm = database.collection('member_management');
     let configuration = { "upsert": true }
-    let insert = { "$set": { "_id": id, "muted": false, "duration": null, "since": null } }
+    let insert = { "$set": { "_id": id, "chatMuted": false, "duration": null, "since": null } }
     let query = { "_id": id }
     await members_adm.updateOne(query, insert, configuration);
 
@@ -200,8 +200,8 @@ async function CheckMute(id) {
     const members_adm = database.collection('member_management');
     let query = { "_id": id }
     let doc = await members_adm.findOne(query);
-    if (doc && doc.muted) {
-      if (doc.muted) {
+    if (doc && doc.chatMuted) {
+      if (doc.chatMuted) {
         if (moment.utc().valueOf() >= doc["duration"] + doc["since"]) {
           SetUnmute(id)
           return false
@@ -225,7 +225,7 @@ async function Check_all_mutes() {
     const database = MongodbClient.db(config.mongo.db_geral);
     const members_adm = database.collection('member_management');
     
-    let docs = members_adm.find({ "muted": true })
+    let docs = members_adm.find({ "chatMuted": true })
     const index = require(`./`)
 
     docs.forEach( async doc => {
