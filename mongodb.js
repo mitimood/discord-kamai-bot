@@ -278,13 +278,19 @@ async function check_roles(user_id) {
     const members_adm = database.collection('member_management');
 
     let doc = await members_adm.findOne({ "_id": user_id, "roles": { "$exists": true } })
-    return doc["roles"]
+    
+    if (doc?.roles){
+      return doc["roles"]
+    }else{
+      return null
+    }
 
   } catch (err) {
     console.log(err)
 
   }
 }
+
 
 /*async function create_canary_db() {
 
