@@ -26,7 +26,7 @@ Object.values(config.roles.teams.caps).forEach(element => {
     var msgArgs = message.content.split(" ");
     
     const channel = client.channels.cache.get(msgArgs[1])
-    if(!channel){
+    if(!channel?.isText()){
         var mensagem = message.content.substring(msgArgs.slice(0, 1).join(" ").length + 1);
         if(mensagem){
             message.channel.send({ content: mensagem, allowedMentions: { roles:teams }})
