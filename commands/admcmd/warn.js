@@ -18,8 +18,7 @@ module.exports={
 
         if(!msgArgs[1] || !msgArgs[2] || !msgArgs[2].match(/[0-9]/g) || !msgArgs[1].match(/[0-9]+/) && !msg.mentions.members.first())return msg.channel.send("Utilize: warn user pontos motivo")
 
-
-        let userid = (msg.mentions.members.first()) ? msg.mentions.members.first().user.id : msgArgs[1].match(/[0-9]+/)[0];
+        let userid = msg.mentions.repliedUser ? ( Array.from(msg.mentions.members)[1] ? Array.from(msg.mentions.members)[1].user.id : msgArgs[1].match(/[0-9]+/)[0] ) : (msg.mentions.members.first() ) ? msg.mentions.members.first().user.id : msgArgs[1].match(/[0-9]+/)[0];
         let reason = (msgArgs[3]) ? msg.content.substring(msgArgs.slice(0, 3).join(" ").length + 1) : "Motivo não informado";
 
         await mongoDB.warn_add(userid, msg.author.id,msgArgs[2], reason)
