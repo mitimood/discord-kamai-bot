@@ -17,7 +17,34 @@ module.exports = class db {
         }
     }
 
-
-
-
+    async SelfbotListTime(time){
+            try{
+                const data = await this.db.getObject(`./selfBot/`)
+                for(let selfRegTime in data){
+                    if(selfRegTime > time){
+                        let archive = ""
+                        for( let selfUser of data[selfRegTime]){
+                            archive += `\n${selfUser.id}`
+                        }
+                        for( let selfUser of data[selfRegTime]){
+                            archive += `\n${selfUser.avatarHash}`
+                        }
+                        for( let selfUser of data[selfRegTime]){
+                            archive += `\n${selfUser.usertag}`
+                        }
+                        for( let selfUser of data[selfRegTime]){
+                            archive += `\n${selfUser.accountCreated}`
+                        }
+                        for( let selfUser of data[selfRegTime]){
+                            archive += `\n${selfUser.joinedServer}`
+                        }
+                        return archive
+                    }
+                    return null
+                    
+                }
+            }catch(err){
+                console.log(err)
+            } 
+    }
 }
