@@ -29,7 +29,7 @@ module.exports = class db {
                         }
                     }                 
                 }
-                archive += "[avatarHash]"
+                archive += "\n[avatarHash]"
                 for(let selfRegTime in data){
                     if(selfRegTime > time){
                         
@@ -38,7 +38,7 @@ module.exports = class db {
                         }
                     }                 
                 }
-                archive += "[usertag]"
+                archive += "\n[usertag]"
                 for(let selfRegTime in data){
                     if(selfRegTime > time){
                         
@@ -47,7 +47,7 @@ module.exports = class db {
                         }
                     }                 
                 }
-                archive += "[accountCreated]"
+                archive += "\n[accountCreated]"
                 for(let selfRegTime in data){
                     if(selfRegTime > time){
 
@@ -56,7 +56,7 @@ module.exports = class db {
                         }
                     }                 
                 }
-                archive += "[joinedServer]"
+                archive += "\n[joinedServer]"
                 for(let selfRegTime in data){
                     if(selfRegTime > time){
                         
