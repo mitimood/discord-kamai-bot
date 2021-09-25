@@ -20,9 +20,10 @@ module.exports = class db {
     async SelfbotListTime(time){
             try{
                 const data = await this.db.getObject(`./selfBot/`)
+                let archive = ""
                 for(let selfRegTime in data){
                     if(selfRegTime > time){
-                        let archive = ""
+                        
                         for( let selfUser of data[selfRegTime]){
                             archive += `\n${selfUser.id}`
                         }
@@ -38,11 +39,10 @@ module.exports = class db {
                         for( let selfUser of data[selfRegTime]){
                             archive += `\n${selfUser.joinedServer}`
                         }
-                        return archive
-                    }
-                    return null
-                    
+                    }                    
                 }
+                return archive
+
             }catch(err){
                 console.log(err)
             } 
