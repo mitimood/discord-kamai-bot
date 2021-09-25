@@ -20,7 +20,7 @@ module.exports = class db {
     async SelfbotListTime(time){
             try{
                 const data = await this.db.getObject(`./selfBot/`)
-                let archive = ""
+                let archive = "[id]"
                 for(let selfRegTime in data){
                     if(selfRegTime > time){
                         
@@ -29,6 +29,7 @@ module.exports = class db {
                         }
                     }                 
                 }
+                archive += "[avatarHash]"
                 for(let selfRegTime in data){
                     if(selfRegTime > time){
                         
@@ -37,6 +38,7 @@ module.exports = class db {
                         }
                     }                 
                 }
+                archive += "[usertag]"
                 for(let selfRegTime in data){
                     if(selfRegTime > time){
                         
@@ -45,14 +47,16 @@ module.exports = class db {
                         }
                     }                 
                 }
+                archive += "[accountCreated]"
                 for(let selfRegTime in data){
                     if(selfRegTime > time){
-                        
+
                         for( let selfUser of data[selfRegTime]){
                             archive += `\n${selfUser.accountCreated}`
                         }
                     }                 
                 }
+                archive += "[joinedServer]"
                 for(let selfRegTime in data){
                     if(selfRegTime > time){
                         
