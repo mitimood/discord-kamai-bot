@@ -27,19 +27,39 @@ module.exports = class db {
                         for( let selfUser of data[selfRegTime]){
                             archive += `\n${selfUser.id}`
                         }
+                    }                 
+                }
+                for(let selfRegTime in data){
+                    if(selfRegTime > time){
+                        
                         for( let selfUser of data[selfRegTime]){
                             archive += `\n${selfUser.avatarHash}`
                         }
+                    }                 
+                }
+                for(let selfRegTime in data){
+                    if(selfRegTime > time){
+                        
                         for( let selfUser of data[selfRegTime]){
                             archive += `\n${selfUser.usertag}`
                         }
+                    }                 
+                }
+                for(let selfRegTime in data){
+                    if(selfRegTime > time){
+                        
                         for( let selfUser of data[selfRegTime]){
                             archive += `\n${selfUser.accountCreated}`
                         }
+                    }                 
+                }
+                for(let selfRegTime in data){
+                    if(selfRegTime > time){
+                        
                         for( let selfUser of data[selfRegTime]){
                             archive += `\n${selfUser.joinedServer}`
                         }
-                    }                    
+                    }                 
                 }
                 return archive
 
