@@ -9,7 +9,10 @@ const mongodb = require("./mongodb")
 const Database2 = require("./dbEmbeds");
 const embDb = new Database2();
 
-module.exports = { client, LocalDb, embDb, Discord }
+const selfbotDB = require("./db/selfbotRegister");
+const selfbotRegister = new selfbotDB();
+
+module.exports = { client, LocalDb, embDb, Discord, selfbotRegister }
 //Load all the events
 
 const eventos = fs.readdirSync(`./eventos`).filter(file => file.endsWith(`.js`));
