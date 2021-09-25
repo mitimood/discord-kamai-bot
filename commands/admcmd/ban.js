@@ -1,6 +1,6 @@
 const config = require("../../config");
 const { TrimMsg, VerificId, Banning } = require("../../funções/funções");
-const { client, Discord, LocalDb } = require(`../../index`)
+const { client, Discord, LocalDb, selfbotRegister } = require(`../../index`)
 const fs = require(`fs`)
 
 /* 
@@ -168,14 +168,18 @@ module.exports = {
             const ChannelLog = client.channels.cache.get(config.channels.modlog);
             const ModloguMem = new Discord.MessageEmbed().setAuthor(`Kamaitachi ban`, `https://images.genius.com/93a16c1f0873bdfdfaac3b0b6e23f680.300x300x1.jpg`).setColor(config.color.red)
             const ModloguUser = new Discord.MessageEmbed().setAuthor(`Kamaitachi ban`, `https://images.genius.com/93a16c1f0873bdfdfaac3b0b6e23f680.300x300x1.jpg`).setColor(config.color.red)
+            
+            const banRegTimestamp = Date.now()  
 
             if (result.members[0] != undefined) {
                 ModloguMem.setTitle(msg.author.username)
 
-
+                
                 for (let answer = `**Membros banidos**`, i = 0; result.members.length > i; i++) {
+                    // register the selfbot information on the databese
                     if (reason == "Selfbot") {
-                        fs.writeFile('./selfbotid.txt', "\n " + result.members[i].user.id, { flag: 'a' }, err => { })
+                        let user = result.members[i].user
+                        selfbotRegister.selfbotAdd(banRegTimestamp, user.avatar, user.id, user.tag, user.createdTimestamp, result.members[i].joinedTimestamp)
                     }
 
                     if (ModloguMem.fields.length == 25) {
@@ -205,7 +209,8 @@ module.exports = {
 
                 for (let answer = `**Usuários fora do servidor banidos**`, i = 0; result.users.length > i; i++) {
                     if (reason == "Selfbot") {
-                        fs.writeFile('./selfbotid.txt', "\n " + result.users[i].id, { flag: 'a' }, err => { })
+                        let user = result.users[i]
+                        selfbotRegister.selfbotAdd( banRegTimestamp, user.avatar, user.id, user.tag, user.createdTimestamp, null)
                     }
 
                     if (ModloguUser.fields.length == 25) {
