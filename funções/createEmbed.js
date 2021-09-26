@@ -283,7 +283,7 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
                                     a.awaitReactions({ filter, max: 1, time: 120000, errors: [`Time`] }).then(rea => {
                                         if (rea.first().emoji.name == `❌`) {
                                             a.delete();
-                                            embed.setFooter(ftx.first().contet)
+                                            embed.setFooter(ftx.first().content)
                                             msg.channel.send({ embeds: [embed] })
                                             returnemb(embed);
                                         } else {
