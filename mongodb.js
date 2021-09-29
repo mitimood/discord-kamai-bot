@@ -462,7 +462,7 @@ async function get_xp(id) {
 
     let xp = new Object()
 
-  if (doc) {
+  if (doc?.xp) {
     if (doc?.xp?.xp_chat) {
 
       doc.xp.xp_chat = doc.xp.xp_chat * config.xp.chat
