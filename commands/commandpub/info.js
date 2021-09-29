@@ -65,7 +65,7 @@ module.exports={
         if(badges){
             embed.addField('⭐Badges', badges, true)
         }
-        const coins = await moneyGet(msg.author.id)
+        const coins = await moneyGet(userid)
         if(coins){
             embed.addField('<:Coin_kamai:881917666829414430> Kamaicoins', `₵**${coins}**`, false)
         }
