@@ -472,6 +472,8 @@ async function get_xp(id) {
       xp.chat.level = parseInt(doc.xp.xp_chat/150)
       xp.chat.percentage = parseInt(100 * (Math.log2(doc.xp.xp_chat) - parseInt(Math.log2(doc.xp.xp_chat))))/100
 
+    }else{
+      xp.chat = new Object()
     }
     if (doc?.xp?.xp_voice) {
       xp.voice = new Object()
@@ -480,6 +482,8 @@ async function get_xp(id) {
       xp.voice.total = doc.xp.xp_voice
       xp.voice.level = parseInt(Math.log2(doc.xp.xp_voice))
       xp.voice.percentage = parseInt(100 * (Math.log2(doc.xp.xp_voice) - parseInt(Math.log2(doc.xp.xp_voice))))/100
+    }else{
+      xp.voice = new Object()
     }
     if(doc?.xp){
       xp.global = new Object()
@@ -493,7 +497,7 @@ async function get_xp(id) {
       if(doc?.xp?.xp_voice){
         xp.global.total = (doc.xp.xp_voice * config.xp.voice) + xp.global.total
       }
-      let increaseXP = 20
+      let increaseXP = config.xp.requiredLevelUp
 
       let xpUp = increaseXP;
       let xpTotalCalc = xp.global.total
@@ -502,14 +506,15 @@ async function get_xp(id) {
         xpUp = xpUp + increaseXP
         xp.global.level++ 
       }
+      console.log(xp.global.level)
       xp.global.percentage = ( parseInt( ( xpTotalCalc / xpUp ) * 100 ) ) / 100
 
     }
 
   } else {
-    xp.chat = undefined
-    xp.voice = undefined
-    xp.global = undefined
+    xp.chat = new Object()
+    xp.voice = new Object()
+    xp.global = new Object()
   }
   return xp
 

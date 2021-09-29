@@ -77,7 +77,6 @@ module.exports={
         `)
 
         msg.channel.send({content: msg.author.toString(),embeds:[embed]})
-
     }
 }
 
@@ -231,7 +230,6 @@ async function xp_info(id) {
         for (let i = xpVoiceBar.length; 308>i; i = i+28){
             xpVoiceBar += "<:blackbar:891790337809449021>‎"
         }
-        console.log(xp.voice.total)
         xp.voice.time = (parseInt(( ( ( xp.voice.total / config.xp.voice ) * 300000 ) / 3600000)*10))/10
         xp.voice.xpVoiceBar = xpVoiceBar
 
