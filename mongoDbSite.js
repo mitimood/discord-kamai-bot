@@ -1,5 +1,6 @@
 const { MongoClient } = require('mongodb');
-const uri = "mongodb+srv://sitekamai:uIH6W2b8vJdlUJVS@cluster0.2gmdz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const config_secret = require('./config_secret');
+const uri = `mongodb+srv://sitekamai:${config_secret.mongo_passwordSite}@cluster0.2gmdz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 module.exports = class dbsite {
