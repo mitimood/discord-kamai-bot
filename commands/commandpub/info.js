@@ -1,7 +1,7 @@
 const { Discord } = require('../..');
 const config = require('../../config');
 const { TrimMsg } = require('../../funções/funções');
-const { get_xp } = require('../../mongodb')
+const { get_xp, moneyGet } = require('../../mongodb')
 
 /*
     Say some informations about a specific member
@@ -10,6 +10,7 @@ const { get_xp } = require('../../mongodb')
     - When the account joined the guild
     - How much time since the account joined in the guild
 */
+const blackProgressBar = "<:blackbar:891790337809449021><:blackbar:891790337809449021><:blackbar:891790337809449021><:blackbar:891790337809449021><:blackbar:891790337809449021><:blackbar:891790337809449021><:blackbar:891790337809449021><:blackbar:891790337809449021><:blackbar:891790337809449021><:blackbar:891790337809449021><:blackbar:891790337809449021>"
 
 module.exports={
     name: "info",
@@ -64,15 +65,16 @@ module.exports={
         if(badges){
             embed.addField('⭐Badges', badges, true)
         }
-        embed.addField('💰Kamaicoins', "0.00", false)
+        const coins = await moneyGet(msg.author.id)
+        if(coins){
+            embed.addField('<:Coin_kamai:881917666829414430> Kamaicoins', `₵**${coins}**`, false)
+        }
 
         let xp = await xp_info(userid)
-        embed.setDescription(`**Chat lvl**: ${xp.chat ? xp.chat.level : 0 }
-        ${xp.chat ? xp.chat.xpChatBar : "<‏‏‎          >"} ${xp.chat ? parseInt(xp.chat.percentage * 100) : "0"}%
-        
-        **Voz lvl**: ${xp.voice ? xp.voice.level : 0 } 
-        ${xp.voice ? `(${xp.voice.time.getHours()+ "h" + xp.voice.time.getMinutes()+"m"})` : ""} 
-        ${xp.voice ? xp.voice.xpVoiceBar : "<‎‎‎‎‎‎‎‏‏‎          ‎>"} ${xp.voice ? parseInt(xp.voice.percentage * 100) : "0"}%`)
+        embed.setDescription(`**global lvl**: ${xp.global ? xp.global.level : 0 }
+        ${xp.global ? xp.global.xpGlobalBar : blackProgressBar} ${xp.global ? parseInt(xp.global.percentage * 100) : "0"}%
+        **CHAT**: ${xp.chat.total}xp   **VOZ**: ${xp.voice.total}xp [${xp.voice.time}h]
+        `)
 
         msg.channel.send({content: msg.author.toString(),embeds:[embed]})
 
@@ -195,31 +197,44 @@ async function xp_info(id) {
 
     let xp = await get_xp(id)
 
-
     if (xp.chat){
-        let xpChatBar = "<"
-
+        let xpChatBar = ""
+        
         for ( let i =0 ; xp.chat.percentage*10>=i ; i++){
-            xpChatBar += "="
+            xpChatBar += "<:redBar:891790337578782731>"
         }
-        for (let i = xpChatBar.length; 13>i; i++){
-            xpChatBar += " "
+        //Adds 28 to index => redbarEmoji == 28 characteres
+        for (let i = xpChatBar.length; 308>i; i= i+28){
+            xpChatBar += "<:blackbar:891790337809449021>"
         }
-        xpChatBar += ">"
         xp.chat.xpChatBar = xpChatBar
     }
 
+    if (xp.global){
+        let xpGlobalBar = ""
+        
+        for ( let i =0 ; xp.chat.percentage*10>=i ; i++){
+            xpGlobalBar += "<:redBar:891790337578782731>"
+        }
+        //Adds 28 to index => redbarEmoji == 28 characteres
+        for (let i = xpGlobalBar.length; 308>i; i= i+28){
+            xpGlobalBar += "<:blackbar:891790337809449021>"
+        }
+        xp.global.xpGlobalBar = xpGlobalBar
+    }
+
     if (xp.voice){
-        let xpVoiceBar = "<"
-        for ( let i =0 ; xp.voice.percentage*10>=i ; i++){
-            xpVoiceBar += "="
+        let xpVoiceBar = ""
+        for ( let i = 0 ; xp.voice.percentage*10>=i ; i++){
+            xpVoiceBar += "<:redBar:891790337578782731>"
         }
-        for (let i = xpVoiceBar.length; 13>i; i++){
-            xpVoiceBar += " ‎"
+        for (let i = xpVoiceBar.length; 308>i; i = i+28){
+            xpVoiceBar += "<:blackbar:891790337809449021>‎"
         }
-        xpVoiceBar += ">"
-        xp.voice.time = new Date(xp.voice.total * 300000)
+        console.log(xp.voice.total)
+        xp.voice.time = (parseInt(( ( ( xp.voice.total / config.xp.voice ) * 300000 ) / 3600000)*10))/10
         xp.voice.xpVoiceBar = xpVoiceBar
+
 
     }
     return xp

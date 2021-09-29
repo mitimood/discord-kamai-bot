@@ -2,9 +2,9 @@ const { LocalDb } = require("../..")
 const config = require("../../config")
 
 module.exports={
-    name: "close",
-    aliases: ["fechar"],
-    description: "fecha a sala do abaddon",
+    name: "open",
+    aliases: [],
+    description: "abre a sala do abaddon",
 
     async execute (msg){
         if(!await LocalDb.get_channel(config.channels.abaddon_voice) || !await LocalDb.get_channel(config.channels.abaddon_voice)["state"]) return msg.channel.send("<#"+config.channels.abaddon_voice+">")
@@ -33,7 +33,7 @@ module.exports={
             title: "Daqui por diante eu cuido",
             color: config.color.red
         }]})
-        msg.guild.channels.cache.get(config.channels.abaddon_voice).permissionOverwrites.create(msg.guild.id,{CONNECT:false})
+        msg.guild.channels.cache.get(config.channels.abaddon_voice).updateOverwrite(msg.guild.id,{CONNECT:false})
         
     }
 }

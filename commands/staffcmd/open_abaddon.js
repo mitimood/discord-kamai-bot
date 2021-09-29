@@ -7,9 +7,9 @@ const config_secret = require("../../config_secret")
     Open the abbadon channel channel requiring a password
 */
 module.exports={
-    name: "open",
-    aliases: ["abrir"],
-    description: "Abre a sala de abaddon", 
+    name: "close",
+    aliases: [],
+    description: "Fecha a sala de abaddon", 
     async execute(msg){
  
         try{
@@ -22,11 +22,10 @@ module.exports={
             }]})
             let filter = x=> msg.author == x.author
             let password = await msg.channel.awaitMessages({filter,time:10000,max:1})
+
             if(password.first().content.toLowerCase() == config_secret.passwords.abaddon){
                 question.delete()
                 open(password.first())
-            
-            
             
             }else{
                 throw `WrongPassword`
@@ -58,21 +57,21 @@ async function open(msg){
     if(await LocalDb.get_channel(config.channels.abaddon_voice)["state"]) return msg.channel.send("<#"+config.channels.abaddon_voice+">")
     LocalDb.set_channel_state(config.channels.abaddon_voice, true)
     let abaddon = msg.guild.channels.cache.get(config.channels.abaddon_voice)
-    var welcome = await msg.channel.send({embeds:[{
+    var welcome = await msg.channel.send({embed:{
         thumbnail:{url:"https://media2.giphy.com/media/6G118Ea8ppWuCAhMDw/giphy.gif?cid=790b761104af5a82e6d44948502f7b25dd42bc4e6931159d&rid=giphy.gif&ct=s"},
         image:{url:"https://i.imgur.com/dFlhEmM.png"},
         description:"`Estou fazendo os preparativos`",
         title: "Bom vê-lo por aqui!",
         color: config.color.red
-    }]})
+    }})
     setTimeout(()=>{
         welcome.delete()
-        msg.channel.send({content:"<#"+config.channels.abaddon_voice+">",embeds:[{
+        msg.channel.send({content:"<#"+config.channels.abaddon_voice+">",embed:{
             description:"`Irei me retirar do meu posto de guarda! Cuide por mim`",
             title: "Seja bem vindo!",
             color: config.color.red
-        }]})
-        abaddon.permissionOverwrites.create(msg.guild.id,{CONNECT:true})
+        }})
+        abaddon.updateOverwrite(msg.guild.id,{CONNECT:true})
 
     }, 20000)
 

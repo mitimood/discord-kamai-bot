@@ -7,10 +7,12 @@ const MongodbClient = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-module.exports = { MongodbClient, SetTempMute, SetUnmute, CheckMute, transferdb, warn_list, notifyList, warn_remove, warn_add, Check_all_mutes, role_register_add, role_register_remove, check_roles, add_voice_xp, add_chat_xp, get_xp, daily_get, daily_set, moneyGet }
+module.exports = {resetXp ,verifyXp, MongodbClient, SetTempMute, voiceMuteSet, voiceMuteCheck, SetUnmute, CheckMute, transferdb, warn_list,notifyList, warn_remove, warn_add, Check_all_mutes, role_register_add, role_register_remove, check_roles,add_voice_xp, add_chat_xp, get_xp, daily_get, daily_set, moneyGet }
 const moment = require("moment-timezone");
+const databaseSite = require("./mongoDbSite");
+const dbSite = new databaseSite()
 
-async function transferdb() {
+async function transferdb() { 
   try {
 
     const database = MongodbClient.db(config.mongo.db_geral);
@@ -128,6 +130,7 @@ async function warn_list(user_id) {
   }
 }
 
+
 async function notifyList(user_id) {
 
   try {
@@ -161,7 +164,6 @@ async function notifyList(user_id) {
     console.log(err)
   }
 }
-
 
 async function SetTempMute(id, since_stamp, duration_stamp) {
   try {
@@ -219,6 +221,34 @@ async function CheckMute(id) {
   }
 }
 
+async function voiceMuteSet ( id = Number, state = Boolean ){
+  try{
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const member_management = database.collection('member_management');
+
+    await member_management.updateOne({"_id": id}, { "voiceMute": state }, { upsert:true } )
+  }catch(err){
+    console.log(err)
+  }
+}
+
+
+async function voiceMuteCheck ( id = Number, state = Boolean ){
+  try{
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const member_management = database.collection('member_management');
+
+    const doc = await member_management.findOne( { "_id": id, "voiceState": true } )
+
+    if (doc){
+      console.log(doc)
+    }
+
+  }catch(err){
+    console.log(err)
+  }
+}
+
 async function Check_all_mutes() {
 
   try {
@@ -242,8 +272,20 @@ async function Check_all_mutes() {
     console.log(err)
   }
 }
+  
+async function muteNameChange(){
+  try{
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const members_adm = database.collection('member_management');
 
-async function role_register_add(user_id, role_id) {
+    await members_adm.updateMany( {muted:{$exists:true} }, { $rename: { muted: "chatMuted" }} )
+    
+  }catch (err){
+    console.log(err)
+  }
+}
+
+async function role_register_add(user_id = String, role_id = String) {
 
   try {
     const database = MongodbClient.db(config.mongo.db_geral);
@@ -257,7 +299,7 @@ async function role_register_add(user_id, role_id) {
   }
 }
 
-async function role_register_remove(user_id, role_id) {
+async function role_register_remove(user_id = String, role_id = String) {
 
   try {
     const database = MongodbClient.db(config.mongo.db_geral);
@@ -290,7 +332,6 @@ async function check_roles(user_id) {
 
   }
 }
-
 
 /*async function create_canary_db() {
 
@@ -326,6 +367,10 @@ async function add_voice_xp(ids, xp) {
 
     await xpManagement.updateMany(query, insert, { upsert: true })
 
+    for (const id of ids) {
+      await verifyXp(id)
+    }
+
   }catch (err) {
     console.log(err)
   }
@@ -333,27 +378,82 @@ async function add_voice_xp(ids, xp) {
 
 
 
-async function add_chat_xp(ids, xp) {
+async function add_chat_xp(id, xp) {
 
   try{
     
   const database = MongodbClient.db(config.mongo.db_geral);
   const xpManagement = database.collection('member_management');
 
-  let query = { "_id": ids }
+  let query = { "_id": id }
   let insert = { "$inc": { "xp.xp_chat": xp } }
 
-    await xpManagement.updateMany(query, insert, { upsert: true })
+  await xpManagement.updateMany(query, insert, { upsert: true })
+  
+  await verifyXp(id)
 
   }catch(err){
     console.log(err)
   }
 }
 
+async function verifyXp(id){
+
+  try {
+    
+    const index = require('./index')
+    let xp = await get_xp(id)
+   
+   // let userLvl = xp.global.level
+    
+    let member = index.client.guilds.cache.get(config.guild_id).members.cache.get(id)
+    let highestLvlRole 
+    let membLvlRoles = member.roles.cache.filter(r=>{
+      if(Object.values(config.roles.levels).includes(r.id)){
+        if(!highestLvlRole || highestLvlRole.rawPosition < r.rawPosition){
+          highestLvlRole = r          
+        }
+      }
+      return Object.values(config.roles.levels).includes(r.id)
+    })
+    // gets the member high position role level in integer value'
+    let highestLvl;
+    if(highestLvlRole){
+      highestLvl = Object.keys(config.roles.levels).find(key => config.roles.levels[key] === highestLvlRole.id)
+      highestLvl = parseInt(highestLvl)
+    }else{
+      highestLvl = null
+    }
+
+    let lvlIds = Object.values(config.roles.levels)
+    
+    let nxtLvlId;
+    
+    if(highestLvlRole){
+      nxtLvlId = lvlIds[lvlIds.findIndex(k=> k == (highestLvlRole.id)) + 1]
+    }else{
+      nxtLvlId = lvlIds.shift()
+    }
+    let nxtLvl = Object.keys(config.roles.levels).find(key => config.roles.levels[key] === nxtLvlId)
+    
+    if( xp.global.level >= nxtLvl && !highestLvlRole || highestLvlRole.id != nxtLvlId ){
+      await member.roles.add(nxtLvlId)
+      await role_register_add(member.id , nxtLvlId)
+      if(highestLvlRole){
+        await member.roles.remove(highestLvlRole.id)
+        await role_register_remove(member.id, highestLvlRole.id)
+      }
+    }
+
+  } catch (error) {
+    console.log(error)
+  }
+    
+}
 
 async function get_xp(id) {
   try{
-    const database = MongodbClient.db(config.mongo.db_geral);
+    const database = MongodbClient.db('kamaibot');
     const xpManagement = database.collection('member_management');
   
     let query = { "_id": id }
@@ -364,29 +464,73 @@ async function get_xp(id) {
 
   if (doc) {
     if (doc?.xp?.xp_chat) {
+
+      doc.xp.xp_chat = doc.xp.xp_chat * config.xp.chat
+
       xp.chat = new Object()
       xp.chat.total = doc.xp.xp_chat
-      xp.chat.level = parseInt(Math.log2(doc.xp.xp_chat))
+      xp.chat.level = parseInt(doc.xp.xp_chat/150)
       xp.chat.percentage = parseInt(100 * (Math.log2(doc.xp.xp_chat) - parseInt(Math.log2(doc.xp.xp_chat))))/100
 
     }
     if (doc?.xp?.xp_voice) {
       xp.voice = new Object()
+      doc.xp.xp_voice = doc.xp.xp_voice * config.xp.voice
+
       xp.voice.total = doc.xp.xp_voice
       xp.voice.level = parseInt(Math.log2(doc.xp.xp_voice))
       xp.voice.percentage = parseInt(100 * (Math.log2(doc.xp.xp_voice) - parseInt(Math.log2(doc.xp.xp_voice))))/100
+    }
+    if(doc?.xp){
+      xp.global = new Object()
+
+      xp.global.total = 0
+      xp.global.level = 0
+      
+      if(doc?.xp?.xp_chat){
+        xp.global.total = (doc.xp.xp_chat * config.xp.chat) + xp.global.total
+      }
+      if(doc?.xp?.xp_voice){
+        xp.global.total = (doc.xp.xp_voice * config.xp.voice) + xp.global.total
+      }
+      let increaseXP = 20
+
+      let xpUp = increaseXP;
+      let xpTotalCalc = xp.global.total
+      while(xpTotalCalc > xpUp){
+        xpTotalCalc -= xpUp
+        xpUp = xpUp + increaseXP
+        xp.global.level++ 
+      }
+      xp.global.percentage = ( parseInt( ( xpTotalCalc / xpUp ) * 100 ) ) / 100
+
     }
 
   } else {
     xp.chat = undefined
     xp.voice = undefined
+    xp.global = undefined
   }
   return xp
 
-  }catch(err){
+  }catch(err){  
     console.log(err)
   }
 }
+
+async function resetXp(){
+
+  try {
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const xpManagement = database.collection('member_management');
+
+    xpManagement.updateMany({xp:{"$exists":true}},{"$unset": {xp:1}} )
+
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 
 /*async function data_convert(){
   const database = MongodbClient.db(config.mongo.db_geral);
@@ -489,5 +633,4 @@ async function moneyGet(id){
   }catch(err){
     console.log(err)
   }
-
 }

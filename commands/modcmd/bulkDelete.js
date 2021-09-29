@@ -23,10 +23,6 @@ module.exports={
 
 
 async function bulkdelete( channel, quantity ){
-    /**
-     * @channel
-     * @quantity
-     */
     try{
        let deletedMsgs = await channel.bulkDelete(quantity, true)
        return deletedMsgs
@@ -34,6 +30,5 @@ async function bulkdelete( channel, quantity ){
     }catch(err){
         console.log(err)
         return false
-
     }
 }

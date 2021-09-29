@@ -1,4 +1,5 @@
 const { client } = require("../..");
+const config = require("../../config");
 
 const talkedRecently = new Set();
 const { add_chat_xp } = require("../../mongodb");

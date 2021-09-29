@@ -16,6 +16,13 @@ client.on("messageCreate", msg=>{
             pub_module.execute(msg)
         }
     })
+    const games = fs.readdirSync(`./commands/commandpub/games`).filter(file => file.endsWith(`.js`));
+    games.forEach(command_file_name => {
+        let games_module = require(`../commands/commandpub/games/${command_file_name}`);
+        if(command == games_module.name || games_module.aliases.includes(command)){
+            games_module.execute(msg)
+        }
+    })
     /*const music = fs.readdirSync('./commands/music').filter(file => file.endsWith(`.js`));
     music.forEach(command_file_name => {
         let pub_module = require(`../commands/music/${command_file_name}`);
@@ -89,6 +96,5 @@ client.on("messageCreate", msg=>{
             }
         })
     }
-
     }
 })

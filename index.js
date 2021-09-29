@@ -6,11 +6,11 @@ const Database = require("./localdb");
 const LocalDb = new Database();
 const mongodb = require("./mongodb")
 
-const Database2 = require("./dbEmbeds");
-const embDb = new Database2();
-
 const selfbotDB = require("./db/selfbotRegister");
 const selfbotRegister = new selfbotDB();
+
+const Database2 = require("./dbEmbeds");
+const embDb = new Database2();
 
 module.exports = { client, LocalDb, embDb, Discord, selfbotRegister }
 //Load all the events
@@ -51,7 +51,7 @@ client.on("ready", async () => {
     try{
         await mongodb.MongodbClient.connect()
         await mongodb.Check_all_mutes()
-    } catch (err)   {
+    }catch(err){
         console.log(err)
     }
 

@@ -11,7 +11,7 @@ list (id of user)
 
 module.exports={
     name: "listnotify",
-    aliases: ["notifylist", "listarnotificações", "notificaçõeslistar","lntf","listntf"],
+    aliases: ["notifylist", "listarnotificações", "notificaçõeslistar"],
     description: "Lista as notificações de um usuário",
 
     async execute (msg){

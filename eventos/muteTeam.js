@@ -1,5 +1,7 @@
+const { GuildMemberManager } = require("discord.js");
 const config = require("../config");
-const { client } = require("../index")
+const { client } = require("../index");
+const { voiceMuteSet } = require("../mongodb");
 
 // log when a used is muted by an karaoke organizer
 
@@ -7,7 +9,7 @@ const { client } = require("../index")
 
         if(newState.guild.id != config.guild_id) return
         if(newState.serverMute == oldState.serverMute)return;
-        if(newState.channel && newState.channel.parentId == config.channels.event && newState.member.roles.cache.has(config.roles.teams.equipeEvent)) return
+        if(newState?.channel?.parentId == config.channels.event && newState.member.roles.cache.has(config.roles.teams.equipeEvent)) return
         if(newState.serverMute != undefined){
             const fetchedLogs = await newState.guild.fetchAuditLogs({
                 limit: 1, 
@@ -18,7 +20,7 @@ const { client } = require("../index")
         if(mutado && mutado.createdTimestamp > (Date.now() - 1000)){  
             const { executor, target, changes} = mutado;
        
-            const memberex =newState.guild.members.cache.get(executor.id)
+            const memberex = newState.guild.members.cache.get(executor.id)
 
             if(executor == target) return
             if(memberex.voice.channel && memberex.voice.channel.parentId == config.channels.event && memberex.roles.cache.has(config.roles.teams.equipeEvent)) return
@@ -53,4 +55,11 @@ const { client } = require("../index")
                 })                              
             }
         }}
+
+        if ( newState.channelId === config.channels.event ){
+            
+        }
+
+
+    
     })

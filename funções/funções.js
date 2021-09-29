@@ -79,11 +79,11 @@ module.exports={TrimMsg, Banning, ban_member_send_message, tempmute, VerificId, 
     
 // apply all the punishment based on the user points
 
-    async function punishments(target_id, points, guild, executor) {
+        async function punishments(target_id, points, guild, executor) {
 
         let member = guild.members.cache.get(target_id)
         if(!member) return false
-        
+
         if(points>=4){ ban_member_send_message(target_id,"4 advertencias", guild, executor)}
         if(points>=3){ 
             member.roles.add(config.roles.adv3)
@@ -101,6 +101,6 @@ module.exports={TrimMsg, Banning, ban_member_send_message, tempmute, VerificId, 
                     }
             }
         }
-    }
+        }
     // returns an array of entries separated
  
