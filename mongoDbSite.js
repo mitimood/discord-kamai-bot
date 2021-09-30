@@ -8,17 +8,15 @@ module.exports = class dbsite {
     }
 
     addDaily (id, money, streak) {
-        client.connect(async err => {
-            const member_management = client.db("Site").collection("member_management");
-
-            await member_management.updateOne( { "_id":id }, { "$inc":{ "economy.money":money }, "$set": {"economy.daily.streak": streak} }, {upsert:true} )
-            client.close();
-          });
+        try{
+            client.connect(async err => {
+                const member_management = client.db("Site").collection("member_management");
     
+                await member_management.updateOne( { "_id":id }, { "$inc":{ "economy.money":money }, "$set": {"economy.daily.streak": streak} }, {upsert:true} )
+                client.close();
+              });
+        }catch(err){
+            console.log(err)
+        }
     }
-    
-
-
 }
-
-
