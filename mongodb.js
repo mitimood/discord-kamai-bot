@@ -492,10 +492,10 @@ async function get_xp(id) {
       xp.global.level = 0
       
       if(doc?.xp?.xp_chat){
-        xp.global.total = ( doc.xp.xp_chat * config.xp.chat ) + xp.global.total
+        xp.global.total =  doc.xp.xp_chat  + xp.global.total
       }
       if(doc?.xp?.xp_voice){
-        xp.global.total = (doc.xp.xp_voice * config.xp.voice ) + xp.global.total
+        xp.global.total = doc.xp.xp_voice + xp.global.total
       }
       let increaseXP = config.xp.requiredLevelUp
 
