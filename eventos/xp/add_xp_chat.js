@@ -8,7 +8,7 @@ client.on("messageCreate", msg=>{
 
     const cooldown = 300000
     
-    if (talkedRecently.has(msg.author.id)) return
+    if (talkedRecently.has(msg.author.id) || msg.author.bot) return
 
     talkedRecently.add(msg.author.id);
     setTimeout(() => {

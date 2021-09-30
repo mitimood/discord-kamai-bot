@@ -434,17 +434,17 @@ async function verifyXp(id){
     }else{
       nxtLvlId = lvlIds.shift()
     }
-    let nxtLvl = Object.keys(config.roles.levels).find(key => config.roles.levels[key] === nxtLvlId)
-    
-    if( xp.global.level >= nxtLvl && !highestLvlRole || highestLvlRole.id != nxtLvlId ){
+    let nxtLvl = parseInt(Object.keys(config.roles.levels).find(key => config.roles.levels[key] === nxtLvlId))
+
+    if( xp.global.level >= nxtLvl && (!highestLvlRole || highestLvlRole?.id != nxtLvlId) && nxtLvlId){
       await member.roles.add(nxtLvlId)
       await role_register_add(member.id , nxtLvlId)
+
       if(highestLvlRole){
         await member.roles.remove(highestLvlRole.id)
         await role_register_remove(member.id, highestLvlRole.id)
       }
     }
-
   } catch (error) {
     console.log(error)
   }
@@ -453,7 +453,7 @@ async function verifyXp(id){
 
 async function get_xp(id) {
   try{
-    const database = MongodbClient.db('kamaibot');
+    const database = MongodbClient.db(config.guild_id);
     const xpManagement = database.collection('member_management');
   
     let query = { "_id": id }
@@ -492,25 +492,23 @@ async function get_xp(id) {
       xp.global.level = 0
       
       if(doc?.xp?.xp_chat){
-        xp.global.total = (doc.xp.xp_chat * config.xp.chat) + xp.global.total
+        xp.global.total = ( doc.xp.xp_chat * config.xp.chat ) + xp.global.total
       }
       if(doc?.xp?.xp_voice){
-        xp.global.total = (doc.xp.xp_voice * config.xp.voice) + xp.global.total
+        xp.global.total = (doc.xp.xp_voice * config.xp.voice ) + xp.global.total
       }
       let increaseXP = config.xp.requiredLevelUp
 
-      let xpUp = increaseXP;
+      let xpUp = increaseXP
       let xpTotalCalc = xp.global.total
+
       while(xpTotalCalc > xpUp){
         xpTotalCalc -= xpUp
         xpUp = xpUp + increaseXP
-        xp.global.level++ 
+        xp.global.level++
       }
-      console.log(xp.global.level)
       xp.global.percentage = ( parseInt( ( xpTotalCalc / xpUp ) * 100 ) ) / 100
-
     }
-
   } else {
     xp.chat = new Object()
     xp.voice = new Object()

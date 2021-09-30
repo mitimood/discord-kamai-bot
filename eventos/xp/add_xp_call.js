@@ -13,7 +13,9 @@ function xp_voice_Add(){
         voice.forEach(voice_channel => {
             if (voice_channel.members.size > 1 && voice_channel.members.filter(member => !member.bot).size >= 2) {
                 voice_channel.members.forEach(member => {   
-                    ids.push(member.id)
+                    if(!member.user.bot){
+                        ids.push(member.id)
+                    }
                 })
             }
         })
