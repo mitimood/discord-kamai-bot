@@ -453,7 +453,7 @@ async function verifyXp(id){
 
 async function get_xp(id) {
   try{
-    const database = MongodbClient.db(config.guild_id);
+    const database = MongodbClient.db(config.mongo.db_geral);
     const xpManagement = database.collection('member_management');
   
     let query = { "_id": id }
