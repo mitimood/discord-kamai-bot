@@ -569,7 +569,8 @@ async function daily_set(id){
     if ( dailyDoc?.economy?.daily?.last + 172800000 >= Date.now() ){
       let money = parseInt( Math.log2(dailyDoc.economy.daily.streak) * 100 )
       let streak = 1 + dailyDoc?.economy?.daily?.streak
-      await members_management.updateOne( { "_id":id }, { "$setOnInsert":{ "_id":id }, "$set":{ "economy.daily": { last : Date.now()} },"$inc":{ "economy.money":money, "economy.daily.streak": 1 } }, { upsert: true } )
+      let newStreak = parseInt(1)
+      await members_management.updateOne( { "_id":id }, { "$setOnInsert":{ "_id":id }, "$set":{ "economy.daily.last": Date.now() },"$inc":{ "economy.money":money, "economy.daily.streak": newStreak } }, { upsert: true } )
       //send the same data to db site
       dbSite.addDaily(id , money, dailyDoc.streak + 1)
       return { money: money, streak: streak}
@@ -577,7 +578,7 @@ async function daily_set(id){
     } else{
       let money = 100
       let streak = 1
-      await members_management.updateOne( { "_id":id }, { "$setOnInsert":{ "_id":id }, "$set":{ "economy.daily": { last : Date.now(),  streak: streak } }, "$inc":{ "economy.money":money } }, { upsert: true } )
+      await members_management.updateOne( { "_id":id }, { "$setOnInsert":{ "_id":id }, "$set":{ "economy.daily": { "last" : Date.now(),  streak: streak } }, "$inc":{ "economy.money":money } }, { upsert: true } )
       dbSite.addDaily(id , money, 1)
       return { money: money, streak: streak}
     }
