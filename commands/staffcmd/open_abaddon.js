@@ -7,9 +7,9 @@ const config_secret = require("../../config_secret")
     Open the abbadon channel channel requiring a password
 */
 module.exports={
-    name: "close",
+    name: "open",
     aliases: [],
-    description: "Fecha a sala de abaddon", 
+    description: "Abre a sala de abaddon", 
     async execute(msg){
  
         try{
