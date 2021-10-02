@@ -57,13 +57,13 @@ async function open(msg){
     if(await LocalDb.get_channel(config.channels.abaddon_voice)["state"]) return msg.channel.send("<#"+config.channels.abaddon_voice+">")
     LocalDb.set_channel_state(config.channels.abaddon_voice, true)
     let abaddon = msg.guild.channels.cache.get(config.channels.abaddon_voice)
-    var welcome = await msg.channel.send({embed:{
+    var welcome = await msg.channel.send({embeds:[{
         thumbnail:{url:"https://media2.giphy.com/media/6G118Ea8ppWuCAhMDw/giphy.gif?cid=790b761104af5a82e6d44948502f7b25dd42bc4e6931159d&rid=giphy.gif&ct=s"},
         image:{url:"https://i.imgur.com/dFlhEmM.png"},
         description:"`Estou fazendo os preparativos`",
         title: "Bom vê-lo por aqui!",
         color: config.color.red
-    }})
+    }]})
     setTimeout(()=>{
         welcome.delete()
         msg.channel.send({content:"<#"+config.channels.abaddon_voice+">",embed:{
@@ -71,8 +71,7 @@ async function open(msg){
             title: "Seja bem vindo!",
             color: config.color.red
         }})
-        abaddon.updateOverwrite(msg.guild.id,{CONNECT:true})
-
+        abaddon.permissionOverwrites.create(msg.guild.id,{CONNECT:true})
     }, 20000)
 
 }

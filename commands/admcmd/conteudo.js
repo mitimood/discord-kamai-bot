@@ -17,10 +17,10 @@ module.exports={
         if(msgArgs[1]){
                 message.channel.messages.fetch(msgArgs[1]).catch(m=>message.channel.send({embeds:[{color:config.color.err,description:"Não foi possivel encontrar a mensagem"}]})).then(messagem => {
                     if(messagem==undefined){
-                        message.channel.send({embed:{
+                        message.channel.send({embeds:[{
                             description:"Você não enviou o id da mensagem certo",
                             color:config.color.err
-                        }})
+                        }]})
                     }else{
                         message.channel.send("```"+ messagem.content +"```")}}
                 )

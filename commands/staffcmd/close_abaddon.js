@@ -33,7 +33,7 @@ module.exports={
             title: "Daqui por diante eu cuido",
             color: config.color.red
         }]})
-        msg.guild.channels.cache.get(config.channels.abaddon_voice).updateOverwrite(msg.guild.id,{CONNECT:false})
+        msg.guild.channels.cache.get(config.channels.abaddon_voice).permissionOverwrites.create(msg.guild.id,{CONNECT:false})
         
     }
 }
