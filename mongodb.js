@@ -10,7 +10,6 @@ const MongodbClient = new MongoClient(uri, {
 module.exports = {resetXp ,verifyXp, MongodbClient, SetTempMute, voiceMuteSet, voiceMuteCheck, SetUnmute, CheckMute, transferdb, warn_list,notifyList, warn_remove, warn_add, Check_all_mutes, role_register_add, role_register_remove, check_roles,add_voice_xp, add_chat_xp, get_xp, daily_get, daily_set, moneyGet }
 const moment = require("moment-timezone");
 const databaseSite = require("./mongoDbSite");
-const dbSite = new databaseSite()
 
 async function transferdb() { 
   try {
@@ -572,14 +571,14 @@ async function daily_set(id){
       let newStreak = parseInt(1)
       await members_management.updateOne( { "_id":id }, { "$setOnInsert":{ "_id":id }, "$set":{ "economy.daily.last": Date.now() },"$inc":{ "economy.money":money, "economy.daily.streak": newStreak } }, { upsert: true } )
       //send the same data to db site
-      dbSite.addDaily(id , money, dailyDoc.streak + 1)
+      databaseSite.addDaily(id , money, dailyDoc.streak + 1)
       return { money: money, streak: streak}
   
     } else{
       let money = 100
       let streak = 1
       await members_management.updateOne( { "_id":id }, { "$setOnInsert":{ "_id":id }, "$set":{ "economy.daily": { "last" : Date.now(),  streak: streak } }, "$inc":{ "economy.money":money } }, { upsert: true } )
-      dbSite.addDaily(id , money, 1)
+      databaseSite.addDaily(id , money, 1)
       return { money: money, streak: streak}
     }
 

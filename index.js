@@ -5,6 +5,8 @@ const fs = require("fs");
 const Database = require("./localdb");
 const LocalDb = new Database();
 const mongodb = require("./mongodb")
+const mongoClientSite = require("./mongoDbSite")
+
 
 const selfbotDB = require("./db/selfbotRegister");
 const selfbotRegister = new selfbotDB();
@@ -49,6 +51,7 @@ client.on("ready", async () => {
         await client.guilds.cache.get(id_guild).members.fetch()
     }
     try{
+        await mongoClientSite.mongoClientSite.connect()
         await mongodb.MongodbClient.connect()
         await mongodb.Check_all_mutes()
     }catch(err){
