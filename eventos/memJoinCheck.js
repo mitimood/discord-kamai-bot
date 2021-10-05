@@ -22,7 +22,7 @@ client.on("guildMemberAdd", async (member) => {
 
     
 
-    if((member.displayName.toLowerCase()).matchAll(/milena[0-9]*|^! cd17z\W*\w*|Bruninha+|Amanda+|Amandinha+|Larinha+|Thalita+|! Baixinha*|Safira+/)){
+    if((member.displayName.toLowerCase()).matchAll(/milena[0-9]*|^! cd17z\W*\w*|Bruninha+|Amanda+|Amandinha+|Larinha+|Thalita+|! Baixinha*|Safira+/g)){
         ban_member_send_message(member.id,"Selfbot!!", member.guild, client.user)
         member.guild.channels.cache.get(config.channels.acacus).send("Segurei um possivel invasor ==> " + member.displayName)
     }
