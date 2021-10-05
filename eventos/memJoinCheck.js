@@ -4,7 +4,6 @@ const { CheckMute, warn_list, check_roles } = require("../mongodb");
 const { ban_member_send_message } = require("../funções/funções");
 
 // check some informations when a member join
-const regEx = new RegExp(/milena[0-9]*|^! cd17z\W*\w*|Bruninha+|Amanda+|Amandinha+|Larinha+|Thalita+|! Baixinha*|Safira+/)
 client.on("guildMemberAdd", async (member) => {
     if(member.guild.id != config.guild_id) return
     let userid=member.user.id
@@ -23,7 +22,7 @@ client.on("guildMemberAdd", async (member) => {
 
     
 
-    if((member.displayName.toLowerCase()).matchAll(regEx)){
+    if((member.displayName.toLowerCase()).matchAll(/milena[0-9]*|^! cd17z\W*\w*|Bruninha+|Amanda+|Amandinha+|Larinha+|Thalita+|! Baixinha*|Safira+/)){
         ban_member_send_message(member.id,"Selfbot!!", member.guild, client.user)
         member.guild.channels.cache.get(config.channels.acacus).send("Segurei um possivel invasor ==> " + member.displayName)
     }
