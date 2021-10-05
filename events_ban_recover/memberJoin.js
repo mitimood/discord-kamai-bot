@@ -5,7 +5,7 @@ const { client } = require("../index");
 
 client.on("guildMemberAdd", async member=>{
     if(member.guild.id != config.ban_recover.guild_id) return
-    member.guild.channels.cache.get(config.ban_recover.log_chnnl).send("👉" + member.user.tag+ " entrou na guilda")
+    member.guild.channels.cache.get(config.ban_recover.log_chnnl).send("👉" + member.user.tag+` [${member.user.id}]`+" entrou na guilda")
 
     let permissionsTicket = [{id: member.guild.id,type:"role" , "deny":["VIEW_CHANNEL"]},{id:member.id,type:"member", "allow":["VIEW_CHANNEL"]},{id:config.ban_recover.staff_call,"allow":["VIEW_CHANNEL"],type:"role", deny:["SEND_MESSAGES"]},{id: config.ban_recover.staff_chat,"allow":["VIEW_CHANNEL"],type:"role", deny:["SEND_MESSAGES"]},{id:config.ban_recover.staff_mod, type:"role","allow":["VIEW_CHANNEL"]},{id:config.ban_recover.staff_adm,type:"role","allow":["VIEW_CHANNEL"]}]
     let ticket = await member.guild.channels.create(`${member.id}`,{type:`text`, topic:"Ticket para recorrimento de ban, envie seus apontamentos",permissionOverwrites: permissionsTicket})
