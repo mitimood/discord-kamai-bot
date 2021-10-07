@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const client = new Discord.Client({ intents: 1735, makeCache: Discord.Options.cacheWithLimits({ MessageManager: 20000 }) })
+const client = new Discord.Client({ intents: 3463, makeCache: Discord.Options.cacheWithLimits({ MessageManager: 20000 }) })
 const config_secret = require("./config_secret")
 const fs = require("fs");
 const Database = require("./localdb");
