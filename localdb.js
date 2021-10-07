@@ -54,44 +54,39 @@ module.exports = class db {
         }
     }
 
+    savechan(chan,userid){
+        this.db.push(`/users/${userid}/channel`,chan)
 
-/*    scam_link_add(link){
+    }
+
+    chandelete(userid){
+        this.db.delete(`/users/${userid}`)
+    }
+
+    async userVoiceExist(userid){
+       return this.db.exists(`/users/${userid}`)
+    }
+
+    async channelget(userid){
         try{
-            if(this.db.exists(`/links/scams/links_scams[0]`)){
-                if(this.db.getData(`/links/scams/links_scams`).includes(link)){
-                    return "exist" 
-
-                }else{
-                    this.db.push(`/links/scams/links_scams[]`, link, false)
-                } 
-            }else{
-                this.db.push(`/links/scams/links_scams[]`, link, false)
-            }
+            return this.db.getData(`/users/${userid}/channel/`)
+        }catch(err){
+            console.error(err)
+        }
+    }
+    async verifyactivity(userid){
+        try{
+            return this.db.getData(`/users/${userid}/activity/`)
+        }catch(err){
+            console.error(err)
+        }
+        
+    }
+    async attactivity(userid,state){
+        try{
+            this.db.push(`/users/${userid}/activity/`,state)
         }catch(err){
             console.log(err)
         }
     }
-
-    scam_link_remove(link){
-        try{
-            if(!this.db.getData(`/links/scams/links_scams`).includes(link)) return false
-
-            this.db.delete(`/links/scams/links_scams[${this.db.getIndex("/links/scams/links_scams",link)}]`)
-        }catch(err){
-            console.log(err)
-            return "error"
-        }
-    }
-
-    scams_get(){
-        try{
-            if(!this.db.exists(`/links/scams/links_scams`)) return "empty"
-
-            return this.db.getData(`/links/scams/links_scams`)
-        }catch(err){
-            console.log(err)
-            return "error"
-        }
-    }*/
-    
     }      
