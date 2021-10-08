@@ -55,16 +55,29 @@ module.exports = class db {
     }
 
     savechan(chan,userid){
-        this.db.push(`/users/${userid}/channel`,chan)
+        try {
+            this.db.push(`/users/${userid}/channel`,chan)
+        } catch (error) {
+            console.log(error)
+        }
 
     }
 
     chandelete(userid){
-        this.db.delete(`/users/${userid}`)
+        try {
+            this.db.delete(`/users/${userid}`)
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     async userVoiceExist(userid){
-       return this.db.exists(`/users/${userid}`)
+        try {
+            return this.db.exists(`/users/${userid}`)
+
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     async channelget(userid){

@@ -3,7 +3,8 @@ const {client, LocalDb} = require(`../index`);
 
 client.on("voiceStateUpdate", async (oldstate,newstate)=>
 {
-    let channelcreate = newstate.guild.channels.cache.get(config.channels.pvtcreat);
+    try {
+        let channelcreate = newstate.guild.channels.cache.get(config.channels.pvtcreat);
 
     var deletechan;
     //Delete channel when empty
@@ -36,4 +37,8 @@ client.on("voiceStateUpdate", async (oldstate,newstate)=>
             clearTimeout(deletechan)
         }
     }
+    } catch (error) {
+        console.log(error)
+    }
+    
 })
