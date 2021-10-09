@@ -5,9 +5,9 @@ const fs = require("fs");
 const Database = require("./localdb");
 const LocalDb = new Database();
 const mongodb = require("./mongodb")
-const mongoClientSite = require("./mongoDbSite")
+const mongoClientSite = require("./mongoDbSite.js")
 
-//
+
 const selfbotDB = require("./db/selfbotRegister");
 const selfbotRegister = new selfbotDB();
 
@@ -52,6 +52,7 @@ client.on("ready", async () => {
     }
     try{
         await mongoClientSite.mongoClientSite.connect()
+        await mongoClientSite.listEvent()
         await mongodb.MongodbClient.connect()
         await mongodb.Check_all_mutes()
     }catch(err){
