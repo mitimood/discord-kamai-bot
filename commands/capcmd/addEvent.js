@@ -1,7 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const { TrimMsg } = require("../../funções/funções");
 const { addEvent } = require("../../mongoDbSite");
-const moment = require('moment-timezone')
 
 module.exports = {
     name: "addevent",
@@ -11,7 +10,7 @@ module.exports = {
     async execute(msg) {
         
         const msgArgs = TrimMsg(msg)
-        if(msgArgs[1] && msgArgs[2].match(/[0-9]/) && msgArgs[3]){
+        if(msgArgs[1] && msgArgs[2]?.match(/[0-9]/) && msgArgs[3]){
             let d = new Date()
             d.setDate(d.getDate() + parseInt(msgArgs[2]))
             d = d.valueOf()
