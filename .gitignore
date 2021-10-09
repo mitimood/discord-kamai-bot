@@ -5,3 +5,4 @@ dbembeds.json
 LocalDb.json
 config_secret.js
 db/storage
+node_modules
