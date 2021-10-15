@@ -402,8 +402,8 @@ async function verifyXp(id){
     
     const index = require('./index')
     let xp = await get_xp(id)
-   
-   // let userLvl = xp.global.level
+  
+  // let userLvl = xp.global.level
     
     let member = index.client.guilds.cache.get(config.guild_id).members.cache.get(id)
     let highestLvlRole 
@@ -565,10 +565,10 @@ async function daily_set(id){
     
     let dailyDoc =  await members_management.findOne( { "_id":id } )
   
-    if ( dailyDoc?.economy?.daily?.last + 172800000 >= Date.now() ){
+    if ( dailyDoc?.economy?.daily?.last + 172800000 >= Date.now().valueOf() ){
       let money = parseInt( Math.log2(dailyDoc.economy.daily.streak) * 100 )
       let streak = 1 + dailyDoc?.economy?.daily?.streak
-      let newStreak = parseInt(1)
+      let newStreak = 1 
       await members_management.updateOne( { "_id":id }, { "$setOnInsert":{ "_id":id }, "$set":{ "economy.daily.last": Date.now() },"$inc":{ "economy.money":money, "economy.daily.streak": newStreak } }, { upsert: true } )
       //send the same data to db site
       databaseSite.addDaily(id , money, dailyDoc.streak + 1)
