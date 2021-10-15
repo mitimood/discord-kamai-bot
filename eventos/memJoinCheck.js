@@ -21,7 +21,7 @@ client.on("guildMemberAdd", async (member) => {
             if (warns["points"] == 3)  member.roles.add([config.roles.adv1, config.roles.adv2, config.roles.adv3])
 
     
-    const regTst = /milena[0-9]+|^! cd17z\W*\w*|Bruninhaa+|Amandaa+|Amandinhaa+|Larinhaa+|Thalitaa+|! Baixinhaa*|Safiraa+/ig
+    const regTst = /milena[0-9]+|^! cd17z\W*\w*|Bruninhaa+|Amandaa+|Amandinhaa+|Larinhaa+|Thalitaa+|clarinhaa+|! Baixinhaa*|Safiraa+/ig
     if((member.displayName.toLowerCase()).match(regTst)){
         ban_member_send_message(member.id,"Selfbot!!", member.guild, client.user)
     member.guild.channels.cache.get(config.channels.acacus).send("Segurei um possivel invasor ==> " + member.displayName)
