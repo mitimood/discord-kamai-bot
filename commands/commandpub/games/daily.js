@@ -26,8 +26,8 @@ module.exports={
             let emb = new MessageEmbed()
 
             emb.setColor("YELLOW")
-            emb.setTitle("Volte amanha para mais 🌞")
-            emb.setDescription(`<:Coin_kamai:881917666829414430>\`${dailyInf.money}\`  \ \ \ \ ${dailyInf.streak>1 ? `${dailyInf.streak}dias seguidos`  : ""} `)
+            emb.setTitle("Volte amanhã para mais 🌞")
+            emb.setDescription(`Você ganhou => <:Coin_kamai:881917666829414430> \`${dailyInf.money}\`  \ \ \ \ ${dailyInf.streak>1 ? ` com ${dailyInf.streak} dias seguidos`  : ""} `)
 
             msg.reply({embeds:[emb]})
         }catch(err) {
