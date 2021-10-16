@@ -53,7 +53,7 @@ const nodejsondb = require("node-json-db").JsonDB;
         activityarteb.push(`/${doc["_id"]}/`, doc, true)
 
       })
-      console.log("Backup Terminado com sucesso!")
+      console.log("Backup Terminado com sucesso! " + Date.now().toString())
     }catch(err){
         console.log("Ouve um erro no backup")
         console.log(err)
