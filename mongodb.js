@@ -566,8 +566,8 @@ async function daily_set(id){
     let dailyDoc =  await members_management.findOne( { "_id":id } )
   
     if ( dailyDoc?.economy?.daily?.last + 172800000 >= Date.now().valueOf() ){
-      let money = parseInt( Math.log2(dailyDoc.economy.daily.streak) * config.rewards.daily )
       let streak = 1 + dailyDoc.economy.daily.streak
+      let money = parseInt( Math.log10(streak) * config.rewards.daily ) + config.rewards.daily
       let newStreak = 1 
       await members_management.updateOne( { "_id":id }, { "$setOnInsert":{ "_id":id }, "$set":{ "economy.daily.last": Date.now() },"$inc":{ "economy.money":money, "economy.daily.streak": newStreak } }, { upsert: true } )
       //send the same data to db site
