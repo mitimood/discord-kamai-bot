@@ -5,7 +5,7 @@ const uri = `mongodb+srv://sitekamai:${config_secret.mongo_passwordSite}@cluster
 const mongoClientSite = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 
-module.exports = {mongoClientSite ,addDaily, addEvent, listEvent, removeEvent}
+module.exports = {mongoClientSite ,addDaily, addEvent, listEvent, removeEvent, siteMoneyAdd}
 
 
     async function addDaily (id, money, streak) {
@@ -17,6 +17,17 @@ module.exports = {mongoClientSite ,addDaily, addEvent, listEvent, removeEvent}
               
         }catch(err){
             console.log(err)
+        }
+    }
+
+
+    async function siteMoneyAdd(id, money){
+        try {
+            const member_management = mongoClientSite.db("Site").collection("member_management");
+            await member_management.updateOne( { "_id":id }, { "$setOnInsert": { "_id":id }, "$inc":{ "economy.money":money } }, { upsert: true } )
+
+        } catch (error) {
+            console.log(error)
         }
     }
 

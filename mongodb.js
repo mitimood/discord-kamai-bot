@@ -7,7 +7,7 @@ const MongodbClient = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-module.exports = {resetXp ,verifyXp, MongodbClient, SetTempMute, voiceMuteSet, voiceMuteCheck, SetUnmute, CheckMute, transferdb, warn_list,notifyList, warn_remove, warn_add, Check_all_mutes, role_register_add, role_register_remove, check_roles,add_voice_xp, add_chat_xp, get_xp, daily_get, daily_set, moneyGet }
+module.exports = {resetXp ,verifyXp, MongodbClient, SetTempMute, voiceMuteSet, voiceMuteCheck, SetUnmute, CheckMute, transferdb, warn_list,notifyList, warn_remove, warn_add, Check_all_mutes, role_register_add, role_register_remove, check_roles,add_voice_xp, add_chat_xp, get_xp, daily_get, daily_set, moneyGet, moneyAdd }
 const moment = require("moment-timezone");
 const databaseSite = require("./mongoDbSite.js");
 
@@ -405,7 +405,7 @@ async function verifyXp(id){
   
   // let userLvl = xp.global.level
     
-    let member = index.client.guilds.cache.get(config.guild_id).members.cache.get(id)
+    let member = await index.client.guilds.cache.get(config.guild_id).members.fetch({user: id})
     let highestLvlRole 
     let membLvlRoles = member.roles.cache.filter(r=>{
       if(Object.values(config.roles.levels).includes(r.id)){
@@ -566,7 +566,7 @@ async function daily_set(id){
     let dailyDoc =  await members_management.findOne( { "_id":id } )
   
     if ( dailyDoc?.economy?.daily?.last + 172800000 >= Date.now().valueOf() ){
-      let money = parseInt( Math.log2(dailyDoc.economy.daily.streak) * 100 )
+      let money = parseInt( Math.log2(dailyDoc.economy.daily.streak) * config.rewards.daily )
       let streak = 1 + dailyDoc?.economy?.daily?.streak
       let newStreak = 1 
       await members_management.updateOne( { "_id":id }, { "$setOnInsert":{ "_id":id }, "$set":{ "economy.daily.last": Date.now() },"$inc":{ "economy.money":money, "economy.daily.streak": newStreak } }, { upsert: true } )
@@ -575,11 +575,11 @@ async function daily_set(id){
       return { money: money, streak: streak}
   
     } else{
-      let money = 100
+      let money = config.rewards.daily
       let streak = 1
       await members_management.updateOne( { "_id":id }, { "$setOnInsert":{ "_id":id }, "$set":{ "economy.daily": { "last" : Date.now(),  streak: streak } }, "$inc":{ "economy.money":money } }, { upsert: true } )
       databaseSite.addDaily(id , money, 1)
-      return { money: money, streak: streak}
+      return { money: money, streak: streak }
     }
 
   }catch(err){
@@ -611,6 +611,9 @@ async function moneyAdd(id, money){
   try{
     const database = MongodbClient.db(config.mongo.db_geral);
     const members_management = database.collection('member_management');
+
+    await members_management.updateOne( { "_id":id }, { "$setOnInsert": { "_id":id }, "$inc":{ "economy.money":money } }, { upsert: true } )
+    await databaseSite.siteMoneyAdd(id, money)
   }catch(err){
     console.log(err)
   }

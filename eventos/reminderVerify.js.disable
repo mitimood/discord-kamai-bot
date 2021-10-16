@@ -1,0 +1,34 @@
+const config_secret = require('../config_secret')
+const { MongoClient } = require("mongodb");
+const config = require('../config');
+// Replace the uri string with your MongoDB deployment's connection string.
+const uri = `mongodb+srv://kamaibot:${config_secret.mongo_password}@cluster0.ysdvr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const MongodbClient = new MongoClient(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+
+setInterval(() => {
+    try {
+        await MongodbClient.connect()
+
+        const manage = MongodbClient.db(config.mongo).collection('member_management')
+
+        const docs = await manage.find( { "dateTrigger": { "$elemMatch": { "$gte": new Date.now().valueOf() } } } ).toArray()
+
+        if(docs){
+            for(const doc of docs){
+
+                for(const alarms of doc.dateTrigger){
+                    
+                }
+            }
+        }
+
+    } catch (error) {
+        
+    }finally{
+        await MongodbClient.close()
+    }
+}, 60000);

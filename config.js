@@ -52,6 +52,9 @@ module.exports = {
         event:"630512612433723402",
         abaddon_voice:"612130011809579021",
         pvtcreat: "895720215898370109",
+        geral:"618599533722599444",
+        voteLog: "898815335002689607",
+        commands: "612121513960669227"
 
     },
     color:{
@@ -97,5 +100,9 @@ module.exports = {
         voice:14,
         requiredLevelUp:200,
     },
+    rewards:{
+        voteMoney:100,
+        daily:100
+    }
 
 }
