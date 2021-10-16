@@ -23,7 +23,6 @@ module.exports={
                 let d = new Date()
                 d.setDate(d.getDate() - msgArgs[2])
                 let selfReturn = await selfbotRegister.SelfbotListTime(d.valueOf())
-                console.log(selfReturn)
                 if(selfReturn){
                     let buffer = Buffer.from(selfReturn, "utf-8")
                     msg.channel.send({files: [{ attachment:buffer, name: "selfbots.txt"}]})
