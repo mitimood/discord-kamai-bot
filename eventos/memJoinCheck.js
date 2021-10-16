@@ -1,4 +1,4 @@
-const {client} = require(`../index`);
+const {client, selfbotRegister} = require(`../index`);
 const config = require(`../config`)
 const { CheckMute, warn_list, check_roles } = require("../mongodb");
 const { ban_member_send_message } = require("../funções/funções");
@@ -23,7 +23,12 @@ client.on("guildMemberAdd", async (member) => {
     
     const regTst = /milena[0-9]+|^! cd17z\W*\w*|Bruninhaa+|Amandaa+|Amandinhaa+|Larinhaa+|Thalitaa+|clarinhaa+|Plyss|! Baixinhaa*|Safiraa+/ig
     if((member.displayName.toLowerCase()).match(regTst)){
-        ban_member_send_message(member.id,"Selfbot!!", member.guild, client.user)
-    member.guild.channels.cache.get(config.channels.acacus).send("Segurei um possivel invasor ==> " + member.displayName)
+        try{
+            await ban_member_send_message(member.id,"Selfbot!!", member.guild, client.user)
+            selfbotRegister.selfbotAdd(Date.now().valueOf(), member.avatar, member.id, member.user.tag, member.user.createdTimestamp, member.joinedTimestamp)
+        }catch(error){
+            console.log(error)
+        }
+    member.guild.channels.cache.get(config.channels.acacus).send("Segurei um possivel invasor ==> " + member.displayName + ` [${member.id}]`)
     }
 })
