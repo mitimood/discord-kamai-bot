@@ -73,7 +73,7 @@ module.exports={
         let xp = await xp_info(userid)
         embed.setDescription(`**global lvl**: ${xp?.global?.level?  xp.global.level : 0 }
         ${xp.global ? xp.global.xpGlobalBar : blackProgressBar} ${xp?.global?.percentage ? parseInt(xp.global.percentage * 100) : "0"}%
-        **CHAT**: ${xp.chat.total ? xp.chat.total : 0}xp   **VOZ**: ${xp.voice.total ? xp.voice.total : 0}xp [${xp?.voice?.time ? xp.voice.time : 0}h]
+        **CHAT**: ${xp.chat.total ? xp.chat.total : 0}xp   **VOZ**: ${xp.voice.total ? xp.voice.total : 0}xp [${xp?.voice?.time ? xp.voice.time : 0}h]  **BÔNUS**: ${xp.bonus.total ? xp.bonus.total : 0}xp [${xp?.bonus?.time ? xp.bonus.time : 0}h]
         `)
         msg.channel.send({content: msg.author.toString(),embeds:[embed]})
     }
@@ -231,8 +231,18 @@ async function xp_info(id) {
         }
         xp.voice.time = (parseInt(( ( ( xp.voice.total / config.xp.voice ) * 300000 ) / 3600000)*10))/10
         xp.voice.xpVoiceBar = xpVoiceBar
-
-
+    }
+    if (xp.bonus){
+        console.log(xp.bonus)
+        let xpBonusBar = ""
+        for ( let i = 0 ; xp.bonus.percentage*10>=i ; i++){
+            xpBonusBar += "<:redBar:891790337578782731>"
+        }
+        for (let i = xpBonusBar.length; 308>i; i = i+28){
+            xpBonusBar += "<:blackbar:891790337809449021>‎"
+        }
+        xp.bonus.time = (parseInt(( ( ( xp.bonus.total / config.xp.voice ) * 300000 ) / 3600000)*10))/10
+        xp.bonus.xpBonusBar = xpBonusBar
     }
     return xp
 }

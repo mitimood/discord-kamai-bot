@@ -31,13 +31,8 @@ function load (){
                     load()
                 },2000)
             }
-
-
         }
     }
-    
-
-
 
 module.exports={
     name: "leaderboard",

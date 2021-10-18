@@ -1,4 +1,3 @@
-const schedule = require('node-schedule');
 const { client } = require('../..');
 const config = require('../../config');
 const { add_voice_xp } = require('../../mongodb');
