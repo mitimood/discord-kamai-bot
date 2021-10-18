@@ -14,7 +14,9 @@ function load (){
 
         if(!loaded){
             try {
-                xpRaw =  fetch("https://www.kamaitachi.com.br/api/leaderboard/xp").then(r=>r.json())
+                xpRaw =  fetch("https://www.kamaitachi.com.br/api/leaderboard/xp").then(r=>{
+                    console.log(typeof(r))
+                    console.log(r)})
                 moneyRaw =  fetch("https://www.kamaitachi.com.br/api/leaderboard/money").then(r=>r.json())
                 loaded = true
 
