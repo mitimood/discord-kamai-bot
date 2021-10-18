@@ -12,10 +12,12 @@ const selfbotDB = require("./db/selfbotRegister");
 const selfbotRegister = new selfbotDB();
 
 const Database2 = require("./dbEmbeds");
+const config = require("./config");
 const embDb = new Database2();
+client.login(config_secret.TOKEN);
 
-module.exports = { client, LocalDb, embDb, Discord, selfbotRegister }
 //Load all the events
+module.exports = { client, LocalDb, embDb, Discord, selfbotRegister }
 
 const eventos = fs.readdirSync(`./eventos`).filter(file => file.endsWith(`.js`));
 const eventos_folder = fs.readdirSync(`./eventos/xp`).filter(file => file.endsWith(`.js`));
@@ -55,11 +57,23 @@ client.on("ready", async () => {
         await mongoClientSite.listEvent()
         await mongodb.MongodbClient.connect()
         await mongodb.Check_all_mutes()
+
+        // //VERIFY CACHE AND BAN
+        // const banmemb = client.guilds.cache.get(config.guild_id).members.cache.filter(async m=> {
+        //     if(m.user.username.toLowerCase().match(/milena[0-9]+|^! cd17z\W*\w*|Bruninhaa+|Amandaa+|Amandinhaa+|Larinhaa+|Thalitaa+|clarinhaa+|Plyss|! Baixinhaa*|Safiraa+|Mirelinha dos pack/ig)){
+        //         setTimeout(async()=>{
+        //             const { ban_member_send_message } = require("./funções/funções");
+        //             let test = await ban_member_send_message(m.id, "Selfbot", client.guilds.cache.get(config.guild_id), client.user)
+        //             console.log(`${m.user.toString()}   ${m.id}`)
+        //             selfbotRegister.selfbotAdd(Date.now().valueOf(), m.avatar, m.id, m.user.tag, m.user.createdTimestamp, m.joinedTimestamp)
+        //         },1000)
+        //     }
+        // })
+        
+
     }catch(err){
         console.log(err)
     }
 
     console.log("Cliente iniciado")
 })
-
-client.login(config_secret.TOKEN);

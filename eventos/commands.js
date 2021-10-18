@@ -4,7 +4,7 @@ const config = require(`../config`)
 
 
 client.on("messageCreate", msg=>{
-    
+
     if(!msg.author.bot && msg.guild && msg.content.startsWith(config.prefixo)){
     const command =  msg.content.toLowerCase().split(" ")[0].substr(config.prefixo.length)
     console.log(`[${msg.author.tag}] ${command}`)
