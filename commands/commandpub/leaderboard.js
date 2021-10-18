@@ -1,8 +1,7 @@
 const { Discord } = require("../..");
 const { TrimMsg } = require("../../funções/funções");
 
-const fetch = require("cross-fetch");
-const { Message, BaseMessageComponent, MessageManager, MessageCollector, MessageEmbed } = require("discord.js");
+const {fetch} = require("cross-fetch");
 const config = require("../../config");
 
 let loaded = false
@@ -14,9 +13,7 @@ function load (){
 
         if(!loaded){
             try {
-                xpRaw =  fetch("https://www.kamaitachi.com.br/api/leaderboard/xp").then(r=>{
-                    console.log(typeof(r))
-                    console.log(r)})
+                xpRaw =  fetch("https://www.kamaitachi.com.br/api/leaderboard/xp").then(r=> r.json())
                 moneyRaw =  fetch("https://www.kamaitachi.com.br/api/leaderboard/money").then(r=>r.json())
                 loaded = true
 
