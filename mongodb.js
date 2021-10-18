@@ -7,7 +7,7 @@ const MongodbClient = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-module.exports = {resetXp ,verifyXp, MongodbClient, SetTempMute, voiceMuteSet, voiceMuteCheck, SetUnmute, CheckMute, transferdb, warn_list,notifyList, warn_remove, warn_add, Check_all_mutes, role_register_add, role_register_remove, check_roles,add_voice_xp, add_chat_xp, get_xp, daily_get, daily_set, moneyGet, moneyAdd }
+module.exports = {resetXp ,verifyXp, MongodbClient, SetTempMute, voiceMuteSet, voiceMuteCheck, SetUnmute, CheckMute, transferdb, warn_list,notifyList, warn_remove, warn_add, Check_all_mutes, role_register_add, role_register_remove, check_roles,add_voice_xp, add_bonus_xp, add_chat_xp, get_xp, daily_get, daily_set, moneyGet, moneyAdd }
 const moment = require("moment-timezone");
 const databaseSite = require("./mongoDbSite.js");
 
@@ -375,6 +375,25 @@ async function add_voice_xp(ids, xp) {
   }
 }
 
+async function add_bonus_xp(ids, xp) {
+
+  try{
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const xpManagement = database.collection('member_management');
+  
+    let query = { "_id": { "$in": ids } }
+    let insert = { "$inc": { "xp.xp_bonus": xp } }
+
+    await xpManagement.updateMany(query, insert, { upsert: true })
+
+    for (const id of ids) {
+      await verifyXp(id)
+    }
+
+  }catch (err) {
+    console.log(err)
+  }
+}
 
 
 async function add_chat_xp(id, xp) {
@@ -484,6 +503,17 @@ async function get_xp(id) {
     }else{
       xp.voice = new Object()
     }
+
+    if (doc?.xp?.xp_bonus) {
+      xp.bonus = new Object()
+      doc.xp.xp_bonus = doc.xp.xp_bonus * config.xp.voice
+
+      xp.bonus.total = doc.xp.xp_bonus
+      xp.bonus.level = parseInt(Math.log2(doc.xp.xp_bonus))
+      xp.bonus.percentage = parseInt(100 * (Math.log2(doc.xp.xp_bonus) - parseInt(Math.log2(doc.xp.xp_bonus))))/100
+    }else{
+      xp.bonus = new Object()
+    }
     if(doc?.xp){
       xp.global = new Object()
 
@@ -495,6 +525,9 @@ async function get_xp(id) {
       }
       if(doc?.xp?.xp_voice){
         xp.global.total = doc.xp.xp_voice + xp.global.total
+      }
+      if(doc?.xp?.xp_bonus){
+        xp.global.total = doc.xp.xp_bonus + xp.global.total
       }
       let increaseXP = config.xp.requiredLevelUp
 
@@ -511,6 +544,7 @@ async function get_xp(id) {
   } else {
     xp.chat = new Object()
     xp.voice = new Object()
+    xp.bonus = new Object()
     xp.global = new Object()
   }
   return xp
