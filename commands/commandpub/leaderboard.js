@@ -13,14 +13,26 @@ let moneyRaw
 function load (){
 
         if(!loaded){
-            
-            xpRaw =  fetch("https://kamaitachi.com.br/api/leaderboard/xp").then(r=>r.json())
-            moneyRaw =  fetch("https://kamaitachi.com.br/api/leaderboard/money").then(r=>r.json())
-            loaded = true
-            setInterval(async()=>{
-                xpRaw = await fetch("https://kamaitachi.com.br/api/leaderboard/xp").then(r=>r.json())
-                moneyRaw = await fetch("https://kamaitachi.com.br/api/leaderboard/money").then(r=>r.json())
-            },300000)
+            try {
+                xpRaw =  fetch("https://www.kamaitachi.com.br/api/leaderboard/xp").then(r=>r.json())
+                moneyRaw =  fetch("https://www.kamaitachi.com.br/api/leaderboard/money").then(r=>r.json())
+                loaded = true
+
+                setInterval(async()=>{
+                    try {
+                        xpRaw =  fetch("https://www.kamaitachi.com.br/api/leaderboard/xp").then(r=>r.json())
+                        moneyRaw =  fetch("https://www.kamaitachi.com.br/api/leaderboard/money").then(r=>r.json())
+                    } catch (error) {
+                    }
+                },300000)
+
+            } catch (error) {
+                setTimeout(()=>{
+                    load()
+                },2000)
+            }
+
+
         }
     }
     
@@ -110,8 +122,5 @@ function divPages(ldbRaw){
             leaderboard.push(page)
         }
     }
-
-    
-
     return leaderboard
 }
