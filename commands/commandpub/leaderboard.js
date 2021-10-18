@@ -3,6 +3,7 @@ const { TrimMsg } = require("../../funções/funções");
 
 const {fetch} = require("cross-fetch");
 const config = require("../../config");
+const { MessageEmbed } = require("discord.js");
 
 let loaded = false
 
