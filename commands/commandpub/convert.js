@@ -13,50 +13,50 @@ module.exports={
         const idFofo = msg.author.id
         let xp = 0
 
-        if(msg.member.roles.cache.has("834172082396332101")){
+        if(msg.member.roles.cache.has("817542947418800148")){
             await add_voice_xp([idFofo], 18250)
             xp += 18250
 
-        }else if(msg.member.roles.cache.has("834172082396332100")){
+        }else if(msg.member.roles.cache.has("817539471607070720")){
             await add_voice_xp([idFofo], 4645)
             xp += 4645
 
-        }else if(msg.member.roles.cache.has("834172082396332099")){
+        }else if(msg.member.roles.cache.has("817539465597550633")){
             await add_voice_xp([idFofo], 790)
             xp += 790
 
-        }else if(msg.member.roles.cache.has("834172082396332098")){
+        }else if(msg.member.roles.cache.has("817539238278725663")){
             await add_voice_xp([idFofo], 500)
             xp += 500
 
         }
 
-        if(msg.member.roles.cache.has("834172082396332096")){
+        if(msg.member.roles.cache.has("612132316646604800")){
             await add_chat_xp(idFofo, 18250)
             xp += 18250
 
-        }else if(msg.member.roles.cache.has("834172082396332095")){
+        }else if(msg.member.roles.cache.has("612132315493171210")){
             await add_chat_xp(idFofo, 6200)
             xp += 6200
 
-        }else if(msg.member.roles.cache.has("834172082396332094")){
+        }else if(msg.member.roles.cache.has("612119287771168799")){
             await add_chat_xp(idFofo, 687)
             xp += 687
 
-        }else if(msg.member.roles.cache.has("899758685260230709")){
+        }else if(msg.member.roles.cache.has("848359768786599956")){
             await add_chat_xp(idFofo, 200)
             xp += 200
         }
 
-        if (msg.member.roles.cache.has("834172082396332101")) cargos.add("834172082396332101")
-        if (msg.member.roles.cache.has("834172082396332100")) cargos.add("834172082396332100")
-        if (msg.member.roles.cache.has("834172082396332099")) roles.add("834172082396332099")
-        if (msg.member.roles.cache.has("834172082396332098")) cargos.add("834172082396332098")
+        if (msg.member.roles.cache.has("817542947418800148")) cargos.add("817542947418800148")
+        if (msg.member.roles.cache.has("817539471607070720")) cargos.add("817539471607070720")
+        if (msg.member.roles.cache.has("817539465597550633")) roles.add("817539465597550633")
+        if (msg.member.roles.cache.has("817539238278725663")) cargos.add("817539238278725663")
     
-        if (msg.member.roles.cache.has("834172082396332096")) cargos.add("834172082396332096")
-        if (msg.member.roles.cache.has("834172082396332095")) cargos.add("834172082396332095")
-        if (msg.member.roles.cache.has("834172082396332094")) cargos.add("834172082396332094")
-        if (msg.member.roles.cache.has("899758685260230709")) cargos.add("899758685260230709")
+        if (msg.member.roles.cache.has("612132316646604800")) cargos.add("612132316646604800")
+        if (msg.member.roles.cache.has("612132315493171210")) cargos.add("612132315493171210")
+        if (msg.member.roles.cache.has("612119287771168799")) cargos.add("612119287771168799")
+        if (msg.member.roles.cache.has("848359768786599956")) cargos.add("848359768786599956")
         let roles = []
         for(const cargo of cargos.keys()){
             roles.push(cargo)
