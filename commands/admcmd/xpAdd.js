@@ -19,11 +19,11 @@ module.exports={
     var msgArgs = TrimMsg(message)
 
     if(msgArgs[1] == "voice"){
-        add_voice_xp(msgArgs[2], parseInt(msgArgs[3]))
+        await add_voice_xp([msgArgs[2]], parseInt(msgArgs[3]))
         message.channel.send(`DEI PARA ${msgArgs[2]} ${msgArgs[3]}XP VOICE POINTS`)
 
     }else if( msgArgs[1] == "chat"){
-        add_chat_xp(msgArgs[2], parseInt(msgArgs[3]))
+        await add_chat_xp(msgArgs[2], parseInt(msgArgs[3]))
         message.channel.send(`DEI PARA ${msgArgs[2]} ${msgArgs[3]}XP CHAT POINTS`)
     }else{
         message.channel.send("xpadd chat/voice id points")
