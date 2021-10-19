@@ -31,12 +31,20 @@ module.exports={
                             description:"Você precisa me dar uma mensagem valida",
                             color: config.color.err,
                         }]})
-                    }).then(messagem => {
+                    }).then(async messagem => {
                         if(!messagem){
                             return;
                         }else   
-                        messagem.edit(msgedit);
-                        message.channel.send(message.author.toString()+" Mensagem edita com sucesso em " + messagem.channel.name)
+                        try {
+                            await messagem.edit(msgedit);
+                            message.channel.send(message.author.toString()+" Mensagem edita com sucesso em " + messagem.channel.name)
+
+                        } catch (error) {
+                            message.channel.send({content: message.author.toString(), embeds:[{
+                                description:"Não tenho permissão para editar essa mensagem",
+                                color: config.color.err,
+                            }]})
+                        }
                     })
                     
                     }
