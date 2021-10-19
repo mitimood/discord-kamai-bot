@@ -233,7 +233,6 @@ async function xp_info(id) {
         xp.voice.xpVoiceBar = xpVoiceBar
     }
     if (xp.bonus){
-        console.log(xp.bonus)
         let xpBonusBar = ""
         for ( let i = 0 ; xp.bonus.percentage*10>=i ; i++){
             xpBonusBar += "<:redBar:891790337578782731>"

@@ -66,9 +66,9 @@ module.exports={
             msg.member.roles.remove(roles)
         }
         if(xp){
-            msg.channel.send(`Você ganhou **${xp}** de xp! User \`&info\` para verificar`)
+            msg.channel.send(`${msg.author.toString()} Você ganhou **${xp}** de xp! Use \`&info\` para verificar seu level. **Seus cargos serão atualizados aos poucos**`)
         }else{
-            msg.channel.send(`Você não tem nada para trocar comigo`)
+            msg.channel.send(`${msg.author.toString()} Você não tem nada para trocar comigo`)
         }
     }
 }
