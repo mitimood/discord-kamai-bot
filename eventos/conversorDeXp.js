@@ -63,6 +63,8 @@ client.on("interactionCreate", async (interac)=>{
             interac.member.roles.remove(roles)
         }
         if(xp){
+            let xpDb = {}
+
             try {
                 xpDb = await get_xp(idFofo)
                 await interac.reply({ephemeral:true, content: `${interac.user.toString()} Você ganhou **${xp}** de xp! Seu novo level global agora é **${xpDb.global.level}**. **O cargo do seu perfil ira se atualizar aos poucos**`})
