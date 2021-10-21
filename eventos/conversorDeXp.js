@@ -7,7 +7,7 @@ client.on("interactionCreate", async (interac)=>{
     if(interac.customId == "Conversor-de-xp"){
         let cargos = new Set()
 
-        const idFofo = interac.author.id
+        const idFofo = interac.user.id
         let xp = 0
 
         if(interac.member.roles.cache.has("817542947418800148")){
