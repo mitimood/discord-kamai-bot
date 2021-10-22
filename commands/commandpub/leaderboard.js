@@ -10,18 +10,18 @@ let loaded = false
 let xpRaw 
 let moneyRaw
 
-function load (){
+async function load (){
 
         if(!loaded){
             try {
-                xpRaw =  fetch("https://www.kamaitachi.com.br/api/leaderboard/xp").then(r=> r.json())
-                moneyRaw =  fetch("https://www.kamaitachi.com.br/api/leaderboard/money").then(r=>r.json())
+                xpRaw = await (await fetch("https://www.kamaitachi.com.br/api/leaderboard/xp")).json()
+                moneyRaw = await (await fetch("https://www.kamaitachi.com.br/api/leaderboard/money")).json()
                 loaded = true
 
                 setInterval(async()=>{
                     try {
-                        xpRaw =  fetch("https://www.kamaitachi.com.br/api/leaderboard/xp").then(r=>r.json())
-                        moneyRaw =  fetch("https://www.kamaitachi.com.br/api/leaderboard/money").then(r=>r.json())
+                        xpRaw = await (await fetch("https://www.kamaitachi.com.br/api/leaderboard/xp")).json()
+                        moneyRaw =  await (await fetch("https://www.kamaitachi.com.br/api/leaderboard/money")).json()
                     } catch (error) {
                     }
                 },300000)
