@@ -19,7 +19,7 @@ module.exports={
         try{
             let dbResult = await daily_get(msg.author.id)
             
-            if (Date.now() < 86400000 + dbResult.last) return messageReturn( dbResult.last, msg )
+            if (Date.now().valueOf() < 86400000 + dbResult.last) return messageReturn( dbResult.last, msg )
 
             let dailyInf = await daily_set(msg.author.id)
 
