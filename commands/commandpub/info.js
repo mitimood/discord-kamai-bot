@@ -58,7 +58,7 @@ module.exports={
         // let created_duration = format_date_created(date_duration)
 
         // embed.addField('🛎Entrada:', joined_since + `(${joined_duration})`, true)
-        embed.addField('🚪Criada em:', created_since + `(${created_duration})`, true)
+        // embed.addField('🚪Criada em:', created_since + `(${created_duration})`, true)
 
         let joined_duration_month = parseInt(date.getTime() / 2592000000)
         let badges = badge(joined_duration_month)
