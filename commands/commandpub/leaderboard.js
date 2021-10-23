@@ -41,6 +41,7 @@ module.exports={
 
     async execute(msg) {
         
+        return msg.reply({ephemeral:true ,content: "Comando desabilitado para manutenção"})
         const msgArgs = TrimMsg(msg)
         load()
 
