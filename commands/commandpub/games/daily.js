@@ -17,10 +17,11 @@ module.exports={
         if( cooldown.has(authorId) && Math.sign( moment( today - cooldown.get(authorId).since)) === 1 ) return messageReturn(cooldown.get(authorId).since, msg)
 
         let dbResult = {}
+        let fromDb = false
         try{
             dbResult = await daily_get(msg.author.id)
 
-            let fromDb = false
+            
             if (Date.now().valueOf() < 86400000 + dbResult.last){
                 fromDb = true
                 return messageReturn( dbResult.last, msg )
