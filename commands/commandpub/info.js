@@ -211,7 +211,7 @@ async function xp_info(id) {
     if (xp.global){
         let xpGlobalBar = ""
         
-        for ( let i =0 ; xp.chat.percentage*10>=i ; i++){
+        for ( let i =0 ; xp.global.percentage*10>=i ; i++){
             xpGlobalBar += "<:redBar:891790337578782731>"
         }
         //Adds 28 to index => redbarEmoji == 28 characteres
