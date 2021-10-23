@@ -19,7 +19,11 @@ module.exports={
             if (member.roles.cache.has(config.roles.muted)){
                 await member.roles.remove(config.roles.muted)
                 if(member.voice){
-                    member.voice.setMute(false)
+                    try{
+                        await member.voice.setMute(false)
+                    }catch{
+
+                    }
                 }
                 return msg.channel.send(msg.author+` O membro ${member.user} foi desmutado` )
             }else{
