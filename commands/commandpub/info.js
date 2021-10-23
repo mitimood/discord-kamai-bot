@@ -50,14 +50,14 @@ module.exports={
         embed.setFooter(`id: ${member.id}`)
 
         let date = new Date(Date.now() - member.joinedAt )
-        let date_duration = new Date(Date.now() - new Date(member.user.createdTimestamp))
+        // let date_duration = new Date(Date.now() - new Date(member.user.createdTimestamp))
 
-        let joined_duration = format_date_created(date)
-        let joined_since = format_date(member.joinedAt)
-        let created_since = format_date(new Date(member.user.createdTimestamp))
-        let created_duration = format_date_created(date_duration)
+        // let joined_duration = format_date_created(date)
+        // let joined_since = format_date(member.joinedAt)
+        // let created_since = format_date(new Date(member.user.createdTimestamp))
+        // let created_duration = format_date_created(date_duration)
 
-        embed.addField('🛎Entrada:', joined_since + `(${joined_duration})`, true)
+        // embed.addField('🛎Entrada:', joined_since + `(${joined_duration})`, true)
         embed.addField('🚪Criada em:', created_since + `(${created_duration})`, true)
 
         let joined_duration_month = parseInt(date.getTime() / 2592000000)
