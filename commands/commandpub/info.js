@@ -53,7 +53,7 @@ module.exports={
         let date_duration = new Date(Date.now() - new Date(member.user.createdTimestamp))
 
         let joined_duration = format_date_created(date)
-        let joined_since = format_date(member.joinedAt )
+        let joined_since = format_date(member.joinedAt)
         let created_since = format_date(new Date(member.user.createdTimestamp))
         let created_duration = format_date_created(date_duration)
 
