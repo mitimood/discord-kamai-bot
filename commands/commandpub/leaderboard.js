@@ -47,7 +47,7 @@ module.exports={
             let membs = {}
 
             try {
-                membs = await fetch(`https://www.kamaitachi.com.br/api/leaderboard/xp/${page}`).then(r=>r.json())
+                membs = await fetch(`https://www.kamaitachi.com.br/api/leaderboard/money/${page}`).then(r=>r.json())
                 const emb = new MessageEmbed()
                 emb.setTitle("Tabela de xp")
                 emb.setTitle("PLACAR DE MONEY")
