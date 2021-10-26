@@ -13,7 +13,7 @@ module.exports={
     async execute(msg) {
         
         const msgArgs = TrimMsg(msg)
-        if(msgArgs[1].toLowerCase() == "xp"){
+        if(msgArgs[1]?.toLowerCase() == "xp"){
             let page = 0
             if(msgArgs[2] && msgArgs[2].match(/[0-9]/)){
                 page = parseInt(msgArgs[2]) + 1
@@ -37,7 +37,7 @@ module.exports={
             }
 
 
-        }else if(msgArgs[1].toLowerCase() == "money"){
+        }else if(msgArgs[1]?.toLowerCase() == "money"){
             
             let page = 0
             if(msgArgs[2] && msgArgs[2].match(/[0-9]/)){
