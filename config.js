@@ -98,6 +98,7 @@ module.exports = {
     xp:{
         chat:16,
         voice:14,
+        bonus: 48,
         requiredLevelUp:200,
     },
     rewards:{

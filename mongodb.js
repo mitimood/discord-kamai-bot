@@ -482,9 +482,7 @@ async function get_xp(id) {
 
   if (doc?.xp) {
     if (doc?.xp?.xp_chat) {
-
       doc.xp.xp_chat = doc.xp.xp_chat * config.xp.chat
-
       xp.chat = new Object()
       xp.chat.total = doc.xp.xp_chat
       xp.chat.level = parseInt(doc.xp.xp_chat/150)
@@ -506,7 +504,7 @@ async function get_xp(id) {
 
     if (doc?.xp?.xp_bonus) {
       xp.bonus = new Object()
-      doc.xp.xp_bonus = doc.xp.xp_bonus * config.xp.voice
+      doc.xp.xp_bonus = doc.xp.xp_bonus * config.xp.bonus
 
       xp.bonus.total = doc.xp.xp_bonus
       xp.bonus.level = parseInt(Math.log2(doc.xp.xp_bonus))
