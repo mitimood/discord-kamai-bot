@@ -16,7 +16,7 @@ module.exports={
         if(msgArgs[1].toLowerCase() == "xp"){
             let page = 0
             if(msgArgs[2] && msgArgs[2].match(/[0-9]/)){
-                page = msgArgs[2] + 1
+                page = parseInt(msgArgs[2]) + 1
             }
             let membs = {}
             try {
@@ -41,7 +41,7 @@ module.exports={
             
             let page = 0
             if(msgArgs[2] && msgArgs[2].match(/[0-9]/)){
-                page = msgArgs[2] + 1
+                page = parseInt(msgArgs[2]) + 1
             }
 
             let membs = {}
