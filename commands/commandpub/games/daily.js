@@ -10,7 +10,8 @@ module.exports={
     description: "Use o comando 1x ao dia para ganhar kamaicoins",
 
     async execute(msg) {
-
+        return msg.reply({content:`${msg.author.toString()}, comando desabilitado temporariamente`})
+        
         const today = moment.utc().valueOf()
         const authorId = msg.author.id
 
