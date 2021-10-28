@@ -55,7 +55,7 @@ module.exports = {
         geral:"618599533722599444",
         voteLog: "898815335002689607",
         commands: "612121513960669227",
-        modReports: "902225086793281566",
+        modReports: "903238831417991228",
 
     },
     color:{

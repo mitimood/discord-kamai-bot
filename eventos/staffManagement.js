@@ -1,5 +1,5 @@
 const config = require("../config")
-const { TrimMsg, Banning, punishments } = require("../funções/funções")
+const { TrimMsg, punishments } = require("../funções/funções")
 const {client} = require("../index")
 const {addReport, getReport, updateStateReport, warn_add, warn_list, getAllActiveReports} = require("../mongodb")
 const { MessageActionRow, MessageSelectMenu, MessageEmbed, MessageButton } = require('discord.js');
@@ -12,10 +12,12 @@ client.on("interactionCreate", async interac =>{
     },30000)
 
     const modlogChannel = client.channels.cache.get(config.channels.modlog)
-
     if(!interac.isButton()) return
+    console.log(1)
+
     if(interac.channel.id != config.channels.modReports) return
- 
+    console.log(1)
+
     if(interac.customId === "ban"){
         if(interac.member.roles.cache.find(id=>Object.values(config.roles.staff).find(ids=> id == ids))){
             ban()
@@ -31,7 +33,7 @@ client.on("interactionCreate", async interac =>{
         }
 
     }else if(interac.customId === "roles"){
-        
+
         if(interac.member.roles.cache.find(id=>Object.values(config.roles.teams.caps).find(ids=> id == ids))){
             roles()
         }else{
