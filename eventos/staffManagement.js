@@ -5,18 +5,16 @@ const {addReport, getReport, updateStateReport, warn_add, warn_list, getAllActiv
 const { MessageActionRow, MessageSelectMenu, MessageEmbed, MessageButton } = require('discord.js');
 
 client.on("interactionCreate", async interac =>{
-    const reportmod = client.guilds.cache.get(config.channels.modReports)
     setInterval(async()=>{
+        const reportmod = client.guilds.cache.get(config.channels.modReports)
         const docs = await getAllActiveReports()
         await reportmod.setName(`Registros ativos [${docs.length}]`)
     },30000)
 
     const modlogChannel = client.channels.cache.get(config.channels.modlog)
     if(!interac.isButton()) return
-    console.log(1)
 
     if(interac.channel.id != config.channels.modReports) return
-    console.log(1)
 
     if(interac.customId === "ban"){
         if(interac.member.roles.cache.find(id=>Object.values(config.roles.staff).find(ids=> id == ids))){
@@ -761,7 +759,7 @@ ${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length + i
                                         )
                         let embed = new MessageEmbed()
                                     .setTitle(`[CARGO] => ${idResponse.users.length}   [${action == "remove" ? "Remover" : "Adicionar"}] `)
-                                    .setDescription(`[<${roleId.toString()}]`+" Esperando aprovação...\n\nAberto por "+ interac.user.toString())
+                                    .setDescription(`[${roleId.toString()}]`+" Esperando aprovação...\n\nAberto por "+ interac.user.toString())
                                     .setColor(config.color.red)
 
                         const watingAproval = await interac.channel.send({embeds:[embed], components:[approvalButtons]})
