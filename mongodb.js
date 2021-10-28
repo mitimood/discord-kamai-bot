@@ -7,7 +7,7 @@ const MongodbClient = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-module.exports = {resetXp ,verifyXp, MongodbClient, SetTempMute, voiceMuteSet, voiceMuteCheck, SetUnmute, CheckMute, transferdb, warn_list,notifyList, warn_remove, warn_add, Check_all_mutes, role_register_add, role_register_remove, check_roles,add_voice_xp, add_bonus_xp, add_chat_xp, get_xp, daily_get, daily_set, moneyGet, moneyAdd }
+module.exports = {resetXp ,verifyXp, MongodbClient, SetTempMute, voiceMuteSet, voiceMuteCheck, SetUnmute, CheckMute, transferdb, warn_list,notifyList, warn_remove, warn_add, Check_all_mutes, role_register_add, role_register_remove, check_roles,add_voice_xp, add_bonus_xp, add_chat_xp, get_xp, daily_get, daily_set, moneyGet, moneyAdd, getAllActiveReports, getReport, updateStateReport, addReport }
 const moment = require("moment-timezone");
 const databaseSite = require("./mongoDbSite.js");
 
@@ -670,5 +670,59 @@ async function moneyGet(id){
     return moneyDoc?.economy?.money
   }catch(err){
     console.log(err)
+  }
+}
+
+async function addReport(id, toDo, authorId, messages){
+  try{
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const report = database.collection('reports');
+  
+    await report.insertOne( { "_id": id, toDo:toDo, state: true, authorId: authorId, messages: messages } )
+    return true
+  }catch(err){
+    console.log(err)
+    return false
+  }
+}
+
+async function updateStateReport(id, state){
+  try{
+    console.log(state)
+    console.log(id)
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const report = database.collection('reports');
+  
+    const doc = await report.updateOne( {"_id": id},{ state: state } )
+    return true
+  }catch(err){
+    console.log(err)
+    return false
+  }
+}
+
+async function getReport(id){
+  try{
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const report = database.collection('reports');
+  
+    const doc = await report.findOne( { "_id": id } )
+    return doc
+  }catch(err){
+    console.log(err)
+    return false
+  }
+}
+
+async function getAllActiveReports(id){
+  try{
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const report = database.collection('reports');
+  
+    const docs = await report.find( { state: true} ).toArray()
+    return docs
+  }catch(err){
+    console.log(err)
+    return false
   }
 }
