@@ -714,7 +714,7 @@ async function getReport(id){
   }
 }
 
-async function getAllActiveReports(id){
+async function getAllActiveReports(){
   try{
     const database = MongodbClient.db(config.mongo.db_geral);
     const report = database.collection('reports');
