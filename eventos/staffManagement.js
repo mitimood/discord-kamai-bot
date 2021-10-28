@@ -40,10 +40,14 @@ client.on("interactionCreate", async interac =>{
 
     }else if(interac.customId === "no"){
         const doc = await getReport(interac.message.id)
-        if(doc && interac.member.roles.cache.has(config.roles.staff.admin)){
+        if(doc && doc.authorId == interac.user.id || interac.member.roles.cache.has(config.roles.staff.admin)){
             await updateStateReport(doc._id, false)
             for(const id of doc.messages){
-                await interac.channel.messages.delete(id)
+                try {
+                    await interac.channel.messages.delete(id)
+                } catch (error) {
+                    
+                }
             }
         }else{
             interac.reply({content:"Faltam permissões", ephemeral:true})
@@ -106,8 +110,14 @@ client.on("interactionCreate", async interac =>{
 
                 await updateStateReport(doc._id, false)
                 for(const id of doc.messages){
-                    await interac.channel.messages.delete(id)
+                    try {
+                        await interac.channel.messages.delete(id)
+
+                    } catch (error) {
+                        
+                    }
                 }
+                interac.reply("Banidos com sucesso")
 
                     break;
                 case"warn":
@@ -145,8 +155,15 @@ client.on("interactionCreate", async interac =>{
                     }
                     await updateStateReport(doc._id, false)
                     for(const id of doc.messages){
-                        await interac.channel.messages.delete(id)
+                        try {
+                            await interac.channel.messages.delete(id)
+
+                        } catch (error) {
+                            
+                        }
                     }
+                    interac.reply("Advertidos com sucesso")
+
                     break;
                 case"addRole":
                 const usersAddRole = await verificaArgsUser(doc.toDo.users, true)
@@ -165,8 +182,15 @@ client.on("interactionCreate", async interac =>{
 
                 await updateStateReport(doc._id, false)
                 for(const id of doc.messages){
-                    await interac.channel.messages.delete(id)
+                    try {
+                        await interac.channel.messages.delete(id)
+
+                    } catch (error) {
+                        
+                    }
                 }
+                interac.reply("Cargos adicionados com sucesso")
+
                     break;
                 case"removeRole":
                 const usersRemoveRole = await verificaArgsUser(doc.toDo.users, true)
@@ -185,8 +209,15 @@ client.on("interactionCreate", async interac =>{
 
                 await updateStateReport(doc._id, false)
                 for(const id of doc.messages){
-                    await interac.channel.messages.delete(id)
+                    try {
+                        await interac.channel.messages.delete(id)
+
+                    } catch (error) {
+                        
+                    }
                 }
+                interac.reply("Cargos removidos com sucesso")
+
                     break;
                 
             }
