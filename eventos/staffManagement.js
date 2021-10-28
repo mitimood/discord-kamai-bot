@@ -6,7 +6,7 @@ const { MessageActionRow, MessageSelectMenu, MessageEmbed, MessageButton } = req
 
 client.on("interactionCreate", async interac =>{
     const reportmod = client.guilds.cache.get(config.channels.modReports)
-    setInterval(async()=>{
+    setInterval(()=>{
         const docs = await getAllActiveReports()
         await reportmod.setName(`Registros ativos [${docs.length}]`)
     },30000)
@@ -203,91 +203,91 @@ client.on("interactionCreate", async interac =>{
                             .setMaxValues(1)
                             .addOptions([
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"903237786465894430",
                                     label: 'Flood/spam.',
                                     value: '1',
                                 },
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"903237786465894430",
                                     label: 'Divulgação inadequada.',
                                     value: '2',
                                 },
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"903237786465894430",
                                     label: 'Off topic/mensagem fora de tópico.',
                                     value: '3',
                                 },
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"903237786465894430",
                                     label: 'Menção desnecessária de membros e cargos.',
                                     value: '4',
                                 },
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"903237786465894430",
                                     label: 'Provocação e brigas.',
                                     value: '5',
                                 },
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"903237786465894430",
                                     label: 'Atrapalhar o andamento do Karaokê.',
                                     value: '6',
                                 },
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"903237786465894430",
                                     label: 'Denúncias falsas.',
                                     value: '7',
                                 },                                {
-                                    emoji:"903159397558140950",
+                                    emoji:"903237786465894430",
                                     label: 'Linguagem discriminatória.',
                                     value: '8',
                                 },
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"903237786465894430",
                                     label: 'Exposição de membros/ Assédio.',
                                     value: '9',
                                 },
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"903237786465894430",
                                     label: 'Preconceito, discriminação, difamação e/ou desrespeito.',
                                     value: '10',
                                 },
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"903237786465894430",
                                     label: 'Planejar ou exercer raids no servidor.',
                                     value: '12',
                                 },
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"903237786465894430",
                                     label: 'NSFW/ (+18).',
                                     value: '13',
                                 },
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"903237786465894430",
                                     label: 'Estimular ou praticar atividades ilegais ou que cause banimento de membros.',
                                     value: '14',
                                 },
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"903237786465894430",
                                     label: 'Evasão de punição.',
                                     value: '15',
                                 },
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"903237786465894430",
                                     label: 'Conteúdos graficamente chocantes.',
                                     value: '16',
                                 },
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"903237786465894430",
                                     label: 'Quebra do ToS do Discord.',
                                     value: '17',
                                 },
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"903237786465894430",
                                     label: 'Selfbot.',
                                     value: '18',
                                 },
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"903237786465894430",
                                     label: 'Scam.',
                                     value: '19',
                                 },
@@ -455,91 +455,91 @@ ${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length}**`
                             .setMaxValues(1)
                             .addOptions([
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"899750162614849546",
                                     label: 'Flood/spam.',
                                     value: '1',
                                 },
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"899750162614849546",
                                     label: 'Divulgação inadequada.',
                                     value: '2',
                                 },
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"899750162614849546",
                                     label: 'Off topic/mensagem fora de tópico.',
                                     value: '3',
                                 },
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"899750162614849546",
                                     label: 'Menção desnecessária de membros e cargos.',
                                     value: '4',
                                 },
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"899750162614849546",
                                     label: 'Provocação e brigas.',
                                     value: '5',
                                 },
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"899750162614849546",
                                     label: 'Atrapalhar o andamento do Karaokê.',
                                     value: '6',
                                 },
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"899750162614849546",
                                     label: 'Denúncias falsas.',
                                     value: '7',
                                 },                                {
-                                    emoji:"903159397558140950",
+                                    emoji:"899750162614849546",
                                     label: 'Linguagem discriminatória.',
                                     value: '8',
                                 },
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"899750162614849546",
                                     label: 'Exposição de membros/ Assédio.',
                                     value: '9',
                                 },
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"899750162614849546",
                                     label: 'Preconceito, discriminação, difamação e/ou desrespeito.',
                                     value: '10',
                                 },
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"899750162614849546",
                                     label: 'Planejar ou exercer raids no servidor.',
                                     value: '12',
                                 },
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"899750162614849546",
                                     label: 'NSFW/ (+18).',
                                     value: '13',
                                 },
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"899750162614849546",
                                     label: 'Estimular ou praticar atividades ilegais ou que cause banimento de membros.',
                                     value: '14',
                                 },
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"899750162614849546",
                                     label: 'Evasão de punição.',
                                     value: '15',
                                 },
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"899750162614849546",
                                     label: 'Conteúdos graficamente chocantes.',
                                     value: '16',
                                 },
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"899750162614849546",
                                     label: 'Quebra do ToS do Discord.',
                                     value: '17',
                                 },
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"899750162614849546",
                                     label: 'Selfbot.',
                                     value: '18',
                                 },
                                 {
-                                    emoji:"903159397558140950",
+                                    emoji:"899750162614849546",
                                     label: 'Scam.',
                                     value: '19',
                                 },
