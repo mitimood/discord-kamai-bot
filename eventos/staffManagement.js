@@ -56,13 +56,26 @@ client.on("interactionCreate", async interac =>{
         if(interac.member.roles.cache.has(config.roles.staff.admin)){
             switch(doc.toDo.action){
                 case"ban":
+                if(doc.toDo.users.length >5 ) interac.deferReply({"ephemeral":true})
                 const users = await verificaArgsUser(doc.toDo.users)
+
                 for(const memb of users.members){
-                    let invite = await client.channels.cache.get(config.ban_recover.log_chnnl).createInvite({unique:true,reason:"ban invite",maxUses:1, maxAge:604800})
-                    await memb.send(`Aplicado por(${doc.authorId}--&&--${interac.user.id} [${interac.user.toString()}])\n\nVocê foi banido de KAMAITACHI, por: `+doc.toDo.reason+ `\nCaso queira recorrer ao seu ban, entre no servidor ${invite.url}`)
-                }
+                    try {
+                        let invite = await client.channels.cache.get(config.ban_recover.log_chnnl).createInvite({unique:true,reason:"ban invite",maxUses:1, maxAge:604800})
+                        await memb.send(`Aplicado por(${doc.authorId}--&&--${interac.user.id} [${interac.user.toString()}])\n\nVocê foi banido de KAMAITACHI, por: `+doc.toDo.reason+ `\nCaso queira recorrer ao seu ban, entre no servidor ${invite.url}`)
+                    
+                    } catch (error) {
+                        
+                    }
+                 }
+
                 for(const user of users.users){
-                    await interac.guild.members.ban(user, {reason: `[${interac.member.id}] ${doc.toDo.reason}`})
+                    try {
+                        await interac.guild.members.ban(user, {reason: `[${interac.member.id}] ${doc.toDo.reason}`})
+
+                    } catch (error) {
+                        
+                    }
                 }
                 let embeds2 = []
                 const reportUser = await client.users.fetch(doc.authorId)
@@ -71,7 +84,7 @@ client.on("interactionCreate", async interac =>{
                     const emb = new MessageEmbed()
                             .setThumbnail(user.avatarURL())
                             .setTitle(user.tag)
-                            .setDescription(`Banido por: ${reportUser.toString()}, aprovado por: ${interac.user.toString()} \n Motivo: \`${reason}\``)
+                            .setDescription(`Banido por: ${reportUser.toString()}, aprovado por: ${interac.user.toString()} \n Motivo: \`${doc.toDo.reason}\``)
                             .setColor(config.color.red)
                             .setFooter(`id: ${user.id}`)
 
@@ -90,10 +103,12 @@ client.on("interactionCreate", async interac =>{
 
                     }
                 }
+
                 await updateStateReport(doc._id, false)
                 for(const id of doc.messages){
                     await interac.channel.messages.delete(id)
                 }
+
                     break;
                 case"warn":
                 const usersWarn = await verificaArgsUser(doc.toDo.users)
