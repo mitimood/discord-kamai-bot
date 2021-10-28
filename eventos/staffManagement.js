@@ -117,7 +117,7 @@ client.on("interactionCreate", async interac =>{
                         
                     }
                 }
-                interac.reply("Banidos com sucesso")
+                interac.followUp({content:"Banidos com sucesso", ephemeral:true})
 
                     break;
                 case"warn":
@@ -162,7 +162,7 @@ client.on("interactionCreate", async interac =>{
                             
                         }
                     }
-                    interac.reply("Advertidos com sucesso")
+                    interac.followUp({content:"Advertidos com sucesso", ephemeral:true})
 
                     break;
                 case"addRole":
@@ -189,7 +189,7 @@ client.on("interactionCreate", async interac =>{
                         
                     }
                 }
-                interac.reply("Cargos adicionados com sucesso")
+                interac.followUp({content:"Cargos adicionados com sucesso", ephemeral:true})
 
                     break;
                 case"removeRole":
@@ -216,7 +216,7 @@ client.on("interactionCreate", async interac =>{
                         
                     }
                 }
-                interac.reply("Cargos removidos com sucesso")
+                interac.followUp({content:"Cargos removidos com sucesso", ephemeral:true})
 
                     break;
                 
