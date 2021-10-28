@@ -6,7 +6,7 @@ const { MessageActionRow, MessageSelectMenu, MessageEmbed, MessageButton } = req
 
 client.on("interactionCreate", async interac =>{
     setInterval(async()=>{
-        const reportmod = client.guilds.cache.get(config.channels.modReports)
+        const reportmod = client.channels.cache.get(config.channels.modReports)
         const docs = await getAllActiveReports()
         await reportmod.setName(`Registros ativos [${docs.length}]`)
     },30000)
