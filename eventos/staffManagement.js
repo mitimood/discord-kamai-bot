@@ -1,10 +1,12 @@
 const config = require("../config")
 const { TrimMsg, punishments } = require("../funções/funções")
-const {client} = require("../index")
+const {client, selfbotRegister} = require("../index")
 const {addReport, getReport, updateStateReport, warn_add, warn_list, getAllActiveReports} = require("../mongodb")
-const { MessageActionRow, MessageSelectMenu, MessageEmbed, MessageButton } = require('discord.js');
+const { MessageActionRow, MessageSelectMenu, MessageEmbed, MessageButton, ButtonInteraction } = require('discord.js');
 
 client.on("interactionCreate", async interac =>{
+    
+    
     setInterval(async()=>{
         const reportmod = client.channels.cache.get(config.channels.modReports)
         const docs = await getAllActiveReports()
@@ -12,9 +14,11 @@ client.on("interactionCreate", async interac =>{
     },30000)
 
     const modlogChannel = client.channels.cache.get(config.channels.modlog)
+    
     if(!interac.isButton()) return
-
     if(interac.channel.id != config.channels.modReports) return
+
+
 
     if(interac.customId === "ban"){
         if(interac.member.roles.cache.find(id=>Object.values(config.roles.staff).find(ids=> id == ids))){
@@ -38,106 +42,136 @@ client.on("interactionCreate", async interac =>{
             interac.reply({content:"Faltam permissões", ephemeral:true})
         }
 
+
+
     }else if(interac.customId === "no"){
         const doc = await getReport(interac.message.id)
-        if(doc && doc.authorId == interac.user.id || interac.member.roles.cache.has(config.roles.staff.admin)){
+
+        if(doc.state && doc.authorId == interac.user.id || interac.member.roles.cache.has(config.roles.staff.admin)){
             await updateStateReport(doc._id, false)
             for(const id of doc.messages){
                 try {
                     await interac.channel.messages.delete(id)
-                } catch (error) {
-                    
+                } catch (error) {   
                 }
             }
+            interac.reply({content:"Interação apagada", ephemeral:true})
         }else{
             interac.reply({content:"Faltam permissões", ephemeral:true})
         }
     }else if(interac.customId === "yes"){
 
         const doc = await getReport(interac.message.id)
-        if(!doc.toDo) return
+        if(!doc.state) return
 
         if(interac.member.roles.cache.has(config.roles.staff.admin)){
+            const ActionRow = new MessageActionRow()
+            interac.message.components.forEach(comp=>{
+                comp.components.forEach(button=>{
+                    let but = new MessageButton(button).setDisabled(true)
+                    ActionRow.addComponents(but)
+                })
+            })
+            
+            await interac.update({embeds: interac.message.embeds, components: [ActionRow]})
+            
             switch(doc.toDo.action){
+                
                 case"ban":
-                if(doc.toDo.users.length >5 ) interac.deferReply({"ephemeral":true})
-                const users = await verificaArgsUser(doc.toDo.users)
-
-                for(const memb of users.members){
-                    try {
-                        let invite = await client.channels.cache.get(config.ban_recover.log_chnnl).createInvite({unique:true,reason:"ban invite",maxUses:1, maxAge:604800})
-                        await memb.send(`Aplicado por(${doc.authorId}--&&--${interac.user.id} [${interac.user.toString()}])\n\nVocê foi banido de KAMAITACHI, por: `+doc.toDo.reason+ `\nCaso queira recorrer ao seu ban, entre no servidor ${invite.url}`)
+                
+                    const users = await verificaArgsUser(doc.toDo.users)
                     
-                    } catch (error) {
-                        
-                    }
-                 }
-
-                for(const user of users.users){
-                    try {
-                        await interac.guild.members.ban(user, {reason: `[${interac.member.id}] ${doc.toDo.reason}`})
-
-                    } catch (error) {
-                        
-                    }
-                }
-                let embeds2 = []
-                const reportUser = await client.users.fetch(doc.authorId)
-
-                for(const [i,user] of users.users.entries()){
-                    const emb = new MessageEmbed()
-                            .setThumbnail(user.avatarURL())
-                            .setTitle(user.tag)
-                            .setDescription(`Banido por: ${reportUser.toString()}, aprovado por: ${interac.user.toString()} \n Motivo: \`${doc.toDo.reason}\``)
-                            .setColor(config.color.red)
-                            .setFooter(`id: ${user.id}`)
-
-                    if(embeds2.length < 10 ){
-                        embeds2.push(emb)
-
-                    }else if (embeds2.length == 10){
-                        await modlogChannel.send({embeds:embeds2})
-                        embeds2 = []
-                        embeds2.push(emb)
-
-                    }
                     
-                    if(i+1 == users.users.length){
-                        await modlogChannel.send({embeds:embeds2})
-
+                    for(const memb of users.members){
+                        try {
+                            let invite = await client.channels.cache.get(config.ban_recover.log_chnnl).createInvite({unique:true,reason:"ban invite",maxUses:1, maxAge:604800})
+                            await memb.send(`Aplicado por(${doc.authorId}--&&--${interac.user.id} [${interac.user.toString()}])\n\nVocê foi banido de KAMAITACHI, por: `+doc.toDo.reason+ `\nCaso queira recorrer ao seu ban, entre no servidor ${invite.url}`)
+                        } catch (error) {
+                        }
                     }
-                }
 
-                await updateStateReport(doc._id, false)
-                for(const id of doc.messages){
+                    
+                    for(const user of users.users){
+                        try {
+                            await interac.guild.members.ban(user, {reason: `[${interac.member.id}] ${doc.toDo.reason}`})
+                            if(doc.toDo.reason == "Selfbot"){
+                                selfbotRegister.selfbotAdd(Date.now().valueOf(), user.avatar, user.id, user.tag, user.createdTimestamp, 0)
+                            }
+                        } catch (error) {                           
+                        }                    
+                    }
+
+
+                    const reportUser = await client.users.fetch(doc.authorId)
+                    let embeds2 = []
+
+
+                    for(const [i,user] of users.users.entries()){
+                        
+                        const emb = new MessageEmbed()
+                                        .setThumbnail(user.avatarURL())
+                                        .setTitle(user.tag)
+                                        .setDescription(`Banido por: ${reportUser.toString()}, aprovado por: ${interac.user.toString()} \n Motivo: \`${doc.toDo.reason}\``)
+                                        .setColor(config.color.red)
+                                        .setFooter(`id: ${user.id}`)
+                        
+                        if(embeds2.length < 10 ){
+                            embeds2.push(emb)
+
+                        }else if (embeds2.length == 10){
+                            await modlogChannel.send({embeds:embeds2})
+                            embeds2 = []
+                            embeds2.push(emb)
+
+                        }
+                        
+                        
+                        if(i+1 == users.users.length){
+                            await modlogChannel.send({embeds:embeds2})
+
+                        }
+                    }
+
                     try {
-                        await interac.channel.messages.delete(id)
+                        await updateStateReport(doc._id, false)
 
                     } catch (error) {
-                        
                     }
-                }
-                interac.followUp({content:"Banidos com sucesso", ephemeral:true})
+
+                    for(const id of doc.messages){
+                        try {
+                            await interac.channel.messages.delete(id)
+
+                        } catch (error) {
+                        }
+                    }
+                    await interac.followUp({content:"Banidos com sucesso", ephemeral:true})
 
                     break;
+
                 case"warn":
-                const usersWarn = await verificaArgsUser(doc.toDo.users)
+    
+                    const usersWarn = await verificaArgsUser(doc.toDo.users)
+                        
                     for(const user of usersWarn.users){
                         await warn_add(user.id, interac.user.id, 1, doc.toDo.reason)
                         const warn = await warn_list(user.id)
                         await punishments(user.id, warn.points, interac.guild, interac.user)
                     }
-                    let embeds3 = []
-                    const reportUserWarn = await client.users.fetch(doc.authorId)
+                        
 
+                    let embeds3 = []
+                    const reportUserWarn = await client.users.fetch(doc.authorId)                  
+                    
                     for(const [i,user] of usersWarn.users.entries()){
+                        
                         const emb = new MessageEmbed()
-                                .setThumbnail(user.avatarURL())
-                                .setTitle(user.tag)
-                                .setDescription(`Advertido por: ${reportUserWarn.toString()}, aprovado por: ${interac.user.toString()} \n Motivo: \`${doc.toDo.reason}\``)
-                                .setColor(config.color.orange)
-                                .setFooter(`id: ${user.id}`)
-    
+                                    .setThumbnail(user.avatarURL())
+                                    .setTitle(user.tag)
+                                    .setDescription(`Advertido por: ${reportUserWarn.toString()}, aprovado por: ${interac.user.toString()} \n Motivo: \`${doc.toDo.reason}\``)
+                                    .setColor(config.color.orange)
+                                    .setFooter(`id: ${user.id}`)
+        
                         if(embeds3.length < 10 ){
                             embeds3.push(emb)
     
@@ -153,72 +187,74 @@ client.on("interactionCreate", async interac =>{
     
                         }
                     }
+
+
+                        await updateStateReport(doc._id, false)
+                        
+                        for(const id of doc.messages){
+                            try {
+                                await interac.channel.messages.delete(id)
+
+                            } catch (error) {
+                            }
+                        }
+
+                    await interac.followUp({content:"Advertidos com sucesso", ephemeral:true})
+
+                    break;
+                case"addRole":
+
+                    const usersAddRole = await verificaArgsUser(doc.toDo.users, true)               
+                    const roleAdd = interac.guild.roles.cache.get(doc.toDo.role) 
+                    
+                    if(roleAdd){
+                        for(const memb of usersAddRole.members){
+                            try {
+                                await memb.roles.add(roleAdd)
+                            } catch (error) {
+                            }
+                        }
+                    }
+
+                    
                     await updateStateReport(doc._id, false)
                     for(const id of doc.messages){
                         try {
                             await interac.channel.messages.delete(id)
 
                         } catch (error) {
-                            
                         }
                     }
-                    interac.followUp({content:"Advertidos com sucesso", ephemeral:true})
+                    
+                    interac.followUp({content:"Cargos adicionados com sucesso", ephemeral:true})
 
-                    break;
-                case"addRole":
-                const usersAddRole = await verificaArgsUser(doc.toDo.users, true)
-                
-                const roleAdd = interac.guild.roles.cache.get(doc.toDo.role) 
-                
-                if(roleAdd){
-                    for(const memb of usersAddRole.members){
-                        try {
-                            await memb.roles.add(roleAdd)
-                        } catch (error) {
-                            
-                        }
-                    }
-                }
+                break;
 
-                await updateStateReport(doc._id, false)
-                for(const id of doc.messages){
-                    try {
-                        await interac.channel.messages.delete(id)
-
-                    } catch (error) {
-                        
-                    }
-                }
-                interac.followUp({content:"Cargos adicionados com sucesso", ephemeral:true})
-
-                    break;
                 case"removeRole":
-                const usersRemoveRole = await verificaArgsUser(doc.toDo.users, true)
-                
-                const role = interac.guild.roles.cache.get(doc.toDo.role) 
-                
-                if(role){
-                    for(const memb of usersRemoveRole.members){
-                        try {
-                            await memb.roles.remove(role)
-                        } catch (error) {
-                            
+
+                    const usersRemoveRole = await verificaArgsUser(doc.toDo.users, true)                    
+                    const role = interac.guild.roles.cache.get(doc.toDo.role) 
+            
+                    if(role){
+                        for(const memb of usersRemoveRole.members){
+                            try {
+                                await memb.roles.remove(role)
+                            } catch (error) {
+                            }
                         }
                     }
-                }
 
-                await updateStateReport(doc._id, false)
-                for(const id of doc.messages){
-                    try {
-                        await interac.channel.messages.delete(id)
+                    await updateStateReport(doc._id, false)
+                    for(const id of doc.messages){
+                        try {
+                            await interac.channel.messages.delete(id)
 
-                    } catch (error) {
-                        
+                        } catch (error) {  
+                        }
                     }
-                }
-                interac.followUp({content:"Cargos removidos com sucesso", ephemeral:true})
+                    await interac.followUp({content:"Cargos removidos com sucesso", ephemeral:true})
 
-                    break;
+                break;
                 
             }
         }else{
