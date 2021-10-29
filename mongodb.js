@@ -597,21 +597,25 @@ async function daily_set(id){
     
     let dailyDoc =  await members_management.findOne( { "_id":id } )
   
-    if ( dailyDoc?.economy?.daily?.last + 172800000 >= Date.now().valueOf() ){
+    if ( dailyDoc?.economy?.daily?.last + 172800000 >= Date.now().valueOf() && dailyDoc?.economy?.daily?.last + 86400000 <= Date.now().valueOf() ){
+      
       let streak = 1 + dailyDoc.economy.daily.streak
       let money = parseInt( Math.log10(streak) * config.rewards.daily ) + config.rewards.daily
       let newStreak = 1 
-      await members_management.updateOne( { "_id":id }, { "$setOnInsert":{ "_id":id }, "$set":{ "economy.daily.last": Date.now() },"$inc":{ "economy.money":money, "economy.daily.streak": newStreak } }, { upsert: true } )
-      //send the same data to db site
-      databaseSite.addDaily(id , money, streak)
+      
+      await members_management.updateOne( { "_id":id }, { "$setOnInsert":{ "_id":id }, "$set":{ "economy.daily.last": Date.now().valueOf() },"$inc":{ "economy.money":money, "economy.daily.streak": newStreak } }, { upsert: true } )
+
       return { money: money, streak: streak}
   
     } else{
+      
       let money = config.rewards.daily
       let streak = 1
-      await members_management.updateOne( { "_id":id }, { "$setOnInsert":{ "_id":id }, "$set":{ "economy.daily": { "last" : Date.now(),  streak: streak } }, "$inc":{ "economy.money":money } }, { upsert: true } )
-      databaseSite.addDaily(id , money, 1)
+      
+      await members_management.updateOne( { "_id":id }, { "$setOnInsert":{ "_id":id }, "$set":{ "economy.daily": { "last" : Date.now().valueOf(),  streak: streak } }, "$inc":{ "economy.money":money } }, { upsert: true } )
+
       return { money: money, streak: streak }
+
     }
 
   }catch(err){
@@ -621,6 +625,7 @@ async function daily_set(id){
 }
 
 async function daily_get(id){
+  
   try{
     const database = MongodbClient.db(config.mongo.db_geral);
     const members_management = database.collection('member_management');
@@ -628,12 +633,15 @@ async function daily_get(id){
     let dailyDoc = await members_management.findOne( { "_id":id } )
   
     if ( dailyDoc?.economy?.daily?.last ){
-      return { last:dailyDoc.economy.daily.last }
+      return dailyDoc.economy.daily.last
+
     }else{
       return { last: null }
+
     }
   }catch(err){
     console.log(err)
+
   }
 
 }
@@ -673,6 +681,7 @@ async function moneyGet(id){
   }
 }
 
+
 async function addReport(id, toDo, authorId, messages){
   try{
     const database = MongodbClient.db(config.mongo.db_geral);
@@ -688,10 +697,12 @@ async function addReport(id, toDo, authorId, messages){
 
 async function updateStateReport(id, state){
   try{
+    console.log(state)
+    console.log(id)
     const database = MongodbClient.db(config.mongo.db_geral);
     const report = database.collection('reports');
   
-    const doc = await report.updateOne( {"_id": id},{"$set": {state: state} } )
+    const doc = await report.updateOne( {"_id": id},{ state: state } )
     return true
   }catch(err){
     console.log(err)
@@ -717,7 +728,7 @@ async function getAllActiveReports(){
     const database = MongodbClient.db(config.mongo.db_geral);
     const report = database.collection('reports');
   
-    const docs = await report.find( { state: true} ).toArray()
+    const docs = await report.find( { state: true} ).count()
     return docs
   }catch(err){
     console.log(err)
