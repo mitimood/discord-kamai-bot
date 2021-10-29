@@ -636,7 +636,7 @@ async function daily_get(id){
       return dailyDoc.economy.daily.last
 
     }else{
-      return { last: null }
+      return null 
 
     }
   }catch(err){
