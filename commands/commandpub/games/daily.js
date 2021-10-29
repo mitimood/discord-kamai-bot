@@ -15,7 +15,7 @@ module.exports={
         const authorId = msg.author.id
         const localDaily = cooldown.get(authorId)
 
-        if( new Date().valueOf() < localDaily + 86400000 ){
+        if( localDaily && new Date().valueOf() < localDaily + 86400000 ){
             return await cooldownMessage(localDaily)
 
         }
