@@ -4,7 +4,7 @@ const {client, selfbotRegister} = require("../index")
 const {addReport, getReport, updateStateReport, warn_add, warn_list, getAllActiveReports, MongodbClient} = require("../mongodb")
 const { MessageActionRow, MessageSelectMenu, MessageEmbed, MessageButton, ButtonInteraction } = require('discord.js');
 
-let atvtsUP = null
+let atvtsUP = 0
 let channelAtvts = 0
 
 MongodbClient.on("connectionReady",async connection=>{
@@ -112,9 +112,13 @@ client.on("interactionCreate", async interac =>{
                         } catch (error) {                           
                         }                    
                     }
+                    let reportUser
+                    try {
+                        reportUser = await client.users.fetch(doc.authorId)
 
-
-                    const reportUser = await client.users.fetch(doc.authorId)
+                    } catch (error) {
+                        
+                    }
                     let embeds2 = []
 
 
@@ -146,8 +150,8 @@ client.on("interactionCreate", async interac =>{
 
                     try {
                         await updateStateReport(doc._id, false)
-
                     } catch (error) {
+                        console.log(error)
                     }
 
                     for(const id of doc.messages){
