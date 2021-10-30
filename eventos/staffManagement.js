@@ -11,19 +11,18 @@ MongodbClient.on("connectionReady",connection=>{
     atvtsUP = await getAllActiveReports()
 } )
 
+setInterval(async()=>{
+    if(atvtsUP != channelAtvts){
+        const reportmod = client.channels.cache.get(config.channels.modReports)
+        channelAtvts = atvtsUP
+        await reportmod.setName(`Registros ativos [${atvtsUP}]`)
+    }
+},5000)
 
 
 client.on("interactionCreate", async interac =>{
     
     
-    setInterval(async()=>{
-        if(atvtsUP != channelAtvts){
-            const reportmod = client.channels.cache.get(config.channels.modReports)
-            channelAtvts = atvtsUP
-            await reportmod.setName(`Registros ativos [${atvtsUP}]`)
-        }
-
-    },5000)
 
     const modlogChannel = client.channels.cache.get(config.channels.modlog)
     
