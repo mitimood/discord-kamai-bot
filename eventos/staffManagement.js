@@ -5,7 +5,7 @@ const {addReport, getReport, updateStateReport, warn_add, warn_list, getAllActiv
 const { MessageActionRow, MessageSelectMenu, MessageEmbed, MessageButton, ButtonInteraction } = require('discord.js');
 
 let atvtsUP = 0
-let channelAtvts = 0
+let channelAtvts = null
 
 MongodbClient.on("connectionReady",async connection=>{
     atvtsUP = await getAllActiveReports()
