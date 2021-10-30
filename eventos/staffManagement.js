@@ -4,15 +4,15 @@ const {client, selfbotRegister} = require("../index")
 const {addReport, getReport, updateStateReport, warn_add, warn_list, getAllActiveReports, MongodbClient} = require("../mongodb")
 const { MessageActionRow, MessageSelectMenu, MessageEmbed, MessageButton, ButtonInteraction } = require('discord.js');
 
-let atvtsUP = 0
+let atvtsUP = null
 let channelAtvts = 0
 
-MongodbClient.on("connectionReady",connection=>{
+MongodbClient.on("connectionReady",async connection=>{
     atvtsUP = await getAllActiveReports()
 } )
 
 setInterval(async()=>{
-    if(atvtsUP != channelAtvts){
+    if(atvtsUP !== channelAtvts){
         const reportmod = client.channels.cache.get(config.channels.modReports)
         channelAtvts = atvtsUP
         await reportmod.setName(`Registros ativos [${atvtsUP}]`)
