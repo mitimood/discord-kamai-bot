@@ -1,17 +1,29 @@
 const config = require("../config")
 const { TrimMsg, punishments } = require("../funções/funções")
 const {client, selfbotRegister} = require("../index")
-const {addReport, getReport, updateStateReport, warn_add, warn_list, getAllActiveReports} = require("../mongodb")
+const {addReport, getReport, updateStateReport, warn_add, warn_list, getAllActiveReports, MongodbClient} = require("../mongodb")
 const { MessageActionRow, MessageSelectMenu, MessageEmbed, MessageButton, ButtonInteraction } = require('discord.js');
+
+let atvtsUP = 0
+let channelAtvts = 0
+
+MongodbClient.on("connectionReady",connection=>{
+    atvtsUP = await getAllActiveReports()
+} )
+
+
 
 client.on("interactionCreate", async interac =>{
     
     
     setInterval(async()=>{
-        const reportmod = client.channels.cache.get(config.channels.modReports)
-        const docs = await getAllActiveReports()
-        await reportmod.setName(`Registros ativos [${docs.length}]`)
-    },30000)
+        if(atvtsUP != channelAtvts){
+            const reportmod = client.channels.cache.get(config.channels.modReports)
+            channelAtvts = atvtsUP
+            await reportmod.setName(`Registros ativos [${atvtsUP}]`)
+        }
+
+    },5000)
 
     const modlogChannel = client.channels.cache.get(config.channels.modlog)
     
@@ -55,6 +67,7 @@ client.on("interactionCreate", async interac =>{
                 } catch (error) {   
                 }
             }
+            --atvtsUP
             interac.reply({content:"Interação apagada", ephemeral:true})
         }else{
             interac.reply({content:"Faltam permissões", ephemeral:true})
@@ -145,6 +158,7 @@ client.on("interactionCreate", async interac =>{
                         } catch (error) {
                         }
                     }
+                    --atvtsUP
                     await interac.followUp({content:"Banidos com sucesso", ephemeral:true})
 
                     break;
@@ -199,6 +213,7 @@ client.on("interactionCreate", async interac =>{
                             }
                         }
 
+                    --atvtsUP
                     await interac.followUp({content:"Advertidos com sucesso", ephemeral:true})
 
                     break;
@@ -225,7 +240,7 @@ client.on("interactionCreate", async interac =>{
                         } catch (error) {
                         }
                     }
-                    
+                    --atvtsUP
                     interac.followUp({content:"Cargos adicionados com sucesso", ephemeral:true})
 
                 break;
@@ -252,6 +267,7 @@ client.on("interactionCreate", async interac =>{
                         } catch (error) {  
                         }
                     }
+                    --atvtsUP
                     await interac.followUp({content:"Cargos removidos com sucesso", ephemeral:true})
 
                 break;
@@ -503,6 +519,7 @@ ${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length}**`
 
                         }
                         const authorId = interac.user.id
+                        ++atvtsUP
                         await addReport(reportId, toDo, authorId, messages)
                         } catch (error) {
                             console.log(error)
@@ -760,6 +777,7 @@ ${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length}**`
 
                         }
                         const authorId = interac.user.id
+                        ++atvtsUP
                         await addReport(reportId, toDo, authorId, messages)
                         } catch (error) {
                             console.log(error)
@@ -895,6 +913,7 @@ ${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length + i
 
                         }
                         const authorId = interac.user.id
+                        ++atvtsUP
                         await addReport(reportId, toDo, authorId, messages)
                         } catch (error) {
                             console.log(error)

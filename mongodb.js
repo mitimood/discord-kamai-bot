@@ -727,9 +727,11 @@ async function getAllActiveReports(){
   try{
     const database = MongodbClient.db(config.mongo.db_geral);
     const report = database.collection('reports');
-  
-    const docs = await report.find( { state: true} ).count()
-    return docs
+    
+
+    const count = (await report.find( { state: true} ).toArray()).length
+
+    return count
   }catch(err){
     console.log(err)
     return false
