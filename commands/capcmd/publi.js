@@ -22,6 +22,7 @@ teams = Object.values(teams)
 Object.values(config.roles.teams.caps).forEach(element => {
     teams.push(element)
 });
+        teams.push(config.roles.event)
         
     var msgArgs = message.content.split(" ");
     
