@@ -697,8 +697,7 @@ async function addReport(id, toDo, authorId, messages){
 
 async function updateStateReport(id, state){
   try{
-    console.log(state)
-    console.log(id)
+
     const database = MongodbClient.db(config.mongo.db_geral);
     const report = database.collection('reports');
   
