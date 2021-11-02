@@ -6,9 +6,9 @@ const { MessageEmbed } = require("discord.js");
 
 
 module.exports={
-    name: " ",
-    aliases: ["lb", "ldb"],
-    description: "Exibe o placar do servidor",
+    name: "leaderboard",
+    aliases: ["lb", "ldb", "placar"],
+    description: "Exibe o placar do servidor, utilize com a continuação de xp ou money",
 
     async execute(msg) {
         

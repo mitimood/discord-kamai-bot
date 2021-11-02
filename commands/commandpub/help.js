@@ -59,6 +59,15 @@ module.exports={
             }
         })
 
+        const games = fs.readdirSync(`./commands/commandpub/games`).filter(file => file.endsWith(`.js`));
+        games.forEach(command_file_name => {
+            let pub_module = require(`../commandpub/games/${command_file_name}`);
+            if(help_name == pub_module.name || pub_module.aliases.includes(help_name)){
+                help_desc = pub_module.description
+                aliases = pub_module.aliases.join(", ")
+            }
+        })
+
             if(help_desc){
                 msg.channel.send({embeds:[{content: msg.author.toString(), color: config.color.blurple, description: `**${help_name}**` +  (aliases ? `[${aliases}] ` : "") + `
                 ${help_desc}` }]})
@@ -75,6 +84,7 @@ module.exports={
 
 function full_help(msg){
     let help_commands = []
+
     const admcmd = fs.readdirSync(`./commands/admcmd`).filter(file => file.endsWith(`.js`));
     help_commands.push({adm_cmd:{name: "Administração"}})
     admcmd.forEach(command_file_name => {
@@ -109,16 +119,46 @@ function full_help(msg){
         let pub_module = require(`../commandpub/${command_file_name}`);
         help_commands[4].pub_cmd[pub_module.name] = {aliases: pub_module.aliases ? pub_module.aliases.join(" ") : null, description: pub_module.description ? pub_module.description: null}
     })
+
+    const games = fs.readdirSync(`./commands/commandpub/games`).filter(file => file.endsWith(`.js`));
+    help_commands.push({games:{name: "Jogos"}})
+    games.forEach(command_file_name => {
+        let pub_module = require(`../commandpub/games/${command_file_name}`);
+        help_commands[5].games[pub_module.name] = {aliases: pub_module.aliases ? pub_module.aliases.join(" ") : null, description: pub_module.description ? pub_module.description: null}
+    })
+
     let emb_description = ""
     for(const i of help_commands){
 
         for(const command_type in i){
-            for(const command_name in i[command_type] ){
-                if(typeof(i[command_type][command_name]) != typeof("")){
-                    emb_description += `↳ ${command_name}: ${i[command_type][command_name].description}\n`
 
-                }else{
-                    emb_description += `**${i[command_type][command_name]}**\n`
+            if(command_type == "adm_cmd" | command_type == "mod_cmd" | command_type == "staff_cmd" | command_type == "cap_cmd" && msg.member.roles.cache.find(role => [config.roles.staff.admin, config.ban_recover.staff_adm].includes(role.id))){
+                commandAdd()
+            }else
+            if(command_type == "mod_cmd" | command_type == "staff_cmd"  && msg.member.roles.cache.find(role => [config.roles.staff.mod].includes(role.id))){
+                commandAdd()
+            }else
+            if(command_type == "staff_cmd" && msg.member.roles.cache.find(role => [config.roles.staff.staff_call].includes(role.id))){
+                commandAdd()
+            }else
+            if(command_type == "cap_cmd" && msg.member.roles.cache.find(role => Object.values(config.roles.teams.caps).includes(role.id))){
+                commandAdd()
+            }
+            if(command_type == "pub_cmd"){
+                commandAdd()
+            }
+            if(command_type == "games"){
+                commandAdd()
+            }
+
+            function commandAdd (){
+                for(const command_name in i[command_type] ){
+                    if(typeof(i[command_type][command_name]) != typeof("")){
+                        emb_description += `↳ ${command_name}: ${i[command_type][command_name].description}\n`
+    
+                    }else{
+                        emb_description += `**${i[command_type][command_name]}**\n`
+                    }
                 }
             }
         }
