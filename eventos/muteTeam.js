@@ -11,10 +11,17 @@ const { voiceMuteSet } = require("../mongodb");
         if(newState.serverMute == oldState.serverMute)return;
         if(newState?.channel?.parentId == config.channels.event && newState.member.roles.cache.has(config.roles.teams.equipeEvent)) return
         if(newState.serverMute != undefined){
-            const fetchedLogs = await newState.guild.fetchAuditLogs({
-                limit: 1, 
-                type: 'MEMBER_UPDATE'
-            })
+            const fetchedLogs
+            try {
+                fetchedLogs = await newState.guild.fetchAuditLogs({
+                    limit: 1, 
+                    type: 'MEMBER_UPDATE'
+                })
+            } catch (error) {
+                console.log(error)
+                return
+            }
+
         
         const mutado = fetchedLogs.entries.first();
         if(mutado && mutado.createdTimestamp > (Date.now() - 1000)){  
@@ -55,11 +62,4 @@ const { voiceMuteSet } = require("../mongodb");
                 })                              
             }
         }}
-
-        if ( newState.channelId === config.channels.event ){
-            
-        }
-
-
-    
     })
