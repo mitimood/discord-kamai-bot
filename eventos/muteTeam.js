@@ -11,7 +11,7 @@ const { voiceMuteSet } = require("../mongodb");
         if(newState.serverMute == oldState.serverMute)return;
         if(newState?.channel?.parentId == config.channels.event && newState.member.roles.cache.has(config.roles.teams.equipeEvent)) return
         if(newState.serverMute != undefined){
-            const fetchedLogs
+            let fetchedLogs = 0
             try {
                 fetchedLogs = await newState.guild.fetchAuditLogs({
                     limit: 1, 
