@@ -5,7 +5,7 @@ const config = require("../config");
  Listen when a channel is created and update its permissions
 */
 
-client.on("channelCreate", channel=>{
+client.on("channelCreate", async channel=>{
     if(channel.type == "text"){
         try {
             console.log("Canal de texto criado " + Date.UTC())
