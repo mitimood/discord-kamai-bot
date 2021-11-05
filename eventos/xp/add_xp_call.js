@@ -7,7 +7,7 @@ var ids = []
 xp_voice_Add()
 
 async function xp_voice_Add(){
-    setTimeout(()=>{
+    setTimeout(async ()=>{
         const voice = client.guilds.cache.get(config.guild_id).channels.cache.filter(channels => channels.isVoice())
         voice.forEach(voice_channel => {
             if (voice_channel.members.size > 1 && voice_channel.members.filter(member => !member.bot).size >= 2) {

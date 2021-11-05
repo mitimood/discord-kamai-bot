@@ -13,7 +13,7 @@ client.on("voiceStateUpdate", async (oldstate,newstate)=>
         if(oldstate.channel.parent == channelcreate.parent && newstate.member.roles.cache.has(config.roles.voicecreat) && await LocalDb.userVoiceExist(oldstate.id)){
             let channelUser = oldstate.guild.channels.cache.get(await JSON.parse(JSON.stringify(await LocalDb.channelget(oldstate.id))).id)
             if(channelUser != newstate.channel){
-                console.log(`Deletando canal premium` + Date.UTC())
+                console.log(`Deletando canal premium` + new Date())
                 LocalDb.attactivity(newstate.id,0)
                 setTimeout(async() => {
                     if(await LocalDb.verifyactivity(oldstate.id)==1) return
@@ -25,7 +25,7 @@ client.on("voiceStateUpdate", async (oldstate,newstate)=>
     }
     //create channel
     if(newstate.channelId === config.channels.pvtcreat && newstate.member.roles.cache.has(config.roles.voicecreat)&&!await LocalDb.userVoiceExist(newstate.id)){
-        console.log(`Deletando canal premium` + Date.UTC())
+        console.log(`Deletando canal premium` + new Date())
 
         let everyone = newstate.guild.roles.cache.get(newstate.guild.id)
         newstate.guild.channels.create(`PV [${newstate.member.user.username}]`,{type:"GUILD_VOICE",parent: newstate.channel.parent,permissionOverwrites:[{id:newstate.member.id, allow:["MOVE_MEMBERS","CONNECT"],type:"member"},{id:everyone,deny:"CONNECT",type:"role"}]}).then(async chan=>

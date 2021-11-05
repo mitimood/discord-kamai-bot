@@ -10,7 +10,7 @@ client.on("messageCreate", msg=>{
     if (talkedRecently.has(msg.author.id) || msg.author.bot) return
 
     talkedRecently.add(msg.author.id);
-    setTimeout(() => {
+    setTimeout(async () => {
         console.log("Adicionando xp chat " + Date.UTC())
 
         // Removes the user from the set after a minute

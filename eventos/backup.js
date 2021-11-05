@@ -17,7 +17,7 @@ const nodejsondb = require("node-json-db").JsonDB;
 
 
     try{
-      console.log("Backup iniciado " + Date.now().toString() )
+      console.log("Backup iniciado " + new Date() )
       await MongodbClient.connect()
 
       const database = MongodbClient.db('kamaibot');
@@ -53,7 +53,7 @@ const nodejsondb = require("node-json-db").JsonDB;
         activityarteb.push(`/${doc["_id"]}/`, doc, true)
 
       })
-      console.log("Backup Terminado com sucesso! " + Date.now().toString())
+      console.log("Backup Terminado com sucesso! " + new Date())
     }catch(err){
         console.log("Ouve um erro no backup")
         console.log(err)

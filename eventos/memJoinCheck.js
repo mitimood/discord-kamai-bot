@@ -5,7 +5,7 @@ const { ban_member_send_message } = require("../funções/funções");
 
 // check some informations when a member join
 client.on("guildMemberAdd", async (member) => {
-    console.log(`Verificando entrada ` + Date.UTC())
+    console.log(`Verificando entrada ` + new Date())
     if(member.guild.id != config.guild_id) return
     let userid=member.user.id
 
@@ -26,7 +26,7 @@ client.on("guildMemberAdd", async (member) => {
     if((member.displayName.toLowerCase()).match(regTst)){
         try{
             await ban_member_send_message(member.id,"Selfbot!!", member.guild, client.user)
-            selfbotRegister.selfbotAdd(Date.now().valueOf(), member.avatar, member.id, member.user.tag, member.user.createdTimestamp, member.joinedTimestamp)
+            selfbotRegister.selfbotAdd(new Date(), member.avatar, member.id, member.user.tag, member.user.createdTimestamp, member.joinedTimestamp)
         }catch(error){
             console.log(error)
         }

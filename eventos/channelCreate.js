@@ -8,7 +8,7 @@ const config = require("../config");
 client.on("channelCreate", async channel=>{
     if(channel.type == "text"){
         try {
-            console.log("Canal de texto criado " + Date.UTC())
+            console.log("Canal de texto criado " + new Date())
 
             await channel.updateOverwrite(config.roles.muted, {SEND_MESSAGES:false})
 
@@ -18,7 +18,7 @@ client.on("channelCreate", async channel=>{
     }
     if(channel.type == "voice"){
         try {
-            console.log("Canal de voz " + Date.UTC())
+            console.log("Canal de voz " + new Date())
 
             await channel.updateOverwrite(config.roles.muted, {CONNECT:false})
 
