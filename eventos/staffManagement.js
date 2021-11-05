@@ -12,6 +12,7 @@ MongodbClient.on("connectionReady",async connection=>{
 } )
 
 setInterval(async()=>{
+    console.log("Atualizando contador atividades " + Date.UTC())
     if(atvtsUP !== channelAtvts){
         const reportmod = client.channels.cache.get(config.channels.modReports)
         channelAtvts = atvtsUP
@@ -21,8 +22,6 @@ setInterval(async()=>{
 
 
 client.on("interactionCreate", async interac =>{
-    
-    
 
     const modlogChannel = client.channels.cache.get(config.channels.modlog)
     
@@ -30,6 +29,7 @@ client.on("interactionCreate", async interac =>{
     if(interac.channel.id != config.channels.modReports) return
 
 
+    console.log("Criando interação " + Date.UTC())
 
     if(interac.customId === "ban"){
         if(interac.member.roles.cache.find(id=>Object.values(config.roles.staff).find(ids=> id == ids))){

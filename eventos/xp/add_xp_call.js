@@ -6,7 +6,7 @@ const { add_voice_xp } = require('../../mongodb');
 var ids = []
 xp_voice_Add()
 
-function xp_voice_Add(){
+async function xp_voice_Add(){
     setTimeout(()=>{
         const voice = client.guilds.cache.get(config.guild_id).channels.cache.filter(channels => channels.isVoice())
         voice.forEach(voice_channel => {
@@ -22,7 +22,12 @@ function xp_voice_Add(){
             add_voice_xp(ids, 1)
             ids = []
         }
-        xp_voice_Add()
+        try {
+            await xp_voice_Add()
+
+        } catch (error) {
+            console.log(error)
+        }
     },300000)
         
 }

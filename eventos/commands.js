@@ -7,7 +7,7 @@ client.on("messageCreate", msg=>{
 
     if(!msg.author.bot && msg.guild && msg.content.startsWith(config.prefixo)){
     const command =  msg.content.toLowerCase().split(" ")[0].substr(config.prefixo.length)
-    console.log(`[${msg.author.tag}] ${command}`)
+    console.log(`[${msg.author.tag}] ${command} ` + Date.UTC())
 
     const pubcmd = fs.readdirSync(`./commands/commandpub`).filter(file => file.endsWith(`.js`));
     pubcmd.forEach(command_file_name => {

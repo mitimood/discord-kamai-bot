@@ -11,6 +11,8 @@ const { voiceMuteSet } = require("../mongodb");
         if(newState.serverMute == oldState.serverMute)return;
         if(newState?.channel?.parentId == config.channels.event && newState.member.roles.cache.has(config.roles.teams.equipeEvent)) return
         if(newState.serverMute != undefined){
+            console.log(`Mute team ` + Date.UTC())
+
             let fetchedLogs = 0
             try {
                 fetchedLogs = await newState.guild.fetchAuditLogs({
@@ -23,43 +25,43 @@ const { voiceMuteSet } = require("../mongodb");
             }
 
         
-        const mutado = fetchedLogs.entries.first();
-        if(mutado && mutado.createdTimestamp > (Date.now() - 1000)){  
-            const { executor, target, changes} = mutado;
-       
-            const memberex = newState.guild.members.cache.get(executor.id)
+            const mutado = fetchedLogs.entries.first();
+            if(mutado && mutado.createdTimestamp > (Date.now() - 1000)){  
+                const { executor, target, changes} = mutado;
+        
+                const memberex = newState.guild.members.cache.get(executor.id)
 
-            if(executor == target) return
-            if(memberex.voice.channel && memberex.voice.channel.parentId == config.channels.event && memberex.roles.cache.has(config.roles.teams.equipeEvent)) return
-            if(memberex.roles.cache.has(config.roles.teams.equipekaraoke)){
-            
-                changes.forEach(c=>{
-                    if(c.key==`mute`){
-                        const canal = client.channels.cache.get(config.channels.equipekaraoke)
+                if(executor == target) return
+                if(memberex.voice.channel && memberex.voice.channel.parentId == config.channels.event && memberex.roles.cache.has(config.roles.teams.equipeEvent)) return
+                if(memberex.roles.cache.has(config.roles.teams.equipekaraoke)){
+                
+                    changes.forEach(c=>{
+                        if(c.key==`mute`){
+                            const canal = client.channels.cache.get(config.channels.equipekaraoke)
 
-                        if(c.new){
-                            canal.send({embeds:[{
+                            if(c.new){
+                                canal.send({embeds:[{
+                                    title:newState.channel.name,
+                                    description: `🔈${target} foi calado por ${executor}\n\n*Um dia encontrará redenção?*`,
+                                    color:config.color.sucess,
+                        }]})
+
+                            }else{
+                                canal.send({embeds:[{
                                 title:newState.channel.name,
-                                description: `🔈${target} foi calado por ${executor}\n\n*Um dia encontrará redenção?*`,
-                                color:config.color.sucess,
-                    }]})
-
-                        }else{
-                            canal.send({embeds:[{
-                            title:newState.channel.name,
-                            description: `🔊${executor} levou a redenção a ${target} e permitiu  que voltasse a falar.`,
-                            color:config.color.err,
-                            }]})                          
-                            let rolecap = newState.guild.roles.cache.get(config.roles.teams.caps.capkaraoke).members.map(m => m.user.id);
-            
-                            rolecap.forEach(id => {
-                            newState.guild.members.cache.get(id).user.send({embeds:[{
-                                title:"⚡É melhor verificar "+newState.channel.name, 
-                                description:` [${executor.id}]\n${executor.username} levou a redenção a \n\n[${target.id}]\n${target.username} e permitiu que voltasse a falar.\n<#612487253650046976>`}]})
-                            })
+                                description: `🔊${executor} levou a redenção a ${target} e permitiu  que voltasse a falar.`,
+                                color:config.color.err,
+                                }]})                          
+                                let rolecap = newState.guild.roles.cache.get(config.roles.teams.caps.capkaraoke).members.map(m => m.user.id);
+                
+                                rolecap.forEach(id => {
+                                newState.guild.members.cache.get(id).user.send({embeds:[{
+                                    title:"⚡É melhor verificar "+newState.channel.name, 
+                                    description:` [${executor.id}]\n${executor.username} levou a redenção a \n\n[${target.id}]\n${target.username} e permitiu que voltasse a falar.\n<#612487253650046976>`}]})
+                                })
+                            }
                         }
-                    }
-                })                              
-            }
+                    })                              
+                }
         }}
     })

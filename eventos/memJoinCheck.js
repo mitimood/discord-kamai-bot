@@ -5,6 +5,7 @@ const { ban_member_send_message } = require("../funções/funções");
 
 // check some informations when a member join
 client.on("guildMemberAdd", async (member) => {
+    console.log(`Verificando entrada ` + Date.UTC())
     if(member.guild.id != config.guild_id) return
     let userid=member.user.id
 

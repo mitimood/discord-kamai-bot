@@ -9,6 +9,7 @@ client.on("interactionCreate", async (interac)=>{
 
         const idFofo = interac.user.id
         let xp = 0
+        console.log(`Convertendo xp de ${interac.user.username}` + Date.UTC())
 
         if(interac.member.roles.cache.has("817542947418800148")){
             await add_voice_xp([idFofo], 18250)

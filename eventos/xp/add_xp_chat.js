@@ -11,9 +11,16 @@ client.on("messageCreate", msg=>{
 
     talkedRecently.add(msg.author.id);
     setTimeout(() => {
+        console.log("Adicionando xp chat " + Date.UTC())
+
         // Removes the user from the set after a minute
-        add_chat_xp(msg.author.id, 1)
-        talkedRecently.delete(msg.author.id);
+        try {
+           await add_chat_xp(msg.author.id, 1)
+           talkedRecently.delete(msg.author.id);
+
+        } catch (error) {
+            console.log(error)
+        }
     }, cooldown);
     
 })

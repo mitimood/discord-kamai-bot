@@ -5,6 +5,8 @@ const config = require("../config");
 client.on("messageUpdate", (oldMessage, newMessage)=>{
     if (newMessage.author.bot) return
     try{
+        console.log(`Atualizando mensagem ` + Date.UTC())
+
         let newEmb = new MessageEmbed()
         let oldEmb = new MessageEmbed()
 
@@ -34,6 +36,8 @@ client.on("messageUpdate", (oldMessage, newMessage)=>{
 client.on("messageDelete", (delMessage)=>{
 
     if (delMessage.author.bot) return
+    console.log(`Mensagem apagada ` + Date.UTC())
+
     try{
         let delemb = new MessageEmbed()
         let imageUrl = '';
@@ -54,6 +58,7 @@ const fs = require('fs')
 
 client.on('messageDeleteBulk', async mapMsg =>{
     let bulkText = ""
+    console.log(`Mensagem apagada em massa ` + Date.UTC())
 
     for(let msg of mapMsg ){
         bulkText += `[${Date(msg[1].createdTimestamp)}] ${msg[1].author.username} => ${msg[1].content}`
