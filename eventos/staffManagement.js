@@ -12,8 +12,9 @@ MongodbClient.on("connectionReady",async connection=>{
 } )
 
 setInterval(async()=>{
-    console.log("Atualizando contador atividades " + new Date())
     if(atvtsUP !== channelAtvts){
+        console.log("Atualizando contador atividades " + new Date())
+
         const reportmod = client.channels.cache.get(config.channels.modReports)
         channelAtvts = atvtsUP
         await reportmod.setName(`Registros ativos [${atvtsUP}]`)

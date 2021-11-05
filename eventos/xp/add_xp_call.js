@@ -23,6 +23,8 @@ async function xp_voice_Add(){
             ids = []
         }
         try {
+            console.log("Adicionando xp call " + new Date())
+
             await xp_voice_Add()
 
         } catch (error) {
