@@ -1,18 +1,26 @@
 const { Collection, MessageEmbed } = require("discord.js");
-const moment = require('moment-timezone');
-const config = require("../../../config");
+const { SlashCommandBuilder } = require('@discordjs/builders');
 const { daily_get, daily_set } = require("../../../mongodb");
 
 const cooldown = new Collection()
 
 module.exports={
+    data: new SlashCommandBuilder()
+    .setName('daily')
+    .setDescription('Ganhe a sua quantidade diaria de Kamaicoins ☀'),
     name: "daily",
     aliases: ["diario"],
     description: "Use o comando 1x ao dia para ganhar kamaicoins",
 
     async execute(msg) {
+        let authorId = ""
+        if(msg.type === "APPLICATION_COMMAND"){
+            authorId = msg.user.id
 
-        const authorId = msg.author.id
+        }else{
+            authorId = msg.author.id
+
+        }
         const localDaily = cooldown.get(authorId)
 
         if( localDaily && new Date().valueOf() < localDaily + 86400000 ){

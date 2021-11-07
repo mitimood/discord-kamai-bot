@@ -7,7 +7,7 @@ const MongodbClient = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-module.exports = {resetXp ,verifyXp, MongodbClient, SetTempMute, voiceMuteSet, voiceMuteCheck, SetUnmute, CheckMute, transferdb, warn_list,notifyList, warn_remove, warn_add, Check_all_mutes, role_register_add, role_register_remove, check_roles,add_voice_xp, add_bonus_xp, add_chat_xp, get_xp, daily_get, daily_set, moneyGet, moneyAdd, getAllActiveReports, getReport, updateStateReport, addReport }
+module.exports = {resetXp ,verifyXp, MongodbClient, SetTempMute, voiceMuteSet, voiceMuteCheck, SetUnmute, CheckMute, transferdb, warn_list,notifyList, warn_remove, warn_add, Check_all_mutes, role_register_add, role_register_remove, check_roles,add_voice_xp, add_bonus_xp, add_chat_xp, get_xp, daily_get, daily_set, moneyGet, moneyAdd, moneyRemove, getAllActiveReports, getReport, updateStateReport, addReport }
 const moment = require("moment-timezone");
 const databaseSite = require("./mongoDbSite.js");
 
@@ -664,6 +664,9 @@ async function moneyRemove(id, money){
   try{
     const database = MongodbClient.db(config.mongo.db_geral);
     const members_management = database.collection('member_management');
+
+    await members_management.updateOne({"_id":id}, { "$inc": { "economy.money": -money } } )
+
   }catch(err){
     console.log(err)
   }
