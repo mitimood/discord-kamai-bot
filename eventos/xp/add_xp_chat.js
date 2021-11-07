@@ -5,7 +5,7 @@ const { add_chat_xp } = require("../../mongodb");
 
 client.on("messageCreate", msg=>{
 
-    const cooldown = 300000
+    const cooldown = 60000
     
     if (talkedRecently.has(msg.author.id) || msg.author.bot) return
 

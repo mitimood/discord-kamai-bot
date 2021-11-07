@@ -30,6 +30,6 @@ async function xp_voice_Add(){
         } catch (error) {
             console.log(error)
         }
-    },300000)
+    },60000)
         
 }
