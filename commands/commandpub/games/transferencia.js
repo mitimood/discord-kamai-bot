@@ -17,7 +17,7 @@ module.exports={
         .setRequired(true)),
     name: "transferencia",
     aliases: ["transfer", "pay"],
-    description: "Use o comando 1x ao dia para ganhar kamaicoins",
+    description: "Transfere seu dindin para outra pessoa",
 
     async execute(msg) {
       const interac = msg
