@@ -18,64 +18,82 @@ module.exports={
     description: "informa alguns dados do usuário",
 
     async execute(msg){
-        const embed = new Discord.MessageEmbed()
-        embed.setDescription(`⠀`)
-        
-        let msgArgs = TrimMsg(msg)
-        let userid = ""
+        try {
+            const embed = new Discord.MessageEmbed()
+            embed.setDescription(`⠀`)
+            
+            let msgArgs = TrimMsg(msg)
+            let userid = ""
+    
+            if (msg.mentions.members.first()){
+                userid =  msg.mentions.members.first().user.id
+            }else if( !msgArgs[1] || !msgArgs[1].match(/[0-9]/g) ){
+                userid = msg.author.id
+            }else if(msgArgs[1].match(/[0-9]/g)){
+                userid = msgArgs[1]
+            }
+            try{
+                var member = await msg.guild.members.fetch({user:userid, force: false})
+            }catch{
+                try {
+                return await msg.channel.send(msg.author.toString() + " Usuario desconhecido")
+    
+            } catch (error) {
+                console.log(error)
+            }
+            }
+            embed.setColor(config.color.blurple)
+            var flags = null
+            if(!member) member = msg.member
+            if(member.user.flags){
+                flags = separate_flags(member.user.flags.toArray())
+            }
+            embed.setTitle((flags ? flags.join("") : "") + member.user.username )
+            
+    
+    
+            embed.setThumbnail(member.user.displayAvatarURL())
+            embed.setFooter(`id: ${member.id}`)
+    
+            let date = new Date(Date.now() - member.joinedAt )
+            // let date_duration = new Date(Date.now() - new Date(member.user.createdTimestamp))
+    
+            // let joined_duration = format_date_created(date)
+            // let joined_since = format_date(member.joinedAt)
+            // let created_since = format_date(new Date(member.user.createdTimestamp))
+            // let created_duration = format_date_created(date_duration)
+    
+            // embed.addField('🛎Entrada:', joined_since + `(${joined_duration})`, true)
+            // embed.addField('🚪Criada em:', created_since + `(${created_duration})`, true)
+    
+            let joined_duration_month = parseInt(date.getTime() / 2592000000)
+            let badges = badge(joined_duration_month)
+            
+            if(badges){
+                embed.addField('⭐Badges', badges, true)
+            }
+            
+            const coins = await moneyGet(userid)
+            
+            if(coins){
+                embed.addField('<:Coin_kamai:881917666829414430> Kamaicoins', `₵**${coins}**`, false)
+            }
 
-        if (msg.mentions.members.first()){
-            userid =  msg.mentions.members.first().user.id
-        }else if( !msgArgs[1] || !msgArgs[1].match(/[0-9]/g) ){
-            userid = msg.author.id
-        }else if(msgArgs[1].match(/[0-9]/g)){
-            userid = msgArgs[1]
+            let xp = await xp_info(userid)
+            embed.setDescription(`**global lvl**: ${xp?.global?.level?  xp.global.level : 0 }
+            ${xp.global ? xp.global.xpGlobalBar : blackProgressBar} ${xp?.global?.percentage ? parseInt(xp.global.percentage * 100) : "0"}%
+            **CHAT**: ${xp.chat.total ? xp.chat.total : 0}xp   **VOZ**: ${xp.voice.total ? xp.voice.total : 0}xp [${xp?.voice?.time ? xp.voice.time : 0}h]  **BÔNUS**: ${xp.bonus.total ? xp.bonus.total : 0}xp
+            `)
+            try {
+                await msg.channel.send({content: msg.author.toString(),embeds:[embed]})
+    
+            } catch (error) {
+                console.log(error)
+            }
+        } catch (error) {
+            console.log(error)
         }
-        try{
-            var member = await msg.guild.members.fetch({user:userid, force: false})
-        }catch{
-            return msg.channel.send(msg.author.toString() + " Usuario desconhecido")
-        }
-        embed.setColor(config.color.blurple)
-        var flags = null
-        if(!member) member = msg.member
-        if(member.user.flags){
-            flags = separate_flags(member.user.flags.toArray())
-        }
-        embed.setTitle((flags ? flags.join("") : "") + member.user.username )
-        
 
-
-        embed.setThumbnail(member.user.displayAvatarURL())
-        embed.setFooter(`id: ${member.id}`)
-
-        let date = new Date(Date.now() - member.joinedAt )
-        // let date_duration = new Date(Date.now() - new Date(member.user.createdTimestamp))
-
-        // let joined_duration = format_date_created(date)
-        // let joined_since = format_date(member.joinedAt)
-        // let created_since = format_date(new Date(member.user.createdTimestamp))
-        // let created_duration = format_date_created(date_duration)
-
-        // embed.addField('🛎Entrada:', joined_since + `(${joined_duration})`, true)
-        // embed.addField('🚪Criada em:', created_since + `(${created_duration})`, true)
-
-        let joined_duration_month = parseInt(date.getTime() / 2592000000)
-        let badges = badge(joined_duration_month)
-        if(badges){
-            embed.addField('⭐Badges', badges, true)
-        }
-        const coins = await moneyGet(userid)
-        if(coins){
-            embed.addField('<:Coin_kamai:881917666829414430> Kamaicoins', `₵**${coins}**`, false)
-        }
-
-        let xp = await xp_info(userid)
-        embed.setDescription(`**global lvl**: ${xp?.global?.level?  xp.global.level : 0 }
-        ${xp.global ? xp.global.xpGlobalBar : blackProgressBar} ${xp?.global?.percentage ? parseInt(xp.global.percentage * 100) : "0"}%
-        **CHAT**: ${xp.chat.total ? xp.chat.total : 0}xp   **VOZ**: ${xp.voice.total ? xp.voice.total : 0}xp [${xp?.voice?.time ? xp.voice.time : 0}h]  **BÔNUS**: ${xp.bonus.total ? xp.bonus.total : 0}xp
-        `)
-        msg.channel.send({content: msg.author.toString(),embeds:[embed]})
     }
 }
 

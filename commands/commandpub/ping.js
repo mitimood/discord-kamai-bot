@@ -12,15 +12,17 @@ module.exports={
     async execute(msg){
 
     // Adds the user to the set so that they can't talk for a minute
-    
-    let pingingMsg = await msg.channel.send({ embeds: [{
-        color: config.color.sucess,
-        description: "Pinging..."
-    }]});
-    pingingMsg.edit({content: msg.author.toString() , embeds: [{
-        color: config.color.sucess,
-        description: `**Pong!** Corri até valhalla e voltei em ${pingingMsg.createdTimestamp - msg.createdTimestamp}ms`
-    }]});
-
+        try {
+            let pingingMsg = await msg.channel.send({ embeds: [{
+                color: config.color.sucess,
+                description: "Pinging..."
+            }]});
+            await pingingMsg.edit({content: msg.author.toString() , embeds: [{
+                color: config.color.sucess,
+                description: `**Pong!** Corri até valhalla e voltei em ${pingingMsg.createdTimestamp - msg.createdTimestamp}ms`
+            }]});
+        } catch (error) {
+            console.log(error)
+        }
     }
 }

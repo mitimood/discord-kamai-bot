@@ -13,7 +13,8 @@ module.exports={
     description: "Use o comando 1x ao dia para ganhar kamaicoins",
 
     async execute(msg) {
-        let authorId = ""
+        try {
+            let authorId = ""
         if(msg.type === "APPLICATION_COMMAND"){
             authorId = msg.user.id
 
@@ -60,18 +61,28 @@ module.exports={
                 
                 cooldown.set( authorId, new Date().valueOf() )
 
-                return msg.reply({embeds: [emb]})
+                return await msg.reply({embeds: [emb]})
     
             } catch (error) {
+                console.log(error)
             }
         }
 
         async function cooldownMessage(time){
-            const nextDaily = new Date( time + 86400000 )
-            const today = new Date()
-            const timeLast = new Date(nextDaily - today)
-
-            return await msg.reply( { content: `Você precisa esperar ${timeLast.getUTCHours() ? `${timeLast.getUTCHours()}h` : ""} ${timeLast.getUTCMinutes() ? `${timeLast.getUTCMinutes()}m` : "" } ${timeLast.getUTCSeconds() ? `${timeLast.getUTCSeconds()}s` : ""} para utilizar o comando novamente` } )
+            try {
+                const nextDaily = new Date( time + 86400000 )
+                const today = new Date()
+                const timeLast = new Date(nextDaily - today)
+                
+                return await msg.reply( { content: `Você precisa esperar ${timeLast.getUTCHours() ? `${timeLast.getUTCHours()}h` : ""} ${timeLast.getUTCMinutes() ? `${timeLast.getUTCMinutes()}m` : "" } ${timeLast.getUTCSeconds() ? `${timeLast.getUTCSeconds()}s` : ""} para utilizar o comando novamente` } )
+    
+            } catch (error) {
+                console.log(error)
+            }
         }
+        } catch (error) {
+            console.log(error)
+        }
+        
     }
 }

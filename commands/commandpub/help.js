@@ -69,9 +69,14 @@ module.exports={
         })
 
             if(help_desc){
-                msg.channel.send({embeds:[{content: msg.author.toString(), color: config.color.blurple, description: `**${help_name}**` +  (aliases ? `[${aliases}] ` : "") + `
-                ${help_desc}` }]})
-                
+                try {
+                    await msg.channel.send({embeds:[{content: msg.author.toString(), color: config.color.blurple, description: `**${help_name}**` +  (aliases ? `[${aliases}] ` : "") + `
+                    ${help_desc}` }]})
+                    
+                } catch (error) {
+                    console.log(error)
+                }
+
             }else{
                 full_help(msg)
             }
@@ -163,5 +168,10 @@ function full_help(msg){
             }
         }
     }
-    msg.channel.send({content: msg.author.toString() ,embeds:[{description: emb_description, color: config.color.blurple}]})
+    try {
+        await msg.channel.send({content: msg.author.toString() ,embeds:[{description: emb_description, color: config.color.blurple}]})
+
+    } catch (error) {
+        console.log(error)
+    }
 }
