@@ -78,16 +78,26 @@ module.exports={
                 }
 
             }else{
-                full_help(msg)
+                try {
+                    await full_help(msg)
+
+            } catch (error) {
+
+            }
             }
         }else{
-            full_help(msg)
+            try {
+                await full_help(msg)
+
+            } catch (error) {
+                
+            }
         }
     }
 }
 
 
-function full_help(msg){
+async function full_help(msg){
     let help_commands = []
 
     const admcmd = fs.readdirSync(`./commands/admcmd`).filter(file => file.endsWith(`.js`));
