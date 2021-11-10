@@ -54,6 +54,7 @@ staffcmd.forEach(events => {
 })
 */
 
+
 const games = fs.readdirSync(`./commands/commandpub/games`).filter(file => file.endsWith(`.js`));
 
 const commands = []
