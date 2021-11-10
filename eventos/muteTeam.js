@@ -11,7 +11,7 @@ const { voiceMuteSet } = require("../mongodb");
         if(newState.serverMute == oldState.serverMute)return;
         if(newState?.channel?.parentId == config.channels.event && newState.member.roles.cache.has(config.roles.teams.equipeEvent)) return
         if(newState.serverMute != undefined){
-            console.log(`Mute team ` + new Date())
+            console.log(`Mute team ` + Date.UTC())
 
             let fetchedLogs = 0
             try {
@@ -32,7 +32,7 @@ const { voiceMuteSet } = require("../mongodb");
                 const memberex = newState.guild.members.cache.get(executor.id)
 
                 if(executor == target) return
-                if(memberex.voice.channel && memberex.voice.channel.parentId == config.channels.event && memberex.roles.cache.has(config.roles.teams.equipeEvent)) return
+                if(memberex?.voice?.channel && memberex?.voice?.channel?.parentId == config.channels.event && memberex?.roles?.cache.has(config.roles.teams.equipeEvent)) return
                 if(memberex.roles.cache.has(config.roles.teams.equipekaraoke)){
                 
                     changes.forEach(c=>{
