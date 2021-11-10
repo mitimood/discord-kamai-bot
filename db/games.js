@@ -1,5 +1,5 @@
-const config = require("./config")
-const config_secret = require("./config_secret")
+const config = require("../config")
+const config_secret = require("../config_secret")
 const { MongoClient } = require("mongodb");
 // Replace the uri string with your MongoDB deployment's connection string.
 const uri = `mongodb+srv://kamaibot:${config_secret.mongo_password}@cluster0.ysdvr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
