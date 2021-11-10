@@ -1,7 +1,6 @@
 const { Collection, MessageEmbed } = require("discord.js");
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { daily_get, daily_set } = require("../../../mongodb");
-
+const { gamesDB } = require("../../..");
 const cooldown = new Collection()
 
 module.exports={
@@ -13,6 +12,7 @@ module.exports={
     description: "Use o comando 1x ao dia para ganhar kamaicoins",
 
     async execute(msg) {
+
         try {
             let authorId = ""
         if(msg.type === "APPLICATION_COMMAND"){
@@ -29,7 +29,7 @@ module.exports={
 
         }
 
-        const last = await daily_get(authorId)
+        const last = await gamesDB.daily_get(authorId)
 
         if (last){
             if( new Date().valueOf() > 86400000 + last){
@@ -51,7 +51,7 @@ module.exports={
 
         async function adicionarDaily(){
             try {
-                const daily = await daily_set(authorId)
+                const daily = await gamesDB.daily_set(authorId)
                 const emb = new MessageEmbed()
                                 .setColor("YELLOW")
                                 .setDescription(`Você ganhou <a:Coin:881915668499398686>**${daily.money}**! 

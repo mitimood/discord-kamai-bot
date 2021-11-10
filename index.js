@@ -14,10 +14,14 @@ const selfbotDB = require("./db/selfbotRegister");
 const selfbotRegister = new selfbotDB();
 const Database2 = require("./dbEmbeds");
 const embDb = new Database2();
+const gamesConst = require("./db/games")
+const gamesDB = new gamesConst()
 
 const LocalDb = new Database();
 const mongodb = require("./mongodb")
 const mongoClientSite = require("./mongoDbSite.js");
+
+module.exports = Object.assign( module.exports, {client, gamesDB} )
 
 //Load all the events
 
@@ -52,6 +56,7 @@ staffcmd.forEach(events => {
 
 const games = fs.readdirSync(`./commands/commandpub/games`).filter(file => file.endsWith(`.js`));
 
+
 const commands = []
 client.commands = new Collection();
 
@@ -63,7 +68,7 @@ games.forEach(events => {
 })
 
 
-module.exports = { commands ,client, LocalDb, embDb, Discord, selfbotRegister }
+module.exports = { commands ,client, LocalDb, embDb, Discord, selfbotRegister, gamesDB }
 
 ban_recover.forEach(recover_ev => {
     require(`${__dirname}/events_ban_recover/${recover_ev}`);
