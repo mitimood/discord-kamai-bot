@@ -5,7 +5,6 @@ client.on("voiceStateUpdate", async (oldstate,newstate)=>
 {
     try {
         let channelcreate = newstate.guild.channels.cache.get(config.channels.pvtcreat);
-        console.log(`Problema de `)
     var deletechan;
     //Delete channel when empty
     if(oldstate.channel){

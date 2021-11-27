@@ -19,7 +19,6 @@ async function xp_voice_Add(){
             }
         })
         if (ids.length) {
-            console.log(ids)
             add_voice_xp(ids, 1)
             ids = []
             console.log("Adicionando xp call " + new Date())

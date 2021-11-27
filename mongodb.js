@@ -687,6 +687,7 @@ async function moneyGet(id){
 
 async function addReport(id, toDo, authorId, messages){
   try{
+    
     const database = MongodbClient.db(config.mongo.db_geral);
     const report = database.collection('reports');
   
