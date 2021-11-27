@@ -478,7 +478,7 @@ ${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length}**`
                                             new MessageButton().setLabel("APROVAR").setStyle("SUCCESS").setCustomId("yes")
                                         )
                                         .addComponents(
-                                            new MessageButton().setLabel("NEGAR").setStyle("DANGER").setCustomId("no")
+                                            new MessageButton().setLabel("DELETAR").setStyle("DANGER").setCustomId("no")
                                         )
                         let embed = new MessageEmbed()
                                     .setTitle(`[BAN] => ${idResponse.users.length} [${reason}]`)
@@ -737,7 +737,7 @@ ${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length}**`
                                             new MessageButton().setLabel("APROVAR").setStyle("SUCCESS").setCustomId("yes")
                                         )
                                         .addComponents(
-                                            new MessageButton().setLabel("NEGAR").setStyle("DANGER").setCustomId("no")
+                                            new MessageButton().setLabel("DELETAR").setStyle("DANGER").setCustomId("no")
                                         )
                         let embed = new MessageEmbed()
                                     .setTitle(`[ADVERTÊNCIA] => ${idResponse.users.length} [${reason}]`)
@@ -871,7 +871,7 @@ ${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length + i
                                             new MessageButton().setLabel("APROVAR").setStyle("SUCCESS").setCustomId("yes")
                                         )
                                         .addComponents(
-                                            new MessageButton().setLabel("NEGAR").setStyle("DANGER").setCustomId("no")
+                                            new MessageButton().setLabel("DELETAR").setStyle("DANGER").setCustomId("no")
                                         )
                         let embed = new MessageEmbed()
                                     .setTitle(`[CARGO] => ${idResponse.users.length}   [${action == "remove" ? "Remover" : "Adicionar"}] `)
