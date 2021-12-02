@@ -1,6 +1,7 @@
 const config = require("../config")
 const config_secret = require("../config_secret")
 const { MongoClient } = require("mongodb");
+const { randomInt } = require("crypto");
 // Replace the uri string with your MongoDB deployment's connection string.
 const uri = `mongodb+srv://kamaibot:${config_secret.mongo_password}@cluster0.ysdvr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const MongodbClient = new MongoClient(uri, {
@@ -134,5 +135,44 @@ module.exports = class db {
             MongodbClient.close()
         }
       }
+
+      async diceUpdate(id, dices){
+        try {
+
+            await MongodbClient.connect()
+            const query = { _id: id }
+            let insert = { $set: { "economy.dices": dices } }
+
+            const configDb = { upsert:true }
+            await this.memberManagament.findOneAndUpdate( query, insert, configDb )
+
+        } catch (error) {
+            console.log(error)
+        }finally{
+
+            MongodbClient.close()
+        }
+      }
+
+      async diceGet(id){
+        try {
+            await MongodbClient.connect()
+            const query = { _id: id }
+
+            const doc = await this.memberManagament.findOne( query )
+            if(doc?.economy?.dices){
+                return doc.economy.dices
+            }else{
+                return null
+            }
+
+        } catch (error) {
+            console.log(error)
+        }finally{
+
+            MongodbClient.close()
+        }
+      }
+
       
 }
