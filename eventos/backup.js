@@ -1,9 +1,8 @@
 const schedule = require('node-schedule');
-var mongoose = require('mongoose');
 const config_secret = require("../config_secret")
 const uri = `mongodb+srv://kamaibot:${config_secret.mongo_password}@cluster0.ysdvr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
-const { MongoClient, ObjectId } = require("mongodb");
+const { MongoClient } = require("mongodb");
 const fs = require('fs');
 
 const MongodbClient = new MongoClient(uri, {
