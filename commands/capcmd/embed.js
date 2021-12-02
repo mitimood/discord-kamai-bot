@@ -68,6 +68,7 @@ module.exports = {
                                     let createmb = require(`../../funções/createEmbed`)
                                     createmb.emb(msg, recvdb.embed);
                                 })
+                                
                             } else {
                                 msg.channel.send(`Id invalido`)
                             }
