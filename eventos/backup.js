@@ -34,22 +34,22 @@ const job = schedule.scheduleJob('0 4 * * *', async function(){
       
 
       await members_adm.find().forEach(doc=>{
-        members_admb.push(`/${doc["_id"]}/`, doc, true)
+        members_admb.push(`/${doc["_id"]}/`,doc, true)
 
       })
 
       await activitypoems.find().forEach(doc=>{
-        activitypoemsb.push(`/${doc["_id"]}/`, doc, true)
+        activitypoemsb.push(`/${doc["_id"]}/`, JSON.parse(doc), true)
 
       })
 
       await activitykaraoke.find().forEach(doc=>{
-        activitykaraokeb.push(`/${doc["_id"]}/`, doc, true)
+        activitykaraokeb.push(`/${doc["_id"]}/`, JSON.parse(doc), true)
 
       })
 
       await activityarte.find().forEach(doc=>{
-        activityarteb.push(`/${doc["_id"]}/`, doc, true)
+        activityarteb.push(`/${doc["_id"]}/`, JSON.parse(doc), true)
 
       })
       console.log("Download database mongo concluido")
@@ -60,7 +60,8 @@ const job = schedule.scheduleJob('0 4 * * *', async function(){
       const zip = new zipper()
       
       fs.readdirSync(`./`).filter(file => {
-        if( ".git" != file && ".gitattributes" != file && ".gitignore" != file && "node_modules" != file && "LICENSE" != file){
+        console.log(file)
+        if( ".git" != file && ".gitattributes" != file && ".gitignore" != file && "node_modules" != file && "LICENSE" != file && file != "Dockerfile"){
             if( file.indexOf(".") > -1 ){
               zip.addLocalFile(path.resolve(__dirname, `../${file}`))
             
