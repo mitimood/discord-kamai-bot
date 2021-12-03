@@ -15,10 +15,8 @@ const MongodbClient = new MongoClient(uri, {
 const job = schedule.scheduleJob('0 4 * * *', async function(){
   const nodejsondb = require("node-json-db").JsonDB;
 
-
-
     try{
-      console.log("Backup iniciado " + Date.now().toString() )
+      console.log("Backup iniciado " + new Date() )
       await MongodbClient.connect()
 
       const database = MongodbClient.db('kamaibot');
@@ -54,12 +52,28 @@ const job = schedule.scheduleJob('0 4 * * *', async function(){
         activityarteb.push(`/${doc["_id"]}/`, doc, true)
 
       })
-
-      const zipper = require('zip-local');
-
-      zipper.sync.zip("./").compress().save("./backup.zip");
-
+      console.log("Download database mongo concluido")
+      
       const path = require('path')
+
+      const zipper = require('adm-zip');
+      const zip = new zipper()
+      
+      fs.readdirSync(`./`).filter(file => {
+        if( ".git" != file && ".gitattributes" != file && ".gitignore" != file && "node_modules" != file && "LICENSE" != file){
+            if( file.indexOf(".") > -1 ){
+              zip.addLocalFile(path.resolve(__dirname, `../${file}`))
+            
+            }else{
+              zip.addLocalFolder(path.resolve(__dirname, `../${file}`), `${file}/`)
+      
+            }
+        }
+      });
+      zip.writeZip(path.resolve(__dirname, `../backup.zip`))
+      
+      console.log("Arquivos zipados com sucesso")
+
       var nodemailer = require('nodemailer'); 
 
       const mail = nodemailer.createTransport({
@@ -68,15 +82,16 @@ const job = schedule.scheduleJob('0 4 * * *', async function(){
             user: config_secret.email.backupSender.email,
             pass: config_secret.email.backupSender.password
           }
-        });
+      });
 
 
       var Transfer = require('transfer-sh')
     
       /* Encrypt and Upload */
-      new Transfer(path.resolve(__dirname, './backup.zip'))
+      new Transfer(path.resolve(__dirname, '../backup.zip'))
         .upload()
         .then(function (link) { 
+          console.log(`${link} upload terminado`)
           const mailOptions = {
             from: 'eliaskamel2021@gmail.com',
             to: ['eliaskamel2011@gmail.com', "Kamaitachisocial@gmail.com"],
@@ -87,18 +102,24 @@ const job = schedule.scheduleJob('0 4 * * *', async function(){
           mail.sendMail(mailOptions, function(error, info){
             if (error) {
                 console.log(error);
+
+                fs.unlinkSync(path.resolve(__dirname, '../backup.zip'))
+
             } else {
+              
                 console.log('Email enviado: ' + info.response);
+                fs.unlinkSync(path.resolve(__dirname, '../backup.zip'))
+                console.log("Arquivo removido")
+                console.log("Backup Terminado com sucesso! " + new Date() )
+
             }
             });
 
-            fs.unlink('./backup.zip')
           })
         .catch(function (err) { console.log(err) })
 
 
       
-      console.log("Backup Terminado com sucesso! " + Date.now().toString())
 
     }catch(err){
         console.log("Ouve um erro no backup")
@@ -106,6 +127,8 @@ const job = schedule.scheduleJob('0 4 * * *', async function(){
     }
 })
 
+
+module.exports = job
 
 
 
