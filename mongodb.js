@@ -1,8 +1,8 @@
 const config = require("./config")
-const config_secret = require("./config_secret")
+require('dotenv').config();
 const { MongoClient } = require("mongodb");
 // Replace the uri string with your MongoDB deployment's connection string.
-const uri = `mongodb+srv://kamaibot:${config_secret.mongo_password}@cluster0.ysdvr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://kamaibot:${process.env.mongo_password}@cluster0.ysdvr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const MongodbClient = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -687,7 +687,6 @@ async function moneyGet(id){
 
 async function addReport(id, toDo, authorId, messages){
   try{
-    
     const database = MongodbClient.db(config.mongo.db_geral);
     const report = database.collection('reports');
   
@@ -701,11 +700,12 @@ async function addReport(id, toDo, authorId, messages){
 
 async function updateStateReport(id, state){
   try{
-
+    console.log(state)
+    console.log(id)
     const database = MongodbClient.db(config.mongo.db_geral);
     const report = database.collection('reports');
   
-    const doc = await report.updateOne( {"_id": id},{"$set":{ state: state }} )
+    const doc = await report.updateOne( {"_id": id},{ state: state } )
     return true
   }catch(err){
     console.log(err)
@@ -730,11 +730,9 @@ async function getAllActiveReports(){
   try{
     const database = MongodbClient.db(config.mongo.db_geral);
     const report = database.collection('reports');
-    
-
-    const count = (await report.find( { state: true} ).toArray()).length
-
-    return count
+  
+    const docs = await report.find( { state: true} ).count()
+    return docs
   }catch(err){
     console.log(err)
     return false

@@ -1,7 +1,6 @@
 const { LocalDb } = require("../..");
 const config = require("../../config");
-const config_secret = require("../../config_secret")
-
+require('dotenv').config();
 
 /*
     Open the abbadon channel channel requiring a password
@@ -23,7 +22,7 @@ module.exports={
             let filter = x=> msg.author == x.author
             let password = await msg.channel.awaitMessages({filter,time:10000,max:1})
 
-            if(password.first().content.toLowerCase() == config_secret.passwords.abaddon){
+            if(password.first().content.toLowerCase() == process.env.passwordAbaddon){
                 question.delete()
                 open(password.first())
             

@@ -1,7 +1,7 @@
 
 const { MongoClient } = require('mongodb');
-const config_secret = require('./config_secret');
-const uri = `mongodb+srv://sitekamai:${config_secret.mongo_passwordSite}@cluster0.2gmdz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+require('dotenv').config();
+const uri = `mongodb+srv://sitekamai:${process.env.mongo_passwordSite}@cluster0.2gmdz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const mongoClientSite = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 

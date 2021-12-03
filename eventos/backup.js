@@ -1,6 +1,6 @@
 const schedule = require('node-schedule');
-const config_secret = require("../config_secret")
-const uri = `mongodb+srv://kamaibot:${config_secret.mongo_password}@cluster0.ysdvr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+require('dotenv').config();
+const uri = `mongodb+srv://kamaibot:${process.env.mongo_password}@cluster0.ysdvr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
 const { MongoClient } = require("mongodb");
 const fs = require('fs');
@@ -34,22 +34,22 @@ const job = schedule.scheduleJob('0 4 * * *', async function(){
       
 
       await members_adm.find().forEach(doc=>{
-        members_admb.push(`/${doc["_id"]}/`,doc, true)
+        members_admb.push(`/${doc["_id"]}/`, doc, true)
 
       })
 
       await activitypoems.find().forEach(doc=>{
-        activitypoemsb.push(`/${doc["_id"]}/`, JSON.parse(doc), true)
+        activitypoemsb.push(`/${doc["_id"]}/`, doc, true)
 
       })
 
       await activitykaraoke.find().forEach(doc=>{
-        activitykaraokeb.push(`/${doc["_id"]}/`, JSON.parse(doc), true)
+        activitykaraokeb.push(`/${doc["_id"]}/`, doc, true)
 
       })
 
       await activityarte.find().forEach(doc=>{
-        activityarteb.push(`/${doc["_id"]}/`, JSON.parse(doc), true)
+        activityarteb.push(`/${doc["_id"]}/`, doc, true)
 
       })
       console.log("Download database mongo concluido")
@@ -60,8 +60,7 @@ const job = schedule.scheduleJob('0 4 * * *', async function(){
       const zip = new zipper()
       
       fs.readdirSync(`./`).filter(file => {
-        console.log(file)
-        if( ".git" != file && ".gitattributes" != file && ".gitignore" != file && "node_modules" != file && "LICENSE" != file && file != "Dockerfile"){
+        if( ".git" != file && ".gitattributes" != file && ".gitignore" != file && "node_modules" != file && "LICENSE" != file){
             if( file.indexOf(".") > -1 ){
               zip.addLocalFile(path.resolve(__dirname, `../${file}`))
             
@@ -80,8 +79,8 @@ const job = schedule.scheduleJob('0 4 * * *', async function(){
       const mail = nodemailer.createTransport({
           service: 'gmail',
           auth: {
-            user: config_secret.email.backupSender.email,
-            pass: config_secret.email.backupSender.password
+            user: process.env.emailUser,
+            pass: process.env.emailPassword
           }
       });
 

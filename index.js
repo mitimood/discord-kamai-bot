@@ -4,9 +4,9 @@ const fs = require("fs");
 const Discord = require("discord.js");
 const config = require("./config");
 const {Collection} = require("discord.js")
-
+require('dotenv').config();
 const client = new Discord.Client({ intents: 1735, makeCache: Discord.Options.cacheWithLimits({ MessageManager: 20000 }) })
-const {TOKEN} = require("./config_secret")
+// const client = new Discord.Client({ intents: 1735 })
 
 
 const Database = require("./localdb");
@@ -54,8 +54,8 @@ staffcmd.forEach(events => {
 })
 */
 
-
 const games = fs.readdirSync(`./commands/commandpub/games`).filter(file => file.endsWith(`.js`));
+
 
 const commands = []
 client.commands = new Collection();
@@ -86,22 +86,21 @@ today = dd + '/' + mm + '/' + yyyy;
 
 
 client.on("ready", async () => {
-    const rest = new REST({ version: '9' }).setToken(TOKEN);
-(async () => {
-	try {
-		console.log('Started refreshing application (/) commands.');
+    const rest = new REST({ version: '9' }).setToken(process.env.TOKEN);
+    (async () => {
+        try {
+            console.log('Started refreshing application (/) commands.');
 
-		await rest.put(
-			Routes.applicationGuildCommands(client.application.id, config.guild_id),
-			{ body: commands },
-		);
+            await rest.put(
+                Routes.applicationGuildCommands(client.application.id, config.guild_id),
+                { body: commands },
+            );
 
-		console.log('Successfully reloaded application (/) commands.');
-	} catch (error) {
-		console.error(error);
-	}
-})();
-
+            console.log('Successfully reloaded application (/) commands.');
+        } catch (error) {
+            console.error(error);
+        }
+    })();
     eventos_folder.forEach(events => {
         require(`${__dirname}/eventos/xp/${events}`);
     })
@@ -117,8 +116,8 @@ client.on("ready", async () => {
     }catch(err){
         console.log(err)
     }
-
+    
+    // gamesDB.diceAdd("324730195863011328", { 1 : Date.now().valueOf(), 2 : Date.now().valueOf(), 3 : Date.now().valueOf(), 4 : Date.now().valueOf()})
     console.log("Cliente iniciado")
 })
-
-client.login(TOKEN);
+client.login(process.env.TOKEN);
