@@ -40,26 +40,65 @@ module.exports={
 
           if(parseInt(moneyTransf)>0){
             moneyTransf = parseInt(moneyTransf)
-          }else return await interac.editReply({content: "Quantidade invalida"})
+          }else{
+            if(msg.type === "APPLICATION_COMMAND"){
+              return await interac.editReply({content: "Quantidade invalida"})
+
+            }else{
+              return await interac.reply({content: "Quantidade invalida"})
+
+            }
+          }
 
           const {users} = await verificaArgsUser(userTransf, true)
           
           if(users.length) userTransf = users[0]
-          else return await interac.editReplyeditReply("Usuarios invalidos")
+          else {
+            if(msg.type === "APPLICATION_COMMAND"){
+              return await interac.editReply("Usuarios invalidos")
+
+            }else{
+              return await interac.reply("Usuarios invalidos")
+
+            }
+          }
         }
 
-        if(userCmd === userTransf) return await interac.editReply(`-Seu madruga, me vende um churros por favor?
-        --Claro chavinho, foi para isso que te dei o dinheiro`)
+        if(userCmd === userTransf){
+
+          if(msg.type === "APPLICATION_COMMAND"){
+            return await interac.editReply(`-Seu madruga, me vende um churros por favor?
+            --Claro chavinho, foi para isso que te dei o dinheiro`)
+
+          }else{
+            return await interac.reply(`-Seu madruga, me vende um churros por favor?
+            --Claro chavinho, foi para isso que te dei o dinheiro`)
+
+          }
+        }
     
         const userMoney = await moneyGet(userCmd.id)
 
         if(userMoney >= moneyTransf){
           await moneyRemove(userCmd.id, moneyTransf)
           await moneyAdd(userTransf.id, moneyTransf)
+          if(msg.type === "APPLICATION_COMMAND"){
+            await interac.editReply({content:`Você transferiu <:Coin_kamai:881917666829414430> ${moneyTransf}, para ${userTransf.toString()} `})
 
-          await interac.editReply({content:`Você transferiu <:Coin_kamai:881917666829414430> ${moneyTransf}, para ${userTransf.toString()} `})
+
+          }else{
+            await interac.reply({content:`Você transferiu <:Coin_kamai:881917666829414430> ${moneyTransf}, para ${userTransf.toString()} `})
+
+          }
         }else{
-          await interac.editReply({content:`Você não tem kamaicoins suficientes, faltam <:Coin_kamai:881917666829414430> ${ userMoney - moneyTransf}`})
+          if(msg.type === "APPLICATION_COMMAND"){
+            await interac.editReply({content:`Você não tem kamaicoins suficientes, faltam <:Coin_kamai:881917666829414430> ${ userMoney - moneyTransf}`})
+
+
+          }else{
+            await interac.reply({content:`Você não tem kamaicoins suficientes, faltam <:Coin_kamai:881917666829414430> ${ userMoney - moneyTransf}`})
+
+          }
         }
       
         async function verificaArgsUser(msgArgs, dontVerifyRole = false){

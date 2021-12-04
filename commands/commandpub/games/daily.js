@@ -1,4 +1,4 @@
-const { Collection, MessageEmbed } = require("discord.js");
+const { Collection, MessageEmbed, BaseCommandInteraction, CommandInteraction } = require("discord.js");
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { gamesDB } = require("../../..");
 const cooldown = new Collection()
@@ -60,9 +60,14 @@ module.exports={
                                 .setThumbnail("https://media4.giphy.com/media/NHx0Z1RsBpymPzU8SE/giphy.gif?cid=790b7611e9caefea16ed9f9c6cb0ff88294b179a7d1cf092&rid=giphy.gif&ct=s")
                 
                 cooldown.set( authorId, new Date().valueOf() )
+                if(msg.type === "APPLICATION_COMMAND"){
+                    return await msg.editReply({embeds: [emb]})
 
-                return await msg.editReply({embeds: [emb]})
-    
+                }else{
+                    return await msg.reply({embeds: [emb]})
+
+                }
+
             } catch (error) {
                 console.log(error)
             }
@@ -74,7 +79,13 @@ module.exports={
                 const today = new Date()
                 const timeLast = new Date(nextDaily - today)
                 
-                return await msg.editReply( { content: `Você precisa esperar ${timeLast.getUTCHours() ? `${timeLast.getUTCHours()}h` : ""} ${timeLast.getUTCMinutes() ? `${timeLast.getUTCMinutes()}m` : "" } ${timeLast.getUTCSeconds() ? `${timeLast.getUTCSeconds()}s` : ""} para utilizar o comando novamente` } )
+                if( msg.type === "APPLICATION_COMMAND" ){
+                    return await msg.editReply( { content: `Você precisa esperar ${timeLast.getUTCHours() ? `${timeLast.getUTCHours()}h` : ""} ${timeLast.getUTCMinutes() ? `${timeLast.getUTCMinutes()}m` : "" } ${timeLast.getUTCSeconds() ? `${timeLast.getUTCSeconds()}s` : ""} para utilizar o comando novamente` } )
+
+                }else{
+                    return await msg.reply( { content: `Você precisa esperar ${timeLast.getUTCHours() ? `${timeLast.getUTCHours()}h` : ""} ${timeLast.getUTCMinutes() ? `${timeLast.getUTCMinutes()}m` : "" } ${timeLast.getUTCSeconds() ? `${timeLast.getUTCSeconds()}s` : ""} para utilizar o comando novamente` } )
+
+                }
     
             } catch (error) {
                 console.log(error)

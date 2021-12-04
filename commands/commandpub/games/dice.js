@@ -46,8 +46,15 @@ module.exports={
 
             if(found){
                const prize = await roll( diceIndex, left)
+                
+               if(msg.type === "APPLICATION_COMMAND"){
+                    await msg.editReply({embeds:[prize]})
 
-               await msg.editReply({embeds:[prize]})
+                }else{
+                    await msg.reply({embeds:[prize]})
+
+                }
+
             }else{
                 await cooldownMessage(lastTime)
             }
@@ -57,12 +64,21 @@ module.exports={
 
                 await gamesDB.diceUpdate(authorId, dices)
                 const prize = await roll(1, 3)
+                
+                if(msg.type === "APPLICATION_COMMAND"){
+                    await msg.editReply({embeds: [new MessageEmbed()
+                        .setTitle("Parece que é a sua primeira vez por aqui")
+                        .setDescription("Tome 4 dados para começar")
+                        .setColor("DARK_RED")
+                        .setThumbnail("https://media2.giphy.com/media/fmjmxCd7szjzO/giphy.gif"), prize]})
+                }else{
+                    await msg.reply({embeds: [new MessageEmbed()
+                        .setTitle("Parece que é a sua primeira vez por aqui")
+                        .setDescription("Tome 4 dados para começar")
+                        .setColor("DARK_RED")
+                        .setThumbnail("https://media2.giphy.com/media/fmjmxCd7szjzO/giphy.gif"), prize]})
+                }
 
-                await msg.editReply({embeds: [new MessageEmbed()
-                                            .setTitle("Parece que é a sua primeira vez por aqui")
-                                            .setDescription("Tome 4 dados para começar")
-                                            .setColor("DARK_RED")
-                                            .setThumbnail("https://media2.giphy.com/media/fmjmxCd7szjzO/giphy.gif"), prize]})
             }
 
             async function roll(position, diceLeft){
@@ -149,7 +165,13 @@ module.exports={
                 const today = new Date()
                 const timeLast = new Date(nextDaily - today)
                 try {
-                    return await msg.editReply( { content: `Você precisa esperar ${timeLast.getUTCHours() ? `${timeLast.getUTCHours()}h` : ""} ${timeLast.getUTCMinutes() ? `${timeLast.getUTCMinutes()}m` : "" } ${timeLast.getUTCSeconds() ? `${timeLast.getUTCSeconds()}s` : ""} para rolar os dados novamente` } )
+                    if(msg.type === "APPLICATION_COMMAND"){
+                        return await msg.editReply( { content: `Você precisa esperar ${timeLast.getUTCHours() ? `${timeLast.getUTCHours()}h` : ""} ${timeLast.getUTCMinutes() ? `${timeLast.getUTCMinutes()}m` : "" } ${timeLast.getUTCSeconds() ? `${timeLast.getUTCSeconds()}s` : ""} para rolar os dados novamente` } )
+    
+                    }else{
+                        return await msg.reply( { content: `Você precisa esperar ${timeLast.getUTCHours() ? `${timeLast.getUTCHours()}h` : ""} ${timeLast.getUTCMinutes() ? `${timeLast.getUTCMinutes()}m` : "" } ${timeLast.getUTCSeconds() ? `${timeLast.getUTCSeconds()}s` : ""} para rolar os dados novamente` } )
+    
+                    }
 
                 } catch (error) {
                     console.log(error)

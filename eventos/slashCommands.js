@@ -3,13 +3,21 @@ const { client } = require("..");
 client.on("interactionCreate", async interac=>{
 
     if(!interac.isCommand()) return
-    await interac.deferReply({})
-    const {commandName} = interac
+    
+    try {
 
-    const command = client.commands.get(commandName)
+        await interac.deferReply()
+        const {commandName} = interac
 
-    if(!command) return
+        const command = client.commands.get(commandName)
+    
+        if(!command) return
+    
+        command.execute(interac)
 
-    command.execute(interac)
+    } catch (error) {
+        console.log(error)
+    }
+   
 
 })
