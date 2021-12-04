@@ -14,7 +14,6 @@ const MongodbClient = new MongoClient(uri, {
 
 const job = schedule.scheduleJob('0 4 * * *', async function(){
   const nodejsondb = require("node-json-db").JsonDB;
-
     try{
       console.log("Backup iniciado " + new Date() )
       await MongodbClient.connect()
