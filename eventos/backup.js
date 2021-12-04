@@ -32,22 +32,30 @@ const job = schedule.scheduleJob('0 4 * * *', async function(){
       const activityarteb = new nodejsondb(`./mongo_backup/activityarte`, true, true);
       
 
-      await members_adm.find().forEach(doc=>{
+      const arrayMember = await members_adm.find().toArray()
+      
+      arrayMember.forEach(doc=>{
         members_admb.push(`/${doc["_id"]}/`, doc, true)
 
       })
 
-      await activitypoems.find().forEach(doc=>{
+      const arrayPoems = await activitypoems.find().toArray()
+      
+      arrayPoems.forEach(doc=>{
         activitypoemsb.push(`/${doc["_id"]}/`, doc, true)
 
       })
 
-      await activitykaraoke.find().forEach(doc=>{
+      const arrayKaraoke = await activitykaraoke.find().toArray()
+      
+      arrayKaraoke.forEach(doc=>{
         activitykaraokeb.push(`/${doc["_id"]}/`, doc, true)
 
       })
 
-      await activityarte.find().forEach(doc=>{
+      const arrayArte = await activityarte.find().toArray()
+      
+      arrayArte.forEach(doc=>{
         activityarteb.push(`/${doc["_id"]}/`, doc, true)
 
       })
@@ -59,9 +67,7 @@ const job = schedule.scheduleJob('0 4 * * *', async function(){
       const zip = new zipper()
       
       fs.readdirSync(`./`).filter(file => {
-        console.log(file)
-        console.log(path.resolve(__dirname, `../${file}`))
-        if( ".git" != file && ".gitattributes" != file && ".gitignore" != file && "node_modules" != file && "LICENSE" != file && "Dockerfile" != file ){
+        if( ".git" != file && ".gitattributes" != file && ".gitignore" != file && "node_modules" != file && "LICENSE" != file && "Dockerfile" != file && "docker-compose.yml" != file && "resourceRegistry.log" != file){
             if( fs.statSync(path.resolve(__dirname, `../${file}`)).isFile() ){
               zip.addLocalFile(path.resolve(__dirname, `../${file}`))
             
