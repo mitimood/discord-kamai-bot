@@ -47,7 +47,7 @@ module.exports={
             if(found){
                const prize = await roll( diceIndex, left)
 
-               await msg.reply({embeds:[prize]})
+               await msg.editReply({embeds:[prize]})
             }else{
                 await cooldownMessage(lastTime)
             }
@@ -58,7 +58,7 @@ module.exports={
                 await gamesDB.diceUpdate(authorId, dices)
                 const prize = await roll(1, 3)
 
-                await msg.reply({embeds: [new MessageEmbed()
+                await msg.editReply({embeds: [new MessageEmbed()
                                             .setTitle("Parece que é a sua primeira vez por aqui")
                                             .setDescription("Tome 4 dados para começar")
                                             .setColor("DARK_RED")
@@ -149,7 +149,7 @@ module.exports={
                 const today = new Date()
                 const timeLast = new Date(nextDaily - today)
                 try {
-                    return await msg.reply( { content: `Você precisa esperar ${timeLast.getUTCHours() ? `${timeLast.getUTCHours()}h` : ""} ${timeLast.getUTCMinutes() ? `${timeLast.getUTCMinutes()}m` : "" } ${timeLast.getUTCSeconds() ? `${timeLast.getUTCSeconds()}s` : ""} para rolar os dados novamente` } )
+                    return await msg.editReply( { content: `Você precisa esperar ${timeLast.getUTCHours() ? `${timeLast.getUTCHours()}h` : ""} ${timeLast.getUTCMinutes() ? `${timeLast.getUTCMinutes()}m` : "" } ${timeLast.getUTCSeconds() ? `${timeLast.getUTCSeconds()}s` : ""} para rolar os dados novamente` } )
 
                 } catch (error) {
                     console.log(error)

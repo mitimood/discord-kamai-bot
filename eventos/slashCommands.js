@@ -3,6 +3,7 @@ const { client } = require("..");
 client.on("interactionCreate", async interac=>{
 
     if(!interac.isCommand()) return
+    await interac.deferReply({})
     const {commandName} = interac
 
     const command = client.commands.get(commandName)

@@ -61,7 +61,7 @@ module.exports={
                 
                 cooldown.set( authorId, new Date().valueOf() )
 
-                return await msg.reply({embeds: [emb]})
+                return await msg.editReply({embeds: [emb]})
     
             } catch (error) {
                 console.log(error)
@@ -74,7 +74,7 @@ module.exports={
                 const today = new Date()
                 const timeLast = new Date(nextDaily - today)
                 
-                return await msg.reply( { content: `Você precisa esperar ${timeLast.getUTCHours() ? `${timeLast.getUTCHours()}h` : ""} ${timeLast.getUTCMinutes() ? `${timeLast.getUTCMinutes()}m` : "" } ${timeLast.getUTCSeconds() ? `${timeLast.getUTCSeconds()}s` : ""} para utilizar o comando novamente` } )
+                return await msg.editReply( { content: `Você precisa esperar ${timeLast.getUTCHours() ? `${timeLast.getUTCHours()}h` : ""} ${timeLast.getUTCMinutes() ? `${timeLast.getUTCMinutes()}m` : "" } ${timeLast.getUTCSeconds() ? `${timeLast.getUTCSeconds()}s` : ""} para utilizar o comando novamente` } )
     
             } catch (error) {
                 console.log(error)

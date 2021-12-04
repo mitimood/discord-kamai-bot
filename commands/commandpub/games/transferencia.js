@@ -40,15 +40,15 @@ module.exports={
 
           if(parseInt(moneyTransf)>0){
             moneyTransf = parseInt(moneyTransf)
-          }else return await interac.reply({content: "Quantidade invalida"})
+          }else return await interac.editReply({content: "Quantidade invalida"})
 
           const {users} = await verificaArgsUser(userTransf, true)
           
           if(users.length) userTransf = users[0]
-          else return await interac.reply("Usuarios invalidos")
+          else return await interac.editReplyeditReply("Usuarios invalidos")
         }
 
-        if(userCmd === userTransf) return await interac.reply(`-Seu madruga, me vende um churros por favor?
+        if(userCmd === userTransf) return await interac.editReply(`-Seu madruga, me vende um churros por favor?
         --Claro chavinho, foi para isso que te dei o dinheiro`)
     
         const userMoney = await moneyGet(userCmd.id)
@@ -57,9 +57,9 @@ module.exports={
           await moneyRemove(userCmd.id, moneyTransf)
           await moneyAdd(userTransf.id, moneyTransf)
 
-          await interac.reply({content:`Você transferiu <:Coin_kamai:881917666829414430> ${moneyTransf}, para ${userTransf.toString()} `})
+          await interac.editReply({content:`Você transferiu <:Coin_kamai:881917666829414430> ${moneyTransf}, para ${userTransf.toString()} `})
         }else{
-          await interac.reply({content:`Você não tem kamaicoins suficientes, faltam <:Coin_kamai:881917666829414430> ${ userMoney - moneyTransf}`})
+          await interac.editReply({content:`Você não tem kamaicoins suficientes, faltam <:Coin_kamai:881917666829414430> ${ userMoney - moneyTransf}`})
         }
       
         async function verificaArgsUser(msgArgs, dontVerifyRole = false){

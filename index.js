@@ -86,6 +86,10 @@ today = dd + '/' + mm + '/' + yyyy;
 
 
 client.on("ready", async () => {
+
+    fs.readdirSync(`./`).filter(file => {
+        console.log(file)
+    })
     const rest = new REST({ version: '9' }).setToken(process.env.TOKEN);
     (async () => {
         try {
