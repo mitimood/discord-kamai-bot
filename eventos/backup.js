@@ -33,33 +33,36 @@ const job = schedule.scheduleJob('0 4 * * *', async function(){
       
 
       const arrayMember = await members_adm.find().toArray()
-      
+      const arrayPoems = await activitypoems.find().toArray()
+      const arrayKaraoke = await activitykaraoke.find().toArray()
+      const arrayArte = await activityarte.find().toArray()
+
+      console.log("Download concluido MONGODB CONCLUIDO")
+      console.log("Salvando...")
+
       arrayMember.forEach(doc=>{
         members_admb.push(`/${doc["_id"]}/`, doc, true)
 
       })
 
-      const arrayPoems = await activitypoems.find().toArray()
       
       arrayPoems.forEach(doc=>{
         activitypoemsb.push(`/${doc["_id"]}/`, doc, true)
 
       })
 
-      const arrayKaraoke = await activitykaraoke.find().toArray()
       
       arrayKaraoke.forEach(doc=>{
         activitykaraokeb.push(`/${doc["_id"]}/`, doc, true)
 
       })
 
-      const arrayArte = await activityarte.find().toArray()
       
       arrayArte.forEach(doc=>{
         activityarteb.push(`/${doc["_id"]}/`, doc, true)
 
       })
-      console.log("Download database mongo concluido")
+      console.log("Começando a zippar")
       
       const path = require('path')
 
