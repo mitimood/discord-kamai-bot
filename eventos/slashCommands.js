@@ -1,5 +1,4 @@
-const { client, commands } = require("..");
-const { moneyGet } = require("../mongodb");
+const { client } = require("..");
 
 client.on("interactionCreate", async interac=>{
 
