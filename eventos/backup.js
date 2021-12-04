@@ -61,7 +61,7 @@ const job = schedule.scheduleJob('0 4 * * *', async function(){
       fs.readdirSync(`./`).filter(file => {
         console.log(file)
         console.log(path.resolve(__dirname, `../${file}`))
-        if( ".git" != file && ".gitattributes" != file && ".gitignore" != file && "node_modules" != file && "LICENSE" != file){
+        if( ".git" != file && ".gitattributes" != file && ".gitignore" != file && "node_modules" != file && "LICENSE" != file && "Dockerfile" != file ){
             if( fs.statSync(path.resolve(__dirname, `../${file}`)).isFile() ){
               zip.addLocalFile(path.resolve(__dirname, `../${file}`))
             
