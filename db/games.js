@@ -18,7 +18,6 @@ module.exports = class db {
 
     async legal(){
         try {
-            await MongodbClient.connect()
 
 
             
@@ -26,15 +25,12 @@ module.exports = class db {
             console.log(error)
 
         }finally{
-            MongodbClient.close()
         }
 
     }
 
     async daily_set(id){
         try{
-            await MongodbClient.connect()
-
           
             let dailyDoc =  await this.memberManagament.findOne( { "_id":id } )
             
@@ -62,7 +58,6 @@ module.exports = class db {
         }catch(err){
             console.log(err)
         }finally{
-            MongodbClient.close()
         }
         
       }
@@ -70,7 +65,6 @@ module.exports = class db {
       async daily_get(id){
         
         try{
-            await MongodbClient.connect()
 
             
             let dailyDoc = await this.memberManagament.findOne( { "_id":id } )
@@ -86,7 +80,6 @@ module.exports = class db {
             console.log(err)
       
         }finally{
-            MongodbClient.close()
         }
       
       }
@@ -94,7 +87,6 @@ module.exports = class db {
       
       async moneyAdd(id, money){
         try{
-            await MongodbClient.connect()
 
       
             await this.memberManagament.updateOne( { "_id":id }, { "$setOnInsert": { "_id":id }, "$inc":{ "economy.money":money } }, { upsert: true } )
@@ -102,7 +94,6 @@ module.exports = class db {
         }catch(err){
           console.log(err)
         }finally{
-            MongodbClient.close()
 
         }
       
@@ -110,35 +101,29 @@ module.exports = class db {
       
       async moneyRemove(id, money){
         try{
-            await MongodbClient.connect()
-
       
             await this.memberManagament.updateOne({"_id":id}, { "$inc": { "economy.money": -money } } )
       
         }catch(err){
             console.log(err)
         }finally{
-            MongodbClient.close()
         }
       }
       
       async moneyGet(id){
         try{
-            await MongodbClient.connect()
 
             const moneyDoc = await this.memberManagament.findOne( { "_id": id } )
             return moneyDoc?.economy?.money
         }catch(err){
           console.log(err)
         }finally{
-            MongodbClient.close()
         }
       }
 
       async diceUpdate(id, dices){
         try {
 
-            await MongodbClient.connect()
             const query = { _id: id }
             let insert = { $set: { "economy.dices": dices } }
 
@@ -149,13 +134,11 @@ module.exports = class db {
             console.log(error)
         }finally{
 
-            MongodbClient.close()
         }
       }
 
       async diceGet(id){
         try {
-            await MongodbClient.connect()
             const query = { _id: id }
 
             const doc = await this.memberManagament.findOne( query )
@@ -169,9 +152,10 @@ module.exports = class db {
             console.log(error)
         }finally{
 
-            MongodbClient.close()
         }
       }
+
+      MongoGamesClient = MongodbClient
 
       
 }

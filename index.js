@@ -87,6 +87,7 @@ today = dd + '/' + mm + '/' + yyyy;
 
 client.on("ready", async () => {
 
+    await gamesDB.MongoGamesClient.connect()
     const rest = new REST({ version: '9' }).setToken(process.env.TOKEN);
     (async () => {
         try {
