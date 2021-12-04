@@ -87,9 +87,6 @@ today = dd + '/' + mm + '/' + yyyy;
 
 client.on("ready", async () => {
 
-    fs.readdirSync(`./`).filter(file => {
-        console.log(file)
-    })
     const rest = new REST({ version: '9' }).setToken(process.env.TOKEN);
     (async () => {
         try {
@@ -105,6 +102,7 @@ client.on("ready", async () => {
             console.error(error);
         }
     })();
+    
     eventos_folder.forEach(events => {
         require(`${__dirname}/eventos/xp/${events}`);
     })
