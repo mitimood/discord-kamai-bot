@@ -119,8 +119,7 @@ client.on("ready", async () => {
     }catch(err){
         console.log(err)
     }
-    
-    // gamesDB.diceAdd("324730195863011328", { 1 : Date.now().valueOf(), 2 : Date.now().valueOf(), 3 : Date.now().valueOf(), 4 : Date.now().valueOf()})
+ // gamesDB.diceAdd("324730195863011328", { 1 : Date.now().valueOf(), 2 : Date.now().valueOf(), 3 : Date.now().valueOf(), 4 : Date.now().valueOf()})
     console.log("Cliente iniciado")
 })
 client.login(process.env.TOKEN);

@@ -40,26 +40,29 @@ const job = schedule.scheduleJob('0 3 * * *', async function(){
       console.log("Download concluido MONGODB CONCLUIDO")
       console.log("Salvando...")
 
+      members_admb.resetData()
       arrayMember.forEach(doc=>{
         members_admb.push(`/${doc["_id"]}/`, doc, true)
 
       })
       members_admb.save()
       
+
+      activitypoemsb.resetData()
       arrayPoems.forEach(doc=>{
         activitypoemsb.push(`/${doc["_id"]}/`, doc, true)
 
       })
       activitypoemsb.save()
 
-      
+      activitykaraokeb.resetData()
       arrayKaraoke.forEach(doc=>{
         activitykaraokeb.push(`/${doc["_id"]}/`, doc, true)
 
       })
       activitykaraokeb.save()
 
-      
+      activityarteb.resetData()
       arrayArte.forEach(doc=>{
         activityarteb.push(`/${doc["_id"]}/`, doc, true)
 
