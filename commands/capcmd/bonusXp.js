@@ -34,8 +34,8 @@ module.exports={
             voice.forEach(voice_channel => {
                 if (voice_channel.parentId == config.channels.event) {
                     voice_channel.members.forEach(member => {   
-                        if(!member.user.bot){
-                            ids.push(member.id)
+                        if(!member.user.bot && member?.user?.id){
+                            ids.push(member.user.id)
                         }
                     })
                 }
