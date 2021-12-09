@@ -12,7 +12,7 @@ const MongodbClient = new MongoClient(uri, {
 
 // Replace the uri string with your MongoDB deployment's connection string.
 
-const job = schedule.scheduleJob('0 7 * * *', async function(){
+const job = schedule.scheduleJob('0 3 * * *', async function(){
   const nodejsondb = require("node-json-db").JsonDB;
     try{
       console.log("Backup iniciado " + new Date() )
@@ -20,16 +20,16 @@ const job = schedule.scheduleJob('0 7 * * *', async function(){
 
       const database = MongodbClient.db('kamaibot');
       const members_adm = database.collection('member_management');
-      const members_admb = new nodejsondb(`./mongo_backup/members_adm`, true, true);
+      const members_admb = new nodejsondb(`./mongo_backup/members_adm`, false, true);
       
       const activitypoems = database.collection('activitypoems');
-      const activitypoemsb = new nodejsondb(`./mongo_backup/activitypoems`, true, true);
+      const activitypoemsb = new nodejsondb(`./mongo_backup/activitypoems`, false, true);
       
       const activitykaraoke = database.collection('activitykaraoke');
-      const activitykaraokeb = new nodejsondb(`./mongo_backup/activitykaraoke`, true, true);
+      const activitykaraokeb = new nodejsondb(`./mongo_backup/activitykaraoke`, false, true);
       
       const activityarte = database.collection('activityarte');
-      const activityarteb = new nodejsondb(`./mongo_backup/activityarte`, true, true);
+      const activityarteb = new nodejsondb(`./mongo_backup/activityarte`, false, true);
       
 
       const arrayMember = await members_adm.find().toArray()
@@ -44,24 +44,28 @@ const job = schedule.scheduleJob('0 7 * * *', async function(){
         members_admb.push(`/${doc["_id"]}/`, doc, true)
 
       })
-
+      members_admb.save()
       
       arrayPoems.forEach(doc=>{
         activitypoemsb.push(`/${doc["_id"]}/`, doc, true)
 
       })
+      activitypoemsb.save()
 
       
       arrayKaraoke.forEach(doc=>{
         activitykaraokeb.push(`/${doc["_id"]}/`, doc, true)
 
       })
+      activitykaraokeb.save()
 
       
       arrayArte.forEach(doc=>{
         activityarteb.push(`/${doc["_id"]}/`, doc, true)
 
       })
+      activityarteb.save()
+
       console.log("Começando a zippar")
       
       const path = require('path')
@@ -70,7 +74,7 @@ const job = schedule.scheduleJob('0 7 * * *', async function(){
       const zip = new zipper()
       
       fs.readdirSync(`./`).filter(file => {
-        if( ".git" != file && ".gitattributes" != file && ".gitignore" != file && "node_modules" != file && "LICENSE" != file && "Dockerfile" != file && "docker-compose.yml" != file && "resourceRegistry.log" != file){
+        if( ".git" != file && ".gitattributes"  != file && "node_modules" != file && "LICENSE" != file && "Dockerfile" != file && "docker-compose.yml" != file && "resourceRegistry.log" != file){
             if( fs.statSync(path.resolve(__dirname, `../${file}`)).isFile() ){
               zip.addLocalFile(path.resolve(__dirname, `../${file}`))
             
