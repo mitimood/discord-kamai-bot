@@ -472,7 +472,6 @@ ${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length}**`
                                 break;
                             
                         }
-                        i.reply({content:`Motivo selecionado: ${reason}`, ephemeral:true})
                         const approvalButtons = new MessageActionRow()
                                         .addComponents(
                                             new MessageButton().setLabel("APROVAR").setStyle("SUCCESS").setCustomId("yes")
@@ -661,7 +660,7 @@ ${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length}**`
                                 
                             ]),
                     );
-                    interac.followUp({components:[row], content:`\`Contas a advertir:\`
+                    await interac.followUp({components:[row], content:`\`Contas a advertir:\`
 ${idResponse.members ? `Dentro do servidor: **${idResponse.members.length}**` : ""}
 ${idResponse.users ? `Usuarios validos: **${idResponse.users.length}**` : ""}
 ${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length}**` : ""}`, ephemeral:true})
@@ -731,7 +730,6 @@ ${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length}**`
                                 break;
                             
                         }
-                        i.reply({content:`Motivo selecionado: ${reason}`, ephemeral:true})
                         const approvalButtons = new MessageActionRow()
                                         .addComponents(
                                             new MessageButton().setLabel("APROVAR").setStyle("SUCCESS").setCustomId("yes")
@@ -865,7 +863,6 @@ ${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length + i
                                 break;
                             
                         }
-                        i.reply({content:`Ação escolhida: ${action}`, ephemeral:true})
                         const approvalButtons = new MessageActionRow()
                                         .addComponents(
                                             new MessageButton().setLabel("APROVAR").setStyle("SUCCESS").setCustomId("yes")
