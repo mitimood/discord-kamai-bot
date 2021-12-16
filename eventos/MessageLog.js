@@ -54,7 +54,6 @@ client.on("messageDelete", (delMessage)=>{
         console.log(err)
     }
 })
-const fs = require('fs')
 
 client.on('messageDeleteBulk', async mapMsg =>{
     let bulkText = ""

@@ -52,7 +52,7 @@ module.exports={
             
     
     
-            embed.setThumbnail(member.user.displayAvatarURL())
+            embed.setThumbnail(member.user.displayAvatarURL({ size:1024, format: "png"  }))
             embed.setFooter(`id: ${member.id}`)
     
             let date = new Date(Date.now() - member.joinedAt )
