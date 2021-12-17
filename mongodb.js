@@ -81,7 +81,7 @@ async function warn_remove(warn_id) {
     const database = MongodbClient.db(config.mongo.db_geral);
     const member_management = database.collection('member_management');
 
-    let deleted_doc = await member_management.findOneAndUpdate({ "warnings": { "$elemMatch": { "warn_id": warn_id } } }, { "$pull": { "warnings": { "warn_id": warn_id } } })
+    let deleted_doc = await member_management.findOneAndUpdate({ "warnings": { "$elemMatch": { "warn_id": warn_id } } }, { "$pull": { "warnings": { "warn_id": warn_id } } , "$set": { "lastWarnRmv": moment.utc().format('MMM Do YYYY, h:mm a') } } )
     if (deleted_doc["value"]["warnings"]) {
       return deleted_doc["value"]["_id"]
     }
@@ -103,7 +103,9 @@ async function warn_list(user_id) {
     if (doc && doc["warnings"] && doc["warnings"].find(warn => warn != null)) {
       let warns = ""
       let notifications = 0
-
+      if(doc.lastWarnRmv){
+        warns += `Ultima advertencia removida em ${moment.tz(doc.lastWarnRmv, 'MMM Do YYYY, h:mm a', 'America/Sao_Paulo').format(`DD-MM-YYYY HH:mm`)}\n`
+      }
       doc["warnings"].forEach((element, i) => {
         if (element) {
           Total_points += parseInt(element["points"])
@@ -128,7 +130,6 @@ async function warn_list(user_id) {
     console.log(err)
   }
 }
-
 
 async function notifyList(user_id) {
 
