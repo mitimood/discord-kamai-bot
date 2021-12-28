@@ -14,6 +14,14 @@ module.exports={
     description: "adiciona uma advertência ao membro",
 
     async execute (msg){
+        try {
+            return await msg.reply("Comando desabilitado, use <#903238831417991228>")
+
+        } catch (error) {
+            
+        }finally{
+            return
+        }
         let msgArgs = TrimMsg(msg)
 
         if(!msgArgs[1] || !msgArgs[2] || !msgArgs[2].match(/[0-9]/g) || !msgArgs[1].match(/[0-9]+/) && !msg.mentions.members.first())return msg.channel.send("Utilize: warn user pontos motivo")

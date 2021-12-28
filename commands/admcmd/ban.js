@@ -21,7 +21,14 @@ module.exports = {
     description: "bane os membros",
 
     async execute(msg) {
+        try {
+            return await msg.reply("Comando desabilitado, use <#903238831417991228>")
 
+        } catch (error) {
+            
+        }finally{
+            return
+        }
         let ids = [];
         let msgArgs = TrimMsg(msg)
 
