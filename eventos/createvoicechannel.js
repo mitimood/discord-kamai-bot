@@ -27,7 +27,7 @@ client.on("voiceStateUpdate", async (oldstate,newstate)=>
         console.log(`Deletando canal premium` + new Date())
 
         let everyone = newstate.guild.roles.cache.get(newstate.guild.id)
-        newstate.guild.channels.create(`PV [${newstate.member.user.username}]`,{type:"GUILD_VOICE",parent: newstate.channel.parent,permissionOverwrites:[{id:newstate.member.id, allow:["MOVE_MEMBERS","CONNECT"],type:"member"},{id:everyone,deny:"CONNECT",type:"role"}]}).then(async chan=>
+        newstate.guild.channels.create(`PV [${newstate.member.user.username}]`,{type:"GUILD_VOICE",parent: newstate.channel.parent,permissionOverwrites:[{id:newstate.member.id, allow:["MOVE_MEMBERS","CONNECT"],type:"member"},{id:everyone,deny:"CONNECT",allow:"STREAM",type:"role"}]}).then(async chan=>
         {
             LocalDb.attactivity(newstate.id,1)
             LocalDb.savechan(chan,newstate.id)
