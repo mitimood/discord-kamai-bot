@@ -56,6 +56,7 @@ module.exports = {
         voteLog: "898815335002689607",
         commands: "612121513960669227",
         modReports: "903238831417991228",
+        scamLog: "926884743084134490",
 
     },
     color:{

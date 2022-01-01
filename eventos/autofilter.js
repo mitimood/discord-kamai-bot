@@ -1,3 +1,4 @@
+const { MessageEmbed } = require("discord.js");
 const { client } = require("..");
 const config = require("../config");
 const db = require("../mongodb")
@@ -17,6 +18,23 @@ client.on("messageCreate", async msg =>{
             console.log("Auto filter " + new Date())
 
             await msg.delete()
+
+            const scamLog = await msg.client.channels.fetch(config.channels.scamLog)
+
+            const emb = new MessageEmbed()
+                        .setTimestamp(msg.createdTimestamp)
+                        .setDescription(
+                            `\`\`\`
+${msg.content}
+                            \`\`\`
+                            `
+                        )
+                        .setTitle("Possivel SCAM")
+                        .setColor("RED")
+                        .setFooter(msg.author.id)
+                        .setThumbnail(msg.author.avatarURL())
+
+            await scamLog.send({embeds:[emb]})
 
         } catch (error) {
             console.log(error)
