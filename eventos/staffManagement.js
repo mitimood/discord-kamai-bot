@@ -106,10 +106,14 @@ client.on("interactionCreate", async interac =>{
                     
                     for(const user of users.users){
                         try {
-                            if(doc.toDo.reason == "scam") await interac.guild.members.ban(user, {reason: `[${interac.member.id}] ${doc.toDo.reason}`, days:2})
+                            if(doc.toDo.reason == "Scam") {
 
-                            else await interac.guild.members.ban(user, {reason: `[${interac.member.id}] ${doc.toDo.reason}`})
-
+                                await interac.guild.members.ban(user, {reason: `[${interac.member.id}] ${doc.toDo.reason}`, days:2})
+                            
+                            }else{
+                                await interac.guild.members.ban(user, {reason: `[${interac.member.id}] ${doc.toDo.reason}`})
+                            
+                            }
                             if(doc.toDo.reason == "Selfbot"){
                                 selfbotRegister.selfbotAdd(Date.now().valueOf(), user.avatar, user.id, user.tag, user.createdTimestamp, 0)
                             }

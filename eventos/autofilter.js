@@ -29,7 +29,7 @@ ${msg.content}
                             \`\`\`
                             `
                         )
-                        .setTitle("Possivel SCAM")
+                        .setTitle("Possivel SCAM => "+ msg.author.username)
                         .setColor("RED")
                         .setFooter(msg.author.id)
                         .setThumbnail(msg.author.avatarURL())
