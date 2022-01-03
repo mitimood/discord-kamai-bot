@@ -16,7 +16,7 @@ client.on("messageCreate", async msg =>{
     if (/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g.test(msg.content) && msg?.member?.roles?.cache?.size == 1){
         try {
             console.log("Auto filter " + new Date())
-
+            
             await msg.delete()
 
             const scamLog = await msg.client.channels.fetch(config.channels.scamLog)

@@ -8,7 +8,7 @@ let atvtsUP = 0
 let channelAtvts = null
 
 MongodbClient.on("connectionReady",async connection=>{
-    atvtsUP = await getAllActiveReports()
+    atvtsUP = await getAllActiveReports().catch(err=>console.log(err))
 } )
 
 setInterval(async()=>{
@@ -17,7 +17,7 @@ setInterval(async()=>{
 
         const reportmod = client.channels.cache.get(config.channels.modReports)
         channelAtvts = atvtsUP
-        await reportmod.setName(`Registros ativos [${atvtsUP}]`)
+        await reportmod.setName(`Registros ativos [${atvtsUP}]`).catch(err=>console.log(err))
     }
 },5000)
 
@@ -36,14 +36,14 @@ client.on("interactionCreate", async interac =>{
         if(interac.member.roles.cache.find(id=>Object.values(config.roles.staff).find(ids=> id == ids))){
             ban()
         }else{
-            interac.reply({content:"Faltam permissões", ephemeral:true})
+            await interac.reply({content:"Faltam permissões", ephemeral:true}).catch(err=>console.log(err))
         }     
     } else if(interac.customId === "warn"){
 
         if(interac.member.roles.cache.find(id=>Object.values(config.roles.staff).find(ids=> id == ids))){
             warn()
         }else{
-            interac.reply({content:"Faltam permissões", ephemeral:true})
+            await interac.reply({content:"Faltam permissões", ephemeral:true}).catch(err=>console.log(err))
         }
 
     }else if(interac.customId === "roles"){
@@ -51,30 +51,30 @@ client.on("interactionCreate", async interac =>{
         if(interac.member.roles.cache.find(id=>Object.values(config.roles.teams.caps).find(ids=> id == ids))){
             roles()
         }else{
-            interac.reply({content:"Faltam permissões", ephemeral:true})
+            await interac.reply({content:"Faltam permissões", ephemeral:true}).catch(err=>console.log(err))
         }
 
 
 
     }else if(interac.customId === "no"){
-        const doc = await getReport(interac.message.id)
+        const doc = await getReport(interac.message.id).catch(err=>console.log(err))
 
         if(doc.state && doc.authorId == interac.user.id || interac.member.roles.cache.has(config.roles.staff.admin)){
-            await updateStateReport(doc._id, false)
+            await updateStateReport(doc._id, false).catch(err=>console.log(err))
             for(const id of doc.messages){
                 try {
-                    await interac.channel.messages.delete(id)
+                    await interac.channel.messages.delete(id).catch(err=>console.log(err))
                 } catch (error) {   
                 }
             }
             --atvtsUP
-            interac.reply({content:"Interação apagada", ephemeral:true})
+            await interac.reply({content:"Interação apagada", ephemeral:true}).catch(err=>console.log(err))
         }else{
-            interac.reply({content:"Faltam permissões", ephemeral:true})
+            await interac.reply({content:"Faltam permissões", ephemeral:true}).catch(err=>console.log(err))
         }
     }else if(interac.customId === "yes"){
 
-        const doc = await getReport(interac.message.id)
+        const doc = await getReport(interac.message.id).catch(err=>console.log(err))
         if(!doc.state) return
 
         if(interac.member.roles.cache.has(config.roles.staff.admin)){
@@ -86,7 +86,7 @@ client.on("interactionCreate", async interac =>{
                 })
             })
             
-            await interac.update({embeds: interac.message.embeds, components: [ActionRow]})
+            await interac.update({embeds: interac.message.embeds, components: [ActionRow]}).catch(err=>console.log(err))
             
             switch(doc.toDo.action){
                 
@@ -97,8 +97,8 @@ client.on("interactionCreate", async interac =>{
                     
                     for(const memb of users.members){
                         try {
-                            let invite = await client.channels.cache.get(config.ban_recover.log_chnnl).createInvite({unique:true,reason:"ban invite",maxUses:1, maxAge:604800})
-                            await memb.send(`Aplicado por(${doc.authorId}--&&--${interac.user.id} [${interac.user.toString()}])\n\nVocê foi banido de KAMAITACHI, por: `+doc.toDo.reason+ `\nCaso queira recorrer ao seu ban, entre no servidor ${invite.url}`)
+                            let invite = await client.channels.cache.get(config.ban_recover.log_chnnl).createInvite({unique:true,reason:"ban invite",maxUses:1, maxAge:604800}).catch(err=>console.log(err))
+                            await memb.send(`Aplicado por(${doc.authorId}--&&--${interac.user.id} [${interac.user.toString()}])\n\nVocê foi banido de KAMAITACHI, por: `+doc.toDo.reason+ `\nCaso queira recorrer ao seu ban, entre no servidor ${invite.url}`).catch(err=>console.log(err))
                         } catch (error) {
                         }
                     }
@@ -108,10 +108,10 @@ client.on("interactionCreate", async interac =>{
                         try {
                             if(doc.toDo.reason == "Scam") {
 
-                                await interac.guild.members.ban(user, {reason: `[${interac.member.id}] ${doc.toDo.reason}`, days:2})
+                                await interac.guild.members.ban(user, {reason: `[${interac.member.id}] ${doc.toDo.reason}`, days:2}).catch(err=>console.log(err))
                             
                             }else{
-                                await interac.guild.members.ban(user, {reason: `[${interac.member.id}] ${doc.toDo.reason}`})
+                                await interac.guild.members.ban(user, {reason: `[${interac.member.id}] ${doc.toDo.reason}`}).catch(err=>console.log(err))
                             
                             }
                             if(doc.toDo.reason == "Selfbot"){
@@ -122,7 +122,7 @@ client.on("interactionCreate", async interac =>{
                     }
                     let reportUser
                     try {
-                        reportUser = await client.users.fetch(doc.authorId)
+                        reportUser = await client.users.fetch(doc.authorId).catch(err=>console.log(err))
 
                     } catch (error) {
                         
@@ -143,7 +143,7 @@ client.on("interactionCreate", async interac =>{
                             embeds2.push(emb)
 
                         }else if (embeds2.length == 10){
-                            await modlogChannel.send({embeds:embeds2})
+                            await modlogChannel.send({embeds:embeds2}).catch(err=>console.log(err))
                             embeds2 = []
                             embeds2.push(emb)
 
@@ -151,37 +151,37 @@ client.on("interactionCreate", async interac =>{
                         
                         
                         if(i+1 == users.users.length){
-                            await modlogChannel.send({embeds:embeds2})
+                            await modlogChannel.send({embeds:embeds2}).catch(err=>console.log(err))
 
                         }
                     }
 
                     try {
-                        await updateStateReport(doc._id, false)
+                        await updateStateReport(doc._id, false).catch(err=>console.log(err))
                     } catch (error) {
                         console.log(error)
                     }
 
                     for(const id of doc.messages){
                         try {
-                            await interac.channel.messages.delete(id)
+                            await interac.channel.messages.delete(id).catch(err=>console.log(err))
 
                         } catch (error) {
                         }
                     }
                     --atvtsUP
-                    await interac.followUp({content:"Banidos com sucesso", ephemeral:true})
+                    await interac.followUp({content:"Banidos com sucesso", ephemeral:true}).catch(err=>console.log(err))
 
                     break;
 
                 case"warn":
     
-                    const usersWarn = await verificaArgsUser(doc.toDo.users)
+                    const usersWarn = await verificaArgsUser(doc.toDo.users).catch(err=>console.log(err))
                         
                     for(const user of usersWarn.users){
-                        await warn_add(user.id, interac.user.id, 1, doc.toDo.reason)
-                        const warn = await warn_list(user.id)
-                        await punishments(user.id, warn.points, interac.guild, interac.user)
+                        await warn_add(user.id, interac.user.id, 1, doc.toDo.reason).catch(err=>console.log(err))
+                        const warn = await warn_list(user.id).catch(err=>console.log(err))
+                        await punishments(user.id, warn.points, interac.guild, interac.user).catch(err=>console.log(err))
                     }
                         
 
@@ -201,70 +201,70 @@ client.on("interactionCreate", async interac =>{
                             embeds3.push(emb)
     
                         }else if (embeds3.length == 10){
-                            await modlogChannel.send({embeds:embeds3})
+                            await modlogChannel.send({embeds:embeds3}).catch(err=>console.log(err))
                             embeds3 = []
                             embeds3.push(emb)
     
                         }
                         
                         if(i+1 == usersWarn.users.length){
-                            await modlogChannel.send({embeds:embeds3})
+                            await modlogChannel.send({embeds:embeds3}).catch(err=>console.log(err))
     
                         }
                     }
 
 
-                        await updateStateReport(doc._id, false)
+                        await updateStateReport(doc._id, false).catch(err=>console.log(err))
                         
                         for(const id of doc.messages){
                             try {
-                                await interac.channel.messages.delete(id)
+                                await interac.channel.messages.delete(id).catch(err=>console.log(err))
 
                             } catch (error) {
                             }
                         }
 
                     --atvtsUP
-                    await interac.followUp({content:"Advertidos com sucesso", ephemeral:true})
+                    await interac.followUp({content:"Advertidos com sucesso", ephemeral:true}).catch(err=>console.log(err))
 
                     break;
                 case"addRole":
 
-                    const usersAddRole = await verificaArgsUser(doc.toDo.users, true)               
+                    const usersAddRole = await verificaArgsUser(doc.toDo.users, true).catch(err=>console.log(err))               
                     const roleAdd = interac.guild.roles.cache.get(doc.toDo.role) 
                     
                     if(roleAdd){
                         for(const memb of usersAddRole.members){
                             try {
-                                await memb.roles.add(roleAdd)
+                                await memb.roles.add(roleAdd).catch(err=>console.log(err))
                             } catch (error) {
                             }
                         }
                     }
 
                     
-                    await updateStateReport(doc._id, false)
+                    await updateStateReport(doc._id, false).catch(err=>console.log(err))
                     for(const id of doc.messages){
                         try {
-                            await interac.channel.messages.delete(id)
+                            await interac.channel.messages.delete(id).catch(err=>console.log(err))
 
                         } catch (error) {
                         }
                     }
                     --atvtsUP
-                    interac.followUp({content:"Cargos adicionados com sucesso", ephemeral:true})
+                    await interac.followUp({content:"Cargos adicionados com sucesso", ephemeral:true}).catch(err=>console.log(err))
 
                 break;
 
                 case"removeRole":
 
-                    const usersRemoveRole = await verificaArgsUser(doc.toDo.users, true)                    
-                    const role = interac.guild.roles.cache.get(doc.toDo.role) 
+                    const usersRemoveRole = await verificaArgsUser(doc.toDo.users, true).catch(err=>console.log(err))
+                    const role = interac.guild.roles.cache.get(doc.toDo.role)
             
                     if(role){
                         for(const memb of usersRemoveRole.members){
                             try {
-                                await memb.roles.remove(role)
+                                await memb.roles.remove(role).catch(err=>console.log(err))
                             } catch (error) {
                             }
                         }
@@ -273,35 +273,40 @@ client.on("interactionCreate", async interac =>{
                     await updateStateReport(doc._id, false)
                     for(const id of doc.messages){
                         try {
-                            await interac.channel.messages.delete(id)
+                            await interac.channel.messages.delete(id).catch(err=>console.log(err))
 
                         } catch (error) {  
                         }
                     }
                     --atvtsUP
-                    await interac.followUp({content:"Cargos removidos com sucesso", ephemeral:true})
+                    await interac.followUp({content:"Cargos removidos com sucesso", ephemeral:true}).catch(err=>console.log(err))
 
                 break;
                 
             }
         }else{
-            interac.reply({content:"Faltam permissões", ephemeral:true})
+            await interac.reply({content:"Faltam permissões", ephemeral:true}).catch(err=>console.log(err))
         }
 
     }
     async function ban(){
-        await interac.reply({content:"Envie os ids dos membros", ephemeral:true})
+        await interac.reply({content:"Envie os ids dos membros", ephemeral:true}).catch(err=>console.log(err))
         try {
             const filter = m =>m.author === interac.user;
-            const msgColec = await interac.channel.awaitMessages({filter, max:1, time:60000, errors: ['time']})
+            const msgColec = await interac.channel.awaitMessages({filter, max:1, time:60000, errors: ['time']}).catch(err=>console.log(err))
             
             if((msgColec?.first()?.content)){
                 const msgArgs = TrimMsg(msgColec.first())
                 if(msgArgs.length > 10){
-                    interac.editReply({content:"Carregando...", ephemeral:true})
+                    await interac.editReply({content:"Carregando...", ephemeral:true}).catch(err=>console.log(err))
                 }
-                msgColec.first().delete()
-                const idResponse = await verificaArgsUser(msgArgs)
+                try {
+                    await msgColec.first().delete().catch(err=>console.log(err))
+
+                } catch (error) {
+                    
+                }
+                const idResponse = await verificaArgsUser(msgArgs).catch(err=>console.log(err))
                 if(idResponse.members || idResponse.users){
                     const row = new MessageActionRow()
                     .addComponents(
@@ -409,10 +414,10 @@ client.on("interactionCreate", async interac =>{
                                 
                             ]),
                     );
-                    interac.followUp({components:[row], content:`\`Contas a banir:\`
+                    await interac.followUp({components:[row], content:`\`Contas a banir:\`
 ${idResponse.members ? `Dentro do servidor: **${idResponse.members.length}**` : ""}
 ${idResponse.users ? `Usuarios validos: **${idResponse.users.length}**` : ""}
-${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length}**` : ""}`, ephemeral:true})
+${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length}**` : ""}`, ephemeral:true}).catch(err=>console.log(err))
 
                     const filter = (interaction) => interaction.customId === interac.id && interaction.user.id === interac.user.id;
                     const collector = interac.channel.createMessageComponentCollector({ filter,max:1,componentType:"SELECT_MENU", time: 60000 });
@@ -490,7 +495,7 @@ ${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length}**`
                                     .setTitle(`[BAN] => ${idResponse.users.length} [${reason}]`)
                                     .setDescription("Esperando aprovação...\n\nAberto por "+ interac.user.toString())
                                     .setColor(config.color.red)                        
-                        const watingAproval = await interac.channel.send({embeds:[embed], components:[approvalButtons]})
+                        const watingAproval = await interac.channel.send({embeds:[embed], components:[approvalButtons]}).catch(err=>console.log(err))
                         
                         let embeds = []
                         let ids = []
@@ -510,14 +515,14 @@ ${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length}**`
                                 embeds.push(emb)
 
                             }else if (embeds.length == 10){
-                                await watingAproval.reply({embeds:embeds}).then(m=>messages.push(m.id))
+                                await watingAproval.reply({embeds:embeds}).then(m=>messages.push(m.id)).catch(err=>console.log(err))
                                 embeds = []
                                 embeds.push(emb)
 
                             }
                             
                             if(i+1 == idResponse.users.length){
-                                await watingAproval.reply({embeds:embeds}).then(m=>messages.push(m.id))
+                                await watingAproval.reply({embeds:embeds}).then(m=>messages.push(m.id)).catch(err=>console.log(err))
 
                             }
                         }
@@ -530,7 +535,7 @@ ${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length}**`
                         }
                         const authorId = interac.user.id
                         ++atvtsUP
-                        await addReport(reportId, toDo, authorId, messages)
+                        await addReport(reportId, toDo, authorId, messages).catch(err=>console.log(err))
                         } catch (error) {
                             console.log(error)
                         }
@@ -538,7 +543,7 @@ ${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length}**`
                         
                     });
                 }else{
-                    await interac.followUp({content:"Nenhuma conta valida passada", ephemeral:true})
+                    await interac.followUp({content:"Nenhuma conta valida passada", ephemeral:true}).catch(err=>console.log(err))
                 }
             }
 
@@ -548,18 +553,23 @@ ${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length}**`
     }
 
     async function warn(){
-        await interac.reply({content:"Envie os ids dos membros", ephemeral:true})
+        await interac.reply({content:"Envie os ids dos membros", ephemeral:true}).catch(err=>console.log(err))
         try {
             const filter = m =>m.author === interac.user;
-            const msgColec = await interac.channel.awaitMessages({filter, max:1, time:60000, errors: ['time']})
+            const msgColec = await interac.channel.awaitMessages({filter, max:1, time:60000, errors: ['time']}).catch(err=>console.log(err))
             
             if((msgColec?.first()?.content)){
                 const msgArgs = TrimMsg(msgColec.first())
                 if(msgArgs.length > 10){
-                    interac.editReply({content:"Carregando...", ephemeral:true})
+                    await interac.editReply({content:"Carregando...", ephemeral:true}).catch(err=>console.log(err))
                 }
-                msgColec.first().delete()
-                const idResponse = await verificaArgsUser(msgArgs)
+                try {
+                    await msgColec.first().delete().catch(err=>console.log(err))
+
+                } catch (error) {
+                    
+                }
+                const idResponse = await verificaArgsUser(msgArgs).catch(err=>console.log(err))
                 if(idResponse.members || idResponse.users){
                     const row = new MessageActionRow()
                     .addComponents(
@@ -670,7 +680,7 @@ ${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length}**`
                     await interac.followUp({components:[row], content:`\`Contas a advertir:\`
 ${idResponse.members ? `Dentro do servidor: **${idResponse.members.length}**` : ""}
 ${idResponse.users ? `Usuarios validos: **${idResponse.users.length}**` : ""}
-${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length}**` : ""}`, ephemeral:true})
+${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length}**` : ""}`, ephemeral:true}).catch(err=>console.log(err))
 
                     const filter = (interaction) => interaction.customId === interac.id && interaction.user.id === interac.user.id;
                     const collector = interac.channel.createMessageComponentCollector({ filter,max:1,componentType:"SELECT_MENU", time: 60000 });
@@ -751,7 +761,7 @@ ${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length}**`
                         let embeds = []
                         let ids = []
                         let messages = []
-                        const watingAproval = await interac.channel.send({embeds:[embed], components:[approvalButtons]})
+                        const watingAproval = await interac.channel.send({embeds:[embed], components:[approvalButtons]}).catch(err=>console.log(err))
                         messages.push(watingAproval.id)
 
                         for(const [i,user] of idResponse.users.entries()){
@@ -767,14 +777,14 @@ ${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length}**`
                                 embeds.push(emb)
 
                             }else if (embeds.length == 10){
-                                await watingAproval.reply({embeds:embeds}).then(m=>messages.push(m.id))
+                                await watingAproval.reply({embeds:embeds}).then(m=>messages.push(m.id)).catch(err=>console.log(err))
                                 embeds = []
                                 embeds.push(emb)
 
                             }
                             
                             if(i+1 == idResponse.users.length){
-                                await watingAproval.reply({embeds:embeds}).then(m=>messages.push(m.id))
+                                await watingAproval.reply({embeds:embeds}).then(m=>messages.push(m.id)).catch(err=>console.log(err))
 
                             }
                         }
@@ -787,7 +797,7 @@ ${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length}**`
                         }
                         const authorId = interac.user.id
                         ++atvtsUP
-                        await addReport(reportId, toDo, authorId, messages)
+                        await addReport(reportId, toDo, authorId, messages).catch(err=>console.log(err))
                         } catch (error) {
                             console.log(error)
                         }
@@ -795,40 +805,44 @@ ${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length}**`
                         
                     });
                 }else{
-                    await interac.followUp({content:"Nenhuma conta valida passada", ephemeral:true})
+                    await interac.followUp({content:"Nenhuma conta valida passada", ephemeral:true}).catch(err=>console.log(err))
                 }
             }
 
         } catch (error) {
-            interac.followUp({content: "Tempo esgotado", ephemeral:true})
+            await interac.followUp({content: "Tempo esgotado", ephemeral:true}).catch(err=>console.log(err))
             console.log(error)
         }
 
     }
 
     async function roles(){
-        await interac.reply({content:"Envie o id do cargo, ou mencione-o", ephemeral:true})
+        await interac.reply({content:"Envie o id do cargo, ou mencione-o", ephemeral:true}).catch(err=>console.log(err))
         const filter = m =>m.author === interac.user;
         try {
-            const roleColec = await interac.channel.awaitMessages({filter, max:1, time:60000, errors: ['time']})
+            const roleColec = await interac.channel.awaitMessages({filter, max:1, time:60000, errors: ['time']}).catch(err=>console.log(err))
             if(roleColec?.first()?.content){
                 const roleArgs = TrimMsg(roleColec.first())
                 const role = roleArgs[0].replace(/\<|\>|\@|\!|\&/g, "")
 
                 let roleId = interac.guild.roles.cache.get(role)
-                await roleColec.first().delete()
-                if(!roleId) return interac.followUp({content: "Cargo invalido", ephemeral:true})
+                try {
+                    await roleColec.first().delete().catch(err=>console.log(err))
+                } catch (error) {
+                    
+                }
+                if(!roleId) return await interac.followUp({content: "Cargo invalido", ephemeral:true}).catch(err=>console.log(err))
 
-                await interac.followUp({content:"Envie os ids dos membros", ephemeral:true})
+                await interac.followUp({content:"Envie os ids dos membros", ephemeral:true}).catch(err=>console.log(err))
         try {
-            const msgColec = await interac.channel.awaitMessages({filter, max:1, time:60000, errors: ['time']})
+            const msgColec = await interac.channel.awaitMessages({filter, max:1, time:60000, errors: ['time']}).catch(err=>console.log(err))
             
             if(msgColec?.first()?.content){
                 const msgArgs = TrimMsg(msgColec.first())
                 if(msgArgs.length > 10){
-                    interac.editReply({content:"Carregando...", ephemeral:true})
+                    await interac.editReply({content:"Carregando...", ephemeral:true}).catch(err=>console.log(err))
                 }
-                msgColec.first().delete()
+                await msgColec.first().delete().catch(err=>console.log(err))
                 const idResponse = await verificaArgsUser(msgArgs, true)
                 if(idResponse.members || idResponse.users){
                     const row = new MessageActionRow()
@@ -852,9 +866,9 @@ ${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length}**`
                     
                             ]),
                     );
-                    interac.followUp({components:[row], content:`\`Contas para gerenciar cargos:\`
+                    await interac.followUp({components:[row], content:`\`Contas para gerenciar cargos:\`
 ${idResponse.users ? `Usuarios validos: **${idResponse.members.length}**` : ""}
-${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length + idResponse.users.length - idResponse.members.length}**` : ""}`, ephemeral:true})
+${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length + idResponse.users.length - idResponse.members.length}**` : ""}`, ephemeral:true}).catch(err=>console.log(err))
 
                     const filter = (interaction) => interaction.customId === interac.id && interaction.user.id === interac.user.id;
                     const collector = interac.channel.createMessageComponentCollector({ filter,max:1,componentType:"SELECT_MENU", time: 60000 });
@@ -882,7 +896,7 @@ ${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length + i
                                     .setDescription(`[${roleId.toString()}]`+" Esperando aprovação...\n\nAberto por "+ interac.user.toString())
                                     .setColor(config.color.red)
 
-                        const watingAproval = await interac.channel.send({embeds:[embed], components:[approvalButtons]})
+                        const watingAproval = await interac.channel.send({embeds:[embed], components:[approvalButtons]}).catch(err=>console.log(err))
                         
                         let embeds = []
                         let ids = []
@@ -902,14 +916,14 @@ ${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length + i
                                 embeds.push(emb)
 
                             }else if (embeds.length == 10){
-                                await watingAproval.reply({embeds:embeds}).then(m=>messages.push(m.id))
+                                await watingAproval.reply({embeds:embeds}).then(m=>messages.push(m.id)).catch(err=>console.log(err))
                                 embeds = []
                                 embeds.push(emb)
 
                             }
                             
                             if(i+1 == idResponse.users.length){
-                                await watingAproval.reply({embeds:embeds}).then(m=>messages.push(m.id))
+                                await watingAproval.reply({embeds:embeds}).then(m=>messages.push(m.id)).catch(err=>console.log(err))
 
                             }
                         }
@@ -922,7 +936,7 @@ ${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length + i
                         }
                         const authorId = interac.user.id
                         ++atvtsUP
-                        await addReport(reportId, toDo, authorId, messages)
+                        await addReport(reportId, toDo, authorId, messages).catch(err=>console.log(err))
                         } catch (error) {
                             console.log(error)
                         }
@@ -930,7 +944,7 @@ ${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length + i
                         
                     });
                 }else{
-                    await interac.followUp({content:"Nenhuma conta valida passada", ephemeral:true})
+                    await interac.followUp({content:"Nenhuma conta valida passada", ephemeral:true}).catch(err=>console.log(err))
                 }
             }
 
@@ -939,7 +953,7 @@ ${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length + i
         }
             }
         } catch (error) {
-            interac.followUp({content: "Tempo esgotado", ephemeral:true})
+            await interac.followUp({content: "Tempo esgotado", ephemeral:true}).catch(err=>console.log(err))
         }
 
         
