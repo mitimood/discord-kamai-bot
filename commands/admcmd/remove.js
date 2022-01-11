@@ -1,5 +1,5 @@
 const config = require(`../../config`);
-const { TrimMsg } = require("../../funções/funções");
+const { TrimMsg } = require("../../utils/funções");
 const { warn_remove } = require("../../mongodb");
 
 /*

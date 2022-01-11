@@ -1,6 +1,6 @@
 const { client } = require("../..");
 const config = require("../../config");
-const { TrimMsg } = require("../../funções/funções");
+const { TrimMsg } = require("../../utils/funções");
 const mongoDB = require("../../mongodb");
 
 /*

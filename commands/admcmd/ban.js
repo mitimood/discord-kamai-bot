@@ -1,5 +1,5 @@
 const config = require("../../config");
-const { TrimMsg, VerificId, Banning } = require("../../funções/funções");
+const { TrimMsg, VerificId, Banning } = require("../../utils/funções");
 const { client, Discord, LocalDb, selfbotRegister } = require(`../../index`)
 const fs = require(`fs`)
 

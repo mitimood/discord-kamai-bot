@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 const { client } = require("../..");
 const config = require("../../config");
-const { TrimMsg } = require("../../funções/funções")
+const { TrimMsg } = require("../../utils/funções")
 const { warn_add } = require("../../mongodb")
 
 module.exports = {

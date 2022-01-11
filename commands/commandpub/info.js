@@ -1,6 +1,6 @@
 const { Discord } = require('../..');
 const config = require('../../config');
-const { TrimMsg } = require('../../funções/funções');
+const { TrimMsg } = require('../../utils/funções');
 const { get_xp, moneyGet } = require('../../mongodb')
 
 /*

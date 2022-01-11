@@ -78,7 +78,8 @@ module.exports = {
     },
     emojis:{
         check:`✔`,
-        false:`❌`
+        false:`❌`,
+        ban:":BAN:903237786465894430"
     },
     ban_recover:{
         guild_id: '865014447113502740',

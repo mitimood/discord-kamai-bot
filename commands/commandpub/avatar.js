@@ -1,5 +1,5 @@
 const { Discord } = require("../..");
-const { TrimMsg } = require("../../funções/funções");
+const { TrimMsg } = require("../../utils/funções");
 
 module.exports={
     name: "avatar",

@@ -692,23 +692,19 @@ async function addReport(id, toDo, authorId, messages){
     const report = database.collection('reports');
   
     await report.insertOne( { "_id": id, toDo:toDo, state: true, authorId: authorId, messages: messages } )
-    return true
   }catch(err){
     console.log(err)
-    return false
   }
 }
 
-async function updateStateReport(id, state){
+async function updateStateReport(id, state, userApproved, deleted = false){
   try{
     const database = MongodbClient.db(config.mongo.db_geral);
     const report = database.collection('reports');
   
-    const doc = await report.updateOne( {"_id": id},{ $set: { state: state } } )
-    return true
+    await report.updateOne( {"_id": id},{ $set: { state: state, userApproved: userApproved, deleted: deleted} } )
   }catch(err){
     console.log(err)
-    return false
   }
 }
 

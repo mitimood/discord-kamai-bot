@@ -1,4 +1,4 @@
-const { TrimMsg } = require("../../funções/funções")
+const { TrimMsg } = require("../../utils/funções")
 const fs = require('fs').promises
 
 module.exports = {

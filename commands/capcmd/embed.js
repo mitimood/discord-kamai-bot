@@ -50,7 +50,7 @@ module.exports = {
                         }).catch(err => msg.channel.send("**Tempo esgotado**"))
                         break;
                     case 2:
-                        let createmb = require('../../funções/createEmbed')
+                        let createmb = require('../../utils/createEmbed')
                         createmb.emb(msg);
                         break;
                     case 3:

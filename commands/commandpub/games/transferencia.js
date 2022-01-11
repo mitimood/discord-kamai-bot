@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { TrimMsg } = require('../../../funções/funções');
+const { TrimMsg } = require('../../../utils/funções');
 const { moneyGet, moneyRemove, moneyAdd } = require('../../../mongodb');
 
 
