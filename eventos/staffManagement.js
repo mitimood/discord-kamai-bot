@@ -1,5 +1,5 @@
 const config = require("../config")
-const { TrimMsg, punishments } = require("../utils/funções")
+const { TrimMsg, punishments } = require("../utils/auxiliarFunctions")
 const {client, selfbotRegister} = require("../index")
 const {addReport, getReport, updateStateReport, warn_add, warn_list, getAllActiveReports, MongodbClient} = require("../mongodb")
 const { MessageActionRow, MessageSelectMenu, MessageEmbed, MessageButton, ButtonInteraction } = require('discord.js');
@@ -188,7 +188,7 @@ async function createReport(action, channel, reason, user_send, acc_action_users
                         .setTitle(user.tag)
                         .setDescription(`${action} por ${user_send.toString()}\n ${reason ? `Motivo: \`${reason}\`` : "" }`)
                         .setColor(color)
-                        .setFooter(`id: ${user.id}`)
+                        .setFooter({text:`id: ${user.id}`})
             
             if(embeds_action.length < 10 ){
 
@@ -371,7 +371,7 @@ client.on("interactionCreate", async interac =>{
                                             .setTitle(user.tag)
                                             .setDescription(`Banido por: ${reportUser.toString()}, aprovado por: ${interac.user.toString()} \n Motivo: \`${doc.toDo.reason}\``)
                                             .setColor(config.color.red)
-                                            .setFooter(`id: ${user.id}`)
+                                            .setFooter({text:`id: ${user.id}`})
                             
                             if(embeds2.length < 10 ){
                                 embeds2.push(emb)
@@ -424,7 +424,7 @@ client.on("interactionCreate", async interac =>{
                                         .setTitle(user.tag)
                                         .setDescription(`Advertido por: ${reportUserWarn.toString()}, aprovado por: ${interac.user.toString()} \n Motivo: \`${doc.toDo.reason}\``)
                                         .setColor(config.color.orange)
-                                        .setFooter(`id: ${user.id}`)
+                                        .setFooter({text:`id: ${user.id}`})
             
                             if(embeds3.length < 10 ){
                                 embeds3.push(emb)

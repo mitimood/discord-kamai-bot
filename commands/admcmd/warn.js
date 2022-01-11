@@ -1,6 +1,6 @@
 const mongoDB = require(`../../mongodb`);
 const config = require(`../../config`);
-const { TrimMsg, punishments}= require(`../../utils/funções`)
+const { TrimMsg, punishments}= require(`../../utils/auxiliarFunctions`)
 
 /*
     adds a warn to a specific user adding some points to it

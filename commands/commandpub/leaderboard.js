@@ -1,4 +1,4 @@
-const { TrimMsg } = require("../../utils/funções");
+const { TrimMsg } = require("../../utils/auxiliarFunctions");
 
 const {fetch} = require("cross-fetch");
 const config = require("../../config");
@@ -30,7 +30,7 @@ module.exports={
                     emb.setTitle("Tabela de xp")
                     emb.setColor(config.color.blurple)
                     emb.setDescription(desc)
-                    emb.setFooter(`Página ${page}`)
+                    emb.setFooter({text:`Página ${page}`})
                     
                     await msg.channel.send({content:msg.author.toString(), embeds:[emb]})
                 
@@ -60,7 +60,7 @@ module.exports={
                     }
                     emb.setColor(config.color.blurple)
                     emb.setDescription(desc)
-                    emb.setFooter(`Página ${page}`)
+                    emb.setFooter({text:`Página ${page}`})
                     try {
                         await msg.channel.send({content:msg.author.toString(), embeds:[emb]})
 

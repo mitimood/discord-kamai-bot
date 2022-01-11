@@ -1,5 +1,5 @@
 const config = require("../../config");
-const { TrimMsg, VerificId, Banning } = require("../../utils/funções");
+const { TrimMsg, VerificId, Banning } = require("../../utils/auxiliarFunctions");
 const { client, Discord, LocalDb, selfbotRegister } = require(`../../index`)
 const fs = require(`fs`)
 
@@ -173,8 +173,8 @@ module.exports = {
             }
 
             const ChannelLog = client.channels.cache.get(config.channels.modlog);
-            const ModloguMem = new Discord.MessageEmbed().setAuthor(`Kamaitachi ban`, `https://images.genius.com/93a16c1f0873bdfdfaac3b0b6e23f680.300x300x1.jpg`).setColor(config.color.red)
-            const ModloguUser = new Discord.MessageEmbed().setAuthor(`Kamaitachi ban`, `https://images.genius.com/93a16c1f0873bdfdfaac3b0b6e23f680.300x300x1.jpg`).setColor(config.color.red)
+            const ModloguMem = new Discord.MessageEmbed().setAuthor({name:`Kamaitachi ban`, iconUrl:`https://images.genius.com/93a16c1f0873bdfdfaac3b0b6e23f680.300x300x1.jpg`}).setColor(config.color.red)
+            const ModloguUser = new Discord.MessageEmbed().setAuthor({name:`Kamaitachi ban`, iconUrl:`https://images.genius.com/93a16c1f0873bdfdfaac3b0b6e23f680.300x300x1.jpg`}).setColor(config.color.red)
             
             const banRegTimestamp = Date.now()  
 

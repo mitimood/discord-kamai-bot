@@ -1,5 +1,5 @@
 const config = require("../../config")
-const { TrimMsg } = require("../../utils/funções")
+const { TrimMsg } = require("../../utils/auxiliarFunctions")
 
 module.exports={
     name: "unmute",

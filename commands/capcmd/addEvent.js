@@ -1,5 +1,5 @@
 const { MessageEmbed } = require("discord.js");
-const { TrimMsg } = require("../../utils/funções");
+const { TrimMsg } = require("../../utils/auxiliarFunctions");
 const { addEvent } = require("../../mongoDbSite");
 
 module.exports = {

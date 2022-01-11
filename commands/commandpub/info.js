@@ -1,6 +1,6 @@
 const { Discord } = require('../..');
 const config = require('../../config');
-const { TrimMsg } = require('../../utils/funções');
+const { TrimMsg } = require('../../utils/auxiliarFunctions');
 const { get_xp, moneyGet } = require('../../mongodb')
 
 /*
@@ -53,7 +53,7 @@ module.exports={
     
     
             embed.setThumbnail(member.user.displayAvatarURL({ size:1024, format: "png"  }))
-            embed.setFooter(`id: ${member.id}`)
+            embed.setFooter({text:`id: ${member.id}`})
     
             let date = new Date(Date.now() - member.joinedAt )
             // let date_duration = new Date(Date.now() - new Date(member.user.createdTimestamp))

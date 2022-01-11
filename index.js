@@ -93,10 +93,6 @@ client.on("ready", async () => {
 
     await gamesDB.MongoGamesClient.connect()
     
-    eventos.forEach(events => {
-        require(`${__dirname}/eventos/${events}`);
-    })
-
     // 
     const rest = new REST({ version: '9' }).setToken(process.env.TOKEN);
     (async () => {

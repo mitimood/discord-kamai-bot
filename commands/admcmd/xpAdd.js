@@ -1,6 +1,6 @@
 const { client } = require("../../index");
 const config = require("../../config");
-const { TrimMsg } = require("../../utils/funções");
+const { TrimMsg } = require("../../utils/auxiliarFunctions");
 const { add_voice_xp, add_chat_xp } = require("../../mongodb");
 
 /*

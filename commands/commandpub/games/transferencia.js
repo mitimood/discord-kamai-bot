@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { TrimMsg } = require('../../../utils/funções');
 const { moneyGet, moneyRemove, moneyAdd } = require('../../../mongodb');
+const { TrimMsg } = require('../../../utils/auxiliarFunctions');
 
 
 module.exports={

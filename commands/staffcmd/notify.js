@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 const { client } = require("../..");
 const config = require("../../config");
-const { TrimMsg } = require("../../utils/funções")
+const { TrimMsg } = require("../../utils/auxiliarFunctions")
 const { warn_add } = require("../../mongodb")
 
 module.exports = {
@@ -29,7 +29,7 @@ module.exports = {
                     const emb = new MessageEmbed()
                     emb.setColor(config.color.sucess)
                     emb.setDescription(`**Notificação**\n${user.tag} foi notificado por <@${msg.author.id}>\n` + "Motivo:`" + reason + "`")
-                    emb.setFooter(`id: ${user.id}`)
+                    emb.setFooter({text: `id: ${user.id}`})
                     let mod_log = client.channels.cache.get(config.channels.modlog)
 
 

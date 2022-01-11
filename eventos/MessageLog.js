@@ -16,7 +16,7 @@ client.on("messageUpdate", (oldMessage, newMessage)=>{
             oldImageUrl += `\n${atach[1].attachment}`
         }
 
-        oldEmb.setDescription("Mensagem antiga em: " + "<#" + oldMessage.channel.id + ">\n\n" + "```\n" + oldMessage.content + "\n```" + oldImageUrl).setColor("GREY").setAuthor(oldMessage.author.username, oldMessage.author.avatarURL(), oldMessage.author.avatarURL()).setTimestamp(oldMessage.createdTimestamp).setTitle(oldMessage.channel.name ).setFooter(oldMessage.member.id)
+        oldEmb.setDescription("Mensagem antiga em: " + "<#" + oldMessage.channel.id + ">\n\n" + "```\n" + oldMessage.content + "\n```" + oldImageUrl).setColor("GREY").setAuthor({name: oldMessage.author.username, iconURL:oldMessage.author.avatarURL(), url: oldMessage.author.avatarURL()}).setTimestamp(oldMessage.createdTimestamp).setTitle(oldMessage.channel.name ).setFooter({text:oldMessage.member.id})
         
         let newImageUrl = '';
 
@@ -24,7 +24,7 @@ client.on("messageUpdate", (oldMessage, newMessage)=>{
             newImageUrl +=  `\n${atach[1].attachment}`
         }
         
-        newEmb.setDescription("Mensagem nova em: " + "<#" + newMessage.channel.id + ">\n\n" + "```\n" + newMessage.content + "\n```" + newImageUrl).setColor("GREEN").setAuthor(newMessage.author.username, newMessage.author.avatarURL(), newMessage.author.avatarURL()).setTimestamp(newMessage.createdTimestamp).setTitle(newMessage.channel.name ).setFooter(newMessage.member.id)
+        newEmb.setDescription("Mensagem nova em: " + "<#" + newMessage.channel.id + ">\n\n" + "```\n" + newMessage.content + "\n```" + newImageUrl).setColor("GREEN").setAuthor({name: newMessage.author.username, iconURL: newMessage.author.avatarURL(), url: newMessage.author.avatarURL()}).setTimestamp(newMessage.createdTimestamp).setTitle(newMessage.channel.name ).setFooter({text:newMessage.member.id})
 
         newMessage.guild.channels.cache.get(config.channels.msglog).send({embeds:[oldEmb, newEmb]})
 
@@ -46,7 +46,7 @@ client.on("messageDelete", (delMessage)=>{
             imageUrl += `\n${atach[1].attachment}`
         }
 
-        delemb.setDescription("Mensagem deletada em <#" + delMessage.channel.id + ">\n" + "```" + delMessage.content  +"```" + imageUrl).setColor("DARK_RED").setAuthor(delMessage.author.username, delMessage.author.avatarURL(), delMessage.author.avatarURL()).setTimestamp(delMessage.createdTimestamp).setTitle(delMessage.channel.name).setFooter(delMessage.member.id)
+        delemb.setDescription("Mensagem deletada em <#" + delMessage.channel.id + ">\n" + "```" + delMessage.content  +"```" + imageUrl).setColor("DARK_RED").setAuthor({name: delMessage.author.username, iconURL: delMessage.author.avatarURL(), url: delMessage.author.avatarURL()}).setTimestamp(delMessage.createdTimestamp).setTitle(delMessage.channel.name).setFooter({text:delMessage.member.id})
         
         delMessage.guild.channels.cache.get(config.channels.msglog).send({embeds:[delemb]})
 

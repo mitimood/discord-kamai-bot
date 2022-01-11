@@ -1,5 +1,5 @@
 const { client } = require("../..");
-const { TrimMsg } = require("../../utils/funções");
+const { TrimMsg } = require("../../utils/auxiliarFunctions");
 const moment = require("moment");
 const config = require("../../config");
 const { SetTempMute, SetUnmute } = require("../../mongodb");

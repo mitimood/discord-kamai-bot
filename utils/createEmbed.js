@@ -33,7 +33,7 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
                             let filter = m => m.author.id == msg.author.id;
                             msg.channel.awaitMessages({ filter, max: 1, time: 120000, errors: [`Time`] }).then(nam => {
                                 if (nam.first().content.toLowerCase() == "cancelar") return (msg.channel.send("Author cancelado"), returnemb(emb))
-                                embed.setAuthor(nam.first().content);
+                                embed.setAuthor({name:nam.first().content});
                                 a.delete()
                                 msg.channel.send("Envie o link da imagem do autor, cancelar, ou pular").then(a => {
                                     let filter = m => msg.author.id == m.author.id
@@ -41,11 +41,11 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
                                         //verify if its a valid image
                                         if (!["pular", "cancelar"].includes(urli.first().content.toLowerCase())) {
                                             try {
-                                                embed.setAuthor(nam.first().content, urli.first().content)
+                                                embed.setAuthor({name: nam.first().content, iconURL:urli.first().content})
                                                 await msg.channel.send({ embeds: [embed] })
                                                 a.delete()
                                             } catch {
-                                                embed.setAuthor(nam.first().content, null)
+                                                embed.setAuthor({name:nam.first().content, iconURL:null})
                                                 await msg.channel.send("**Url invalida**")
                                                 return returnemb(embed)
                                             }
@@ -62,17 +62,15 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
                                                 if (url.first().content.toLowerCase() == "pular") url.first().content = undefined
                                                 //verify if its a valid url
                                                 try {
-                                                    embed.setAuthor(nam.first().content, urli.first().content, url.first().content)
+                                                    embed.setAuthor({name:nam.first().content, iconURL:urli.first().content, url:url.first().content})
                                                     await msg.channel.send({ embeds: [embed] });
 
                                                 } catch {
-                                                    embed.setAuthor(nam.first().content, urli.first().content, null)
+                                                    embed.setAuthor({name:nam.first().content, iconURL: urli.first().content, url:null})
                                                 } finally {
 
                                                     return returnemb(embed);
                                                 }
-
-
                                             }).catch(m => msg.channel.send("Tempo esgotado"))
                                         })
 
@@ -283,7 +281,7 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
                                     a.awaitReactions({ filter, max: 1, time: 120000, errors: [`Time`] }).then(rea => {
                                         if (rea.first().emoji.name == `❌`) {
                                             a.delete();
-                                            embed.setFooter(ftx.first().content)
+                                            embed.setFooter({text:ftx.first().content})
                                             msg.channel.send({ embeds: [embed] })
                                             returnemb(embed);
                                         } else {
@@ -293,10 +291,10 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
                                                 msg.channel.awaitMessages({ filter, max: 1, time: 120000, errors: [`Time`] }).then(async foturl => {
                                                     a.delete()
                                                     try {
-                                                        embed.setFooter(ftx.first().content, foturl.first().content)
+                                                        embed.setFooter({text:ftx.first().content,iconURL: foturl.first().content})
                                                         await msg.channel.send({ embeds: [embed] });
                                                     } catch {
-                                                        embed.setFooter(ftx.first().content, null)
+                                                        embed.setFooter({text:ftx.first().content, iconURL:binull})
                                                         await msg.channel.send(`Link invalido`)
                                                     } finally {
                                                         return returnemb(embed)

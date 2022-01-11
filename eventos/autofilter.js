@@ -33,7 +33,7 @@ ${msg.content}
                         )
                         .setTitle("Possivel SCAM => "+ msg.author.username)
                         .setColor("RED")
-                        .setFooter(msg.author.id)
+                        .setFooter({text:msg.author.id})
                         .setThumbnail(msg.author.avatarURL())
 
             await scamLog.send({embeds:[emb]})

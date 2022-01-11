@@ -1,4 +1,4 @@
-const { TrimMsg } = require("../../utils/funções")
+const { TrimMsg } = require("../../utils/auxiliarFunctions")
 const fs = require('fs/promises')
 const { selfbotRegister } = require("../..")
 

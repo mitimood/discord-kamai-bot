@@ -1,7 +1,7 @@
 const {client, selfbotRegister} = require(`../index`);
 const config = require(`../config`)
 const { CheckMute, warn_list, check_roles } = require("../mongodb");
-const { ban_member_send_message } = require("../utils/funções");
+const { ban_member_send_message } = require("../utils/auxiliarFunctions");
 
 // check some informations when a member join
 client.on("guildMemberAdd", async (member) => {
