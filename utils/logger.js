@@ -4,12 +4,17 @@ const date = Date.now()
 
 const logger = winston.createLogger({
     format: winston.format.combine(
-        winston.format.errors({ stack: true }),
-        winston.format.json()
+        winston.format.label({
+            label: `Label🏷️`
+        }),
+        winston.format.timestamp({
+           format: 'MMM-DD-YYYY HH:mm:ss'
+       }),
+        winston.format.printf(info => `${info.level}: ${info.label}: ${[info.timestamp]}: ${info.message}`),
     ),
     transports: [
-        new winston.transports.File({ filename: `./logs/${date} error.log`, level: 'error' }),
-        new winston.transports.File({ filename: `./logs/${date} info.log`, level: 'info' }),
+        new winston.transports.File({ filename: `./utils/logs/${date} error.log`, level: 'error' }),
+        new winston.transports.File({ filename: `./utils/logs/${date} info.log`, level: 'info' }),
     ],
 });
  

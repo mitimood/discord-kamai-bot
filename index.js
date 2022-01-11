@@ -92,6 +92,12 @@ today = dd + '/' + mm + '/' + yyyy;
 client.on("ready", async () => {
 
     await gamesDB.MongoGamesClient.connect()
+    
+    eventos.forEach(events => {
+        require(`${__dirname}/eventos/${events}`);
+    })
+
+    // 
     const rest = new REST({ version: '9' }).setToken(process.env.TOKEN);
     (async () => {
         try {
@@ -124,13 +130,13 @@ client.on("ready", async () => {
         console.log(err)
     }
 
-    client.guilds.cache.get("612117634909208576").members.cache.filter(async m=>{
+    // client.guilds.cache.get("612117634909208576").members.cache.filter(async m=>{
         
-        if(m.nickname === "twitch.tv/say_cat_oficial"){
-            console.log(m.nickname)
-            m.ban({reason: "raid"})
-        }
-    })
+    //     if(m.nickname === "twitch.tv/say_cat_oficial"){
+    //         console.log(m.nickname)
+    //         m.ban({reason: "raid"})
+    //     }
+    // })
 
  // gamesDB.diceAdd("324730195863011328", { 1 : Date.now().valueOf(), 2 : Date.now().valueOf(), 3 : Date.now().valueOf(), 4 : Date.now().valueOf()})
     console.log("Cliente iniciado")

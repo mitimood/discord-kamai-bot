@@ -9,103 +9,16 @@ let atvtsUP = 0
 let channelAtvts = null
 
 MongodbClient.on("connectionReady",async connection=>{
-    atvtsUP = await getAllActiveReports().catch(err=>console.log(err))
+    try {
+        atvtsUP = await getAllActiveReports().catch(err=>console.log(err))
+        await client.channels.cache.get(config.channels.modReports).setName(`Registros ativos [${atvtsUP}]`)
+    } catch (error) {
+        logger.error(error)
+    }
+
 } )
 
 // Updates the entry counter
-
-const modLogChannel = client.channels.cache.get(config.channels.modlog)
-
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
-
-async function msgDeleteMass(channel, ids){
-    try {
-        await channel.bulkDeelete(ids, true)
-    } catch (error) {
-        logger.error("ERROR => Bulk delete staffManagement.js")
-    }
-}
-
-
-async function createReport(action, channel, reason, user_send, acc_action_users, acc_size, color){
-    try {
-        
-        const approvalButtons = new MessageActionRow()
-        .addComponents(
-            new MessageButton().setLabel("APROVAR").setStyle("SUCCESS").setCustomId("yes")
-        )
-        .addComponents(
-            new MessageButton().setLabel("DELETAR").setStyle("DANGER").setCustomId("no")
-        )
-    
-        const emb_aproval = new MessageEmbed()
-                    .setTitle(`[${action}] => ${acc_size} afetados ${ reason ? reason : "" }`)
-                    .setDescription("Esperando aprovação...\n\nAberto por "+ user_send.toString())
-                    .setColor(color)
-    
-        const waiting_aproval = await channel.send({embeds:[emb_aproval], components:[approvalButtons]}).catch(err=>console.log(err))
-
-        let embeds_action = []
-        let acc_ids = []
-        let messages = []
-
-        messages.push(waiting_aproval.id)
-
-        for(const [i,user] of acc_action_users){
-
-            acc_ids.push(user.id)
-
-            const emb = new MessageEmbed()
-                        .setThumbnail(user.avatarURL())
-                        .setTitle(user.tag)
-                        .setDescription(`Banido por ${user_send.toString()}\n ${reason ? `Motivo: \`${reason}\`` : "" }`)
-                        .setColor(color)
-                        .setFooter(`id: ${user.id}`)
-            
-            if(embeds_action.length < 10 ){
-
-                embeds_action.push(emb)
-
-            }else if (embeds_action.length == 10){
-
-                const user_emb1 = await waiting_aproval.reply({embeds:embeds_action})
-                
-                messages.push(user_emb1.id)
-
-                embeds_action = []
-                embeds_action.push(emb)
-            }
-
-            if(i+1 == idResponse.users.length){
-                const user_emb2 = await waiting_aproval.reply({embeds:embeds_action})
-
-                messages.push(user_emb2.id)
-            }
-        }
-
-        const reportId = waiting_aproval.id
-
-        const toDo ={
-        action: "ban",
-        users: ids,
-        reason: reason
-        }
-
-        const authorId = interac.user.id
-
-        ++atvtsUP
-
-        await addReport(reportId, toDo, authorId, messages)
-
-        await channel.setName(`Registros ativos [${atvtsUP}]`)
-
-    } catch (error) {
-        logger.error("Error Creating Report\n" + error)
-    }
-    
-
-}
-
 
 const compReasons = [
     {
@@ -231,9 +144,109 @@ const getReason = reason => {
             }[reason]
 }
 
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
+
+async function msgDeleteMass(channel, ids){
+    try {
+        await channel.bulkDelete(ids, true)
+    } catch (error) {    
+        logger.error("ERROR => Bulk delete staffManagement.js\n" + error)
+    }
+}
+
+
+async function createReport(action, channel, reason, user_send, acc_action_users, acc_size, color, role = false){
+    try {
+        
+        const approvalButtons = new MessageActionRow()
+        .addComponents(
+            new MessageButton().setLabel("APROVAR").setStyle("SUCCESS").setCustomId("yes")
+        )
+        .addComponents(
+            new MessageButton().setLabel("DELETAR").setStyle("DANGER").setCustomId("no")
+        )
+    
+        const emb_aproval = new MessageEmbed()
+                    .setTitle(`[${action}] => ${acc_size} afetados ${ reason ? reason : "" }`)
+                    .setDescription("Esperando aprovação...\n\nAberto por "+ user_send.toString())
+                    .setColor(color)
+
+        const waiting_aproval = await channel.send({embeds:[emb_aproval], components:[approvalButtons]})
+
+        let embeds_action = []
+        let acc_ids = []
+        let messages = []
+
+        messages.push(waiting_aproval.id)
+
+        for(const [i,user] of acc_action_users.entries()){
+        
+            acc_ids.push(user.id)
+
+            const emb = new MessageEmbed()
+                        .setThumbnail(user.avatarURL())
+                        .setTitle(user.tag)
+                        .setDescription(`${action} por ${user_send.toString()}\n ${reason ? `Motivo: \`${reason}\`` : "" }`)
+                        .setColor(color)
+                        .setFooter(`id: ${user.id}`)
+            
+            if(embeds_action.length < 10 ){
+
+                embeds_action.push(emb)
+
+            }else if (embeds_action.length == 10){
+
+                const user_emb1 = await waiting_aproval.reply({embeds:embeds_action})
+                
+                messages.push(user_emb1.id)
+
+                embeds_action = []
+                embeds_action.push(emb)
+            }
+
+            if(i+1 == acc_action_users.length){
+                const user_emb2 = await waiting_aproval.reply({embeds:embeds_action})
+
+                messages.push(user_emb2.id)
+            }
+        }
+
+        const reportId = waiting_aproval.id
+
+        action = {"ADVERTENCIA": "warn", "BAN": "ban","ADICIONAR CARGO": "addRole","REMOVER CARGO": "removeRole"}[action]
+        const toDo ={
+        action: action,
+        users: acc_ids,
+        reason: reason,
+        role: role
+        }
+
+        const authorId = user_send.id
+
+        ++atvtsUP
+
+        await addReport(reportId, toDo, authorId, messages)
+
+        await channel.setName(`Registros ativos [${atvtsUP}]`)
+
+    } catch (error) {
+        logger.error("Error Creating Report\n" + error)
+    }
+
+}
+
 
 client.on("interactionCreate", async interac =>{
+    let regLogChannel;
+    let modLogChannel;
 
+    try {
+        regLogChannel = await client.channels.fetch(config.channels.modReports)
+        modLogChannel = await client.channels.fetch(config.channels.modlog)
+
+    } catch (error) {
+        logger.error(error)
+    }
     
     if(!interac.isButton()) return
     if(interac.channel.id != config.channels.modReports) return
@@ -272,17 +285,19 @@ client.on("interactionCreate", async interac =>{
         } catch (error) {
             logger.error(error)
         }
-        // 
+
     }else if(interac.customId === "no"){
         try {
             const doc = await getReport(interac.message.id)
-            if(doc.state && doc.authorId == interac.user.id || interac.member.roles.cache.has(config.roles.staff.admin)){
+
+            if(doc && (doc.state && (doc?.authorId == interac.user.id || interac.member.roles.cache.has(config.roles.staff.admin)))){
+
+                await msgDeleteMass(regLogChannel, doc.messages)
+
                 await updateStateReport(doc._id, false, interac.user.id, true)
-                
-                msgDeleteMass(modLogChannel, doc.messages)
-                
+
                 --atvtsUP
-                await channel.setName(`Registros ativos [${atvtsUP}]`)
+                await regLogChannel.setName(`Registros ativos [${atvtsUP}]`)
 
             }else{
                 await interac.reply({content:"Faltam permissões", ephemeral:true})
@@ -296,25 +311,24 @@ client.on("interactionCreate", async interac =>{
         let doc;
         try {
             doc = await getReport(interac.message.id)
-       
-            if(!doc.state) return
+            
+            if(!doc || !doc.state) return
     
             if(!interac.member.roles.cache.has(config.roles.staff.admin)) await interac.reply({content:"Faltam permissões", ephemeral:true})
 
-            const ActionRow = new MessageActionRow()
-            interac.message.components.forEach(comp=>{
-                comp.components.forEach(button=>{
-                    let but = new MessageButton(button).setDisabled(true)
-                    ActionRow.addComponents(but)
-                })
-            })
+            // const ActionRow = new MessageActionRow()
+            // interac.message.components.forEach(comp=>{
+            //     comp.components.forEach(button=>{
+            //         let but = new MessageButton(button).setDisabled(true)
+            //         ActionRow.addComponents(but)
+            //     })
+            // })
                 
-            await interac.update({embeds: interac.message.embeds, components: [ActionRow]})
+            // await interac.update({embeds: interac.message.embeds, components: [ActionRow]})
 
         } catch (error) {
             logger.error(error)
         }
-
             switch(doc.toDo.action){                
                 case"ban":
                 
@@ -366,7 +380,7 @@ client.on("interactionCreate", async interac =>{
                                 await modLogChannel.send({embeds:embeds2})
                                 embeds2 = []
                                 embeds2.push(emb)
-    
+
                             }
                             
                             if(i+1 == users.users.length){
@@ -376,14 +390,14 @@ client.on("interactionCreate", async interac =>{
                         }
                         await updateStateReport(doc._id, false, interac.user.id)
 
-                        msgDeleteMass(doc.messages)
+                        await msgDeleteMass( regLogChannel, doc.messages)
 
                     } catch (error) {
                         logger.error(error)
                     }
 
                     --atvtsUP
-                    await channel.setName(`Registros ativos [${atvtsUP}]`)
+                    await regLogChannel.setName(`Registros ativos [${atvtsUP}]`)
 
                     break;
 
@@ -416,7 +430,7 @@ client.on("interactionCreate", async interac =>{
                                 embeds3.push(emb)
         
                             }else if (embeds3.length == 10){
-                                await modLogChannel.send({embeds:embeds3})
+                                await regLogChannel.send({embeds:embeds3})
                                 embeds3 = []
                                 embeds3.push(emb)
         
@@ -430,11 +444,11 @@ client.on("interactionCreate", async interac =>{
 
                             await updateStateReport(doc._id, false, interac.user.id)
                             
-                            await msgDeleteMass(modLogChannel, doc.messages)
+                            await msgDeleteMass(regLogChannel, doc.messages)
 
                             --atvtsUP
 
-                            await channel.setName(`Registros ativos [${atvtsUP}]`)
+                            await regLogChannel.setName(`Registros ativos [${atvtsUP}]`)
 
                     } catch (error) {
                         logger.error(error)
@@ -445,19 +459,21 @@ client.on("interactionCreate", async interac =>{
                     try {
                         const usersAddRole = await verificaArgsUser(doc.toDo.users, true)
                         const roleAdd = interac.guild.roles.cache.get(doc.toDo.role)
-    
+                        
                         if(roleAdd){
                             for(const memb of usersAddRole.members){
                                 await memb.roles.add(roleAdd)
-
                             }
                         }
 
-                        await msgDeleteMass(modLogChannel, doc.messages)
+                        await msgDeleteMass(regLogChannel, doc.messages)
 
                         --atvtsUP
     
                         await updateStateReport(doc._id, false, interac.user.id)
+
+                        await regLogChannel.setName(`Registros ativos [${atvtsUP}]`)
+
                     } catch (error) {
                         logger.error(error)
 
@@ -477,13 +493,14 @@ client.on("interactionCreate", async interac =>{
                         }
                     }
 
+                    await msgDeleteMass(regLogChannel, doc.messages)
+
                     await updateStateReport(doc._id, false, interac.user.id)
 
-                    await msgDeleteMass(modLogChannel, doc.messages)
-
                     --atvtsUP
-                    await interac.followUp({content:"Cargos removidos com sucesso", ephemeral:true})
-                    } catch (error) {
+                    await regLogChannel.setName(`Registros ativos [${atvtsUP}]`)
+
+                } catch (error) {
                         logger.error(error)
                     }
 
@@ -534,6 +551,7 @@ client.on("interactionCreate", async interac =>{
 ${acc_action.members ? `Dentro do servidor: **${acc_action.members.length}**` : ""}
 ${acc_action.users ? `Usuarios validos: **${acc_action.users.length}**` : ""}
 ${acc_action.invalids ? `Usuários invalidos: **${acc_action.invalids.length}**` : ""}
+
 ||Depois de escolher, a interação vai ficar como invalida... E ta tudo bem, é isso...||
                 `, ephemeral:true})
                 
@@ -554,7 +572,7 @@ ${acc_action.invalids ? `Usuários invalidos: **${acc_action.invalids.length}**`
 
                         reason = getReason(reason)
 
-                        await createReport("BAN", modLogChannel, reason, interac.user, acc_action_users.users, acc_action_users.length, config.color.red)
+                        await createReport("BAN", regLogChannel, reason, interac.user, acc_action.users, acc_action.length, config.color.red)
 
                     } catch (error) {
                         logger.error(error)
@@ -570,8 +588,8 @@ ${acc_action.invalids ? `Usuários invalidos: **${acc_action.invalids.length}**`
         try {
             await interac.reply({content:"Envie os ids dos membros", ephemeral:true})
 
-            const filter = m =>m.author === interac.user;
-            const msgColec = await interac.channel.awaitMessages({filter, max:1, time:60000, errors: ['time']})
+            let filter = m =>m.author === interac.user;
+            let msgColec = await interac.channel.awaitMessages({filter, max:1, time:60000, errors: ['time']})
             
             if(!msgColec?.first()?.content) return
 
@@ -601,6 +619,7 @@ ${acc_action.invalids ? `Usuários invalidos: **${acc_action.invalids.length}**`
 ${acc_action.members ? `Dentro do servidor: **${acc_action.members.length}**` : ""}
 ${acc_action.users ? `Usuarios validos: **${acc_action.users.length}**` : ""}
 ${acc_action.invalids ? `Usuários invalidos: **${acc_action.invalids.length}**` : ""}
+
 ||Depois de escolher, a interação vai ficar como invalida... E ta tudo bem, é isso...||`, ephemeral:true})
 
             filter = (interaction) => interaction.customId === interac.id && interaction.user.id === interac.user.id;
@@ -615,7 +634,7 @@ ${acc_action.invalids ? `Usuários invalidos: **${acc_action.invalids.length}**`
 
                     reason = getReason(reason)
                 
-                    await createReport("ADVERTENCIA", modLogChannel, reason, interac.user, acc_action.users, acc_action.users.length, config.color.orange)
+                    await createReport("ADVERTENCIA", regLogChannel, reason, interac.user, acc_action.users, acc_action.users.length, config.color.orange)
 
                 } catch (error) {
                     logger.error(error)
@@ -631,10 +650,10 @@ ${acc_action.invalids ? `Usuários invalidos: **${acc_action.invalids.length}**`
 
     async function rolesCreate(){
         try {
-            await interac.followUp({content:"Envie o id do cargo, ou mencione-o", ephemeral:true})
-            const filter = m =>m.author === interac.user;
+            await interac.reply({content:"Envie o id do cargo, ou mencione-o", ephemeral:true})
+            let filter = m =>m.author === interac.user;
 
-            const roleColec = await interac.channel.awaitMessages({filter, max:1, time:60000, errors: ['time']})
+            let roleColec = await interac.channel.awaitMessages({filter, max:1, time:60000, errors: ['time']})
             
             if(!roleColec?.first()?.content) return
 
@@ -652,7 +671,7 @@ ${acc_action.invalids ? `Usuários invalidos: **${acc_action.invalids.length}**`
 
             await interac.followUp({content:"Envie os ids dos membros", ephemeral:true})
 
-            const msgColec = await interac.channel.awaitMessages({filter, max:1, time:60000, errors: ['time']})
+            let msgColec = await interac.channel.awaitMessages({filter, max:1, time:60000, errors: ['time']})
             
             if(!msgColec?.first()?.content) return
 
@@ -691,9 +710,10 @@ ${acc_action.invalids ? `Usuários invalidos: **${acc_action.invalids.length}**`
                         );
                     
             await interac.followUp({components:[row], content:`\`Contas para gerenciar cargos:\`
-${idResponse.users ? `Usuarios validos: **${idResponse.members.length}**` : ""}
-${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length + idResponse.users.length - idResponse.members.length}**` : ""}
-||Depois de escolher, a interação vai ficar como invalida... E ta tudo bem, é isso...||`, ephemeral:true}).catch(err=>console.log(err))
+${acc_action.users ? `Usuarios validos: **${acc_action.members.length}**` : ""}
+${acc_action.invalids ? `Usuários invalidos: **${acc_action.invalids.length + acc_action.users.length - acc_action.members.length}**` : ""}
+
+||Depois de escolher, a interação vai ficar como invalida... E ta tudo bem, é isso...||`, ephemeral:true})
 
             filter = (interaction) => interaction.customId === interac.id && interaction.user.id === interac.user.id;
             
@@ -714,62 +734,9 @@ ${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length + i
                             break;
                     }
 
-                    await createReport(action == "add" ? "ADICIONAR CARGO" : "REMOVER CARGO", modLogChannel, undefined, 
-                                        interac.user, acc_action.users, acc_action.users.length, config.color.purple)
+                    await createReport(action == "add" ? "ADICIONAR CARGO" : "REMOVER CARGO", regLogChannel, role.name, 
+                                        interac.user, acc_action.users, acc_action.users.length, config.color.purple, role.id)
 
-                //     const approvalButtons = new MessageActionRow()
-                //                             .addComponents(new MessageButton().setLabel("APROVAR").setStyle("SUCCESS").setCustomId("yes"))
-                //                             .addComponents(new MessageButton().setLabel("DELETAR").setStyle("DANGER").setCustomId("no"))
-
-                //     let embed = new MessageEmbed()
-                //                 .setTitle(`[CARGO] => ${idResponse.users.length}   [${action == "remove" ? "Remover" : "Adicionar"}] `)
-                //                 .setDescription(`[${roleId.toString()}]`+" Esperando aprovação...\n\nAberto por "+ interac.user.toString())
-                //                 .setColor(config.color.red)
-
-                //     const watingAproval = await interac.channel.send({embeds:[embed], components:[approvalButtons]}).catch(err=>console.log(err))
-                    
-                //     let embeds = []
-                //     let ids = []
-                //     let messages = []
-
-                //     messages.push(watingAproval.id)
-
-                //     for(const [i,user] of idResponse.users.entries()){
-
-                //         ids.push(user.id)
-                        
-                //         const emb = new MessageEmbed()
-                //                 .setThumbnail(user.avatarURL())
-                //                 .setTitle(user.tag)
-                //                 .setDescription(`Gerenciar cargo por: ${interac.user.toString()}\n Ação: \`${action == "remove" ? "Remover" : "Adicionar"}\``)
-                //                 .setColor(config.color.blurple)
-                //                 .setFooter(`id: ${user.id}`)
-
-                //             if(embeds.length < 10 ){
-                //             embeds.push(emb)
-
-                //         }else if (embeds.length == 10){
-                //             await watingAproval.reply({embeds:embeds}).then(m=>messages.push(m.id)).catch(err=>console.log(err))
-                //             embeds = []
-                //             embeds.push(emb)
-
-                //         }
-                        
-                //         if(i+1 == idResponse.users.length){
-                //             await watingAproval.reply({embeds:embeds}).then(m=>messages.push(m.id)).catch(err=>console.log(err))
-
-                //         }
-                // }
-                // const reportId = watingAproval.id
-                // const toDo ={
-                //     action: `${action}Role`,
-                //     users: ids,
-                //     role: roleId.id
-
-                // }
-                // const authorId = interac.user.id
-                // ++atvtsUP
-                // await addReport(reportId, toDo, authorId, messages).catch(err=>console.log(err))
                 } catch (error) {
                     logger.error(error)
                 }
@@ -779,7 +746,6 @@ ${idResponse.invalids ? `Usuários invalidos: **${idResponse.invalids.length + i
 
         } catch (error) {
             logger.error(error)
-            await interac.followUp({content: "Tempo esgotado", ephemeral:true}).catch(err=>console.log(err))
         }
 
         
