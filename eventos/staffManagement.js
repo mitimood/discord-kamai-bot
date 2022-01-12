@@ -8,10 +8,15 @@ const { logger } = require("../utils/logger");
 let atvtsUP = 0
 let channelAtvts = null
 
+let startOne = false
+
 MongodbClient.on("connectionReady",async connection=>{
+    if(startOne) return
+    startOne = true
     try {
-        atvtsUP = await getAllActiveReports().catch(err=>console.log(err))
+        atvtsUP = await getAllActiveReports()
         await client.channels.cache.get(config.channels.modReports).setName(`Registros ativos [${atvtsUP}]`)
+
     } catch (error) {
         logger.error(error)
     }
