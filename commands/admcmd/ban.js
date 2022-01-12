@@ -165,10 +165,10 @@ module.exports = {
     
                     if(arg.match(/^[0-9]+$/) && toString(Date.now().valueOf()) >= arg){
                     try {
-                        let user = await interac.client.users.fetch(arg)
+                        let user = await msg.client.users.fetch(arg)
                         try {
-                            let memb = await interac.guild.members.fetch(arg)
-                            if(memb.roles.highest.position < interac.member.roles.highest.position || dontVerifyRole){
+                            let memb = await msg.guild.members.fetch(arg)
+                            if(memb.roles.highest.position < msg.member.roles.highest.position || dontVerifyRole){
                                 members.push(memb)
                                 users.push(memb.user)
                             }else{
