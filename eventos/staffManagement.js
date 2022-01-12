@@ -314,17 +314,17 @@ client.on("interactionCreate", async interac =>{
             
             if(!doc || !doc.state) return
     
-            if(!interac.member.roles.cache.has(config.roles.staff.admin)) await interac.reply({content:"Faltam permissões", ephemeral:true})
+            if(!interac.member.roles.cache.has(config.roles.staff.admin)) return await interac.reply({content:"Faltam permissões", ephemeral:true})
 
-            // const ActionRow = new MessageActionRow()
-            // interac.message.components.forEach(comp=>{
-            //     comp.components.forEach(button=>{
-            //         let but = new MessageButton(button).setDisabled(true)
-            //         ActionRow.addComponents(but)
-            //     })
-            // })
+            const ActionRow = new MessageActionRow()
+            interac.message.components.forEach(comp=>{
+                comp.components.forEach(button=>{
+                    let but = new MessageButton(button).setDisabled(true)
+                    ActionRow.addComponents(but)
+                })
+            })
                 
-            // await interac.update({embeds: interac.message.embeds, components: [ActionRow]})
+            await interac.update({embeds: interac.message.embeds, components: [ActionRow]})
 
         } catch (error) {
             logger.error(error)
