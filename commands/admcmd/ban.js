@@ -43,7 +43,8 @@ module.exports = {
                                             ['Scam', '19']
                                         ])
                     )
-    .addStringOption(option=> option.setName('contas-a-banir').setDescription('Joga ai os usuários pra rolo').setRequired(true)),
+    .addStringOption(option=> option.setName('contas-a-banir').setDescription('Joga ai os usuários pra rolo').setRequired(true))
+    .setDefaultPermission(false),
     name: "ban",
     aliases: ["bn"],
     description: "bane os membros",
