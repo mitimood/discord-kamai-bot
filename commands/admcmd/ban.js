@@ -1,9 +1,8 @@
 const config = require("../../config");
-const { TrimMsg, VerificId, Banning } = require("../../funções/funções");
-const { client, Discord, LocalDb, selfbotRegister } = require(`../../index`)
-const fs = require(`fs`)
-const { SlashCommandBuilder, SlashCommandStringOption } = require('@discordjs/builders');
+const { client } = require(`../../index`)
+const { SlashCommandBuilder } = require('@discordjs/builders');
 const { logger } = require("../../utils/logger");
+const { MessageEmbed } = require("discord.js");
 
 /* 
 This should be a module that contains a function that performs the banishment of a user
