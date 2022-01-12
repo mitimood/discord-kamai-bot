@@ -35,15 +35,12 @@ const ban_recover = fs.readdirSync(`./events_ban_recover`).filter(file => file.e
 
 
 /* 
-const admcmd = fs.readdirSync(`./commands/admcmd`).filter(file => file.endsWith(`.js`));
 const capcmd = fs.readdirSync(`./commands/capcmd`).filter(file => file.endsWith(`.js`));
 const commandpub = fs.readdirSync(`./commands/commandpub`).filter(file => file.endsWith(`.js`));
 const modcmd = fs.readdirSync(`./commands/modcmd`).filter(file => file.endsWith(`.js`));
 const staffcmd = fs.readdirSync(`./commands/staffcmd`).filter(file => file.endsWith(`.js`));
 
-admcmd.forEach(events => {
-    require(`${__dirname}/commands/admcmd/${events}`);
-})
+
 capcmd.forEach(events => {
     require(`${__dirname}/commands/capcmd/${events}`);
 })
@@ -58,16 +55,30 @@ staffcmd.forEach(events => {
 })
 */
 
+
 const games = fs.readdirSync(`./commands/commandpub/games`).filter(file => file.endsWith(`.js`));
 
 
 const commands = []
 client.commands = new Collection();
 
+module.exports = { commands ,client, LocalDb, embDb, Discord, selfbotRegister, gamesDB }
+
+const admcmd = fs.readdirSync(`./commands/admcmd`).filter(file => file.endsWith(`.js`));
+
+admcmd.forEach(events => {
+    const com = require(`${__dirname}/commands/admcmd/${events}`);
+
+    if(com.data) commands.push(com.data.toJSON());
+
+    client.commands.set(com.name, com)
+})
+
 games.forEach(events => {
     const com = require(`${__dirname}/commands/commandpub/games/${events}`)
     
     if(com.data) commands.push(com.data.toJSON());
+    
     client.commands.set(com.name, com)
 })
 
