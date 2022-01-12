@@ -19,7 +19,7 @@ usage => ban id id id id id id
 module.exports = {
     data: new SlashCommandBuilder()
     .setName('ban')
-    .setDescription('Ganhe a sua quantidade diaria de Kamaicoins ☀')
+    .setDescription('bane bobinhos')
     .addStringOption(option => option.setName('motivo-banimento').setDescription('Define o motivo de banimento').setRequired(true)
                                 .addChoices([
                                             ['flood/spam', '1'],
