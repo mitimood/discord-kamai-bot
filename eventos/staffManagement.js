@@ -8,20 +8,39 @@ const { logger } = require("../utils/logger");
 let atvtsUP = 0
 let channelAtvts = null
 
-let startOne = false
+let startOneMongo = false
 
 MongodbClient.on("connectionReady",async connection=>{
-    if(startOne) return
-    startOne = true
+    if(startOneMongo) return
+    startOneMongo = true
     try {
         atvtsUP = await getAllActiveReports()
-        await client.channels.cache.get(config.channels.modReports).setName(`Registros ativos [${atvtsUP}]`)
 
     } catch (error) {
         logger.error(error)
     }
 
 } )
+
+let timeChangeCounter = false
+
+
+let lastCount;
+
+setInterval(()=>{
+
+    if( lastCount != atvtsUP){ 
+    
+        try {
+            
+            await client.channels.cache.get(config.channels.modReports).setName(`Registros ativos [${atvtsUP}]`)
+            lastCount = atvtsUP
+        } catch (error) {
+            logger.error(error)
+        }
+        
+    }
+},10000)
 
 // Updates the entry counter
 
@@ -232,8 +251,6 @@ async function createReport(action, channel, reason, user_send, acc_action_users
 
         await addReport(reportId, toDo, authorId, messages)
 
-        await channel.setName(`Registros ativos [${atvtsUP}]`)
-
     } catch (error) {
         logger.error("Error Creating Report\n" + error)
     }
@@ -302,7 +319,6 @@ client.on("interactionCreate", async interac =>{
                 await updateStateReport(doc._id, false, interac.user.id, true)
 
                 --atvtsUP
-                await regLogChannel.setName(`Registros ativos [${atvtsUP}]`)
 
             }else{
                 await interac.reply({content:"Faltam permissões", ephemeral:true})
@@ -402,7 +418,6 @@ client.on("interactionCreate", async interac =>{
                     }
 
                     --atvtsUP
-                    await regLogChannel.setName(`Registros ativos [${atvtsUP}]`)
 
                     break;
 
@@ -453,7 +468,6 @@ client.on("interactionCreate", async interac =>{
 
                             --atvtsUP
 
-                            await regLogChannel.setName(`Registros ativos [${atvtsUP}]`)
 
                     } catch (error) {
                         logger.error(error)
@@ -476,8 +490,6 @@ client.on("interactionCreate", async interac =>{
                         --atvtsUP
     
                         await updateStateReport(doc._id, false, interac.user.id)
-
-                        await regLogChannel.setName(`Registros ativos [${atvtsUP}]`)
 
                     } catch (error) {
                         logger.error(error)
@@ -503,7 +515,6 @@ client.on("interactionCreate", async interac =>{
                     await updateStateReport(doc._id, false, interac.user.id)
 
                     --atvtsUP
-                    await regLogChannel.setName(`Registros ativos [${atvtsUP}]`)
 
                 } catch (error) {
                         logger.error(error)
@@ -577,7 +588,7 @@ ${acc_action.invalids ? `Usuários invalidos: **${acc_action.invalids.length}**`
 
                         reason = getReason(reason)
 
-                        await createReport("BAN", regLogChannel, reason, interac.user, acc_action.users, acc_action.length, config.color.red)
+                        await createReport("BAN", regLogChannel, reason, interac.user, acc_action.users, acc_action.users.length, config.color.red)
 
                     } catch (error) {
                         logger.error(error)
