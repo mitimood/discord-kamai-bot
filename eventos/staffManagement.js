@@ -27,7 +27,7 @@ let timeChangeCounter = false
 
 let lastCount;
 
-setInterval(()=>{
+setInterval(async()=>{
 
     if( lastCount != atvtsUP){ 
     
