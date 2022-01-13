@@ -97,14 +97,15 @@ module.exports = {
                 }
             }
             
+
             for(const user of accs.users){
                 try {
-                    if(doc.toDo.reason == "Scam") {
+                    if(reason == "Scam") {
     
-                        await msg.guild.members.ban(user, {reason: `[${interac.member.id}] ${doc.toDo.reason}`, days:2})
+                        await msg.guild.members.ban(user, {reason: `[${user.id}] ${reason}`, days:2})
                     
                     }else{
-                        await msg.guild.members.ban(user, {reason: `[${interac.member.id}] ${doc.toDo.reason}`})
+                        await msg.guild.members.ban(user, {reason: `[${user.id}] ${reason}`})
     
                     }
     
@@ -134,7 +135,7 @@ module.exports = {
     
                     }
                     
-                    if(i+1 == users.users.length){
+                    if(i+1 == accs.users.length){
                         await modLogChannel.send({embeds:embeds2})
     
                     }

@@ -68,10 +68,11 @@ const admcmd = fs.readdirSync(`./commands/admcmd`).filter(file => file.endsWith(
 
 admcmd.forEach(events => {
     const com = require(`${__dirname}/commands/admcmd/${events}`);
-
+    
     if(com.data) commands.push(com.data.toJSON());
 
     client.commands.set(com.name, com)
+    
 })
 
 games.forEach(events => {
@@ -120,6 +121,24 @@ client.on("ready", async () => {
             console.error(error);
         }
     })();
+
+    if (!client.application?.owner) await client.application?.fetch();
+
+    const commandsF = await client.guilds.cache.get(config.guild_id)?.commands.fetch();
+
+    for(const [key, value] of commandsF.entries()){
+
+        if(value.name == 'ban'){
+            const permissions = [
+                {
+                    id: config.roles.staff.admin,
+                    type: 'ROLE',
+                    permission: true,
+                },
+            ]
+            commandsF.get(key).permissions.set({permissions})
+        }     
+    }
     
     eventos_folder.forEach(events => {
         require(`${__dirname}/eventos/xp/${events}`);
