@@ -1,11 +1,13 @@
 const { MessageEmbed } = require("discord.js");
 const { client } = require("..");
 const config = require("../config");
+const { logger } = require("../utils/logger");
 
-client.on("messageUpdate", (oldMessage, newMessage)=>{
-    if (newMessage.author.bot) return
+client.on("messageUpdate", async (oldMessage, newMessage)=>{
     try{
-        console.log(`Atualizando mensagem ` + new Date())
+        if (newMessage.author.bot) return
+
+        logger.info(`Atualizando mensagem `)
 
         let newEmb = new MessageEmbed()
         let oldEmb = new MessageEmbed()
@@ -26,19 +28,22 @@ client.on("messageUpdate", (oldMessage, newMessage)=>{
         
         newEmb.setDescription("Mensagem nova em: " + "<#" + newMessage.channel.id + ">\n\n" + "```\n" + newMessage.content + "\n```" + newImageUrl).setColor("GREEN").setAuthor({name: newMessage.author.username, iconURL: newMessage.author.avatarURL(), url: newMessage.author.avatarURL()}).setTimestamp(newMessage.createdTimestamp).setTitle(newMessage.channel.name ).setFooter({text:newMessage.member.id})
 
-        newMessage.guild.channels.cache.get(config.channels.msglog).send({embeds:[oldEmb, newEmb]})
+        await newMessage.guild.channels.cache.get(config.channels.msglog).send({embeds:[oldEmb, newEmb]})
 
     }catch(err){
-        console.log(err)
+        logger.error(err)
     }
 })
 
-client.on("messageDelete", (delMessage)=>{
+client.on("messageDelete", async (delMessage)=>{
 
-    if (delMessage.author.bot) return
-    console.log(`Mensagem apagada ` + new Date())
+
 
     try{
+        if (delMessage.author.bot) return
+    
+        logger.info(`Mensagem apagada `)
+
         let delemb = new MessageEmbed()
         let imageUrl = '';
 
@@ -48,26 +53,34 @@ client.on("messageDelete", (delMessage)=>{
 
         delemb.setDescription("Mensagem deletada em <#" + delMessage.channel.id + ">\n" + "```" + delMessage.content  +"```" + imageUrl).setColor("DARK_RED").setAuthor({name: delMessage.author.username, iconURL: delMessage.author.avatarURL(), url: delMessage.author.avatarURL()}).setTimestamp(delMessage.createdTimestamp).setTitle(delMessage.channel.name).setFooter({text:delMessage.member.id})
         
-        delMessage.guild.channels.cache.get(config.channels.msglog).send({embeds:[delemb]})
+        await delMessage.guild.channels.cache.get(config.channels.msglog).send({embeds:[delemb]})
 
     }catch(err){
-        console.log(err)
+        logger.error(err)
     }
 })
 
 client.on('messageDeleteBulk', async mapMsg =>{
-    let bulkText = ""
-    console.log(`Mensagem apagada em massa ` + new Date())
 
-    for(let msg of mapMsg ){
-        bulkText += `[${Date(msg[1].createdTimestamp)}] ${msg[1].author.username} => ${msg[1].content}`
-        for ( let atach of msg[1].attachments ){
-            bulkText += atach[1].attachment
+    try {
+        let bulkText = ""
+
+        logger.info(`Mensagem apagada em massa `)
+    
+        for(let msg of mapMsg ){
+            bulkText += `[${Date(msg[1].createdTimestamp)}] ${msg[1].author.username} => ${msg[1].content}`
+            for ( let atach of msg[1].attachments ){
+                bulkText += atach[1].attachment
+            }
+            bulkText += "\n"
         }
-        bulkText += "\n"
+    
+        let bulkDeletedMessages = await new Buffer.from(bulkText, "utf-8")
+    
+        await client.channels.cache.get(config.channels.msglog).send({files: [{ attachment:bulkDeletedMessages, name: "mensagensApagadas.txt"}]})
+
+    } catch (error) {
+        logger.error(error)
     }
 
-    let bulkDeletedMessages = await new Buffer.from(bulkText, "utf-8")
-
-    client.channels.cache.get(config.channels.msglog).send({files: [{ attachment:bulkDeletedMessages, name: "mensagensApagadas.txt"}]})
 })
