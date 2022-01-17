@@ -65,7 +65,7 @@ module.exports = {
                             const recvdb = await embDb.getEmb(embs.first().content)
                             if (recvdb) {
                                 msg.channel.send({ embeds: [recvdb.embed] }).then(a => {
-                                    let createmb = require(`../../auxiliarFunctions/createEmbed`)
+                                    let createmb = require(`../../utils/createEmbed`)
                                     createmb.emb(msg, recvdb.embed);
                                 })
                                 
