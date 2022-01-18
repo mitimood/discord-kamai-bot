@@ -269,7 +269,7 @@ async function Check_all_mutes() {
             console.log(err)
           }
         }else{
-          setTimeout(()=>{
+          setTimeout(async ()=>{
             await SetUnmute(doc["_id"])
             await index.client.guilds.cache.get(config.guild_id).members.cache.get(doc["_id"]).roles.remove(config.roles.muted)
 
