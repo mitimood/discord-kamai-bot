@@ -34,7 +34,7 @@ module.exports={TrimMsg, Banning, ban_member_send_message, tempmute, VerificId, 
     async function tempmute(duration, unit, member){
         try {
             let muteTime = moment(0).add(duration, unit).valueOf()
-        
+
             await member.roles.add(config.roles.muted, "Warn mute")
             
             let now = moment.utc().valueOf()
@@ -124,6 +124,7 @@ async function punishments(target_id, points, guild, executor) {
 
         // less roles than it shoud
         }else if (membAdvRoles.length < pointsAdvRoles.length){
+
             const tempmuteDuration = (points) =>  {return{
                 0:0,
                 1:72000,
@@ -131,10 +132,26 @@ async function punishments(target_id, points, guild, executor) {
                 3:172800000,
                 }[points]
             }
+            
+            const muteTime = tempmuteDuration(points)
+            
+            let now = moment.utc().valueOf()
+    
+            SetTempMute(member.id, now, muteTime)
 
-            await tempmute(tempmuteDuration(points), "ms", member)
+            setTimeout(async ()=>{
+                try{
+                    SetUnmute(member.id)
+                    await member.roles.remove(config.roles.muted, "Tempo se esgotou")
+                }catch(err){
+                    console.log(err)
+                }
+    
+            },muteTime)
 
             let addRoles = pointsAdvRoles.filter(inArrayNot, membAdvRoles )
+
+            addRoles.push(config.roles.muted)
 
             await member.roles.add(addRoles)
 

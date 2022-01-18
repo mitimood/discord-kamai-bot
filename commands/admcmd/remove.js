@@ -1,6 +1,6 @@
 const config = require(`../../config`);
 const { TrimMsg, punishments } = require("../../utils/auxiliarFunctions");
-const { warn_remove } = require("../../mongodb");
+const { warn_remove, warn_list } = require("../../mongodb");
 const { logger } = require("../../utils/logger");
 
 /*
@@ -31,7 +31,7 @@ module.exports={
             await msg.channel.send({embeds:[{description: `Warn de (${doc})\nid: ${msgArgs[1]} apagada com sucesso`,color:config.color.sucess}]})
             
         } catch (error) {
-            logger.error(error)
+            logger.error(toString(error))
         }
 
 
