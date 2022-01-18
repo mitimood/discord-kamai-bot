@@ -2,6 +2,7 @@ const config = require(`../config`);
 const { client } = require("../index");
 const moment = require("moment");
 const { SetTempMute, SetUnmute } = require("../mongodb");
+const { logger } = require("./logger");
 
 
 module.exports={TrimMsg, Banning, ban_member_send_message, tempmute, VerificId, punishments}
@@ -79,28 +80,55 @@ module.exports={TrimMsg, Banning, ban_member_send_message, tempmute, VerificId, 
     
 // apply all the punishment based on the user points
 
-        async function punishments(target_id, points, guild, executor) {
-
+async function punishments(target_id, points, guild, executor) {
+    try {
         let member = guild.members.cache.get(target_id)
+        
         if(!member) return false
 
-        if(points>=4){ ban_member_send_message(target_id,"4 advertencias", guild, executor)}
-        if(points>=3){ 
-            member.roles.add(config.roles.adv3)
-            tempmute(2, "d", member)
+        if(points>=4) return ban_member_send_message(target_id,"4 advertencias", guild, executor)
+
+        const punishment = (points) =>  {return{
+            0:[],
+            1:[config.roles.adv1],
+            2:[config.roles.adv1, config.roles.adv2],
+            3:[config.roles.adv1, config.roles.adv2, config.roles.adv3],
+            }[points]
         }
-        if(!member.roles.cache.has(config.roles.adv2)){
-            if(points>=2){
-                member.roles.add(config.roles.adv2)
-                tempmute(12, "h", member)
-            }
-            if(!member.roles.cache.has(config.roles.adv1)){
-                    if(points>=1){ 
-                        member.roles.add(config.roles.adv1)
-                        tempmute(2, "h", member)
-                    }
-            }
+
+        const pointsAdvRoles = punishment(points)
+
+        function inArray(item){
+            return this.includes(item)
         }
+
+        function inArrayNot(item){
+            return !this.includes(item)
         }
+
+        const membAdvRoles = member.roles.cache.map(r=> r.id).filter(inArray, punishment(3))
+        
+        // more roles than it should
+        if(membAdvRoles.length > pointsAdvRoles.length) {
+        
+            let remvRoles = membAdvRoles.filter(inArrayNot, pointsAdvRoles)
+
+            await member.roles.remove(remvRoles)
+
+            // less roles than it shoud
+        }else if (membAdvRoles.length < pointsAdvRoles.length){
+
+            let addRoles = pointsAdvRoles.filter(inArrayNot, membAdvRoles )
+
+            await member.roles.add(addRoles)
+
+        }
+
+    } catch (error) {
+        logger.error(error)
+    }
+        
+        
+    }
     // returns an array of entries separated
  
