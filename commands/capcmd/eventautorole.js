@@ -8,7 +8,7 @@ module.exports={
     async execute (msg){
         try {
             let eventMsg = await msg.channel.send("Pegue o seu cargo de notificado😉")
-        await eventMsg.react("<a:checkyes:884930094458634260>")
+        await eventMsg.react("<:verde_SIM:618576110296367140>")
 
         let filter = (reaction, user) => reaction.emoji.id === '884930094458634260'
         const collector = eventMsg.createReactionCollector({ filter, time: 300000 });
