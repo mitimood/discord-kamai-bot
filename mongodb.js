@@ -7,8 +7,10 @@ const MongodbClient = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-module.exports = {resetXp ,verifyXp, MongodbClient, SetTempMute, voiceMuteSet, voiceMuteCheck, SetUnmute, CheckMute, transferdb, warn_list,notifyList, warn_remove, warn_add, Check_all_mutes, role_register_add, role_register_remove, check_roles,add_voice_xp, add_bonus_xp, add_chat_xp, get_xp, daily_get, daily_set, moneyGet, moneyAdd, moneyRemove, getAllActiveReports, getReport, updateStateReport, addReport }
-const moment = require("moment-timezone");
+module.exports = {resetXp ,verifyXp, MongodbClient, SetTempMute, voiceMuteSet, voiceMuteCheck, SetUnmute, CheckMute, transferdb, warn_list,notifyList, warn_remove, warn_add, Check_all_mutes, role_register_add, role_register_remove, check_roles,
+                  add_voice_xp, add_bonus_xp, add_chat_xp, get_xp, daily_get, daily_set, moneyGet, moneyAdd, moneyRemove, getAllActiveReports, getReport, updateStateReport, addReport, changePoints, getPoints }
+
+                  const moment = require("moment-timezone");
 const databaseSite = require("./mongoDbSite.js");
 const { logger } = require("./utils/logger");
 
@@ -740,6 +742,35 @@ async function getAllActiveReports(){
   
     const docs = await report.find( { state: true} ).count()
     return docs
+  }catch(err){
+    console.log(err)
+    return false
+  }
+}
+
+async function changePoints(id, pointsAdd){
+  try{
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const report = database.collection('member_management');
+  
+    const docs = await report.findOneAndUpdate( {_id:id}, {"$set":{ _id : id }, "$inc":{ "trophies.points": pointsAdd}}, {"upsert":true} )
+    return docs
+  }catch(err){
+    console.log(err)
+    return false
+  }
+}
+
+
+async function getPoints(id){
+  try{
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const report = database.collection('member_management');
+  
+    const doc = await report.findOne({_id:id})
+    if(doc?.trophies?.points) return doc.trophies.points
+    else return undefined
+
   }catch(err){
     console.log(err)
     return false

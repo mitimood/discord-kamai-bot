@@ -55,10 +55,6 @@ staffcmd.forEach(events => {
 })
 */
 
-
-const games = fs.readdirSync(`./commands/commandpub/games`).filter(file => file.endsWith(`.js`));
-
-
 const commands = []
 client.commands = new Collection();
 
@@ -75,8 +71,31 @@ admcmd.forEach(events => {
     
 })
 
+const capcmd = fs.readdirSync(`./commands/capcmd`).filter(file => file.endsWith(`.js`));
+
+capcmd.forEach(events => {
+    const com = require(`${__dirname}/commands/capcmd/${events}`);
+    
+    if(com.data) commands.push(com.data.toJSON());
+
+    client.commands.set(com.name, com)
+    
+})
+
+const games = fs.readdirSync(`./commands/commandpub/games`).filter(file => file.endsWith(`.js`));
+
 games.forEach(events => {
     const com = require(`${__dirname}/commands/commandpub/games/${events}`)
+    
+    if(com.data) commands.push(com.data.toJSON());
+    
+    client.commands.set(com.name, com)
+})
+
+const pub = fs.readdirSync(`./commands/commandpub`).filter(file => file.endsWith(`.js`));
+
+pub.forEach(events => {
+    const com = require(`${__dirname}/commands/commandpub/${events}`)
     
     if(com.data) commands.push(com.data.toJSON());
     
@@ -136,12 +155,32 @@ client.on("ready", async () => {
                 },
             ]
             commandsF.get(key).permissions.set({permissions})
-        }     
+        }
+
+        if(value.name == ('adicionar-ponto' ) || value.name ==  "remover-ponto" ){
+
+            const caps = config.roles.teams.caps
+            const permissions = []
+
+            for (const key in caps) {
+                if (Object.hasOwnProperty.call(caps, key)) {
+                    const element = caps[key];
+                    permissions.push({
+                        id: element,
+                        type: 'ROLE',
+                        permission: true,
+                    })
+                }
+            }
+
+            commandsF.get(key).permissions.set({permissions})
+        }
     }
     
     eventos_folder.forEach(events => {
         require(`${__dirname}/eventos/xp/${events}`);
     })
+
     client.user.setPresence({ status: `idle` })
     for( let id_guild of client.guilds.cache.keys()){
         await client.guilds.cache.get(id_guild).members.fetch()

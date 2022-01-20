@@ -10,7 +10,7 @@ client.on("interactionCreate", async interac=>{
         const {commandName} = interac
 
         const command = client.commands.get(commandName)
-    
+
         if(!command) return
     
         command.execute(interac)

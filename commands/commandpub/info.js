@@ -1,7 +1,8 @@
 const { Discord } = require('../..');
 const config = require('../../config');
 const { TrimMsg } = require('../../utils/auxiliarFunctions');
-const { get_xp, moneyGet } = require('../../mongodb')
+const { get_xp, moneyGet, getPoints } = require('../../mongodb');
+const { logger } = require('../../utils/logger');
 
 /*
     Say some informations about a specific member
@@ -42,6 +43,8 @@ module.exports={
                 console.log(error)
             }
             }
+
+
             embed.setColor(config.color.blurple)
             var flags = null
             if(!member) member = msg.member
@@ -70,13 +73,20 @@ module.exports={
             let badges = badge(joined_duration_month)
             
             if(badges){
-                embed.addField('⭐Badges', badges, true)
+                embed.addField('⭐Badges', badges, false)
             }
             
             const coins = await moneyGet(userid)
             
             if(coins){
-                embed.addField('<:Coin_kamai:881917666829414430> Kamaicoins', `₵**${coins}**`, false)
+                embed.addField('<:Coin_kamai:881917666829414430> Kamaicoins', `₵**${coins}**`, true)
+            }
+            try {
+                const points = await getPoints(userid)
+                embed.addField('🏆 Pontos troféu 🏆', `**${points}**`, true)
+                
+            } catch (error) {
+                logger.error(error)
             }
 
             let xp = await xp_info(userid)
