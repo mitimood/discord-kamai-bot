@@ -1,7 +1,7 @@
 const config = require(`../../config`);
 const { TrimMsg, punishments } = require("../../utils/auxiliarFunctions");
 const { warn_remove, warn_list } = require("../../mongodb");
-const { logger } = require("../../utils/logger");
+const logger = require("../../utils/logger");
 
 /*
     Removes a warn from the user

@@ -1,4 +1,5 @@
 const job = require("../../eventos/backup")
+const logger = require("../../utils/logger")
 
 module.exports = {
     name: "backup",
@@ -7,8 +8,14 @@ module.exports = {
 
     async execute(msg) {
 
-        job.invoke()
-        msg.reply({content:"Processo de backup iniciado"})
+        try {
+            job.invoke()
+
+            await msg.reply()
+
+        } catch (error) {
+            logger.error(error)
+        }
         
     }
 }

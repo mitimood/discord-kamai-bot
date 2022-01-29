@@ -1,7 +1,7 @@
 const config = require("../../config");
 const { client } = require(`../../index`)
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { logger } = require("../../utils/logger");
+const logger = require("../../utils/logger");
 const { MessageEmbed } = require("discord.js");
 
 /* 
@@ -51,32 +51,34 @@ module.exports = {
 
     async execute(msg) {
 
-        if(msg.type != "APPLICATION_COMMAND") return
-        
-        const getReason = reason => {
-            return {
-                    "1": "Flood/spam",
-                    "2": "Divulgação inadequada",
-                    "3": "Off topic/mensagem fora de tópico",
-                    "4": "Menção desnecessária de membros e cargos",
-                    "5": "Provocação e brigas",
-                    "6": "Poluição sonora",
-                    "7": "Atrapalhar o andamento do Karaokê",
-                    "8": "Denúncias falsas",
-                    "9": "Linguagem discriminatória",
-                    "10": "Exposição de membros/ Assédio",
-                    "11": "Preconceito, discriminação, difamação e/ou desrespeito",
-                    "12": "Planejar ou exercer raids no servidor",
-                    "13": "NSFW/ (+18)",
-                    "14": "Estimular ou praticar atividades ilegais ou que cause banimento de membros",
-                    "15": "Evasão de punição",
-                    "16": "Conteúdos graficamente chocantes",
-                    "17": "Quebra do ToS do Discord",
-                    "18": "Selfbot",
-                    "19": "Scam"
-                    }[reason]
-        }
         try {
+
+            if(msg.type != "APPLICATION_COMMAND") return
+        
+            const getReason = reason => {
+                return {
+                        "1": "Flood/spam",
+                        "2": "Divulgação inadequada",
+                        "3": "Off topic/mensagem fora de tópico",
+                        "4": "Menção desnecessária de membros e cargos",
+                        "5": "Provocação e brigas",
+                        "6": "Poluição sonora",
+                        "7": "Atrapalhar o andamento do Karaokê",
+                        "8": "Denúncias falsas",
+                        "9": "Linguagem discriminatória",
+                        "10": "Exposição de membros/ Assédio",
+                        "11": "Preconceito, discriminação, difamação e/ou desrespeito",
+                        "12": "Planejar ou exercer raids no servidor",
+                        "13": "NSFW/ (+18)",
+                        "14": "Estimular ou praticar atividades ilegais ou que cause banimento de membros",
+                        "15": "Evasão de punição",
+                        "16": "Conteúdos graficamente chocantes",
+                        "17": "Quebra do ToS do Discord",
+                        "18": "Selfbot",
+                        "19": "Scam"
+                        }[reason]
+            }
+
             const options = msg.options._hoistedOptions
 
             let modLogChannel = await client.channels.fetch(config.channels.modlog)

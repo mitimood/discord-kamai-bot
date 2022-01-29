@@ -2,7 +2,7 @@ const { client } = require("../../");
 const config = require("../../config");
 const { TrimMsg } = require("../../utils/auxiliarFunctions");
 const mongoDB = require("../../mongodb");
-const { logger } = require("../../utils/logger");
+const logger = require("../../utils/logger");
 
 /*
 show a list of user warnings
@@ -18,24 +18,19 @@ module.exports={
     async execute (msg){
         try {
             let msgArgs = TrimMsg(msg)
-            if(!msgArgs[1] || !msgArgs[1].match(/[0-9]+/) && !msg.mentions.members.first())return await msg.channel.send("Mencione um usuário")
+
+            if(!msgArgs[1] || !msgArgs[1].match(/[0-9]+/) && !msg.mentions.members.first()) return await msg.channel.send("Mencione um usuário")
+
             let userid = (msg.mentions.members.first()) ? msg.mentions.members.first().user.id : msgArgs[1].match(/[0-9]+/)[0];
 
             let warns_list = await mongoDB.warn_list(userid)
-            if(warns_list){
-                let user = await client.users.fetch(userid, true)
+        
+            if(!warns_list) return await msg.channel.send("Não existe registro de advertencias para esse membro")
+
+            let user = await client.users.fetch(userid, true)
                 
-                await msg.channel.send({embeds:[{
-                    author:{name:user.tag, url: user.displayAvatarURL() },
-                    description: warns_list["warns"],
-                    footer:{
-                        text:userid,
-                    },
-                    color: config.color.sucess
-                }]})
-            }else{
-                return await msg.channel.send("Não existe registro de advertencias para esse membro")
-            }
+            await msg.channel.send({embeds:[{author:{name:user.tag, url: user.displayAvatarURL() },description: warns_list["warns"],footer:{text:userid},color: config.color.sucess}]})
+            
         } catch (error) {
             logger.error(error)
         }

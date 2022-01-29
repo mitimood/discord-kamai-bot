@@ -1,4 +1,5 @@
 const config = require("../../config");
+const logger = require("../../utils/logger");
 
 /*
   Unban a user from the server
@@ -11,19 +12,30 @@ module.exports={
     aliases: [],
     description: "desbane um usuario",
   
-    execute(message) {
+    async execute(message) {
       
-      var msgArgs = message.content.split(" ");
-      if(!msgArgs || !msgArgs[1]) return message.channel.send("Especifique o id do membro a ser desbanido")
-      var userid = (message.mentions.members.first()) ? message.mentions.members.first().user.id : msgArgs[1].match(/[0-9]+/)[0];
+      try {
+        const msgArgs = message.content.split(" ")
 
-        message.guild.bans.fetch().then(bans=> {
-        if(bans.size == 0) return 
-        let bUser = bans.find(b => b.user.id == userid)
-        if(!bUser) return
-        message.guild.members.unban(bUser.user)})
-        message.channel.send({ embeds: [{
+        if(!msgArgs || !msgArgs[1]) return await message.channel.send("Especifique o id do membro a ser desbanido")
+        
+        const userid = (message.mentions.members.first()) ? message.mentions.members.first().user.id : msgArgs[1].match(/[0-9]+/)[0];
+  
+        const ban = await message.guild.bans.fetch(userid)
+
+        if(!ban) return await message.channel.send("O membro não esta banido")
+
+        const bUser = ban.user
+
+        await message.guild.members.unban(bUser)
+
+        await message.channel.send({ embeds: [{
           color: config.color.sucess,
-          description: `Membro **desbanido** com sucesso.:  id:${userid} `}]})
+          description: `Membro **desbanido** com sucesso${bUser.toString()} .:  id:${bUser.id} `}]})
+
+      } catch (error) {
+        logger.error(error)
+      }
+
     }
 }
