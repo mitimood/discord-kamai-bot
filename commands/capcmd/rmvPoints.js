@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { MessageEmbed } = require("discord.js");
 const { changePoints } = require("../../mongodb");
-const { logger } = require("../../utils/logger");
+const logger = require("../../utils/logger");
 
 
 module.exports={

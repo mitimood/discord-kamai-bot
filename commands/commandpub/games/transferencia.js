@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { moneyGet, moneyRemove, moneyAdd } = require('../../../mongodb');
 const { TrimMsg } = require('../../../utils/auxiliarFunctions');
+const logger = require('../../../utils/logger');
 
 
 module.exports={
@@ -133,7 +134,7 @@ module.exports={
           return({users, members, invalids})
         }
         } catch (error) {
-          
+          logger.error(error)
         }
       
     }

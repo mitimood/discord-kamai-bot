@@ -1,5 +1,6 @@
 const { client } = require("..");
 const config = require("../config");
+const logger = require("../utils/logger");
 
 /*
  Listen when a channel is created and update its permissions
@@ -13,7 +14,7 @@ client.on("channelCreate", async channel=>{
             await channel.updateOverwrite(config.roles.muted, {SEND_MESSAGES:false})
 
         } catch (error) {
-            console.log(error)
+            logger.error(error)
         }
     }
     if(channel.type == "voice"){
@@ -23,7 +24,7 @@ client.on("channelCreate", async channel=>{
             await channel.updateOverwrite(config.roles.muted, {CONNECT:false})
 
         } catch (error) {
-            console.log(error)
+            logger.error(error)
 
         }
     }   

@@ -1,4 +1,5 @@
 const { client } = require("..");
+const logger = require("../utils/logger");
 
 client.on("interactionCreate", async interac=>{
 
@@ -16,7 +17,7 @@ client.on("interactionCreate", async interac=>{
         command.execute(interac)
 
     } catch (error) {
-        console.log(error)
+        logger.error(error)
     }
    
 

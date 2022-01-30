@@ -3,6 +3,7 @@ const { TrimMsg } = require("../../utils/auxiliarFunctions");
 const {fetch} = require("cross-fetch");
 const config = require("../../config");
 const { MessageEmbed } = require("discord.js");
+const logger = require("../../utils/logger");
 
 
 module.exports={
@@ -35,7 +36,7 @@ module.exports={
                     await msg.channel.send({content:msg.author.toString(), embeds:[emb]})
                 
                 } catch (error) {
-                    console.log(error)
+                    logger.error(error)
                 }
 
 
@@ -65,10 +66,12 @@ module.exports={
                         await msg.channel.send({content:msg.author.toString(), embeds:[emb]})
 
                     } catch (error) {
-                        console.log(error)
+                        logger.error(error)
+
                     }
                 } catch (error) {
-                    console.log(error)
+                    logger.error(error)
+
 
                 }
 
@@ -77,11 +80,13 @@ module.exports={
                     await msg.reply({content:"Escolha entre lb xp / lb money"})
 
                 } catch (error) {
-                    console.log(error)
+                    logger.error(error)
+
                 }
             }
         } catch (error) {
-            console.log(error)
+            logger.error(error)
+
         }
         
     }

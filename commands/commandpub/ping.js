@@ -1,5 +1,6 @@
 const config = require("../../config");
-const moment = require(`moment-timezone`)
+const moment = require(`moment-timezone`);
+const logger = require("../../utils/logger");
 /*
  returns the latency of the bot
 */
@@ -22,7 +23,7 @@ module.exports={
                 description: `**Pong!** Corri até valhalla e voltei em ${pingingMsg.createdTimestamp - msg.createdTimestamp}ms`
             }]});
         } catch (error) {
-            console.log(error)
+            logger.error(error)
         }
     }
 }

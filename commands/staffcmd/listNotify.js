@@ -2,7 +2,7 @@ const { client } = require("../..");
 const config = require("../../config");
 const { TrimMsg } = require("../../utils/auxiliarFunctions");
 const mongoDB = require("../../mongodb");
-const { logger } = require("../../utils/logger");
+const logger = require("../../utils/logger");
 
 /*
 show a list of user warnings

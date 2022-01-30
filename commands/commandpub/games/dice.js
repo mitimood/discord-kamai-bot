@@ -2,6 +2,7 @@ const { Collection, MessageEmbed } = require("discord.js");
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { moneyAdd } = require("../../../mongodb");
 const { gamesDB } = require("../../..");
+const logger = require("../../../utils/logger");
 
 const cooldown = new Collection()
 
@@ -82,19 +83,24 @@ module.exports={
             }
 
             async function roll(position, diceLeft){
-                let dice = dices[position]
-                dice.time = Date.now()
-
-                dices[position] = dice
-
-                await gamesDB.diceUpdate(authorId,dices)
-                const message = await prize(dice.type, diceLeft)
-                return message
+                try {
+                    let dice = dices[position]
+                    dice.time = Date.now()
+    
+                    dices[position] = dice
+    
+                    await gamesDB.diceUpdate(authorId,dices)
+                    const message = await prize(dice.type, diceLeft)
+                    return message
+                } catch (error) {
+                    logger.error(error)
+                }
 
             }
 
             async function prize(type, diceLeft){
-                let tier1 = 0
+                try {
+                    let tier1 = 0
                 let tier2 = 0
                 let tier3 = 0
                 let tier4 = 0
@@ -157,14 +163,17 @@ module.exports={
                         break;    
                 }
                 return message
-                
+                } catch (error) {
+                    logger.error(error)   
+                }
             }
 
             async function cooldownMessage(time){
-                const nextDaily = new Date( time + 7200000 )
-                const today = new Date()
-                const timeLast = new Date(nextDaily - today)
                 try {
+                    const nextDaily = new Date( time + 7200000 )
+                    const today = new Date()
+                    const timeLast = new Date(nextDaily - today)
+
                     if(msg.type === "APPLICATION_COMMAND"){
                         return await msg.editReply( { content: `Você precisa esperar ${timeLast.getUTCHours() ? `${timeLast.getUTCHours()}h` : ""} ${timeLast.getUTCMinutes() ? `${timeLast.getUTCMinutes()}m` : "" } ${timeLast.getUTCSeconds() ? `${timeLast.getUTCSeconds()}s` : ""} para rolar os dados novamente` } )
     
@@ -174,12 +183,11 @@ module.exports={
                     }
 
                 } catch (error) {
-                    console.log(error)
-
+                    logger.error(error)
                 }
             }
         } catch (error) {
-            console.log(error)
+            logger.error(error)
         }
        
     }

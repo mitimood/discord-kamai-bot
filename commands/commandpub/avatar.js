@@ -1,5 +1,6 @@
 const { Discord } = require("../..");
 const { TrimMsg } = require("../../utils/auxiliarFunctions");
+const logger = require("../../utils/logger");
 
 module.exports={
     name: "avatar",
@@ -18,7 +19,7 @@ module.exports={
             embed.setColor(member.displayHexColor)
             await msg.channel.send({content: msg.author.toString() , embeds: [embed]})
         } catch (error) {
-            console.log(error)
+            logger.error(error)
         }
         
     }

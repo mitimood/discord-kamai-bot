@@ -3,7 +3,7 @@ const { TrimMsg, punishments } = require("../utils/auxiliarFunctions")
 const {client, selfbotRegister} = require("../index")
 const {addReport, getReport, updateStateReport, warn_add, warn_list, getAllActiveReports, MongodbClient} = require("../mongodb")
 const { MessageActionRow, MessageSelectMenu, MessageEmbed, MessageButton, ButtonInteraction } = require('discord.js');
-const { logger } = require("../utils/logger");
+const logger = require("../utils/logger");
 
 let atvtsUP = 0
 let channelAtvts = null

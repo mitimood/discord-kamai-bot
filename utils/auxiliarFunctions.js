@@ -2,20 +2,29 @@ const config = require(`../config`);
 const { client } = require("../index");
 const moment = require("moment");
 const { SetTempMute, SetUnmute } = require("../mongodb");
-const { logger } = require("./logger");
+const logger = require("./logger");
 
 
 module.exports={TrimMsg, Banning, ban_member_send_message, tempmute, VerificId, punishments}
     
 // receives a message and than returns an array with every of the message
     function TrimMsg(msg){
-        
-        return msg.content.split(/\n| /gm).filter((str) => str.trim())
+        try {
+            return msg.content.split(/\n| /gm).filter((str) => str.trim())
+
+        } catch (error) {
+            logger.error(error)
+        }
     }
 
 // ban a member
     async function Banning(id,reason,guild, prune_days = 0){
-        await guild.members.ban(id,{reason:reason, days: prune_days}).catch(e=>console.log(e))
+        try {
+            await guild.members.ban(id,{reason:reason, days: prune_days}).catch(e=>console.log(e))
+
+        } catch (error) {
+            logger.error(error)
+        }
 
     }
 
@@ -24,8 +33,10 @@ module.exports={TrimMsg, Banning, ban_member_send_message, tempmute, VerificId, 
         try{
             let invite = await client.channels.cache.get(config.ban_recover.log_chnnl).createInvite({unique:true,reason:"ban invite",maxUses:1, maxAge:604800})
             await guild.members.cache.get(id).send(`Aplicado por(${executor.tag}-----${executor.id})\n\nVocê foi banido de KAMAITACHI, por: `+reason+ `\nCaso queira recorrer ao seu ban, entre no servidor ${invite.url}`)
-            guild.members.ban(id,{reason:reason}).catch(e=>console.log(e))
+            await guild.members.ban(id,{reason:reason}).catch(e=>console.log(e))
         }catch{
+            logger.error(error)
+
         }
    }
 
@@ -46,13 +57,13 @@ module.exports={TrimMsg, Banning, ban_member_send_message, tempmute, VerificId, 
                     SetUnmute(member.id)
                     await member.roles.remove(config.roles.muted, "Tempo se esgotou")
                 }catch(err){
-                    console.log(err)
+                    logger.error(error)
                 }
     
             },muteTime)
 
         } catch (error) {
-            console.log(error)
+            logger.error(error)
         }
     }
 

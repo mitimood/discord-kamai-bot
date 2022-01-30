@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 const { client } = require("..");
 const config = require("../config");
-const { logger } = require("../utils/logger");
+const logger = require("../utils/logger");
 
 client.on("messageUpdate", async (oldMessage, newMessage)=>{
     try{

@@ -12,7 +12,7 @@ module.exports = {resetXp ,verifyXp, MongodbClient, SetTempMute, voiceMuteSet, v
 
                   const moment = require("moment-timezone");
 const databaseSite = require("./mongoDbSite.js");
-const { logger } = require("./utils/logger");
+const logger = require("./utils/logger");
 
 async function transferdb() { 
   try {

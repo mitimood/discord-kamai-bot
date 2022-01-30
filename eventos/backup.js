@@ -4,6 +4,7 @@ const uri = `mongodb+srv://kamaibot:${process.env.mongo_password}@cluster0.ysdvr
 
 const { MongoClient } = require("mongodb");
 const fs = require('fs');
+const logger = require('../utils/logger');
 
 const MongodbClient = new MongoClient(uri, {
   useNewUrlParser: true,
@@ -134,14 +135,13 @@ const job = schedule.scheduleJob('0 3 * * *', async function(){
             });
 
           })
-        .catch(function (err) { console.log(err) })
+        .catch(function (err) { logger.error(err) })
 
 
       
 
     }catch(err){
-        console.log("Ouve um erro no backup")
-        console.log(err)
+      logger.error(err)
     }
 })
 

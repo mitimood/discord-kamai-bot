@@ -2,7 +2,7 @@ const { Discord } = require('../..');
 const config = require('../../config');
 const { TrimMsg } = require('../../utils/auxiliarFunctions');
 const { get_xp, moneyGet, getPoints } = require('../../mongodb');
-const { logger } = require('../../utils/logger');
+const logger = require('../../utils/logger');
 
 /*
     Say some informations about a specific member
@@ -37,24 +37,24 @@ module.exports={
                 var member = await msg.guild.members.fetch({user:userid, force: false})
             }catch{
                 try {
-                return await msg.channel.send(msg.author.toString() + " Usuario desconhecido")
+                    return await msg.channel.send(msg.author.toString() + " Usuario desconhecido")
     
-            } catch (error) {
-                console.log(error)
+                } catch (error) {
+                    logger.error(error)
+                }
             }
-            }
-
 
             embed.setColor(config.color.blurple)
+            
             var flags = null
+            
             if(!member) member = msg.member
+            
             if(member.user.flags){
                 flags = separate_flags(member.user.flags.toArray())
             }
-            embed.setTitle((flags ? flags.join("") : "") + member.user.username )
             
-    
-    
+            embed.setTitle((flags ? flags.join("") : "") + member.user.username )
             embed.setThumbnail(member.user.displayAvatarURL({ size:1024, format: "png"  }))
             embed.setFooter({text:`id: ${member.id}`})
     
@@ -70,6 +70,7 @@ module.exports={
             // embed.addField('🚪Criada em:', created_since + `(${created_duration})`, true)
     
             let joined_duration_month = parseInt(date.getTime() / 2592000000)
+            
             let badges = badge(joined_duration_month)
             
             if(badges){
@@ -81,10 +82,10 @@ module.exports={
             if(coins){
                 embed.addField('<:Coin_kamai:881917666829414430> Kamaicoins', `₵**${coins}**`, true)
             }
+            
             try {
                 const points = await getPoints(userid)
-
-                if(points) embed.addField('🏆 Pontos troféu 🏆', `**${points}**`, true)
+                embed.addField('🏆 Pontos troféu 🏆', `**${points}**`, true)
                 
             } catch (error) {
                 logger.error(error)
@@ -99,27 +100,31 @@ module.exports={
                 await msg.channel.send({content: msg.author.toString(),embeds:[embed]})
     
             } catch (error) {
-                console.log(error)
+                logger.error(error)
             }
         } catch (error) {
-            console.log(error)
+            logger.error(error)
         }
 
     }
 }
 
 function badge(duration){
-    let badges = []
+    try {
+        let badges = []
 
-    if(duration>2)badges.push(`<:cabelo_arcoiris:868301567646896198>`)
-    if(duration>4)badges.push(`<:kamaitachi_chifrinho:868302636422684734>`)
-    if(duration>6)badges.push(`<:Juliet:868301567860801586>`)
-    if(duration>8)badges.push(`<:Pendurado:868301567827271680>`)
-    if(duration>10)badges.push(`<:Homemtorto:868301568833904650>`)
-    if(duration>12)badges.push(`<:jhonny:868301567890161685>`)
-
-    badges=badges.join("")
-    return badges;
+        if(duration>2)badges.push(`<:cabelo_arcoiris:868301567646896198>`)
+        if(duration>4)badges.push(`<:kamaitachi_chifrinho:868302636422684734>`)
+        if(duration>6)badges.push(`<:Juliet:868301567860801586>`)
+        if(duration>8)badges.push(`<:Pendurado:868301567827271680>`)
+        if(duration>10)badges.push(`<:Homemtorto:868301568833904650>`)
+        if(duration>12)badges.push(`<:jhonny:868301567890161685>`)
+    
+        badges=badges.join("")
+        return badges;
+    } catch (error) {
+        logger.error(error)
+    }
 }
 
 
@@ -140,7 +145,9 @@ function format_user(member){
 
 function separate_flags(flagsArray){
     let flag_emojis = []
+    
     flagsArray.forEach(flag =>{
+    
         switch (flag){
 
             case 'DISCORD_EMPLOYEE':
@@ -182,95 +189,105 @@ function separate_flags(flagsArray){
             case 'EARLY_VERIFIED_BOT_DEVELOPER':
                 flag_emojis.push('<:Verified_developer_badge:868239676887146497>')
                 break;
-    
-    
         }
-
     })
     return flag_emojis
 }
 
 
 function format_date_created(date){
-    
-    let date_formated = []
+    try {
+        let date_formated = []
 
         
-    if(date.getMinutes()) date_formated.push(date.getMinutes()+`m `)
-    if(date.getHours()) date_formated.push(date.getHours()+ `h `)
-    if(date.getDay()) date_formated.push(date.getDay()+ `${(!(date.getDay() == 1)) ? " dias " : " dia "}`)
-    if(date.getMonth()) date_formated.push(date.getMonth()+ `${(!(date.getMonth() == 1)) ? " meses " : " mês "}`)
-    if(date.getFullYear() - 1970) date_formated.push(date.getFullYear()- 1970+`${(!(date.getFullYear()- 1970 == 1)) ? " anos " : " ano "}`)  
-
-    return date_formated.reverse().join('');
+        if(date.getMinutes()) date_formated.push(date.getMinutes()+`m `)
+        if(date.getHours()) date_formated.push(date.getHours()+ `h `)
+        if(date.getDay()) date_formated.push(date.getDay()+ `${(!(date.getDay() == 1)) ? " dias " : " dia "}`)
+        if(date.getMonth()) date_formated.push(date.getMonth()+ `${(!(date.getMonth() == 1)) ? " meses " : " mês "}`)
+        if(date.getFullYear() - 1970) date_formated.push(date.getFullYear()- 1970+`${(!(date.getFullYear()- 1970 == 1)) ? " anos " : " ano "}`)  
+    
+        return date_formated.reverse().join('');
+    } catch (error) {
+        logger.error(error)
+    }
 }
 
 function format_date(date){
+    try {
+        let date_formated = []
+
+
+        if(date.getMinutes()) date_formated.push(date.getMinutes()+`m `)
+        if(date.getHours()) date_formated.push(date.getHours() + `h `)
+        if(date.getFullYear()) date_formated.push(date.getFullYear()+", as ")
+        if(date.getMonth()+1) date_formated.push(date.getMonth()+1+ "/")
+        if(date.getDay()) date_formated.push(date.getDay()+ "/")
     
-    let date_formated = []
-
-
-    if(date.getMinutes()) date_formated.push(date.getMinutes()+`m `)
-    if(date.getHours()) date_formated.push(date.getHours() + `h `)
-    if(date.getFullYear()) date_formated.push(date.getFullYear()+", as ")
-    if(date.getMonth()+1) date_formated.push(date.getMonth()+1+ "/")
-    if(date.getDay()) date_formated.push(date.getDay()+ "/")
-
-
-    return date_formated.reverse().join('');
+    
+        return date_formated.reverse().join('');
+    } catch (error) {
+        logger.error(error)
+    }
 }
 
 async function xp_info(id) {
+    try {
+        let xp = await get_xp(id)
 
-    let xp = await get_xp(id)
+        if (xp.chat){
+            let xpChatBar = ""
+            
+            for ( let i =0 ; xp.chat.percentage*10>=i ; i++){
+                xpChatBar += "<:redBar:891790337578782731>"
+            }
+            //Adds 28 to index => redbarEmoji == 28 characteres
+            for (let i = xpChatBar.length; 308>i; i= i+28){
+                xpChatBar += "<:blackbar:891790337809449021>"
+            }
+            xp.chat.xpChatBar = xpChatBar
+        }
 
-    if (xp.chat){
-        let xpChatBar = ""
+        if (xp.global){
+            let xpGlobalBar = ""
+            
+            for ( let i =0 ; xp.global.percentage*10>=i ; i++){
+                xpGlobalBar += "<:redBar:891790337578782731>"
+            }
+            //Adds 28 to index => redbarEmoji == 28 characteres
+            for (let i = xpGlobalBar.length; 308>i; i= i+28){
+                xpGlobalBar += "<:blackbar:891790337809449021>"
+            }
+            xp.global.xpGlobalBar = xpGlobalBar
+        }
+
+        if (xp.voice){
+            let xpVoiceBar = ""
+            for ( let i = 0 ; xp.voice.percentage*10>=i ; i++){
+                xpVoiceBar += "<:redBar:891790337578782731>"
+            }
+            for (let i = xpVoiceBar.length; 308>i; i = i+28){
+                xpVoiceBar += "<:blackbar:891790337809449021>‎"
+            }
+            xp.voice.time = (parseInt(( ( ( xp.voice.total / config.xp.voice ) * 300000 ) / 3600000)*10))/10
+            xp.voice.xpVoiceBar = xpVoiceBar
+        }
+        if (xp.bonus){
+            let xpBonusBar = ""
+            for ( let i = 0 ; xp.bonus.percentage*10>=i ; i++){
+                xpBonusBar += "<:redBar:891790337578782731>"
+            }
+            for (let i = xpBonusBar.length; 308>i; i = i+28){
+                xpBonusBar += "<:blackbar:891790337809449021>‎"
+            }
+            xp.bonus.time = (parseInt(( ( ( xp.bonus.total / config.xp.voice ) * 300000 ) / 3600000)*10))/10
+            xp.bonus.xpBonusBar = xpBonusBar
+        }
         
-        for ( let i =0 ; xp.chat.percentage*10>=i ; i++){
-            xpChatBar += "<:redBar:891790337578782731>"
-        }
-        //Adds 28 to index => redbarEmoji == 28 characteres
-        for (let i = xpChatBar.length; 308>i; i= i+28){
-            xpChatBar += "<:blackbar:891790337809449021>"
-        }
-        xp.chat.xpChatBar = xpChatBar
+        return xp
+
+    } catch (error) {
+        logger.error(error)
     }
 
-    if (xp.global){
-        let xpGlobalBar = ""
-        
-        for ( let i =0 ; xp.global.percentage*10>=i ; i++){
-            xpGlobalBar += "<:redBar:891790337578782731>"
-        }
-        //Adds 28 to index => redbarEmoji == 28 characteres
-        for (let i = xpGlobalBar.length; 308>i; i= i+28){
-            xpGlobalBar += "<:blackbar:891790337809449021>"
-        }
-        xp.global.xpGlobalBar = xpGlobalBar
-    }
-
-    if (xp.voice){
-        let xpVoiceBar = ""
-        for ( let i = 0 ; xp.voice.percentage*10>=i ; i++){
-            xpVoiceBar += "<:redBar:891790337578782731>"
-        }
-        for (let i = xpVoiceBar.length; 308>i; i = i+28){
-            xpVoiceBar += "<:blackbar:891790337809449021>‎"
-        }
-        xp.voice.time = (parseInt(( ( ( xp.voice.total / config.xp.voice ) * 300000 ) / 3600000)*10))/10
-        xp.voice.xpVoiceBar = xpVoiceBar
-    }
-    if (xp.bonus){
-        let xpBonusBar = ""
-        for ( let i = 0 ; xp.bonus.percentage*10>=i ; i++){
-            xpBonusBar += "<:redBar:891790337578782731>"
-        }
-        for (let i = xpBonusBar.length; 308>i; i = i+28){
-            xpBonusBar += "<:blackbar:891790337809449021>‎"
-        }
-        xp.bonus.time = (parseInt(( ( ( xp.bonus.total / config.xp.voice ) * 300000 ) / 3600000)*10))/10
-        xp.bonus.xpBonusBar = xpBonusBar
-    }
-    return xp
+    
 }
