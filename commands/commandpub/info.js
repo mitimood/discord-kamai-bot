@@ -85,8 +85,9 @@ module.exports={
             
             try {
                 const points = await getPoints(userid)
-                embed.addField('🏆 Pontos troféu 🏆', `**${points}**`, true)
                 
+                if(points) embed.addField('🏆 Pontos troféu 🏆', `**${points}**`, true)
+
             } catch (error) {
                 logger.error(error)
             }
