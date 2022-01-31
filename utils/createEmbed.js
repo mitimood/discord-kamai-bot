@@ -6,7 +6,7 @@ module.exports = { emb };
 async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descrição ainda não definida`)) {
     returnemb(embed)
 
-    function returnemb(embed) {
+    async function returnemb(embed) {
         try {
             embed = new Discord.MessageEmbed(embed)
             //Menu embed creation
@@ -70,7 +70,7 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
 
                         var msgLast = await msg.channel.send("Envie a url do author, cancelar, ou pular")
 
-                        let filter = m => msg.author.id == m.author.id
+                        var filter = m => msg.author.id == m.author.id
                         
                         var msgUrl = await msg.channel.awaitMessages({ filter, max: 1, time: 120000, errors: [`Time`] })
                         
@@ -277,7 +277,7 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
                   
                 case 6:
                     var msgLast = await msg.channel.send('Digite a descrição do embed')
-                    let filter = m => m.author.id === msg.author.id;
+                    var filter = m => m.author.id === msg.author.id;
                     var msgDesc = await msg.channel.awaitMessages({ filter, max: 1, time: 120000, errors: [`Time`] })
                     
                     embed.setDescription(msgDesc.first().content);
@@ -293,7 +293,7 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
                     try {
                         var msgLast = await msg.channel.send(`Envie agora a url da imagem da thumbnali`)
                     
-                        let filter = m => m.author.id === msg.author.id;
+                        var filter = m => m.author.id === msg.author.id;
                         
                         var msgThumb = await msg.channel.awaitMessages({ filter, max: 1, time: 120000, errors: [`Time`] })
                         
@@ -317,7 +317,7 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
                     try {
                         var msgLast = await msg.channel.send(`Envie agora a url da imagem`)
                     
-                        let filter = m => m.author.id === msg.author.id;
+                        var filter = m => m.author.id === msg.author.id;
                         
                         var msgImg = await msg.channel.awaitMessages({ filter, max: 1, time: 120000, errors: [`Time`] })
                             
@@ -342,7 +342,7 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
                     try {
                         var msgLast = await msg.channel.send(`Digite o texto do rodapé`)
                     
-                        let filter = m => m.author.id === msg.author.id;
+                        var filter = m => m.author.id === msg.author.id;
                         var msgFtx = await msg.channel.awaitMessages({ filter, max: 1, time: 120000, errors: [`Time`] })
                         
                         await msgFtx.delete()
@@ -352,9 +352,9 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
                         await msgLast.react(config.emojis.check)
                         await msgLast.react(config.emojis.false)
                         
-                        let filter = (reaction, user) => { return user.id === msg.author.id }
+                        var filter = (reaction, user) => { return user.id === msg.author.id }
                         
-                        var msgRea = msgLast.awaitReactions({ filter, max: 1, time: 120000, errors: [`Time`] })
+                        var msgRea = await msgLast.awaitReactions({ filter, max: 1, time: 120000, errors: [`Time`] })
                             if (msgRea.first().emoji.name == `❌`) {
                                 await msgLast.delete();
                                 embed.setFooter({text:msgFtx.first().content})
@@ -363,7 +363,7 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
                             } else {
                                 await msgLast.delete();
                                 await msg.channel.send(`Envie o link da imagem`)
-                                let filter = m => m.author.id === msg.author.id;
+                                var filter = m => m.author.id === msg.author.id;
                                 
                                 var msgFoturl = await msg.channel.awaitMessages({ filter, max: 1, time: 120000, errors: [`Time`] })
                                 
@@ -386,7 +386,7 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
                 case 10:
                     try {
                         var msgLast = await msg.channel.send(`Envie o nome do seu embed`)
-                        let filter = m => m.author.id === msg.author.id
+                        var filter = m => m.author.id === msg.author.id
                         
                         var msgSavem = await msg.channel.awaitMessages({ filter, max: 1, time: 120000, errors: [`Time`] })
                         
