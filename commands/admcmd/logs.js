@@ -15,8 +15,6 @@ module.exports = {
 
                 const log = await fs.readFile(`./utils/logs/${logs.pop()}`)
 
-                console.log(log, logs)
-
                 await msg.channel.send({files: [{ attachment:log, name: "logs.txt"}]})
             
             
