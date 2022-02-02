@@ -253,7 +253,7 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
                         case 6:
                             await msg.channel.send( msg.author.toString() + "Envie a cor em hex agora")
                             filter = m => m.author.id == msg.author.id ;
-                            var msgCol = msg.channel.awaitMessages({ filter, max: 1, time: 120000, errors: [`Time`] })
+                            var msgCol = await msg.channel.awaitMessages({ filter, max: 1, time: 120000, errors: [`Time`] })
                                 
                                 try{
                                     embed.setColor(msgCol.first().content)

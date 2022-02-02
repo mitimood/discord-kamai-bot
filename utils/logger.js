@@ -12,7 +12,7 @@ const logger = winston.createLogger({
     format.label({ label: path.basename(process.mainModule.filename) }),
     format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
     // Format the metadata object
-    format.metadata({ fillExcept: ['message', 'level', 'timestamp', 'label'] })
+    format.metadata({ fillExcept: ['message', 'level', 'timestamp', 'label', "path"] })
   ),
   transports: [
     new transports.Console({
@@ -24,6 +24,7 @@ const logger = winston.createLogger({
     new transports.File({
       filename: `utils/logs/${date}.log`,
       format: format.combine(
+        format.errors({ stack: true }),
         // Render in one line in your log file.
         // If you use prettyPrint() here it will be really
         // difficult to exploit your logs files afterwards.
