@@ -74,13 +74,13 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
                         
                         var msgUrl = await msg.channel.awaitMessages({ filter, max: 1, time: 120000, errors: [`Time`] })
                         
-                        if (!["cancelar", "pular"].includes(url.first().content.toLowerCase())) {
+                        if (!["cancelar", "pular"].includes(msgUrl.first().content.toLowerCase())) {
                         
                         }
                         
                         if (msgUrl.first().content.toLowerCase() == "cancelar") return (await msg.channel.send("Url cancelada"), returnemb(embed))
                         
-                        if (umsgUrlrl.first().content.toLowerCase() == "pular") msgUrl.first().content = undefined
+                        if (msgUrl.first().content.toLowerCase() == "pular") msgUrl.first().content = undefined
                         
                         //verify if its a valid url
                         
@@ -95,11 +95,10 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
                         } finally {
                             return returnemb(embed);
                         }
-                        break;
                     } catch (error) {
                         logger.error(error)
                     }
-                    
+                    break;
                 case 2:
                     try {
                         var msgLast = await msg.channel.send("Envie o título")
@@ -110,7 +109,7 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
 
                         if (msgTitle.first().content == "cancelar") return (await msg.channel.send("Titulo cancelado"), returnemb(embed))
 
-                        embed.setTitle(title.first().content);
+                        embed.setTitle(msgTitle.first().content);
 
                         await msgLast.delete();
 
