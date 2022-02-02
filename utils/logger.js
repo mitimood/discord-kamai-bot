@@ -24,7 +24,6 @@ const logger = winston.createLogger({
     new transports.File({
       filename: `utils/logs/${date}.log`,
       format: format.combine(
-        format.errors({ stack: true }),
         // Render in one line in your log file.
         // If you use prettyPrint() here it will be really
         // difficult to exploit your logs files afterwards.
