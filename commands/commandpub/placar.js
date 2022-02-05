@@ -10,7 +10,7 @@ const logger = require("../../utils/logger");
 module.exports={
     data: new SlashCommandBuilder()
     .setName('placar')
-    .setDescription('bane bobinhos')
+    .setDescription('Exibe o placar de cada categoria')
     .addStringOption(option => option.setName('tipo').setDescription('Exibe o placar de cada categoria').setRequired(true)
                                 .addChoices([
                                             ['kamaicoins', 'money'],
