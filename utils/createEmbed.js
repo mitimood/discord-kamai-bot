@@ -165,7 +165,7 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
                             
                             var filter = (reaction, user) => { return user.id === msg.author.id }
                             
-                            var msgReac = msgLast.awaitReactions({ filter, max: 1, time: 120000, errors: ["Time"] })
+                            var msgReac = await msgLast.awaitReactions({ filter, max: 1, time: 120000, errors: ["Time"] })
                             
                             if (msgReac.first().emoji.name == `❌`) {
                                 await msgLast.delete();
@@ -179,10 +179,10 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
                                 returnemb(embed);
                             }
                         }
-                        break;
                     } catch (error) {
                         logger.error(error)
                     }
+                    break;
 
                 case 4:
                     try {
