@@ -272,8 +272,13 @@ async function Check_all_mutes() {
           }
         }else{
           setTimeout(async ()=>{
-            await SetUnmute(doc["_id"])
-            await index.client.guilds.cache.get(config.guild_id).members.cache.get(doc["_id"]).roles.remove(config.roles.muted)
+            try {
+              await SetUnmute(doc["_id"])
+              await index.client.guilds.cache.get(config.guild_id).members.cache.get(doc["_id"]).roles.remove(config.roles.muted)         
+            } catch (error) {
+              logger.info("Error ao desmutar o id " + doc["_id"], )
+            }
+
 
           }, (doc["duration"] + doc["since"]) - moment.utc().valueOf() )
         }
