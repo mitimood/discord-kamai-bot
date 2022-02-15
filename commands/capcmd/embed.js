@@ -70,7 +70,7 @@ module.exports = {
                     filter = m => /[0-9]+/.test(m.content) && m.author.id === msg.author.id;
                     var msgEmbs = await msg.channel.awaitMessages({ filter, max: 1, time: 120000, errors: [`time`] })
                     
-                    var recvdb = await embDb.getEmb(embs.first().content)
+                    var recvdb = await embDb.getEmb(msgEmbs.first().content)
                     
                     if (recvdb) {
                         await msg.channel.send({ embeds: [recvdb.embed] })
