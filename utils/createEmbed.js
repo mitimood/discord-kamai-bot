@@ -30,7 +30,7 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
                 }]
             })
 
-            var filter = (m) => /[0-9]+/.test(m.content) && m.content <= 10 && m.author.id == msg.author.id;
+            var filter = (m) => /[0-9]+/.test(m.content) && m.content <= 11 && m.author.id == msg.author.id;
             var msgOpc = await msg.channel.awaitMessages({ filter, max: 1, time: 120000, errors: ['Time'] })
             
             switch (parseInt(msgOpc.first().content)) {
