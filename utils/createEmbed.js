@@ -291,7 +291,8 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
                 
                 case 7:
                     try {
-                        await msg.reply(`\`\`\`${embed.description}\`\`\``)
+                        
+                        await msg.reply({embeds: [ new Discord.MessageEmbed().setDescription(`\`\`\`${embed.description}\`\`\``) ] })
 
                         return returnemb(embed)
 
