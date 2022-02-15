@@ -19,10 +19,11 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
             4- Remover campo
             5- Adicionar cor
             6- Adicionar descrição
-            7- Adicionar thumbnail
-            8- Adicionar Imagem
-            9- Adicionar rodapé
-            10- Salvar
+            7- Mostra o que estiver dentro da descrição
+            8- Adicionar thumbnail
+            9- Adicionar Imagem
+            10- Adicionar rodapé
+            11- Salvar
             0- Cancelar`, color: config.color.blurple, image: { url: "https://gblobscdn.gitbook.com/assets%2F-LAEeOAJ8-CJPfZkGKqI%2F-Lh-d6Qc42Rq3BmspE9l%2F-LAEmPBF47FJgnfBD21P%2Fembedexample2.png?alt=media" }
                 }]
             })
@@ -287,7 +288,19 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
 
                     returnemb(embed);
                     break;
+                
                 case 7:
+                    try {
+                        await msg.reply(`\`\`\`${embed.description}\`\`\``)
+
+                        return returnemb(embed)
+
+                    } catch (error) {
+                        logger.error(error)
+                    }
+                    break;
+                     
+                case 8:
 
                     try {
                         var msgLast = await msg.channel.send(`Envie agora a url da imagem da thumbnali`)
@@ -312,7 +325,7 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
                         logger.error(error)
                     }
 
-                case 8:
+                case 9:
                     try {
                         var msgLast = await msg.channel.send(`Envie agora a url da imagem`)
                     
@@ -336,7 +349,7 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
                         logger.error(error)
                     }
                 
-                case 9:
+                case 10:
 
                     try {
                         var msgLast = await msg.channel.send(`Digite o texto do rodapé`)
@@ -381,8 +394,8 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
                     } catch (error) {
                         logger.error(error)
                     }
-                 
-                case 10:
+
+                case 11:
                     try {
                         var msgLast = await msg.channel.send(`Envie o nome do seu embed`)
                         var filter = m => m.author.id === msg.author.id
