@@ -1,6 +1,8 @@
 const { Discord, embDb } = require("..");
 const config = require(`../config`);
 const logger = require("./logger");
+const {fetch} = require("cross-fetch");
+
 module.exports = { emb };
 
 async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descrição ainda não definida`)) {
@@ -279,8 +281,17 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
                     var msgLast = await msg.channel.send('Digite a descrição do embed')
                     var filter = m => m.author.id === msg.author.id;
                     var msgDesc = await msg.channel.awaitMessages({ filter, max: 1, time: 120000, errors: [`Time`] })
+
+                    if(msgDesc?.first()) msgDesc = msgDesc.first()
+
+                    var desc;
                     
-                    embed.setDescription(msgDesc.first().content);
+                    // gets the description from file attached
+                    if(!msgDesc.content) desc = Buffer.from(await fetch(msgDesc?.attachments?.first()?.attachment).then(r=>r.arrayBuffer()))?.toString()
+                    // gets from the content of the message
+                    else desc = msgDesc.content
+
+                    embed.setDescription(desc);
                 
                     msgLast.delete();
                 
