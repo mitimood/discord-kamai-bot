@@ -138,7 +138,7 @@ async function punishments(target_id, points, guild, executor) {
 
             const tempmuteDuration = (points) =>  {return{
                 0:0,
-                1:72000,
+                1:7200000,
                 2:43200000,
                 3:172800000,
                 }[points]
