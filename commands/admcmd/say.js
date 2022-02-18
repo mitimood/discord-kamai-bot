@@ -1,6 +1,7 @@
 const { client } = require("../../index");
 const config = require("../../config");
 const logger = require("../../utils/logger");
+const { MessageActionRow, MessageButton } = require("discord.js");
 
 /*
     say command, will reply a message content inside the especified channel
@@ -16,39 +17,66 @@ module.exports={
         try {
             msgArgs = message.content.split(" ");
 
-            if(/[0-9]+/.test(msgArgs[1])){
-    
-                const canal = client.channels.cache.find(channel =>channel.id === msgArgs[1])
-    
-                if(!canal){
-                    await message.channel.send({content: message.author.toString(),embeds:[{
-                    description:"Não foi possivel achar o canal no servidor",   
-                    color: config.color.err,
-                }]})
-    
-                }else{
-                    var mensagem = message.content.substring(msgArgs.slice(0, 2).join(" ").length + 1);
-                    if(mensagem && mensagem.length <= 2000){
-                        await canal.send(mensagem);
-                        await message.delete()
-                        await message.channel.send(message.author.toString()+" Mensagem enviada com sucesso em " + canal.name )
-                    }else{
-                        return await message.channel.send(message.author.toString()+" Mensagem invalida. Verifique o seu conteudo")
-                    }
-                }
+            let channel;
+            let postText;
+
+            if(!/[0-9]+/.test(msgArgs[1])) {
+                channel = message.channel
+                await message.delete()
+
+                postText = message.content.substring(msgArgs.slice(0, 1).join(" ").length + 1);
+
+            }else{
+                channel = client.channels.cache.find(channel =>channel.id === msgArgs[1])
+
+                if (!channel) return await message.channel.send({content: message.author.toString(),embeds:[{description:"Não foi possivel achar o canal no servidor",color: config.color.err,}]})
+                
+                postText = message.content.substring(msgArgs.slice(0, 2).join(" ").length + 1);
+
             }
-                else{
-                    var mensagem = message.content.substring(msgArgs.slice(0, 1).join(" ").length + 1);
-                    if(mensagem){
-                        await message.channel.send(mensagem);
-                        await message.delete()
-                    }else{
-                        await message.channel.send({content: message.author.toString(), embeds:[{
-                            description:"Você não informou a mensagem para que eu possa portá-la",
-                            color:config.color.err,
-                        }]});
-                    };
-                };
+
+            if( !postText || postText?.length >= 2000){
+                return await message.channel.send({content: message.author.toString(),embeds:[{description:"Ouve um erro ao enviar a mensagem. Verifique o conteudo do texto passado",color: config.color.err,}]})
+            }
+
+            const post = await channel.send(postText)
+
+            if (post.channel.type != 'GUILD_NEWS') return
+
+            const row = new MessageActionRow()
+                        .addComponents(
+                            new MessageButton()
+                                .setCustomId("yes")
+                                .setStyle("SUCCESS")
+                                .setLabel("POSTAR"),
+                            new MessageButton()
+                                .setCustomId("no")
+                                .setStyle("DANGER")
+                                .setLabel("NÃO POSTAR"),
+                        );
+
+            const optionPost = await message.channel.send({components:[row], content: `O canal <#${channel.id}> passado é um canal de anuncios. Deseja compartilhar esse conteudo com os outros servidores?`})
+            
+            const timeout = 30_000
+            const filter = (interaction) => interaction.message.id === optionPost.id && interaction.user.id === message.author.id;
+            
+            try {
+                const opt = await optionPost.awaitMessageComponent({ filter, time: timeout })
+
+                if(opt.customId === "yes"){
+                    await post.crosspost()
+                    await optionPost.delete()
+    
+                    
+                }else if(opt.customId === "no"){
+                    await optionPost.delete()
+                }
+            } catch (error) {
+                await optionPost.delete()
+
+            }
+
+            
         } catch (error) {
             logger.error(error)
         }
