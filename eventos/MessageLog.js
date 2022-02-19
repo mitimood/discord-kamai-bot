@@ -68,7 +68,7 @@ client.on('messageDeleteBulk', async mapMsg =>{
         logger.info(`Mensagem apagada em massa `)
     
         for(let msg of mapMsg ){
-            bulkText += `[${Date(msg[1].createdTimestamp)}] ${msg[1].author.username} => ${msg[1].content}`
+            bulkText += `[${new Date(msg[1].createdTimestamp)}] ${msg[1].author.username} => ${msg[1].content}`
             for ( let atach of msg[1].attachments ){
                 bulkText += atach[1].attachment
             }
