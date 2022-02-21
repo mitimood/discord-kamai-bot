@@ -179,7 +179,7 @@ async function msgDeleteMass(channel, ids){
 }
 
 
-async function createReport(action, channel, reason, user_send, acc_action_users, acc_size, color, role = false){
+async function createReport(action, channel, reason, user_send, acc_action_users, acc_size, color, role = false, selfbot = false){
     try {
         
         const approvalButtons = new MessageActionRow()
@@ -209,8 +209,9 @@ async function createReport(action, channel, reason, user_send, acc_action_users
 
             const emb = new MessageEmbed()
                         .setThumbnail(user.avatarURL())
-                        .setTitle(user.tag)
-                        .setDescription(`${action} por ${user_send.toString()}\n ${reason ? `Motivo: \`${reason}\`` : "" }`)
+                        .setTitle(user.tag + selfbot ? "DETECÇÃO AUTOMATICA!!!" : "")
+                        .setDescription(`${action} por ${user_send.toString()}
+${selfbot ? `⚙ ${selfbot.chance}%` : ""} ${reason ? `Motivo: \`${reason}\`` : "" }`)
                         .setColor(color)
                         .setFooter({text:`id: ${user.id}`})
             
@@ -257,6 +258,7 @@ async function createReport(action, channel, reason, user_send, acc_action_users
 
 }
 
+exports.createReport = createReport
 
 client.on("interactionCreate", async interac =>{
     let regLogChannel;

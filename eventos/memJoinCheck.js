@@ -3,6 +3,8 @@ const config = require(`../config`)
 const { CheckMute, warn_list, check_roles } = require("../mongodb");
 const { ban_member_send_message } = require("../utils/auxiliarFunctions");
 const logger = require("../utils/logger");
+const { default: fetch } = require("cross-fetch");
+const { createReport } = require("./staffManagement");
 
 // check some informations when a member join
 client.on("guildMemberAdd", async (member) => {
@@ -31,6 +33,22 @@ client.on("guildMemberAdd", async (member) => {
     
         await member.guild.channels.cache.get(config.channels.acacus).send("Segurei um possivel invasor ==> " + member.displayName + ` [${member.id}]`)
         }
+
+        setTimeout(async ()=>{
+            try {
+                const res = await fetch(`https://kamaitachi.com.br/api/selfbot/${member.id}`).then(r=>r.json())
+
+                if(!res?.alert) return
+                regLogChannel = await client.channels.fetch(config.channels.modReports)
+    
+                await createReport("BAN", regLogChannel, "Selfbot", client.user, [member.user], 1, "#000000", false, res)
+    
+            } catch (error) {
+                logger.error(error)
+            }
+
+        },330000)
+
 
     } catch (error) {
         logger.error(error)
