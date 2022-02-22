@@ -49,7 +49,7 @@ client.on("guildMemberAdd", async (member) => {
                 logger.error(error)
             }
 
-        },0)
+        },360000)
 
         0.5408729314804077.toPrecision(2)
     } catch (error) {
