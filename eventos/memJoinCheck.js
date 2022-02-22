@@ -47,7 +47,7 @@ client.on("guildMemberAdd", async (member) => {
                 logger.error(error)
             }
 
-        },330000)
+        },390000)
 
 
     } catch (error) {
