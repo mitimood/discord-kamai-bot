@@ -10,16 +10,16 @@ module.exports = {
     async execute(msg) {
         
         try {
-            await msg.delete()
                 const logs = await fs.readdir("./utils/logs")
 
                 const log = await fs.readFile(`./utils/logs/${logs.pop()}`)
                 try {
-                    const logdd = await fetch("https://discloud.app/status/bot/926596323124318278/logs",{"headers":{"api-token": os.getenv("DISCLOUD_TOKEN")}}).then(r=>r.json())
+                    const logdd = await fetch("https://discloud.app/status/bot/926596323124318278/logs",{"headers":{"api-token": process.env.DISCLOUD_TOKEN}}).then(r=>r.json())
                     await msg.channel.send({content: logdd.link,files: [{ attachment:log, name: "logs.txt"}, { attachment: Buffer.from(logdd.logs), name: "logsdd.txt"}]})
 
                 } catch (error) {
-                    await msg.channel.send({content: logdd.link, files: [{ attachment:log, name: "logs.txt"}]})
+                    console.log(error)
+                    await msg.channel.send({ files: [{ attachment:log, name: "logs.txt"}]})
 
                 }
 
