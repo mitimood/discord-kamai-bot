@@ -22,8 +22,6 @@ module.exports = {
                     await msg.channel.send({ files: [{ attachment:log, name: "logs.txt"}]})
 
                 }
-
-
  
         } catch (error) {
             logger.error(error)

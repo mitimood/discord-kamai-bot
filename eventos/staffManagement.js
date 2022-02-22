@@ -24,7 +24,6 @@ MongodbClient.on("connectionReady",async connection=>{
 
 let timeChangeCounter = false
 
-
 let lastCount;
 
 setInterval(async()=>{
