@@ -5,16 +5,12 @@ const logger = require("../utils/logger");
 // log when a used is muted by an karaoke organizer
 
     client.on('voiceStateUpdate', async (oldState, newState) => {
-
             
         try {
 
             if(newState.guild.id != config.guild_id) return
             if(newState.serverMute == oldState.serverMute)return;
             if(newState?.channel?.parentId == config.channels.event && newState.member.roles.cache.has(config.roles.teams.equipeEvent)) return
-            if(!newState.serverMute) return
-
-            console.log(`Mute team ` + Date())
 
             const fetchedLogs = await newState.guild.fetchAuditLogs({
                 limit: 1, 
@@ -31,8 +27,9 @@ const logger = require("../utils/logger");
                 if(executor == target) return
                 if(memberex?.voice?.channel && memberex?.voice?.channel?.parentId == config.channels.event && memberex?.roles?.cache.has(config.roles.teams.equipeEvent)) return
                 if(memberex.roles.cache.has(config.roles.teams.equipekaraoke)){
+                    logger.log(`Mute team ` + Date())
                 
-                    changes.forEach(async c=>{
+                    changes.forEach(async c=>{                        
                         if(c.key==`mute`){
                             const canal = client.channels.cache.get(config.channels.equipekaraoke)
 
