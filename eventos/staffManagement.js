@@ -208,7 +208,7 @@ async function createReport(action, channel, reason, user_send, acc_action_users
 
             const emb = new MessageEmbed()
                         .setThumbnail(user.avatarURL())
-                        .setTitle(user.tag + selfbot ? "DETECÇÃO AUTOMATICA!!!" : "")
+                        .setTitle(user.tag + (selfbot ? "DETECÇÃO AUTOMATICA!!!" : ""))
                         .setDescription(`${action} por ${user_send.toString()}
 ${selfbot ? `⚙ ${selfbot.chance}%` : ""} ${reason ? `Motivo: \`${reason}\`` : "" }`)
                         .setColor(color)
