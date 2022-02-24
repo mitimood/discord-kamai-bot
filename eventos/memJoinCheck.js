@@ -38,7 +38,7 @@ client.on("guildMemberAdd", async (member) => {
             try {
                 const res = await fetch(`https://kamaitachi.com.br/api/selfbot/${member.id}`).then(r=>r.json())
 
-                res.chance = parseInt((0.5408729314804077*100).toPrecision(1))
+                res.chance = parseInt(res.chance.toPrecision(2)*100)
 
                 if(!res?.alert) return
                 regLogChannel = await client.channels.fetch(config.channels.modReports)
@@ -51,7 +51,6 @@ client.on("guildMemberAdd", async (member) => {
 
         },360000)
 
-        0.5408729314804077.toPrecision(2)
     } catch (error) {
         logger.error(error)
     }
