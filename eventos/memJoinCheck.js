@@ -38,9 +38,10 @@ client.on("guildMemberAdd", async (member) => {
             try {
                 const res = await fetch(`https://kamaitachi.com.br/api/selfbot/${member.id}`).then(r=>r.json())
 
+                if(!res?.alert) return
+
                 res.chance = (res.chance*100).toPrecision(2)
 
-                if(!res?.alert) return
                 regLogChannel = await client.channels.fetch(config.channels.modReports)
                 
                 await createReport("BAN", regLogChannel, "Selfbot", client.user, [member.user], 1, "#000000", false, res)

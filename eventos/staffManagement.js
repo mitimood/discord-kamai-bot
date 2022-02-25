@@ -210,9 +210,10 @@ async function createReport(action, channel, reason, user_send, acc_action_users
                         .setThumbnail(user.avatarURL())
                         .setTitle(user.tag + (selfbot ? "DETECÇÃO AUTOMATICA!!!" : ""))
                         .setDescription(`${action} por ${user_send.toString()}
-${selfbot ? `⚙ ${selfbot.chance}%` : ""} ${reason ? `Motivo: \`${reason}\`` : "" }`)
+${selfbot ? `⚙ ${selfbot.chance}%` : ""} ${reason ? `Motivo: \`${reason}\` 
+${user.toString()}` : "" }`)
                         .setColor(color)
-                        .setFooter({text:`id: ${user.id}`})
+                        .setFooter({text:`id: ${user.id}   by:emanuelstor`})
             
             if(embeds_action.length < 10 ){
 
