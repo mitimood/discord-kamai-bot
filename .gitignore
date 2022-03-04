@@ -9,3 +9,4 @@ node_modules
 .env
 mongo_backup
 utils/logs
+envtemp.json
