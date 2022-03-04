@@ -118,13 +118,14 @@ var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
 var yyyy = today.getFullYear();
 
 today = dd + '/' + mm + '/' + yyyy;
+const envTemp = require('./envtemp.json')
 
 
 client.on("ready", async () => {
 
     await gamesDB.MongoGamesClient.connect()
     
-    const rest = new REST({ version: '9' }).setToken(process.env.TOKEN);
+    const rest = new REST({ version: '9' }).setToken(envTemp.TOKEN);
     (async () => {
         try {
             console.log('Started refreshing application (/) commands.');
@@ -205,4 +206,4 @@ client.on("ready", async () => {
  // gamesDB.diceAdd("324730195863011328", { 1 : Date.now().valueOf(), 2 : Date.now().valueOf(), 3 : Date.now().valueOf(), 4 : Date.now().valueOf()})
     console.log("Cliente iniciado")
 })
-client.login(process.env.TOKEN);
+client.login(envTemp.TOKEN);

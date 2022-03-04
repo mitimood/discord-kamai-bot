@@ -1,6 +1,7 @@
 const fs = require('fs').promises
 const logger = require('../../utils/logger')
 const {fetch} = require("cross-fetch");
+const envTemp = require('../../envtemp.json')
 
 module.exports = {
     name: "logs",
@@ -14,7 +15,7 @@ module.exports = {
 
                 const log = await fs.readFile(`./utils/logs/${logs.pop()}`)
                 try {
-                    const logdd = await fetch("https://discloud.app/status/bot/926596323124318278/logs",{"headers":{"api-token": process.env.DISCLOUD_TOKEN}}).then(r=>r.json())
+                    const logdd = await fetch("https://discloud.app/status/bot/926596323124318278/logs",{"headers":{"api-token": envTemp.DISCLOUD_TOKEN}}).then(r=>r.json())
                     await msg.channel.send({content: logdd.link,files: [{ attachment:log, name: "logs.txt"}, { attachment: Buffer.from(logdd.logs), name: "logsdd.txt"}]})
 
                 } catch (error) {
