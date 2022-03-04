@@ -27,7 +27,7 @@ const logger = require("../utils/logger");
                 if(executor == target) return
                 if(memberex?.voice?.channel && memberex?.voice?.channel?.parentId == config.channels.event && memberex?.roles?.cache.has(config.roles.teams.equipeEvent)) return
                 if(memberex.roles.cache.has(config.roles.teams.equipekaraoke)){
-                    logger.log(`Mute team`)
+                    logger.log(`Mute team`) 
                 
                     changes.forEach(async c=>{                        
                         if(c.key==`mute`){
