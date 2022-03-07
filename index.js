@@ -12,7 +12,6 @@ const client = new Discord.Client({ intents: 1735, makeCache: Discord.Options.ca
 const log = require('./utils/logger')
 
 
-
 const Database = require("./localdb");
 const selfbotDB = require("./db/selfbotRegister");
 const selfbotRegister = new selfbotDB();
@@ -111,14 +110,6 @@ ban_recover.forEach(recover_ev => {
 eventos.forEach(events => {
     require(`${__dirname}/eventos/${events}`);
 })
-
-var today = new Date();
-var dd = String(today.getDate()).padStart(2, '0');
-var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-var yyyy = today.getFullYear();
-
-today = dd + '/' + mm + '/' + yyyy;
-
 
 client.on("ready", async () => {
 
