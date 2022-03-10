@@ -1,9 +1,6 @@
 const schedule = require('node-schedule');
 require('dotenv').config();
-
-const envTemp = require('../envtemp.json')
-
-const uri = `mongodb+srv://kamaibot:${envTemp.mongo_password}@cluster0.ysdvr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://kamaibot:${process.env.mongo_password}@cluster0.ysdvr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
 const { MongoClient } = require("mongodb");
 const fs = require('fs');
@@ -96,12 +93,13 @@ const job = schedule.scheduleJob('0 3 * * *', async function(){
       console.log("Arquivos zipados com sucesso")
 
       var nodemailer = require('nodemailer'); 
-
+      console.log(process.env.emailUser)
+      console.log(process.env.emailPassword)
       const mail = nodemailer.createTransport({
           service: 'gmail',
           auth: {
-            user: envTemp.emailUser,
-            pass: envTemp.emailPassword
+            user: process.env.emailUser,
+            pass: process.env.emailPassword
           }
       });
 

@@ -12,7 +12,6 @@ const client = new Discord.Client({ intents: 1735, makeCache: Discord.Options.ca
 const log = require('./utils/logger')
 
 
-
 const Database = require("./localdb");
 const selfbotDB = require("./db/selfbotRegister");
 const selfbotRegister = new selfbotDB();
@@ -112,20 +111,11 @@ eventos.forEach(events => {
     require(`${__dirname}/eventos/${events}`);
 })
 
-var today = new Date();
-var dd = String(today.getDate()).padStart(2, '0');
-var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-var yyyy = today.getFullYear();
-
-today = dd + '/' + mm + '/' + yyyy;
-const envTemp = require('./envtemp.json')
-
-
 client.on("ready", async () => {
 
     await gamesDB.MongoGamesClient.connect()
     
-    const rest = new REST({ version: '9' }).setToken(envTemp.TOKEN);
+    const rest = new REST({ version: '9' }).setToken(process.env.TOKEN);
     (async () => {
         try {
             console.log('Started refreshing application (/) commands.');
@@ -206,4 +196,4 @@ client.on("ready", async () => {
  // gamesDB.diceAdd("324730195863011328", { 1 : Date.now().valueOf(), 2 : Date.now().valueOf(), 3 : Date.now().valueOf(), 4 : Date.now().valueOf()})
     console.log("Cliente iniciado")
 })
-client.login(envTemp.TOKEN);
+client.login(process.env.TOKEN);

@@ -1,12 +1,8 @@
 const config = require("../config")
 const { MongoClient } = require("mongodb");
 require('dotenv').config();
-
-const envTemp = require('../envtemp.json')
-
-
 // Replace the uri string with your MongoDB deployment's connection string.
-const uri = `mongodb+srv://kamaibot:${envTemp.mongo_password}@cluster0.ysdvr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://kamaibot:${process.env.mongo_password}@cluster0.ysdvr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const MongodbClient = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,

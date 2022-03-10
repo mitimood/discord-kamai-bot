@@ -1,11 +1,7 @@
 
 const { MongoClient } = require('mongodb');
 require('dotenv').config();
-
-const envTemp = require('./envtemp.json')
-
-
-const uri = `mongodb+srv://sitekamai:${envTemp.mongo_passwordSite}@cluster0.2gmdz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://sitekamai:${process.env.mongo_passwordSite}@cluster0.2gmdz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const mongoClientSite = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 

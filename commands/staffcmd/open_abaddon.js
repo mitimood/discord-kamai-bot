@@ -2,7 +2,6 @@ const { LocalDb } = require("../..");
 const config = require("../../config");
 const logger = require("../../utils/logger");
 require('dotenv').config();
-const envTemp = require('../../envtemp.json')
 
 /*
     Open the abbadon channel channel requiring a password
@@ -24,7 +23,7 @@ module.exports={
                 let filter = x=> msg.author == x.author
                 let password = await msg.channel.awaitMessages({filter,time:10000,max:1})
     
-                if(password.first().content.toLowerCase() == envTemp.passwordAbaddon){
+                if(password.first().content.toLowerCase() == process.env.passwordAbaddon){
                     await question.delete()
                     open(password.first())
                 
