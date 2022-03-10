@@ -7,7 +7,6 @@ client.on("voiceStateUpdate", async (oldstate,newstate)=>
     try {
 
         const premiumRoles = [config.roles.levels["100"], config.roles.nitro, config.roles.trofeu]
-
         
         const hasPremium = newstate.member.roles.cache.filter((r)=>premiumRoles.includes(r.id)).size >= 1
 
@@ -48,6 +47,24 @@ client.on("voiceStateUpdate", async (oldstate,newstate)=>
                 clearTimeout(deletechan)
             }
         }
+        
+        if (newstate.channel.full && hasPremium) {
+            try {
+                await newstate.disconnect()
+
+                await newstate.member.send({"embeds": [
+                    {
+                        color: "RED",
+                        description: "Você não pode entrar em uma call lotada, seu engraçadinho",
+                        image: "https://media2.giphy.com/media/naAaDvbAoOYdW/giphy.gif?cid=ecf05e471j45pmh9mpgf3rx23bw7ia06g4rc40ubcpmwtsxx&rid=giphy.gif&ct=g"
+                    }
+                ]})
+                
+            } catch (error) {
+                logger.error(error)
+            }
+        }
+    
     } catch (error) {
         logger.error(error)
     }
