@@ -55,10 +55,14 @@ client.on("voiceStateUpdate", async (oldstate,newstate)=>
                 await newstate.member.send({"embeds": [
                     {
                         color: "RED",
-                        description: "Você não pode entrar em uma call lotada, seu engraçadinho",
+                        description: "Você não pode entrar em uma call lotada, seu engraçadinho.\n **Você pode levar uma advertencia por isso!**",
                         image: "https://media2.giphy.com/media/naAaDvbAoOYdW/giphy.gif?cid=ecf05e471j45pmh9mpgf3rx23bw7ia06g4rc40ubcpmwtsxx&rid=giphy.gif&ct=g"
                     }
                 ]})
+                await client.channels.cache.get(config.channels.acacus).send({embeds:[{
+                    color: "RED",
+                    description: `O usuario ${newstate.member.displayName} => ${newstate.member.id}\n entrou em um canal lotado abusando do poder de mover. É bom ficar de olho!`
+                }]})
                 
             } catch (error) {
                 logger.error(error)
