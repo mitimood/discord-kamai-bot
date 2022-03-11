@@ -45,24 +45,26 @@ async function loadSlashPermissions(){
 
         const commandsApp = await client.guilds.cache.get(config.guild_id)?.commands.fetch();
         
+        for(const [key, value] of commandsApp.entries()){
+
+            commands.forEach(c=>{
+                try {
+                    if(c?.data?.name == value.name && c.hasOwnProperty("permissions")){
+                        const permissions = c.permissions
+        
+                        commandsApp.get(key).permissions.set({permissions})
+                    }
+                } catch (error) {
+                    log.error(error)   
+                }
+            })
+        }
+        
     } catch (error) {
         log.error(error)
     }
 
-    for(const [key, value] of commandsApp.entries()){
-
-        commands.forEach(c=>{
-            try {
-                if(c?.data?.name == value.name && c.hasOwnProperty("permissions")){
-                    const permissions = c.permissions
-    
-                    commandsApp.get(key).permissions.set({permissions})
-                }
-            } catch (error) {
-                log.error(error)   
-            }
-        })
-    }
+   
 }
 
 loadSlash().then(()=>loadSlashPermissions())
