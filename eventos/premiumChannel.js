@@ -48,7 +48,7 @@ client.on("voiceStateUpdate", async (oldstate,newstate)=>
             }
         }
         
-        if (newstate.channel.userLimit < newstate.channel.members.size && hasPremium) {
+        if (newstate?.channel?.userLimit =! 0 && (newstate?.channel?.userLimit < newstate?.channel?.members?.size && hasPremium)) {
             try {
                 await newstate.disconnect()
 
