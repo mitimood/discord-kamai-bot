@@ -1,10 +1,9 @@
-const { Collection, MessageEmbed } = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { moneyAdd } = require("../../../mongodb");
-const { gamesDB } = require("../../..");
+const { gamesDB } = require("../../../")
 const logger = require("../../../utils/logger");
 
-const cooldown = new Collection()
 
 module.exports={
     data: new SlashCommandBuilder()

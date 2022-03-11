@@ -2,6 +2,22 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 const { MessageEmbed } = require("discord.js");
 const { changePoints } = require("../../mongodb");
 const logger = require("../../utils/logger");
+const config = require("../../config");
+
+
+const caps = config.roles.teams.caps
+const permissions = []
+
+for (const key in caps) {
+    if (Object.hasOwnProperty.call(caps, key)) {
+        const element = caps[key];
+        permissions.push({
+            id: element,
+            type: 'ROLE',
+            permission: true,
+        })
+    }
+}
 
 
 module.exports={
@@ -18,6 +34,7 @@ module.exports={
     name: "adicionar-ponto",
     aliases: ["adicionarponto"],
     description: "Adiciona pontos de troféu",
+    permissions: permissions,
 
     async execute(msg) {
         try {
