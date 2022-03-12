@@ -1,16 +1,17 @@
-const { Discord, embDb } = require("..");
+const { embDb } = require("..");
 const config = require(`../config`);
+const { MessageEmbed } = require("discord.js")
 const logger = require("./logger");
 const {fetch} = require("cross-fetch");
 
 module.exports = { emb };
 
-async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descrição ainda não definida`)) {
+async function emb(msg, embed = new MessageEmbed().setDescription(`Descrição ainda não definida`)) {
     returnemb(embed)
 
     async function returnemb(embed) {
         try {
-            embed = new Discord.MessageEmbed(embed)
+            embed = new MessageEmbed(embed)
             //Menu embed creation
             var m = await msg.channel.send({
                 embeds: [{
@@ -303,7 +304,7 @@ async function emb(msg, embed = new Discord.MessageEmbed().setDescription(`Descr
                 case 7:
                     try {
                         
-                        await msg.reply({embeds: [ new Discord.MessageEmbed().setDescription(`\`\`\`${embed.description}\`\`\``) ] })
+                        await msg.reply({embeds: [ new MessageEmbed().setDescription(`\`\`\`${embed.description}\`\`\``) ] })
 
                         return returnemb(embed)
 

@@ -1,4 +1,4 @@
-const { Discord } = require('../..');
+const { MessageEmbed } = require('discord.js');
 const config = require('../../config');
 const { TrimMsg } = require('../../utils/auxiliarFunctions');
 const { get_xp, moneyGet, getPoints } = require('../../mongodb');
@@ -20,7 +20,7 @@ module.exports={
 
     async execute(msg){
         try {
-            const embed = new Discord.MessageEmbed()
+            const embed = new MessageEmbed()
             embed.setDescription(`⠀`)
             
             let msgArgs = TrimMsg(msg)

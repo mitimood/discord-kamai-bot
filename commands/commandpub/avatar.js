@@ -1,4 +1,4 @@
-const { Discord } = require("../..");
+const { MessageEmbed } = require("discord.js");
 const { TrimMsg } = require("../../utils/auxiliarFunctions");
 const logger = require("../../utils/logger");
 
@@ -9,7 +9,7 @@ module.exports={
 
     async execute(msg) {
         try {
-            const embed = new Discord.MessageEmbed()
+            const embed = new MessageEmbed()
         
             let msgArgs = TrimMsg(msg)
 
