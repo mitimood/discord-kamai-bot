@@ -7,7 +7,7 @@ const logger = require("../../utils/logger");
 client.on("messageCreate", msg=>{
 
     try {
-        const cooldown = 60000
+        const cooldown = 180000
     
         if (talkedRecently.has(msg.author.id) || msg.author.bot) return
     

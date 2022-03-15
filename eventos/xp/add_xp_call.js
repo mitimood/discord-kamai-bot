@@ -34,6 +34,6 @@ async function xp_voice_Add(){
         }
 
 
-    },60000)
+    },180000)
         
 }

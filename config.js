@@ -101,9 +101,9 @@ module.exports = {
         color4: 0x993d00,
     },
     xp:{
-        chat:13,
-        voice:10,
-        bonus: 40,
+        chat:20,
+        voice:18,
+        bonus: 55,
         requiredLevelUp:200,
     },
     rewards:{
