@@ -5,7 +5,7 @@ const logger = require("../../utils/logger");
 module.exports={
     name: "avatar",
     aliases: ["image", "profilepic"],
-    description: "Envia a imagem do usario",
+    description: "Envia a imagem do usuário",
 
     async execute(msg) {
         try {
