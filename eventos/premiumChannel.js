@@ -47,8 +47,8 @@ client.on("voiceStateUpdate", async (oldstate,newstate)=>
                 clearTimeout(deletechan)
             }
         }
-        
-        if (newstate?.channel?.userLimit != 0 && (newstate?.channel?.userLimit < newstate?.channel?.members?.size && hasPremium)) {
+
+        if (newstate?.channel?.userLimit != 0 && (newstate?.channel?.userLimit < newstate?.channel?.members?.size && (hasPremium && !newstate.member.roles.find(r=> Object.values(config.roles.staff).includes(r.id) ) ))  ) {
             try {
                 await newstate.disconnect()
 
