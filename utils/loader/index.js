@@ -1,6 +1,7 @@
 const log = require('../logger')
 const client = require("./discordClient")
 const dbs = require("./db")
+const logger = require('../logger')
 
 client.on("ready",()=>{
     try {
@@ -18,6 +19,8 @@ client.on("ready",()=>{
     } catch (error) {
         log.error(error)
     }
+
+    logger.info('Bot iniciado com sucesso')
 
 })
 
