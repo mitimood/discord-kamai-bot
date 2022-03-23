@@ -9,6 +9,11 @@ client.on("ready",()=>{
         require("./slashCommands")
         
         require("./events")
+
+        client.user.setPresence({ status: `idle` })
+    for( let id_guild of client.guilds.cache.keys()){
+        await client.guilds.cache.get(id_guild).members.fetch()
+    }
     
     } catch (error) {
         log.error(error)
