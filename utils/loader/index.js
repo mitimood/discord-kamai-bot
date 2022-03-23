@@ -3,7 +3,7 @@ const client = require("./discordClient")
 const dbs = require("./db")
 const logger = require('../logger')
 
-client.on("ready",()=>{
+client.on("ready",async ()=>{
     try {
         module.exports = Object.assign( module.exports, {client,})
 
