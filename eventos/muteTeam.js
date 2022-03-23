@@ -25,8 +25,8 @@ const logger = require("../utils/logger");
                 const memberex = newState.guild.members.cache.get(executor.id)
 
                 if(executor == target) return
-                if(memberex?.voice?.channel && memberex?.voice?.channel?.parentId == config.channels.event && memberex?.roles?.cache.has(config.roles.teams.equipeEvent)) return
-                if(memberex.roles.cache.has(config.roles.teams.equipekaraoke)){
+                if(memberex?.voice?.channel && (memberex?.voice?.channel?.parentId == (config.channels.event && memberex?.roles?.cache.has(config.roles.teams.equipeEvent)))) return
+                if(memberex?.roles?.cache?.has(config.roles.teams.equipekaraoke)){
                     logger.info(`Mute team`) 
                 
                     changes.forEach(async c=>{                        
