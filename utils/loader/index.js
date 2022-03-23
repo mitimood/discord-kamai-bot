@@ -17,7 +17,7 @@ client.on("ready",()=>{
     }
     
     } catch (error) {
-        log.error(error)
+        logger.error(error)
     }
 
     logger.info('Bot iniciado com sucesso')
