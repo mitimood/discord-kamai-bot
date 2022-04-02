@@ -93,8 +93,7 @@ const job = schedule.scheduleJob('0 3 * * *', async function(){
       console.log("Arquivos zipados com sucesso")
 
       var nodemailer = require('nodemailer'); 
-      console.log(process.env.emailUser)
-      console.log(process.env.emailPassword)
+
       const mail = nodemailer.createTransport({
           service: 'gmail',
           auth: {

@@ -11,8 +11,6 @@ module.exports = {
         try {
             job.invoke()
 
-            await msg.reply()
-
         } catch (error) {
             logger.error(error)
         }
