@@ -19,56 +19,56 @@ const job = schedule.scheduleJob('0 3 * * *', async function(){
       console.log("Backup iniciado " + new Date() )
       await MongodbClient.connect()
 
-      const database = MongodbClient.db('kamaibot');
-      const members_adm = database.collection('member_management');
-      const members_admb = new nodejsondb(`./mongo_backup/members_adm`, false, true);
+      // const database = MongodbClient.db('kamaibot');
+      // const members_adm = database.collection('member_management');
+      // const members_admb = new nodejsondb(`./mongo_backup/members_adm`, false, true);
       
-      const activitypoems = database.collection('activitypoems');
-      const activitypoemsb = new nodejsondb(`./mongo_backup/activitypoems`, false, true);
+      // const activitypoems = database.collection('activitypoems');
+      // const activitypoemsb = new nodejsondb(`./mongo_backup/activitypoems`, false, true);
       
-      const activitykaraoke = database.collection('activitykaraoke');
-      const activitykaraokeb = new nodejsondb(`./mongo_backup/activitykaraoke`, false, true);
+      // const activitykaraoke = database.collection('activitykaraoke');
+      // const activitykaraokeb = new nodejsondb(`./mongo_backup/activitykaraoke`, false, true);
       
-      const activityarte = database.collection('activityarte');
-      const activityarteb = new nodejsondb(`./mongo_backup/activityarte`, false, true);
-      
-
-      const arrayMember = await members_adm.find().toArray()
-      const arrayPoems = await activitypoems.find().toArray()
-      const arrayKaraoke = await activitykaraoke.find().toArray()
-      const arrayArte = await activityarte.find().toArray()
-
-      console.log("Download concluido MONGODB CONCLUIDO")
-      console.log("Salvando...")
-
-      members_admb.resetData()
-      arrayMember.forEach(doc=>{
-        members_admb.push(`/${doc["_id"]}/`, doc, true)
-
-      })
-      members_admb.save()
+      // const activityarte = database.collection('activityarte');
+      // const activityarteb = new nodejsondb(`./mongo_backup/activityarte`, false, true);
       
 
-      activitypoemsb.resetData()
-      arrayPoems.forEach(doc=>{
-        activitypoemsb.push(`/${doc["_id"]}/`, doc, true)
+      // const arrayMember = await members_adm.find().toArray()
+      // const arrayPoems = await activitypoems.find().toArray()
+      // const arrayKaraoke = await activitykaraoke.find().toArray()
+      // const arrayArte = await activityarte.find().toArray()
 
-      })
-      activitypoemsb.save()
+      // console.log("Download concluido MONGODB CONCLUIDO")
+      // console.log("Salvando...")
 
-      activitykaraokeb.resetData()
-      arrayKaraoke.forEach(doc=>{
-        activitykaraokeb.push(`/${doc["_id"]}/`, doc, true)
+      // members_admb.resetData()
+      // arrayMember.forEach(doc=>{
+      //   members_admb.push(`/${doc["_id"]}/`, doc, true)
 
-      })
-      activitykaraokeb.save()
+      // })
+      // members_admb.save()
+      
 
-      activityarteb.resetData()
-      arrayArte.forEach(doc=>{
-        activityarteb.push(`/${doc["_id"]}/`, doc, true)
+      // activitypoemsb.resetData()
+      // arrayPoems.forEach(doc=>{
+      //   activitypoemsb.push(`/${doc["_id"]}/`, doc, true)
 
-      })
-      activityarteb.save()
+      // })
+      // activitypoemsb.save()
+
+      // activitykaraokeb.resetData()
+      // arrayKaraoke.forEach(doc=>{
+      //   activitykaraokeb.push(`/${doc["_id"]}/`, doc, true)
+
+      // })
+      // activitykaraokeb.save()
+
+      // activityarteb.resetData()
+      // arrayArte.forEach(doc=>{
+      //   activityarteb.push(`/${doc["_id"]}/`, doc, true)
+
+      // })
+      // activityarteb.save()
 
       console.log("Começando a zippar")
       
