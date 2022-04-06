@@ -1,6 +1,6 @@
-const { client } = require("../");
-const config = require("../config");
-const logger = require("../utils/logger");
+const { client } = require("../..");
+const config = require("../../config");
+const logger = require("../../utils/logger");
 
 // Deleltes the exclusive ticket for a user when joining in the baneds server
 
