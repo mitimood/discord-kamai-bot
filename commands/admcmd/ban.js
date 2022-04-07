@@ -44,6 +44,7 @@ module.exports = {
                                         ])
                     )
     .addStringOption(option=> option.setName('contas-a-banir').setDescription('Joga ai os usuários pra rolo').setRequired(true))
+    .addBooleanOption(option=> option.setName('apagar-mensagens').setDescription('Apaga a mensagem das ultimas 24h desse membro').setRequired(false))
     .setDefaultPermission(false),
     name: "ban",
     aliases: ["bn"],
@@ -94,6 +95,8 @@ module.exports = {
 
             const ids = options[1].value.split(/\n| /gm).filter((str) => str.trim())
 
+            const deleteMsg = options[1]?.value
+
             const accs = await verificaArgsUser(ids)
 
             for(const memb of accs.members){
@@ -109,15 +112,9 @@ module.exports = {
 
             for(const user of accs.users){
                 try {
-                    if(reason == "Scam") {
-    
-                        await msg.guild.members.ban(user, {reason: `[${user.id}] ${reason}`, days:2})
-                    
-                    }else{
-                        await msg.guild.members.ban(user, {reason: `[${user.id}] ${reason}`})
-    
-                    }
-    
+                   
+                    await msg.guild.members.ban(user, {reason: `[${user.id}] ${reason}`, days: deleteMsg ? 1 : 0 })
+        
                 } catch (error) {
                     logger.error(error)
                 }
