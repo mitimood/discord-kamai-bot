@@ -7,12 +7,16 @@ const MongodbClient = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-module.exports = {resetXp ,verifyXp, MongodbClient, SetTempMute, voiceMuteSet, voiceMuteCheck, SetUnmute, CheckMute, transferdb, warn_list,notifyList, warn_remove, warn_add, Check_all_mutes, role_register_add, role_register_remove, check_roles,
-                  add_voice_xp, add_bonus_xp, add_chat_xp, get_xp, daily_get, daily_set, moneyGet, moneyAdd, moneyRemove, getAllActiveReports, getReport, updateStateReport, addReport, changePoints, getPoints }
+module.exports = {MongodbClient, resetXp ,verifyXp, SetTempMute, voiceMuteSet, voiceMuteCheck, SetUnmute, CheckMute, transferdb, warn_list,notifyList, warn_remove, warn_add, Check_all_mutes, role_register_add, role_register_remove, check_roles,
+                  add_voice_xp, add_bonus_xp, add_chat_xp, get_xp, daily_get, daily_set, moneyGet, moneyAdd, moneyRemove, getAllActiveReports, getReport, updateStateReport, addReport, changePoints, getPoints, 
+                  getAllActivityarte, getAllActivityKaraoke, getAllActivityPoems, getAllMemberManagement, deleteAllActivityarte, deleteAllActivityKaraoke, deleteAllActivityPoems, deleteAllMemberManagement,
+                  insertKaraoke, insertArte, insertMemberManagement, insertPoems}
 
-                  const moment = require("moment-timezone");
+const moment = require("moment-timezone");
 const databaseSite = require("./mongoDbSite.js");
 const logger = require("./utils/logger");
+const Long = require('mongodb').Long
+
 
 async function transferdb() { 
   try {
@@ -745,7 +749,7 @@ async function getAllActiveReports(){
     const database = MongodbClient.db(config.mongo.db_geral);
     const report = database.collection('reports');
   
-    const docs = await report.find( { state: true} ).count()
+    const docs = (await report.find( { state: true} ).toArray()).length
     return docs
   }catch(err){
     console.log(err)
@@ -779,5 +783,143 @@ async function getPoints(id){
   }catch(err){
     console.log(err)
     return false
+  }
+}
+
+
+function getAllActivityarte(id){
+  try {
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const memb = database.collection('activityarte');
+  
+    return memb.findOne({_id: Long.fromString(id)})
+  } catch (error) {
+    logger.error(error)
+  }
+}
+
+function getAllActivityKaraoke(id){
+  try {
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const memb = database.collection('activitykaraoke');
+  
+    return memb.findOne({_id: Long.fromString(id)})
+  } catch (error) {
+    logger.error(error)
+  }
+}
+
+function getAllActivityPoems(id){
+  try {
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const memb = database.collection('activitypoems');
+  
+    return memb.findOne({_id: Long.fromString(id)})
+  } catch (error) {
+    logger.error(error)
+  }
+}
+
+function getAllMemberManagement(id){
+  try {
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const memb = database.collection('member_management');
+  
+    return memb.findOne({_id: id })
+  } catch (error) {
+    logger.error(error)
+  }
+}
+
+
+function deleteAllActivityarte(id){
+  try {
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const memb = database.collection('activityarte');
+  
+    return memb.findOneAndDelete({_id: Long.fromString(id)})
+  } catch (error) {
+    logger.error(error)
+  }
+}
+
+function deleteAllActivityKaraoke(id){
+  try {
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const memb = database.collection('activitykaraoke');
+  
+    return memb.findOneAndDelete({_id: Long.fromString(id)})
+  } catch (error) {
+    logger.error(error)
+  }
+}
+
+function deleteAllActivityPoems(id){
+  try {
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const memb = database.collection('activitypoems');
+  
+    return memb.findOneAndDelete({_id: Long.fromString(id)})
+  } catch (error) {
+    logger.error(error)
+  }
+}
+
+function deleteAllMemberManagement(id){
+  try {
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const memb = database.collection('member_management');
+  
+    return memb.findOneAndDelete({_id: id })
+  } catch (error) {
+    logger.error(error)
+  }
+}
+
+function insertKaraoke(doc){
+  try {
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const karaoke = database.collection('activitykaraoke');
+
+    karaoke.insertOne(doc)
+
+  } catch (error) {
+    logger.error(error)
+  }
+}
+
+function insertArte(doc){
+  try {
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const arte = database.collection('activityarte');
+
+    arte.insertOne(doc)
+
+  } catch (error) {
+    logger.error(error)
+  }
+}
+
+function insertMemberManagement(doc){
+  try {
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const memb = database.collection('member_management');
+    
+    memb.insertOne(doc)
+
+  } catch (error) {
+    logger.error(error)
+  }
+}
+
+function insertPoems(doc){
+  try {
+    const database = MongodbClient.db(config.mongo.db_geral);
+    const poem = database.collection('activitypoems');
+
+    poem.insertOne(doc)
+
+  } catch (error) {
+    logger.error(error)
   }
 }
