@@ -7,6 +7,7 @@ const logger = require("../utils/logger")
 client.on("messageCreate", msg=>{
     try {
         if(!msg.author.bot && msg.guild && msg.content.startsWith(config.prefixo)){
+
             const command =  msg.content.toLowerCase().split(" ")[0].substr(config.prefixo.length)
             console.log(`[${msg.author.tag}] ${command} ` + new Date())
         
@@ -33,7 +34,7 @@ client.on("messageCreate", msg=>{
             })*/
         
             // Adm commands
-            if (msg.member.roles.cache.find(role => [config.roles.staff.admin, config.ban_recover.staff_adm].includes(role.id))){
+            if (msg.member.roles.cache.find(role => [config.roles.staff.admin, config.ban_recover.staff_adm, config.ban_recover.staff_mod].includes(role.id))){
                 const admcmd = fs.readdirSync(`./commands/admcmd`).filter(file => file.endsWith(`.js`));
                 admcmd.forEach(command_file_name => {
                     let adm_module = require(`../commands/admcmd/${command_file_name}`);
