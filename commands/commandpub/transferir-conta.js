@@ -4,6 +4,7 @@ const config = require("../../config");
 const { getAllActivityarte: mongoAllActivityarte, getAllActivityKaraoke:  mongoAllActivityKaraoke,
         getAllActivityPoems: mongoAllActivityPoems, getAllMemberManagement: mongoAllMemberManagement,
         deleteAllMemberManagement, deleteAllActivityKaraoke, deleteAllActivityarte, deleteAllActivityPoems, insertMemberManagement, insertKaraoke, insertPoems, insertArte} = require("../../mongodb");
+const client = require("../../utils/loader/discordClient");
 const logger = require("../../utils/logger");
 
 
@@ -18,6 +19,7 @@ module.exports={
     description: "Passa seus status ( cargos, pontos, kamaicoins... ) para outra pessoa do servidor.",
     
     async execute(msg) {
+
         try {
             let memberManda;
             let memberRecebe;
@@ -69,6 +71,15 @@ module.exports={
                 try {
                     Object.assign(dataManda, {member: mongoAllMemberManagement(idManda)})
                     Object.assign(dataRecebe, {member: mongoAllMemberManagement(idRecebe)})
+                } catch (error) {
+                    logger.error(error)
+                }
+            }
+
+            function avisaCaps({recebeUser, mandaUser, cargo}){
+                try {
+                    client.channels.cache.get(config.channels.capitaes).send({content: `${manda.toString()} estra trocando o seu cargo ${cargo}, para a conta ${recebe.toString()}` })
+
                 } catch (error) {
                     logger.error(error)
                 }
@@ -144,8 +155,24 @@ module.exports={
                 
                 const rolesManda = memberManda.roles.cache.filter(r=> ![config.roles.nitro, config.guild_id].includes(r.id) )
     
-                const rolesRecebe = memberRecebe.roles.cache.filter(r=> ![config.roles.nitro, config.guild_id].includes(r.id) )
-                            
+                const rolesRecebe = memberRecebe.roles.cache.filter(r=> ![config.roles.nitro, config.guild_id, config.roles.adv1, config.roles.adv2, config.roles.adv3].includes(r.id) )
+                
+                verificaRolesTeams({mandaRoles})
+
+                function verificaRolesTeams({mandaRoles}){
+
+                    let cargosMemb = mandaRoles.member.roles.cache.filter(r=> ![config.roles.nitro, config.guild_id].includes(r.id) )
+
+                    let teams = config.roles.teams
+                    delete teams.caps
+    
+                    let membCargosTeam = cargosMemb.filter(e => Object.values(teams).includes(e.id) )
+
+                    membCargosTeam.forEach(r=>{
+                        avisaCaps({recebeUser:memberRecebe, mandaUser:memberManda, cargo: r.name})
+                    })
+                }
+
                 dataManda.member = await dataManda.member
                 dataManda.karaoke = await dataManda.karaoke
                 dataManda.poem = await dataManda.poem
@@ -157,9 +184,12 @@ module.exports={
                 dataRecebe.poem = await dataRecebe.poem
                 dataRecebe.arte = await dataRecebe.arte
                 
-    
+                let warnings = []
                 // delete from member receiving 
                 if(dataRecebe?.member?._id){
+                    if( dataRecebe.member.warnings.find(e=> e.issuer) ){
+                        warnings = warnings.concat( dataRecebe.member.warnings.filter(e=> e.issuer) )
+                    }
                     await deleteAllMemberManagement(memberRecebe.id)
                 }
     
@@ -175,12 +205,28 @@ module.exports={
                     await deleteAllActivityarte(memberRecebe.id)
                 }
     
+                const punishment = (points) =>  {return{
+                    0:[],
+                    1:[config.roles.adv1],
+                    2:[config.roles.adv1, config.roles.adv2],
+                    3:[config.roles.adv1, config.roles.adv2, config.roles.adv3],
+                    }[points]
+                }
+        
                 
                 // delete from member sending and insert on member receiving
                 if(dataManda?.member?._id){
+                    if( dataManda.member.warnings.find(e=> e.issuer) ){
+                        warnings = warnings.concat( dataManda.member.warnings.filter(e=> e.issuer) )
+                    }
+
                     deleteAllMemberManagement(memberManda.id)
                     
                     dataManda.member._id = memberRecebe.id
+
+                    if(warnings.length > 0){
+                        dataManda.member.warnings = warnings
+                    }
                     
                     insertMemberManagement(dataManda.member)
                 }
@@ -215,7 +261,18 @@ module.exports={
     
                 await memberManda.roles.remove(rolesManda)
     
-                await memberRecebe.roles.remove(rolesRecebe)
+                await memberRecebe.roles.remove(rolesRecebe)                
+
+                if(warnings.length> 0){
+                    let rolesAdvId = punishment( warnings.filter(e=> e.points > 0 ).length < 3 ? warnings.filter(e=> e.points > 0 ).length : 3 )
+                    
+                    if(rolesAdvId.length > 0){
+                        rolesAdvId.forEach(element => {
+                            rolesManda.push(msg.guild.roles.cache.get(element))
+                        });
+                    }
+                   
+                }
     
                 await memberRecebe.roles.add(rolesManda)
     
