@@ -8,19 +8,19 @@ module.exports={
     .setDescription('Inicia uma atividade/jogo')
     .addStringOption(option => option.setName('tipo').setDescription('Exibe o placar de cada categoria').setRequired(true)
                                 .addChoices([
-                                            ['▶youtube', 'youtube'],
-                                            ['♠poker', 'poker'],
-                                            ['♟chess', 'chess'],
-                                            ['checkers', 'checkers'],
-                                            ['betrayal', 'betrayal'],
-                                            ['fishing', 'fishing'],
-                                            ['lettertile', 'lettertile'],
-                                            ['wordsnack', 'wordsnack'],
-                                            ['spellcast', 'spellcast'],
-                                            ['awkword', 'awkword'],
-                                            ['puttparty', 'puttparty'],
-                                            ['sketchheads', 'sketchheads'],
-                                            ['ocho', 'ocho'],
+                                            ['▶ Youtube', 'youtube'],
+                                            ['♠ Poker', 'poker'],
+                                            ['♟ Xadrez', 'chess'],
+                                            ['🎮 Checkers', 'checkers'],
+                                            ['🎮 Betrayal', 'betrayal'],
+                                            ['🎮 Fishing', 'fishing'],
+                                            ['🎮 Lettertile', 'lettertile'],
+                                            ['🎮 Wordsnack', 'wordsnack'],
+                                            ['🎮 Spellcast', 'spellcast'],
+                                            ['🎮 Awkword', 'awkword'],
+                                            ['🎮 Puttparty', 'puttparty'],
+                                            ['🎮 Sketchheads', 'sketchheads'],
+                                            ['🎮 Ocho', 'ocho'],
                                             ])
                                 .setRequired(true)
     ),
