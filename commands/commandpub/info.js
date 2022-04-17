@@ -3,6 +3,7 @@ const config = require('../../config');
 const { TrimMsg } = require('../../utils/auxiliarFunctions');
 const { get_xp, moneyGet, getPoints } = require('../../mongodb');
 const logger = require('../../utils/logger');
+const client = require('../../utils/loader/discordClient');
 
 /*
     Say some informations about a specific member
@@ -33,9 +34,103 @@ module.exports={
             }else if(msgArgs[1].match(/[0-9]/g)){
                 userid = msgArgs[1]
             }
+
             try{
-                var member = await msg.guild.members.fetch({user:userid, force: false})
-            }catch{
+                
+                const member = msg.guild.members.cache.get(userid)
+                let user;
+                try {
+                    if(member) user = member.user
+                    else user = await client.users.fetch(userid)    
+                } catch (error) {
+                    console.log(error)
+                    return msg.channel.send({content: msg.author.toString() + " Não achamos nenhum usuário"})
+                }
+                
+                embed.setColor(config.color.blurple)
+            
+                var flags = null
+                
+                if(member?.user?.flags){
+                    flags = separate_flags(member.user.flags.toArray())
+                }
+                
+                embed.setTitle((flags ? flags.join("") : "") + user.username )
+                embed.setThumbnail( user.displayAvatarURL({ size:1024, format: "png", dynamic: true }))
+                embed.setFooter({text:`id: ${user.id}`})
+
+                if(member){
+                    let date = new Date(Date.now() - member.joinedAt )
+
+                    let joined_duration_month = parseInt(date.getTime() / 2592000000)
+                
+                    let badges = badge(joined_duration_month)
+                    
+                    if(badges){
+                        embed.addField('⭐Badges', badges, false)
+                    }
+
+                    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: "numeric", minute: "numeric", second: "numeric"};
+
+                    const durJoined = new Date(new Date() - new Date(member.joinedTimestamp))
+
+                    const joinedString = new Date(member.joinedTimestamp).toLocaleString('pt-BR', options) + 
+                    ` ➡ \`${durJoined.getFullYear()-1970? `${durJoined.getFullYear()-1970} ano${durJoined.getFullYear()-1970 > 1? 's': ''}` : ''}\
+ ${durJoined.getMonth() ? `${durJoined.getMonth()} mes${durJoined.getMonth()>1 ? 'es': ''}` : ""}\
+ ${durJoined.getHours() ? `${durJoined.getHours()} hora${durJoined.getHours()>1 ? 's': ''}` : ""}\
+ ${durJoined.getMinutes() ? `${durJoined.getMinutes()} minuto${durJoined.getMinutes()>1 ? 's': ''}` : ""}\
+ ${durJoined.getSeconds() ? `${durJoined.getSeconds()} segundo${durJoined.getSeconds()>1 ? 's': ''}` : ""}\``
+
+                    embed.addField('📅 Entrou em', joinedString, false)
+
+                }
+
+                
+                var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: "numeric", minute: "numeric", second: "numeric"};
+                
+                const durCreated = new Date(new Date() - new Date(user.createdTimestamp))
+
+                const createdString = new Date(user.createdTimestamp).toLocaleString('pt-BR', options) + 
+                ` ➡ \`${durCreated.getFullYear()-1970? `${durCreated.getFullYear()-1970} ano${durCreated.getFullYear()-1970 > 1? 's': ''}` : ''}\
+ ${durCreated.getMonth() ? `${durCreated.getMonth()} mes${durCreated.getMonth()>1 ? 'es': ''}` : ""}\
+ ${durCreated.getHours() ? `${durCreated.getHours()} hora${durCreated.getHours()>1 ? 's': ''}` : ""}\
+ ${durCreated.getMinutes() ? `${durCreated.getMinutes()} minuto${durCreated.getMinutes()>1 ? 's': ''}` : ""}\
+ ${durCreated.getSeconds() ? `${durCreated.getSeconds()} segundo${durCreated.getSeconds()>1 ? 's': ''}` : ""}\``
+
+                embed.addField('📅 Criada em', createdString, false)
+                
+                const coins = await moneyGet(userid)
+                
+                if(coins){
+                    embed.addField('<:Coin_kamai:881917666829414430> Kamaicoins', `₵**${coins}**`, true)
+                }
+                
+                try {
+                    const points = await getPoints(userid)
+                    
+                    if(points) embed.addField('🏆 Pontos troféu 🏆', `**${points}**`, true)
+
+                } catch (error) {
+                    logger.error(error)
+                }
+
+                let xp = await xp_info(userid)
+                embed.setDescription(`**global lvl**: ${xp?.global?.level?  xp.global.level : 0 }
+                ${xp.global ? xp.global.xpGlobalBar : blackProgressBar} ${xp?.global?.percentage ? parseInt(xp.global.percentage * 100) : "0"}%
+                **CHAT**: ${xp.chat.total ? xp.chat.total : 0}xp   **VOZ**: ${xp.voice.total ? xp.voice.total : 0}xp [${xp?.voice?.time ? xp.voice.time : 0}h]  **BÔNUS**: ${xp.bonus.total ? xp.bonus.total : 0}xp
+                `)
+                try {
+                    await msg.channel.send({content: msg.author.toString(),embeds:[embed]})
+        
+                } catch (error) {
+                    logger.error(error)
+                }
+
+
+
+            }catch (error){
+
+                console.log(error)
                 try {
                     return await msg.channel.send(msg.author.toString() + " Usuario desconhecido")
     
@@ -44,21 +139,7 @@ module.exports={
                 }
             }
 
-            embed.setColor(config.color.blurple)
-            
-            var flags = null
-            
-            if(!member) member = msg.member
-            
-            if(member.user.flags){
-                flags = separate_flags(member.user.flags.toArray())
-            }
-            
-            embed.setTitle((flags ? flags.join("") : "") + member.user.username )
-            embed.setThumbnail(member.user.displayAvatarURL({ size:1024, format: "png"  }))
-            embed.setFooter({text:`id: ${member.id}`})
-    
-            let date = new Date(Date.now() - member.joinedAt )
+
             // let date_duration = new Date(Date.now() - new Date(member.user.createdTimestamp))
     
             // let joined_duration = format_date_created(date)
@@ -69,40 +150,6 @@ module.exports={
             // embed.addField('🛎Entrada:', joined_since + `(${joined_duration})`, true)
             // embed.addField('🚪Criada em:', created_since + `(${created_duration})`, true)
     
-            let joined_duration_month = parseInt(date.getTime() / 2592000000)
-            
-            let badges = badge(joined_duration_month)
-            
-            if(badges){
-                embed.addField('⭐Badges', badges, false)
-            }
-            
-            const coins = await moneyGet(userid)
-            
-            if(coins){
-                embed.addField('<:Coin_kamai:881917666829414430> Kamaicoins', `₵**${coins}**`, true)
-            }
-            
-            try {
-                const points = await getPoints(userid)
-                
-                if(points) embed.addField('🏆 Pontos troféu 🏆', `**${points}**`, true)
-
-            } catch (error) {
-                logger.error(error)
-            }
-
-            let xp = await xp_info(userid)
-            embed.setDescription(`**global lvl**: ${xp?.global?.level?  xp.global.level : 0 }
-            ${xp.global ? xp.global.xpGlobalBar : blackProgressBar} ${xp?.global?.percentage ? parseInt(xp.global.percentage * 100) : "0"}%
-            **CHAT**: ${xp.chat.total ? xp.chat.total : 0}xp   **VOZ**: ${xp.voice.total ? xp.voice.total : 0}xp [${xp?.voice?.time ? xp.voice.time : 0}h]  **BÔNUS**: ${xp.bonus.total ? xp.bonus.total : 0}xp
-            `)
-            try {
-                await msg.channel.send({content: msg.author.toString(),embeds:[embed]})
-    
-            } catch (error) {
-                logger.error(error)
-            }
         } catch (error) {
             logger.error(error)
         }
