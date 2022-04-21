@@ -36,7 +36,7 @@ module.exports={
                 if (msg.options._hoistedOptions[1])msgArgs[2] = msg.options._hoistedOptions[1].value.toString()
             
             }else{
-                msgArgs = TrimMsg(msg)
+                msg.reply(msg.author.toString()+', use /placar')
 
             }
 
