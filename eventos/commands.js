@@ -3,6 +3,7 @@ const fs = require(`fs`)
 const config = require(`../config`)
 const logger = require("../utils/logger")
 
+const capsRoles = Object.values(config.roles.teams.caps) 
 
 client.on("messageCreate", msg=>{
     try {
@@ -89,7 +90,7 @@ client.on("messageCreate", msg=>{
             
             }
             //cap commands
-            if (msg.member.roles.cache.find(role => Object.values(config.roles.teams.caps).includes(role.id))){
+            if (msg.member.roles.cache.find(role => capsRoles.includes(role.id))){
                 const capcmd = fs.readdirSync(`./commands/capcmd`).filter(file => file.endsWith(`.js`));
                 capcmd.forEach(command_file_name => {
                     let cap_module = require(`../commands/capcmd/${command_file_name}`);

@@ -147,32 +147,33 @@ module.exports={
                     .setColor('BLURPLE')
     
                 await recebeComp.reply({embeds:[embLoading]})
-    
+                
                 getAllMemberManagement({idManda: memberManda.id, idRecebe: memberRecebe.id})
                 getAllActivityKaraoke({idManda: memberManda.id, idRecebe: memberRecebe.id})
                 getAllActivityPoems({idManda: memberManda.id, idRecebe: memberRecebe.id})
                 getAllActivityarte({idManda: memberManda.id, idRecebe: memberRecebe.id})
                 
                 const rolesManda = memberManda.roles.cache.filter(r=> ![config.roles.nitro, config.guild_id].includes(r.id) )
-    
+                
                 const rolesRecebe = memberRecebe.roles.cache.filter(r=> ![config.roles.nitro, config.guild_id, config.roles.adv1, config.roles.adv2, config.roles.adv3].includes(r.id) )
                 
-                verificaRolesTeams({mandaRoles})
+                verificaRolesTeams({mandaRoles:rolesManda})
+                
 
                 function verificaRolesTeams({mandaRoles}){
 
-                    let cargosMemb = mandaRoles.member.roles.cache.filter(r=> ![config.roles.nitro, config.guild_id].includes(r.id) )
-
+                    let cargosMemb = mandaRoles.filter(r=> ![config.roles.nitro, config.guild_id].includes(r.id) )
+                    
                     let teams = config.roles.teams
                     delete teams.caps
     
-                    let membCargosTeam = cargosMemb.filter(e => Object.values(teams).includes(e.id) )
+                    let membCargosTeam = cargosMemb.filter(e => Object.values(teams).includes(e.id) )             
 
                     membCargosTeam.forEach(r=>{
                         avisaCaps({recebeUser:memberRecebe, mandaUser:memberManda, cargo: r.name})
-                    })
+                    })           
                 }
-
+           
                 dataManda.member = await dataManda.member
                 dataManda.karaoke = await dataManda.karaoke
                 dataManda.poem = await dataManda.poem
@@ -187,7 +188,7 @@ module.exports={
                 let warnings = []
                 // delete from member receiving 
                 if(dataRecebe?.member?._id){
-                    if( dataRecebe.member.warnings.find(e=> e.issuer) ){
+                    if( dataRecebe?.member?.warnings?.find(e=> e.issuer) ){
                         warnings = warnings.concat( dataRecebe.member.warnings.filter(e=> e.issuer) )
                     }
                     await deleteAllMemberManagement(memberRecebe.id)
@@ -230,7 +231,7 @@ module.exports={
                     
                     insertMemberManagement(dataManda.member)
                 }
-    
+        
                 if(dataManda?.karaoke?._id){
                     deleteAllActivityKaraoke(memberManda.id)
     
@@ -238,7 +239,7 @@ module.exports={
     
                     insertKaraoke(dataManda.karaoke)
                 }
-    
+
                 if(dataManda?.poem?._id){
                     deleteAllActivityPoems(memberManda.id)
     
@@ -246,7 +247,7 @@ module.exports={
     
                     insertPoems(dataManda.poem)
                 }
-    
+                
                 if(dataManda?.arte?._id){
                     deleteAllActivityarte(memberManda.id)
     
@@ -254,7 +255,7 @@ module.exports={
     
                     insertArte(dataManda.arte)
                 }
-    
+                
                 const enrolando = new Promise((res, rej)=>setTimeout(()=> res(true) ,7000))
                 
                 await enrolando
@@ -262,6 +263,7 @@ module.exports={
                 await memberManda.roles.remove(rolesManda)
     
                 await memberRecebe.roles.remove(rolesRecebe)                
+                
 
                 if(warnings.length> 0){
                     let rolesAdvId = punishment( warnings.filter(e=> e.points > 0 ).length < 3 ? warnings.filter(e=> e.points > 0 ).length : 3 )
@@ -281,10 +283,10 @@ module.exports={
                 .setImage('https://i.pinimg.com/originals/4f/22/82/4f2282d8bf56ede01b21bbe236fc23f2.gif')
                 .setColor('GREEN')
     
-                msg.followUp({embeds: [embFinal]})
+                await msg.followUp({embeds: [embFinal]})
     
             } catch (error) {
-                
+                logger.error(error)
             }
         } catch (error) {
             logger.error(error)
