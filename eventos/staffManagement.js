@@ -478,8 +478,21 @@ client.on("interactionCreate", async interac =>{
                     break;
                 case"addRole":
                     try {
+                        const author = interac.guild.members.cache.get(doc.authorId)
                         const usersAddRole = await verificaArgsUser(doc.toDo.users, true)
                         const roleAdd = interac.guild.roles.cache.get(doc.toDo.role)
+
+                        let membrosLista = ''
+                        if(roleAdd){
+                            for(const memb of usersAddRole.members){
+                                membrosLista = membrosLista + memb.user.username + " " 
+                            }
+                        }
+                        try {
+                            await author.send('Acabou de ser aprovado um de seus registros sobre adicionar cargos por '+ interac.member.user.username + "\n" + membrosLista)
+                        } catch (error) {
+                            
+                        }
                         
                         if(roleAdd){
                             for(const memb of usersAddRole.members){
@@ -503,14 +516,24 @@ client.on("interactionCreate", async interac =>{
                 case"removeRole":
                     try {
                         const usersRemoveRole = await verificaArgsUser(doc.toDo.users, true)
-                    const role = interac.guild.roles.cache.get(doc.toDo.role)
-            
-                    if(role){
-                        for(const memb of usersRemoveRole.members){
-                            await memb.roles.remove(role)
-
+                        const role = interac.guild.roles.cache.get(doc.toDo.role)
+                        let membrosRemLista = ''
+                        if(roleAdd){
+                            for(const memb of usersRemoveRole.members){
+                                membrosRemLista = membrosRemLista + memb.user.username + " " 
+                            }
                         }
-                    }
+                        try {
+                            await author.send('Acabou de ser aprovado um de seus registros sobre adicionar cargos por '+ interac.member.user.username + "\n" + membrosRemLista)
+                        } catch (error) {
+                            
+                        }
+                        if(role){
+                            for(const memb of usersRemoveRole.members){
+                                await memb.roles.remove(role)
+
+                            }
+                        }
 
                     await msgDeleteMass(regLogChannel, doc.messages)
 
