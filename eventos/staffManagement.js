@@ -489,7 +489,7 @@ client.on("interactionCreate", async interac =>{
                             }
                         }
                         try {
-                            await author.send('Acabou de ser aprovado um de seus registros sobre adicionar cargos por '+ interac.member.user.username + "\n" + membrosLista)
+                            await author.send('Acabou de ser aprovado um de seus registros sobre adicionar cargos por '+ interac.member.user.username + "\nContas afetadas:\n" + membrosLista)
                         } catch (error) {
                             
                         }
@@ -518,13 +518,14 @@ client.on("interactionCreate", async interac =>{
                         const usersRemoveRole = await verificaArgsUser(doc.toDo.users, true)
                         const role = interac.guild.roles.cache.get(doc.toDo.role)
                         let membrosRemLista = ''
-                        if(roleAdd){
+                        
+                        if(role){
                             for(const memb of usersRemoveRole.members){
                                 membrosRemLista = membrosRemLista + memb.user.username + " " 
                             }
                         }
                         try {
-                            await author.send('Acabou de ser aprovado um de seus registros sobre adicionar cargos por '+ interac.member.user.username + "\n" + membrosRemLista)
+                            await author.send('Acabou de ser aprovado um de seus registros sobre adicionar cargos por '+ interac.member.user.username + "\nContas afetadas:\n" + membrosRemLista)
                         } catch (error) {
                             
                         }
