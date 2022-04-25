@@ -75,11 +75,11 @@ module.exports={
                     const durJoined = new Date(new Date() - new Date(member.joinedTimestamp))
 
                     const joinedString = new Date(member.joinedTimestamp).toLocaleString('pt-BR', options) + 
-                    ` ➡ \`${durJoined.getFullYear()-1970? `${durJoined.getFullYear()-1970} ano${durJoined.getFullYear()-1970 > 1? 's': ''}` : ''}\
- ${durJoined.getMonth() ? `${durJoined.getMonth()} mes${durJoined.getMonth()>1 ? 'es': ''}` : ""}\
- ${durJoined.getHours() ? `${durJoined.getHours()} hora${durJoined.getHours()>1 ? 's': ''}` : ""}\
- ${durJoined.getMinutes() ? `${durJoined.getMinutes()} minuto${durJoined.getMinutes()>1 ? 's': ''}` : ""}\
- ${durJoined.getSeconds() ? `${durJoined.getSeconds()} segundo${durJoined.getSeconds()>1 ? 's': ''}` : ""}\``
+                    ` ➡ \`${durJoined.getFullYear()-1970? `${durJoined.getFullYear()-1970} ano${durJoined.getFullYear()-1970 >= 1? 's': ''}` : ''}\
+ ${durJoined.getMonth() ? `${durJoined.getMonth()} mes${durJoined.getMonth() >=1 ? 'es': ''}` : ""}\
+ ${durJoined.getHours() ? `${durJoined.getHours()} hora${durJoined.getHours() >=1 ? 's': ''}` : ""}\
+ ${durJoined.getMinutes() ? `${durJoined.getMinutes()} minuto${durJoined.getMinutes() >=1 ? 's': ''}` : ""}\
+ ${durJoined.getSeconds() ? `${durJoined.getSeconds()} segundo${durJoined.getSeconds() >=1 ? 's': ''}` : ""}\``
 
                     embed.addField('📅 Entrou em', joinedString, false)
 
