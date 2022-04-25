@@ -91,11 +91,11 @@ module.exports={
                 const durCreated = new Date(new Date() - new Date(user.createdTimestamp))
 
                 const createdString = new Date(user.createdTimestamp).toLocaleString('pt-BR', options) + 
-                ` ➡ \`${durCreated.getFullYear()-1970? `${durCreated.getFullYear()-1970} ano${durCreated.getFullYear()-1970 > 1? 's': ''}` : ''}\
- ${durCreated.getMonth() ? `${durCreated.getMonth()} mes${durCreated.getMonth()>1 ? 'es': ''}` : ""}\
- ${durCreated.getHours() ? `${durCreated.getHours()} hora${durCreated.getHours()>1 ? 's': ''}` : ""}\
- ${durCreated.getMinutes() ? `${durCreated.getMinutes()} minuto${durCreated.getMinutes()>1 ? 's': ''}` : ""}\
- ${durCreated.getSeconds() ? `${durCreated.getSeconds()} segundo${durCreated.getSeconds()>1 ? 's': ''}` : ""}\``
+                ` ➡ \`${durCreated.getFullYear()-1970? `${durCreated.getFullYear()-1970} ano${durCreated.getFullYear()-1970 >= 1? 's': ''}` : ''}\
+ ${durCreated.getMonth() ? `${durCreated.getMonth()} mes${durCreated.getMonth()>=1 ? 'es': ''}` : ""}\
+ ${durCreated.getHours() ? `${durCreated.getHours()} hora${durCreated.getHours()>=1 ? 's': ''}` : ""}\
+ ${durCreated.getMinutes() ? `${durCreated.getMinutes()} minuto${durCreated.getMinutes()>=1 ? 's': ''}` : ""}\
+ ${durCreated.getSeconds() ? `${durCreated.getSeconds()} segundo${durCreated.getSeconds()>=1 ? 's': ''}` : ""}\``
 
                 embed.addField('📅 Criada em', createdString, false)
                 
