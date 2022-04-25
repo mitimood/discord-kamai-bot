@@ -75,12 +75,12 @@ module.exports={
                     const durJoined = new Date(new Date() - new Date(member.joinedTimestamp))
 
                     const joinedString = new Date(member.joinedTimestamp).toLocaleString('pt-BR', options) + 
-                    ` ➡ \`${durJoined.getFullYear()-1970? `${durJoined.getFullYear()-1970} ano${durJoined.getFullYear()-1970 > 1? 's': ''}` : ''}\
-${durCreated.getDay() ? `${durCreated.getDate()} dia${durCreated.getDay()>1 ? 's': ''}` : ""}\
-${durJoined.getMonth() ? `${durJoined.getMonth()} mes${durJoined.getMonth() >0 ? 'es': ''}` : ""}\
-${durJoined.getHours() ? `${durJoined.getHours()} hora${durJoined.getHours() >1 ? 's': ''}` : ""}\
-${durJoined.getMinutes() ? `${durJoined.getMinutes()} minuto${durJoined.getMinutes() >1 ? 's': ''}` : ""}\
-${durJoined.getSeconds() ? `${durJoined.getSeconds()} segundo${durJoined.getSeconds() >1 ? 's': ''}` : ""}\``
+                    ` ➡ \`${durJoined.getFullYear()-1970? ` ${durJoined.getFullYear()-1970} ano${durJoined.getFullYear()-1970 > 1? 's': ''}` : ''}\
+${durJoined.getDate() ? ` ${durJoined.getDate()} dia${durJoined.getDate()>1 ? 's': ''}` : ""}\
+${durJoined.getMonth() ? ` ${durJoined.getMonth()} mes${durJoined.getMonth() >0 ? 'es': ''}` : ""}\
+${durJoined.getHours() ? ` ${durJoined.getHours()} hora${durJoined.getHours() >1 ? 's': ''}` : ""}\
+${durJoined.getMinutes() ? ` ${durJoined.getMinutes()} minuto${durJoined.getMinutes() >1 ? 's': ''}` : ""}\
+${durJoined.getSeconds() ? ` ${durJoined.getSeconds()} segundo${durJoined.getSeconds() >1 ? 's': ''}` : ""}\``
 
                     embed.addField('📅 Entrou em', joinedString, false)
 
@@ -91,12 +91,12 @@ ${durJoined.getSeconds() ? `${durJoined.getSeconds()} segundo${durJoined.getSeco
                 const durCreated = new Date(new Date() - new Date(user.createdTimestamp))
 
                 const createdString = new Date(user.createdTimestamp).toLocaleString('pt-BR', options) + 
- ` ➡ \`${durCreated.getFullYear()-1970? `${durCreated.getFullYear()-1970} ano${durCreated.getFullYear()-1970 > 1? 's': ''}` : ''}\
-${durCreated.getMonth() ? `${durCreated.getMonth()} mes${durCreated.getMonth()>0 ? 'es': ''}` : ""}\
-${durCreated.getDay() ? `${durCreated.getDate()} dia${durCreated.getDay()>1 ? 's': ''}` : ""}\
-${durCreated.getHours() ? `${durCreated.getHours()} hora${durCreated.getHours()>1 ? 's': ''}` : ""}\
-${durCreated.getMinutes() ? `${durCreated.getMinutes()} minuto${durCreated.getMinutes()>1 ? 's': ''}` : ""}\
-${durCreated.getSeconds() ? `${durCreated.getSeconds()} segundo${durCreated.getSeconds()>1 ? 's': ''}` : ""}\``
+ ` ➡ \`${durCreated.getFullYear()-1970? ` ${durCreated.getFullYear()-1970} ano${durCreated.getFullYear()-1970 > 1? 's': ''}` : ''}\
+${durCreated.getMonth() ? ` ${durCreated.getMonth()} mes${durCreated.getMonth()>0 ? 'es': ''}` : ""}\
+${durCreated.getDate() ? ` ${durCreated.getDate()} dia${durCreated.getDate()>1 ? 's': ''}` : ""}\
+${durCreated.getHours() ? ` ${durCreated.getHours()} hora${durCreated.getHours()>1 ? 's': ''}` : ""}\
+${durCreated.getMinutes() ? ` ${durCreated.getMinutes()} minuto${durCreated.getMinutes()>1 ? 's': ''}` : ""}\
+${durCreated.getSeconds() ? ` ${durCreated.getSeconds()} segundo${durCreated.getSeconds()>1 ? 's': ''}` : ""}\``
 
 
                 embed.addField('📅 Criada em', createdString, false)
