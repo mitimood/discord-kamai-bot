@@ -67,6 +67,7 @@ async function loadSlashPermissions(){
    
 }
 
-loadSlash().then(()=>loadSlashPermissions())
+// loadSlash().then(()=>loadSlashPermissions())
+loadSlash()
 
 module.exports = { 1:2}
