@@ -8,15 +8,21 @@ Filters all the messages sent searching for scam links
 */
 
 client.on("messageCreate", async msg =>{
+    
 
-   if(msg.channelId == "817597687934746624" && msg.content.match(/400/g)){
-        await msg.react(":verde_SIM:618576110296367140")
+//    if(msg.channelId == "817597687934746624" && msg.content.match(/400/g)){
+//         await msg.react(":verde_SIM:618576110296367140")
 
         
-        await msg.react(":red_no:618576081544544276")
-    }
+//         await msg.react(":red_no:618576081544544276")
+//     }
 
     try {
+
+        if(msg.type ==  "THREAD_CREATED"  && msg.system){
+            await msg.delete()
+        }
+
         if (/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g.test(msg.content) && msg?.member?.roles?.cache?.size == 1){
             console.log("Auto filter " + new Date())
             
