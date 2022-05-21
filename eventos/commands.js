@@ -59,6 +59,14 @@ client.on("messageCreate", msg=>{
                         staff_module.execute(msg)
                     }
                 })
+                
+                const capcmd = fs.readdirSync(`./commands/capcmd`).filter(file => file.endsWith(`.js`));
+                capcmd.forEach(command_file_name => {
+                    let cap_module = require(`../commands/capcmd/${command_file_name}`);
+                    if(command == cap_module.name || cap_module.aliases.includes(command)){
+                        cap_module.execute(msg)
+                    }
+                })
         
             //mod commands
             }else if(msg.member.roles.cache.find(role => [config.roles.staff.mod].includes(role.id))){
@@ -77,7 +85,15 @@ client.on("messageCreate", msg=>{
                         staff_module.execute(msg)
                     }
                 })
-                //staff commands
+
+                const capcmd = fs.readdirSync(`./commands/capcmd`).filter(file => file.endsWith(`.js`));
+                capcmd.forEach(command_file_name => {
+                    let cap_module = require(`../commands/capcmd/${command_file_name}`);
+                    if(command == cap_module.name || cap_module.aliases.includes(command)){
+                        cap_module.execute(msg)
+                    }
+                })
+            //staff commands
             }else if (msg.member.roles.cache.find(role => [config.roles.staff.staff_call].includes(role.id))){
                 const staffcmd = fs.readdirSync(`./commands/staffcmd`).filter(file => file.endsWith(`.js`));
                 staffcmd.forEach(command_file_name => {
@@ -86,8 +102,13 @@ client.on("messageCreate", msg=>{
                         staff_module.execute(msg)
                     }
                 })
-        
-            
+                const capcmd = fs.readdirSync(`./commands/capcmd`).filter(file => file.endsWith(`.js`));
+                capcmd.forEach(command_file_name => {
+                    let cap_module = require(`../commands/capcmd/${command_file_name}`);
+                    if(command == cap_module.name || cap_module.aliases.includes(command)){
+                        cap_module.execute(msg)
+                    }
+                })
             }
             //cap commands
             if (msg.member.roles.cache.find(role => capsRoles.includes(role.id))){
