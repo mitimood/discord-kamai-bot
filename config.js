@@ -96,10 +96,13 @@ module.exports = {
         db_geral:"kamaibot"
     },
     music:{
-        color1: 0xff884d,
-        color2: 0x66004d,
-        color3: 0x66004d,
-        color4: 0x993d00,
+        bots:{
+            bot1: '851661798955548683',
+            bot2: '851662150300336148',
+            bot3: '851662362762674216',
+            bot4: '851662630551945217'
+        },
+        playlistSize: 300
     },
     xp:{
         chat:20,

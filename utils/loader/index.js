@@ -16,6 +16,8 @@ client.on("ready",async ()=>{
         await client.guilds.cache.get(id_guild).members.fetch()
     }
     
+    require('../gerenteBotMusicas')
+
     } catch (error) {
         logger.error(error)
     }

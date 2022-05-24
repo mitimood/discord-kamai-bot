@@ -1,6 +1,8 @@
 const winston = require('winston')
 const { format, transports } = winston
 const path = require('path')
+const { readdirSync, unlinkSync   } = require('fs')
+
 
 const logFormat = format.printf(info => `${info.timestamp} ${info.level} [${info.label}]: ${info.message}`)
 
@@ -34,5 +36,18 @@ const logger = winston.createLogger({
   ],
   exitOnError: false
 })
+
+const logsExpired = readdirSync('./utils/logs').slice(0,-5)
+
+// Clean the log dir
+logsExpired.forEach(d=>{
+  try {
+    unlinkSync('./utils/logs/'+d)
+  } catch (error) {
+    logger.error(error)
+  }
+
+})
+
 
 module.exports = logger
