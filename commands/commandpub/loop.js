@@ -39,7 +39,7 @@ module.exports={
 
             const res = await mandaGerenteBot({botId:botId, loop: loop ,action: 'LOOP'})
     
-            await msg.followUp({content: `${loop=='song'? 'A mesma música de novo de novo de novo de novo de novo' : (loop=='playlist'? 'Vai escutar essa playlist de novo? Ai ta bom, ta ai o replay ↩':( loop=='disable' ? 'Loop desabilitado' : ' Error'))}`})
+            await msg.followUp({content: `${loop=='song'? 'A mesma música de novo de novo de novo de novo de novo' : (loop=='playlist'? 'Rodando a playlist de novo de novo de novo de novo => ta ai o replay ↩':( loop=='disable' ? 'Loop desabilitado' : ' Error'))}`})
         
         } catch (error) {
             logger.error(error)
