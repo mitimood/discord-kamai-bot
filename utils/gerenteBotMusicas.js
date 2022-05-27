@@ -2,7 +2,7 @@ const { joinVoiceChannel, NoSubscriberBehavior, createAudioPlayer, AudioPlayerSt
 const {Client} = require('discord.js')
 
 const http = require('http')
-const {stream} = require('play-dl')
+const {stream, video_info} = require('play-dl')
 const logger = require('./logger');
 const client = require('./loader/discordClient');
 const config = require('../config');
@@ -299,18 +299,13 @@ async function mountAudioResource(url){
 //         dlChunkSize: 0, //disabling chunking is recommended in discord bot
 //         bitrate: 128,
 //         quality: 'highestaudio',
-//    })`
-    try {
-        const readableStream = await stream(url, {
-            discordPlayerCompatibility: true, quality:2, precache: 1 << 60
-        });
+//    })
+    const readableStream = await stream(url, {
+        discordPlayerCompatibility: true, quality:100, precache: 1 << 60
+    });
 
-        return createAudioResource(readableStream.stream, {"inputType": readableStream.type})
-
-    } catch (error) {
-        logger.error(error)
-    }
-}    
+    return createAudioResource(readableStream.stream, {"inputType": readableStream.type})
+}
 
 function adicionaMusica(load){
     try {

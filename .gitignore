@@ -9,4 +9,3 @@ node_modules
 .env
 mongo_backup
 utils/logs
-discloud.config
