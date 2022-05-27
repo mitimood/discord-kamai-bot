@@ -49,5 +49,8 @@ logsExpired.forEach(d=>{
 
 })
 
+process.on('uncaughtException', (error)=>{
+  logger.error(error)
+})
 
 module.exports = logger

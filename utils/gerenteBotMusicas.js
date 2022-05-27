@@ -300,11 +300,17 @@ async function mountAudioResource(url){
 //         bitrate: 128,
 //         quality: 'highestaudio',
 //    })
-    const readableStream = await stream(url, {
-        discordPlayerCompatibility: true, quality:100, precache: 1 << 60
-    });
 
-    return createAudioResource(readableStream.stream, {"inputType": readableStream.type})
+    try {
+        const readableStream = await stream(url, {
+            discordPlayerCompatibility: true, quality:2, precache: 1 << 60
+        });
+    
+        return createAudioResource(readableStream.stream, {"inputType": readableStream.type})
+    } catch (error) {
+        logger.error(error)
+    }
+
 }
 
 function adicionaMusica(load){
