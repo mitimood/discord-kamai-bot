@@ -49,7 +49,7 @@ module.exports={
             await changePoints(userId, pointsAdd)
 
             await msg.followUp({embeds:[new MessageEmbed().setTitle(`🎉PONTOS ADICIONADOS🎈`)
-                                                        .setDescription(`<@${userId}> recebeu ${pointsAdd} pontinhos ${ eligo ? `<@${eligo}>` : ""}✨`)
+                                                        .setDescription(`<@${userId}> recebeu ${pointsAdd} pontinhos ${ eligo ? `,dado por <@${eligo}>` : ""}✨`)
                                                         .setColor("YELLOW")
                                         ]
                                 })
