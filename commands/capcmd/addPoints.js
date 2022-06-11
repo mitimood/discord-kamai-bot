@@ -30,6 +30,8 @@ module.exports={
     .addIntegerOption(i=>i.setDescription("insira a quantidade de pontos")
                           .setName("pontos")
                           .setRequired(true))
+    .addUserOption(i=>i.setName("eligo")
+                          .setDescription("O eligo que aplicou"))
     .setDefaultPermission(false),
     name: "adicionar-ponto",
     aliases: ["adicionarponto"],
@@ -42,10 +44,12 @@ module.exports={
 
             const pointsAdd = msg.options._hoistedOptions[1].value
 
+            const eligo = msg.options?._hoistedOptions[2]?.value
+
             await changePoints(userId, pointsAdd)
 
             await msg.followUp({embeds:[new MessageEmbed().setTitle(`🎉PONTOS ADICIONADOS🎈`)
-                                                        .setDescription(`<@${userId}> recebeu ${pointsAdd} pontinhos ✨`)
+                                                        .setDescription(`<@${userId}> recebeu ${pointsAdd} pontinhos ${ eligo ? `<@${eligo}>` : ""}✨`)
                                                         .setColor("YELLOW")
                                         ]
                                 })
