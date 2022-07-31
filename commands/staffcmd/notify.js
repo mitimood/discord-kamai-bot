@@ -28,25 +28,43 @@ module.exports = {
     
                     let reason = (msgArgs[2]) ? msg.content.substring(msgArgs.slice(0, 2).join(" ").length + 1) : "Motivo não informado";
                     if (await warn_add(user.id, msg.author.id, 0, reason)) {
-                        const emb = new MessageEmbed()
-                        emb.setColor(config.color.sucess)
-                        emb.setDescription(`**Notificação**\n${user.tag} foi notificado por <@${msg.author.id}>\n` + "Motivo:`" + reason + "`")
-                        emb.setFooter({text: `id: ${user.id}`})
+                        const embPv = new MessageEmbed()
+                        embPv.setColor(config.color.sucess)
+                        embPv.setDescription(`\`Olá tudo bem? Você recebeu uma notificação pelo motivo: ${reason}\`
+\`Lembre-se, Notificação não possui peso — você não sofreu advertência ou algo que gere seu banimento. As notificações existem apenas para te deixar mais por dentro do assunto.\` 
+\`Ou seja, relaxe\` :sunglasses: :thumbsup:`)
+                        embPv.setFooter({text: `id: ${user.id}`})
                         let mod_log = client.channels.cache.get(config.channels.modlog)
-    
+
+                        const embModLog = new MessageEmbed()
+
+                        embModLog.setColor(config.color.sucess)
+                        embModLog.setDescription(`**Notificação**\n${user.tag} foi notificado por <@${msg.author.id}>\n` + "Motivo:`" + reason + "`")
+                        embModLog.setFooter({text: `id: ${user.id}`})
+
     
                         if (msg.guild.members.cache.get(user.id)) {
                             try {
-                                await msg.guild.members.cache.get(id).send({ embeds: [emb] })
-    
-                                await mod_log.send({ embeds: [emb] })
-                                await msg.channel.send({ content: `O usuário <@${id}> foi notificado pelo motivo: \`${reason}\`` })
+                                await mod_log.send({ embeds: [embModLog] })
+                            } catch (error) {
+                                logger.error(error)
+                            }
+
+                            try {
+                                await msg.guild.members.cache.get(id).send({ embeds: [embPv] })
                             } catch {
                                 await mod_log.send({ content: `Ouve um erro, ao enviar para o privado ${user.toString()}`, embeds: [emb] })
                                 await msg.channel.send({ content: `O usuário <@${id}> foi notificado pelo motivo: \`${reason}\` \nmas ouve um erro ao notificar no privado!` })
+                            }finally{
+                                try {
+                                    await msg.channel.send({ content: `O usuário <@${id}> foi notificado pelo motivo: \`${reason}\`` })
+
+                                } catch (error) {
+                                    logger.error(error)
+                                }
                             }
                         } else {
-                            await mod_log.send({ embeds: [emb] })
+                            await mod_log.send({ embeds: [embModLog] })
                             await msg.channel.send({ content: `O usuário <@${id}> foi notificado pelo motivo: \`${reason}\` \nmas não esta no servidor mais!` })
                         }
                     }
