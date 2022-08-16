@@ -10,12 +10,12 @@ Filters all the messages sent searching for scam links
 client.on("messageCreate", async msg =>{
     
 
-//    if(msg.channelId == "817597687934746624" && msg.content.match(/400/g)){
-//         await msg.react(":verde_SIM:618576110296367140")
+   if(msg.channelId == "817597687934746624" && msg.content.match(/500/g)){
+        await msg.react(":verde_SIM:618576110296367140")
 
         
-//         await msg.react(":red_no:618576081544544276")
-//     }
+        await msg.react(":red_no:618576081544544276")
+    }
 
     try {
 
