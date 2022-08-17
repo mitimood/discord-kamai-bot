@@ -1,10 +1,12 @@
 const { client } = require('../..');
 const config = require('../../config');
-const { add_voice_xp } = require('../../mongodb');
+const { add_voice_xp, add_bonus_xp } = require('../../mongodb');
 const logger = require('../../utils/logger');
 
 
-var ids = []
+let xp_id_voice = []
+let xp_id_bonus = []
+
 xp_voice_Add()
 
 const karoakeParentId = client.channels.cache.get(config.channels.equipekaraoke).parentId
@@ -14,20 +16,29 @@ async function xp_voice_Add(){
         try {
             const voice = client.guilds.cache.get(config.guild_id).channels.cache.filter(channels => channels.isVoice())
             voice.forEach(voice_channel => {
-                if (voice_channel.members.size > 1 && voice_channel.members.filter(member => !member.bot).size >= 2) {
+                if (voice_channel.members.filter(member => !member.bot).size >= 2) {
                     voice_channel.members.forEach(member => {
                         if((!member.user.bot && !member?.voice?.mute) || member?.voice?.channel?.parentId == karoakeParentId){
-                            ids.push(member.id)
+                            if (member?.voice?.selfVideo){
+                                xp_id_bonus.push(member.id)
+                            }
+                            xp_id_voice.push(member.id)
                         }
                     })
                 }
             })
-            if (ids.length) {
-                add_voice_xp(ids, 2)
-                ids = []
-                console.log("Adicionando xp call " + new Date())
-    
+            if (xp_id_voice.length) {
+                add_voice_xp(xp_id_voice, 2)
+                xp_id_voice = []
+                logger.info("Adicionando xp call")
             }
+
+            if (xp_id_bonus.length) {
+                add_bonus_xp(xp_id_bonus, 1)
+                xp_id_bonus = []
+                logger.info("Adicionando xp bonus, cam ligada")
+            }
+
             await xp_voice_Add()
         } catch (error) {
             logger.error(error)
