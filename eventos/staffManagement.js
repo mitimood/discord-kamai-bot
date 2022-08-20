@@ -22,7 +22,6 @@ MongodbClient.on("connectionReady",async connection=>{
 
 } )
 
-let timeChangeCounter = false
 
 let lastCount;
 
@@ -569,14 +568,14 @@ client.on("interactionCreate", async interac =>{
             await msgColec.delete()
 
             // sends response if too much users to load
-            if(msgArgs.length > 10) await interac.followUp({content:"Carregando os usuários, vc mandou bastantinho...", ephemeral:true})
+            if(msgArgs.length > 10) await interac.editReply({content:"Carregando os usuários, vc mandou bastantinho...", ephemeral:true})
             
             let acc_action;
             
             // Loads users
             acc_action = await verificaArgsUser(msgArgs)
                 
-            if(acc_action.members == [] && acc_action.users == []) return await interac.followUp({content:"Nenhuma conta valida passada", ephemeral:true})
+            if(acc_action.members == [] && acc_action.users == []) return await interac.editReply({content:"Nenhuma conta valida passada", ephemeral:true})
             
             const row = new MessageActionRow()
             .addComponents(
@@ -589,12 +588,10 @@ client.on("interactionCreate", async interac =>{
             );
 
             try {
-                await interac.followUp({components:[row], content:`\`Contas a banir:\`
+                await interac.editReply({components:[row], content:`\`Contas a banir:\`
 ${acc_action.members ? `Dentro do servidor: **${acc_action.members.length}**` : ""}
 ${acc_action.users ? `Usuarios validos: **${acc_action.users.length}**` : ""}
 ${acc_action.invalids ? `Usuários invalidos: **${acc_action.invalids.length}**` : ""}
-
-||Depois de escolher, a interação vai ficar como invalida... E ta tudo bem, é isso...||
                 `, ephemeral:true})
                 
             } catch (error) {
@@ -607,6 +604,12 @@ ${acc_action.invalids ? `Usuários invalidos: **${acc_action.invalids.length}**`
                 
                 collector.on('collect',async i =>{
                     try {
+
+                        try {
+                            await interac.editReply({components:[], content:'Registrado com sucesso'})
+                        } catch (error) {
+                            console.log(error)
+                        }
 
                         let reason = i?.values[0]
 
@@ -639,13 +642,13 @@ ${acc_action.invalids ? `Usuários invalidos: **${acc_action.invalids.length}**`
 
             const msgArgs = TrimMsg(msgColec)
             
-            if(msgArgs.length > 10) await interac.followUp({content:"Carregando os usuários, vc mandou bastantinho...", ephemeral:true})
+            if(msgArgs.length > 10) await interac.editReply({content:"Carregando os usuários, vc mandou bastantinho...", ephemeral:true})
             
             await msgColec.delete()
 
             const acc_action = await verificaArgsUser(msgArgs)
                 
-            if(acc_action.members == [] && acc_action.users == []) await interac.followUp({content:"Nenhuma conta valida passada", ephemeral:true})
+            if(acc_action.members == [] && acc_action.users == []) await interac.editReply({content:"Nenhuma conta valida passada", ephemeral:true})
 
             const row = new MessageActionRow()
             .addComponents(
@@ -657,12 +660,11 @@ ${acc_action.invalids ? `Usuários invalidos: **${acc_action.invalids.length}**`
                     .addOptions(compReasons),
             );
 
-            await interac.followUp({components:[row], content:`\`Contas a advertir:\`
+            await interac.editReply({components:[row], content:`\`Contas a advertir:\`
 ${acc_action.members ? `Dentro do servidor: **${acc_action.members.length}**` : ""}
 ${acc_action.users ? `Usuarios validos: **${acc_action.users.length}**` : ""}
 ${acc_action.invalids ? `Usuários invalidos: **${acc_action.invalids.length}**` : ""}
-
-||Depois de escolher, a interação vai ficar como invalida... E ta tudo bem, é isso...||`, ephemeral:true})
+`, ephemeral:true})
 
             filter = (interaction) => interaction.customId === interac.id && interaction.user.id === interac.user.id;
 
@@ -670,6 +672,12 @@ ${acc_action.invalids ? `Usuários invalidos: **${acc_action.invalids.length}**`
 
             collector.on('collect',async i =>{
                 try {
+
+                    try {
+                        await interac.editReply({components:[], content:'Registrado com sucesso'})
+                    } catch (error) {
+                        
+                    }
                     let reason = i?.values[0]
                 
                     if(!reason) return
@@ -709,9 +717,9 @@ ${acc_action.invalids ? `Usuários invalidos: **${acc_action.invalids.length}**`
 
             let role = interac.guild.roles.cache.get(roleId)
 
-            if(!role) return await interac.followUp({content: "Cargo invalido", ephemeral:true})
+            if(!role) return await interac.editReply({content: "Cargo invalido", ephemeral:true})
 
-            await interac.followUp({content:"Envie os ids dos membros", ephemeral:true})
+            await interac.editReply({content:"Envie os ids dos membros", ephemeral:true})
 
             let msgColec = await interac.channel.awaitMessages({filter, max:1, time:60000, errors: ['time']})
             
@@ -727,7 +735,7 @@ ${acc_action.invalids ? `Usuários invalidos: **${acc_action.invalids.length}**`
                 
             const acc_action = await verificaArgsUser(msgArgs, true)
                 
-            if(acc_action.members == [] && acc_action.users == []) await interac.followUp({content:"Nenhuma conta valida passada", ephemeral:true})
+            if(acc_action.members == [] && acc_action.users == []) await interac.editReply({content:"Nenhuma conta valida passada", ephemeral:true})
 
             const row = new MessageActionRow()
                         .addComponents(
@@ -751,11 +759,10 @@ ${acc_action.invalids ? `Usuários invalidos: **${acc_action.invalids.length}**`
                                 ]),
                         );
                     
-            await interac.followUp({components:[row], content:`\`Contas para gerenciar cargos:\`
+            await interac.editReply({components:[row], content:`\`Contas para gerenciar cargos:\`
 ${acc_action.users ? `Usuarios validos: **${acc_action.members.length}**` : ""}
 ${acc_action.invalids ? `Usuários invalidos: **${acc_action.invalids.length + acc_action.users.length - acc_action.members.length}**` : ""}
-
-||Depois de escolher, a interação vai ficar como invalida... E ta tudo bem, é isso...||`, ephemeral:true})
+`, ephemeral:true})
 
             filter = (interaction) => interaction.customId === interac.id && interaction.user.id === interac.user.id;
             
@@ -763,6 +770,12 @@ ${acc_action.invalids ? `Usuários invalidos: **${acc_action.invalids.length + a
             
             collector.on('collect',async i =>{
                 try {
+
+                    try {
+                        await interac.editReply({components:[], content:'Registrado com sucesso'})
+                    } catch (error) {
+                        
+                    }
                     let action = ""
 
                     if(!i?.values[0]) return
