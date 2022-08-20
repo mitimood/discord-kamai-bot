@@ -1,8 +1,9 @@
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder, InteractionType } = require("discord.js");
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { moneyAdd } = require("../../../mongodb");
 const { gamesDB } = require("../../../")
 const logger = require("../../../utils/logger");
+const config = require("../../../config");
 
 
 module.exports={
@@ -16,7 +17,7 @@ module.exports={
     async execute(msg) {
         try {
             let authorId = ""
-            if(msg.type === "APPLICATION_COMMAND"){
+            if(msg.type === InteractionType.ApplicationCommand){
                 authorId = msg.user.id
     
             }else{
@@ -47,7 +48,7 @@ module.exports={
             if(found){
                const prize = await roll( diceIndex, left)
                 
-               if(msg.type === "APPLICATION_COMMAND"){
+               if(msg.type === InteractionType.ApplicationCommand){
                     await msg.editReply({embeds:[prize]})
 
                 }else{
@@ -65,17 +66,17 @@ module.exports={
                 await gamesDB.diceUpdate(authorId, dices)
                 const prize = await roll(1, 3)
                 
-                if(msg.type === "APPLICATION_COMMAND"){
-                    await msg.editReply({embeds: [new MessageEmbed()
+                if(msg.type === InteractionType.ApplicationCommand){
+                    await msg.editReply({embeds: [new EmbedBuilder()
                         .setTitle("Parece que é a sua primeira vez por aqui")
                         .setDescription("Tome 4 dados para começar")
-                        .setColor("DARK_RED")
+                        .setColor(config.color.dark_red)
                         .setThumbnail("https://media2.giphy.com/media/fmjmxCd7szjzO/giphy.gif"), prize]})
                 }else{
-                    await msg.reply({embeds: [new MessageEmbed()
+                    await msg.reply({embeds: [new EmbedBuilder()
                         .setTitle("Parece que é a sua primeira vez por aqui")
                         .setDescription("Tome 4 dados para começar")
-                        .setColor("DARK_RED")
+                        .setColor(config.color.dark_red)
                         .setThumbnail("https://media2.giphy.com/media/fmjmxCd7szjzO/giphy.gif"), prize]})
                 }
 
@@ -114,7 +115,7 @@ module.exports={
                 }
 
                 const value = parseInt(Math.random() * 1000)
-                let message = new MessageEmbed()
+                let message = new EmbedBuilder()
 
                 switch(true){
                     case (value >= tier5):
@@ -122,7 +123,7 @@ module.exports={
                         message.setTitle(`${value}🎲  ${diceLeft} dados restantes`)
                         .setDescription("Você ganhou 2000 kamaicoins")
                         .setThumbnail("https://media1.giphy.com/media/1OQCVjUPg67Jx4gI6J/giphy.gif?cid=790b76115ed1e1727f975fea0559d5af16b7221f6c4a0204&rid=giphy.gif&ct=s")
-                        .setColor("YELLOW")
+                        .setColor(config.color.yellow)
 
                         break;
                     case (value >= tier4):
@@ -131,7 +132,7 @@ module.exports={
                         message.setTitle(`${value}🎲  ${diceLeft} dados restantes`)
                         .setDescription("Você ganhou 1000 kamaicoins")
                         .setThumbnail("https://media1.giphy.com/media/1OQCVjUPg67Jx4gI6J/giphy.gif?cid=790b76115ed1e1727f975fea0559d5af16b7221f6c4a0204&rid=giphy.gif&ct=s")
-                        .setColor("YELLOW")
+                        .setColor(config.color.yellow)
                         break;
                     case (value >= tier3):
 
@@ -139,7 +140,7 @@ module.exports={
                         message.setTitle(`${value}🎲  ${diceLeft} dados restantes`)
                         .setDescription("Você ganhou 200 kamaicoins")
                         .setThumbnail("https://media1.giphy.com/media/1OQCVjUPg67Jx4gI6J/giphy.gif?cid=790b76115ed1e1727f975fea0559d5af16b7221f6c4a0204&rid=giphy.gif&ct=s")
-                        .setColor("YELLOW")
+                        .setColor(config.color.yellow)
 
                         break;
                     case (value >= tier2):
@@ -148,7 +149,7 @@ module.exports={
                         message.setTitle(`${value}🎲  ${diceLeft} dados restantes`)
                         .setDescription("Você ganhou 100 kamaicoins")
                         .setThumbnail("https://media1.giphy.com/media/1OQCVjUPg67Jx4gI6J/giphy.gif?cid=790b76115ed1e1727f975fea0559d5af16b7221f6c4a0204&rid=giphy.gif&ct=s")
-                        .setColor("YELLOW")
+                        .setColor(config.color.yellow)
 
                         break;      
                     case (value >= tier1):
@@ -157,7 +158,7 @@ module.exports={
                         message.setTitle(`${value}🎲  ${diceLeft} dados restantes`)
                         .setDescription("Você ganhou 30 kamaicoins")
                         .setThumbnail("https://media1.giphy.com/media/1OQCVjUPg67Jx4gI6J/giphy.gif?cid=790b76115ed1e1727f975fea0559d5af16b7221f6c4a0204&rid=giphy.gif&ct=s")
-                        .setColor("YELLOW")
+                        .setColor(config.color.yellow)
 
                         break;    
                 }
@@ -173,7 +174,7 @@ module.exports={
                     const today = new Date()
                     const timeLast = new Date(nextDaily - today)
 
-                    if(msg.type === "APPLICATION_COMMAND"){
+                    if(msg.type === InteractionType.ApplicationCommand){
                         return await msg.editReply( { content: `Você precisa esperar ${timeLast.getUTCHours() ? `${timeLast.getUTCHours()}h` : ""} ${timeLast.getUTCMinutes() ? `${timeLast.getUTCMinutes()}m` : "" } ${timeLast.getUTCSeconds() ? `${timeLast.getUTCSeconds()}s` : ""} para rolar os dados novamente` } )
     
                     }else{

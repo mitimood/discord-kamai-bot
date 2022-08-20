@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { MessageButton, MessageEmbed, MessageActionRow } = require("discord.js");
+const { EmbedBuilder, MessageActionRow, ButtonStyle, ButtonBuilder, InteractionType } = require("discord.js");
 const config = require("../../config");
 const { getAllActivityarte: mongoAllActivityarte, getAllActivityKaraoke:  mongoAllActivityKaraoke,
         getAllActivityPoems: mongoAllActivityPoems, getAllMemberManagement: mongoAllMemberManagement,
@@ -24,7 +24,7 @@ module.exports={
             let memberManda;
             let memberRecebe;
     
-            if(msg.type === "APPLICATION_COMMAND"){
+            if(msg.type === InteractionType.ApplicationCommand){
                 const memberRecebeId = msg.options._hoistedOptions[0].value
                 
                 memberRecebe = msg.guild.members.cache.get(memberRecebeId)
@@ -87,20 +87,20 @@ module.exports={
             
             var row = new MessageActionRow()
             .addComponents(
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId("transferir")
-                    .setStyle("SUCCESS")
+                    .setStyle(ButtonStyle.Success)
                     .setLabel("TRANSFERIR"),
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId("cancelar")
-                    .setStyle("DANGER")
+                    .setStyle(ButtonStyle.Danger)
                     .setLabel("CANCELAR")
             )
     
-            const embMandaApv = new MessageEmbed()
+            const embMandaApv = new EmbedBuilder()
             .setDescription(`Você tem certeza que deseja transferir a sua conta para ${memberRecebe.toString()}?\n\nIsso irá apagar **TODOS** os seus dados dessa conta (dentro do servidor kamaitachi) e moverá para a conta selecionada`)
             .setTitle('Aguardando aprovação de ' + memberManda.displayName)
-            .setColor('AQUA')
+            .setColor(config.color.aqua)
     
             const mandaAprova = await msg.followUp({embeds:[embMandaApv], components:[row]})
             
@@ -111,15 +111,15 @@ module.exports={
     
                 var rowCancel = new MessageActionRow()
                 .addComponents(
-                    new MessageButton()
+                    new ButtonBuilder()
                         .setCustomId("transferir")
-                        .setStyle("SUCCESS")
+                        .setStyle(ButtonStyle.Success)
                         .setLabel("TRANSFERIR")
                         .setDisabled(true)
                         ,
-                    new MessageButton()
+                    new ButtonBuilder()
                         .setCustomId("cancelar")
-                        .setStyle("DANGER")
+                        .setStyle(ButtonStyle.Danger)
                         .setLabel("CANCELAR")
                         .setDisabled(true)
                 )
@@ -128,10 +128,10 @@ module.exports={
                 
                 await mandaComp.reply({content:`Transferencia de ${memberManda.toString()} para ${memberRecebe.toString()} aprovada por ${memberManda.toString()}`})
                 
-                const embRecebeApv = new MessageEmbed()
+                const embRecebeApv = new EmbedBuilder()
                 .setDescription(`${memberManda.toString()} quer transferir a conta dele para você ${memberRecebe.toString()}, isso incluira: cargos, pontos, kamaicoins...\n\nIsso irá apagar **TODOS** os seus dados dessa conta (dentro do servidor kamaitachi) e recebera os status da conta que esta transferindo`)
                 .setTitle('Aguardando aprovação de ' + memberRecebe.displayName)
-                .setColor('AQUA')
+                .setColor(config.color.aqua)
     
                 
                 const recebeAprova = await msg.followUp({embeds: [embRecebeApv], components:[row]})
@@ -141,10 +141,10 @@ module.exports={
     
                 if(recebeComp.customId != 'transferir') return await recebeComp.reply({content:`Transferencia de ${memberManda.toString()} para ${memberRecebe.toString()} cancelada`})
                 
-                const embLoading = new MessageEmbed()
+                const embLoading = new EmbedBuilder()
                     .setTitle('Iniciando transferencia!!')
                     .setImage('https://i.pinimg.com/originals/97/e9/42/97e942ce7fc4e9d4ea6d844a382f251f.gif')
-                    .setColor('BLURPLE')
+                    .setColor(config.color.blurple)
     
                 await recebeComp.reply({embeds:[embLoading]})
                 
@@ -278,10 +278,10 @@ module.exports={
     
                 await memberRecebe.roles.add(rolesManda)
     
-                const embFinal = new MessageEmbed()
+                const embFinal = new EmbedBuilder()
                 .setTitle('Transferencia feita')
                 .setImage('https://i.pinimg.com/originals/4f/22/82/4f2282d8bf56ede01b21bbe236fc23f2.gif')
-                .setColor('GREEN')
+                .setColor(config.color.green)
     
                 await msg.followUp({embeds: [embFinal]})
     

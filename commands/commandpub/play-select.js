@@ -1,7 +1,7 @@
 const config = require("../../config");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const {fetch} = require('cross-fetch')
-const {MessageEmbed} = require('discord.js');
+const {EmbedBuilder, InteractionType} = require('discord.js');
 const logger = require("../../utils/logger");
 
 module.exports={
@@ -18,7 +18,7 @@ module.exports={
 
             let musId;
 
-            if(msg.type === "APPLICATION_COMMAND"){
+            if(msg.type === InteractionType.ApplicationCommand){
                 musId = msg.options._hoistedOptions[0].value
 
             }else{
@@ -41,14 +41,14 @@ module.exports={
 
         const res = await mandaGerenteBot({botId:botId, action: 'PLAYSELECT', musId:musId})
         
-        const emb = new MessageEmbed()
+        const emb = new EmbedBuilder()
 
         if(res.status){
             emb
             .setThumbnail(res.bot.avatar)
             .setDescription(`Furei a fila 😎`)
             .setTitle('▶ ' + res.nowPlaying.original_title)
-            .setColor('GREEN')
+            .setColor(config.color.sucess)
             .setFooter({'iconURL': res.bot.avatar ,text:res.bot.username})
 
         }else{
@@ -56,7 +56,7 @@ module.exports={
             .setThumbnail(res.bot.avatar)
             .setDescription(`'Não achei nenhuma música nessa posição :/'`)
             .setTitle('▶ ' + res.nowPlaying.original_title)
-            .setColor('RED')
+            .setColor(config.color.red)
             .setFooter({'iconURL': res.bot.avatar ,text:res.bot.username})
         }
         

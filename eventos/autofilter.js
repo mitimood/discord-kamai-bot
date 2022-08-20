@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder, MessageType } = require("discord.js");
 const { client } = require("..");
 const config = require("../config");
 const db = require("../mongodb");
@@ -19,7 +19,7 @@ client.on("messageCreate", async msg =>{
 
     try {
 
-        if(msg.type ==  "THREAD_CREATED"  && msg.system){
+        if(msg.type ==  MessageType.ThreadCreated  && msg.system){
             await msg.delete()
         }
 
@@ -30,7 +30,7 @@ client.on("messageCreate", async msg =>{
 
             const scamLog = await msg.client.channels.fetch(config.channels.scamLog)
 
-            const emb = new MessageEmbed()
+            const emb = new EmbedBuilder()
                         .setTimestamp(msg.createdTimestamp)
                         .setDescription(
                             `\`\`\`
@@ -39,7 +39,7 @@ ${msg.content}
                             `
                         )
                         .setTitle("Possivel SCAM => "+ msg.author.username)
-                        .setColor("RED")
+                        .setColor(config.color.red)
                         .setFooter({text:msg.author.id})
                         .setThumbnail(msg.author.avatarURL())
 

@@ -1,3 +1,4 @@
+const { ChannelType } = require('discord.js');
 const { client } = require('../..');
 const config = require('../../config');
 const { add_voice_xp, add_bonus_xp } = require('../../mongodb');
@@ -14,7 +15,7 @@ const karoakeParentId = client.channels.cache.get(config.channels.equipekaraoke)
 async function xp_voice_Add(){
     setTimeout(async ()=>{
         try {
-            const voice = client.guilds.cache.get(config.guild_id).channels.cache.filter(channels => channels.isVoice())
+            const voice = client.guilds.cache.get(config.guild_id).channels.cache.filter(channels => channels.type === ChannelType.GuildVoice)
             voice.forEach(voice_channel => {
                 if (voice_channel.members.filter(member => !member.bot).size >= 2) {
                     voice_channel.members.forEach(member => {

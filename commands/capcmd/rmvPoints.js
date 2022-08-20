@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 const { changePoints } = require("../../mongodb");
 const logger = require("../../utils/logger");
 const config = require("../../config");
@@ -30,7 +30,7 @@ module.exports={
     .addIntegerOption(i=>i.setDescription("insira a quantidade de pontos")
                           .setName("pontos")
                           .setRequired(true))
-    .setDefaultPermission(false),
+    .setDefaultMemberPermissions(0),
     name: "remover-ponto",
     aliases: ["removerponto"],
     description: "Remove pontos de troféu",
@@ -44,9 +44,9 @@ module.exports={
 
             await changePoints(userId, -pointsAdd)
 
-            await msg.followUp({embeds:[new MessageEmbed().setTitle(`⛔PONTOS REMOVIDOS⛔`)
+            await msg.followUp({embeds:[new EmbedBuilder().setTitle(`⛔PONTOS REMOVIDOS⛔`)
                                                         .setDescription(`<@${userId}> perdeu ${pointsAdd} pontinhos`)
-                                                        .setColor("RED")
+                                                        .setColor(config.color.red)
                                         ]
                                 })
 

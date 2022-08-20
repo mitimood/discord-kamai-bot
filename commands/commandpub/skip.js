@@ -1,7 +1,7 @@
 const config = require("../../config");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const {fetch} = require('cross-fetch')
-const {MessageEmbed} = require('discord.js');
+const {EmbedBuilder, InteractionType} = require('discord.js');
 const logger = require("../../utils/logger");
 
 module.exports={
@@ -14,7 +14,7 @@ module.exports={
 
     async execute(msg) {
         try {
-            if(msg.type != "APPLICATION_COMMAND") return await msg.followUp('Utilize esse comando com "/" antes')
+            if(msg.type != InteractionType.ApplicationCommand) return await msg.followUp('Utilize esse comando com "/" antes')
         
         if(!msg?.member?.voice?.channel) return await msg.followUp({content: 'Entre em um canal de voz primeiro'})
         
@@ -34,11 +34,11 @@ module.exports={
 
         const res = await mandaGerenteBot({botId:botId, action: 'SKIP'})
         
-        const emb = new MessageEmbed()
+        const emb = new EmbedBuilder()
         .setThumbnail(res.bot.avatar)
         .setDescription(`${res?.videos?.length } música${res?.videos?.length > 1 || res?.videos?.length == 0 ?"s" : ""} restante${res?.videos?.length > 1 || res?.videos?.length == 0?"s" : ""} na lista`)
         .setTitle('▶ ' + res?.nowPlaying?.original_title ? res.nowPlaying.original_title : "Tocando nenhuma música por agora")
-        .setColor('AQUA')
+        .setColor(config.color.aqua)
         .setFooter({ 'iconURL': res.bot.avatar ,text:res.bot.username})
         
         await msg.followUp({embeds:[emb]})

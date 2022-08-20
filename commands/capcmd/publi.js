@@ -1,6 +1,6 @@
 const { client } = require("../../index");
 const config = require("../../config");
-const { TextChannel } = require("discord.js");
+const { ChannelType } = require("discord.js");
 
 /*
     say command, will reply a message content inside the especified channel
@@ -30,7 +30,7 @@ module.exports={
             
             const channel = client.channels.cache.get(msgArgs[1])
 
-            if(!channel?.isText()){
+            if(channel?.type != ChannelType.GuildText){
                 var mensagem = message.content.substring(msgArgs.slice(0, 1).join(" ").length + 1);
 
                 if(mensagem){

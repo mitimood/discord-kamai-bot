@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const config = require('../../config');
 const { TrimMsg } = require('../../utils/auxiliarFunctions');
 const { get_xp, moneyGet, getPoints } = require('../../mongodb');
@@ -21,7 +21,7 @@ module.exports={
 
     async execute(msg){
         try {
-            const embed = new MessageEmbed()
+            const embed = new EmbedBuilder()
             embed.setDescription(`⠀`)
             
             let msgArgs = TrimMsg(msg)
@@ -67,7 +67,7 @@ module.exports={
                     let badges = badge(joined_duration_month)
                     
                     if(badges){
-                        embed.addField('⭐Badges', badges, false)
+                        embed.addFields('⭐Badges', badges, false)
                     }
 
                     var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: "numeric", minute: "numeric", second: "numeric"};
@@ -82,7 +82,7 @@ ${durJoined.getHours() ? ` ${durJoined.getHours()} hora${durJoined.getHours() >1
 ${durJoined.getMinutes() ? ` ${durJoined.getMinutes()} minuto${durJoined.getMinutes() >1 ? 's': ''}` : ""}\
 ${durJoined.getSeconds() ? ` ${durJoined.getSeconds()} segundo${durJoined.getSeconds() >1 ? 's': ''}` : ""}\``
 
-                    embed.addField('📅 Entrou em', joinedString, false)
+                    embed.addFields('📅 Entrou em', joinedString, false)
 
                 }
                 
@@ -99,18 +99,18 @@ ${durCreated.getMinutes() ? ` ${durCreated.getMinutes()} minuto${durCreated.getM
 ${durCreated.getSeconds() ? ` ${durCreated.getSeconds()} segundo${durCreated.getSeconds()>1 ? 's': ''}` : ""}\``
 
 
-                embed.addField('📅 Criada em', createdString, false)
+                embed.addFields('📅 Criada em', createdString, false)
                 
                 const coins = await moneyGet(userid)
                 
                 if(coins){
-                    embed.addField('<:Coin_kamai:881917666829414430> Kamaicoins', `₵**${coins}**`, true)
+                    embed.addFields('<:Coin_kamai:881917666829414430> Kamaicoins', `₵**${coins}**`, true)
                 }
                 
                 try {
                     const points = await getPoints(userid)
                     
-                    if(points) embed.addField('🏆 Pontos troféu 🏆', `**${points}**`, true)
+                    if(points) embed.addFields('🏆 Pontos troféu 🏆', `**${points}**`, true)
 
                 } catch (error) {
                     logger.error(error)
@@ -149,8 +149,8 @@ ${durCreated.getSeconds() ? ` ${durCreated.getSeconds()} segundo${durCreated.get
             // let created_since = format_date(new Date(member.user.createdTimestamp))
             // let created_duration = format_date_created(date_duration)
     
-            // embed.addField('🛎Entrada:', joined_since + `(${joined_duration})`, true)
-            // embed.addField('🚪Criada em:', created_since + `(${created_duration})`, true)
+            // embed.addFields('🛎Entrada:', joined_since + `(${joined_duration})`, true)
+            // embed.addFields('🚪Criada em:', created_since + `(${created_duration})`, true)
     
         } catch (error) {
             logger.error(error)

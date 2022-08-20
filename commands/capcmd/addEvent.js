@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 const { TrimMsg } = require("../../utils/auxiliarFunctions");
 const { addEvent } = require("../../mongoDbSite");
 const logger = require("../../utils/logger");
@@ -19,7 +19,7 @@ module.exports = {
 
                 try {
 
-                    const emb = new MessageEmbed()
+                    const emb = new EmbedBuilder()
                     const date = new Date(d).toString()
 
                     emb.setImage(msgArgs[3])

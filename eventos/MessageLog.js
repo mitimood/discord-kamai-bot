@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 const { client } = require("..");
 const config = require("../config");
 const logger = require("../utils/logger");
@@ -9,8 +9,8 @@ client.on("messageUpdate", async (oldMessage, newMessage)=>{
 
         logger.info(`Atualizando mensagem `)
 
-        let newEmb = new MessageEmbed()
-        let oldEmb = new MessageEmbed()
+        let newEmb = new EmbedBuilder()
+        let oldEmb = new EmbedBuilder()
 
         let oldImageUrl = '';
 
@@ -18,7 +18,7 @@ client.on("messageUpdate", async (oldMessage, newMessage)=>{
             oldImageUrl += `\n${atach[1].attachment}`
         }
 
-        oldEmb.setDescription("Mensagem antiga em: " + "<#" + oldMessage.channel.id + ">\n\n" + "```\n" + oldMessage.content + "\n```" + oldImageUrl).setColor("GREY").setAuthor({name: oldMessage.author.username, iconURL:oldMessage.author.avatarURL(), url: oldMessage.author.avatarURL()}).setTimestamp(oldMessage.createdTimestamp).setTitle(oldMessage.channel.name ).setFooter({text:oldMessage.member.id})
+        oldEmb.setDescription("Mensagem antiga em: " + "<#" + oldMessage.channel.id + ">\n\n" + "```\n" + oldMessage.content + "\n```" + oldImageUrl).setColor(config.color.grey).setAuthor({name: oldMessage.author.username, iconURL:oldMessage.author.avatarURL(), url: oldMessage.author.avatarURL()}).setTimestamp(oldMessage.createdTimestamp).setTitle(oldMessage.channel.name ).setFooter({text:oldMessage.member.id})
         
         let newImageUrl = '';
 
@@ -26,7 +26,7 @@ client.on("messageUpdate", async (oldMessage, newMessage)=>{
             newImageUrl +=  `\n${atach[1].attachment}`
         }
         
-        newEmb.setDescription("Mensagem nova em: " + "<#" + newMessage.channel.id + ">\n\n" + "```\n" + newMessage.content + "\n```" + newImageUrl).setColor("GREEN").setAuthor({name: newMessage.author.username, iconURL: newMessage.author.avatarURL(), url: newMessage.author.avatarURL()}).setTimestamp(newMessage.createdTimestamp).setTitle(newMessage.channel.name ).setFooter({text:newMessage.member.id})
+        newEmb.setDescription("Mensagem nova em: " + "<#" + newMessage.channel.id + ">\n\n" + "```\n" + newMessage.content + "\n```" + newImageUrl).setColor(config.color.green).setAuthor({name: newMessage.author.username, iconURL: newMessage.author.avatarURL(), url: newMessage.author.avatarURL()}).setTimestamp(newMessage.createdTimestamp).setTitle(newMessage.channel.name ).setFooter({text:newMessage.member.id})
 
         await newMessage.guild.channels.cache.get(config.channels.msglog).send({embeds:[oldEmb, newEmb]})
 
@@ -44,14 +44,14 @@ client.on("messageDelete", async (delMessage)=>{
     
         logger.info(`Mensagem apagada `)
 
-        let delemb = new MessageEmbed()
+        let delemb = new EmbedBuilder()
         let imageUrl = '';
 
         for( atach of delMessage.attachments ){
             imageUrl += `\n${atach[1].attachment}`
         }
 
-        delemb.setDescription("Mensagem deletada em <#" + delMessage.channel.id + ">\n" + "```" + delMessage.content  +"```" + imageUrl).setColor("DARK_RED").setAuthor({name: delMessage.author.username, iconURL: delMessage.author.avatarURL(), url: delMessage.author.avatarURL()}).setTimestamp(delMessage.createdTimestamp).setTitle(delMessage.channel.name).setFooter({text:delMessage.member.id})
+        delemb.setDescription("Mensagem deletada em <#" + delMessage.channel.id + ">\n" + "```" + delMessage.content  +"```" + imageUrl).setColor(config.color.dark_red).setAuthor({name: delMessage.author.username, iconURL: delMessage.author.avatarURL(), url: delMessage.author.avatarURL()}).setTimestamp(delMessage.createdTimestamp).setTitle(delMessage.channel.name).setFooter({text:delMessage.member.id})
         
         await delMessage.guild.channels.cache.get(config.channels.msglog).send({embeds:[delemb]})
 

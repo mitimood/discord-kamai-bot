@@ -1,3 +1,4 @@
+const {  ChannelType } = require("discord.js");
 const { embDb, client } = require("../..");
 const config = require("../../config");
 const logger = require("../../utils/logger");
@@ -107,13 +108,13 @@ module.exports = {
 
                     channelEmb = msg.guild.channels.cache.get(channelEmb?.first()?.content)
 
-                    if(!channelEmb || !channelEmb.isText()) return await msg.reply("Id de canal invalido")
+                    if(!channelEmb || channelEmb.type != ChannelType.GuildText) return await msg.reply("Id de canal invalido")
 
                     await msg.channel.send("Envie o id da **MENSAGEM** que esta o embed que deseja copiar")
                     var filter = (m) => m.author.id == msg.author.id && /[0-9]/g.test(m.content)
                     var msgEmb = await msg.channel.awaitMessages({ filter, max: 1, time: 120000, errors: [`time`] })
 
-                    msgEmb = await channelEmb.messages.fetch(msgEmb?.first().content)
+                    msgEmb = await channelEmb.messages.fetch({message:msgEmb?.first().content})
 
                     if (!msgEmb?.embeds[0]) return await msg.reply("Nenhum embed encontrado nessa mensagem, no canal " + channelEmb.name)
                     

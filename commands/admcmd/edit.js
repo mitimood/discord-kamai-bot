@@ -33,7 +33,7 @@ module.exports={
             if(!canal) return await message.channel.send({content: message.author.toString(), embeds:[{ description:"Não foi possivel achar o canal", color: config.color.err}]})
             
             try {
-                const editMessage = await canal.messages.fetch(msgArgs[2])
+                const editMessage = await canal.messages.fetch({message:msgArgs[2]})
 
                 if(!editMessage) return
                 

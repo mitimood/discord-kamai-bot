@@ -1,7 +1,7 @@
 const config = require("../../config");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const {fetch} = require('cross-fetch')
-const {MessageEmbed} = require('discord.js')
+const {EmbedBuilder, InteractionType} = require('discord.js')
 
 module.exports={
     data: new SlashCommandBuilder()
@@ -12,7 +12,7 @@ module.exports={
     description: "Pausa a música",
 
     async execute(msg) {
-        if(msg.type != "APPLICATION_COMMAND") return await msg.followUp('Utilize esse comando com "/" antes')
+        if(msg.type != InteractionType.ApplicationCommand) return await msg.followUp('Utilize esse comando com "/" antes')
         
         if(!msg?.member?.voice?.channel) return await msg.followUp({content: 'Entre em um canal de voz primeiro'})
         
@@ -32,11 +32,11 @@ module.exports={
 
         const res = await mandaGerenteBot({botId:botId, action: 'PAUSE'})
         
-        const emb = new MessageEmbed()
+        const emb = new EmbedBuilder()
         .setThumbnail(res.bot.avatar)
         .setDescription(`\`${res.bot.username}\` ${res.paused ? "**PAUSADO**" : "**Voltou** a tocar um somzão"}`)
         .setTitle('▶ ' + res.nowPlaying.original_title)
-        .setColor(res.paused ? 'ORANGE' : 'GREEN')
+        .setColor(res.paused ? config.color.orange : config.color.sucess)
         .setFooter({'iconURL': res.bot.avatar ,text:res.bot.username})
 
         await msg.followUp({embeds:[emb]})

@@ -1,4 +1,4 @@
-const { MessageEmbed, Message } = require("discord.js");
+const { EmbedBuilder, Message } = require("discord.js");
 const { listEvent, removeEvent } = require("../../mongoDbSite");
 const logger = require("../../utils/logger");
 
@@ -19,7 +19,7 @@ module.exports = {
                     const date = new Date(event.dateSnowflake).toString()
                     const image = event.imageUrl
                     
-                    const emb = new MessageEmbed()
+                    const emb = new EmbedBuilder()
                     emb.setImage(image)
                     emb.setTitle(`${id} => ${name}`)
                     emb.setDescription(date)
@@ -49,7 +49,7 @@ module.exports = {
             const date = new Date(event.dateSnowflake).toString()
             const image = event.imageUrl
             
-            const emb = new MessageEmbed()
+            const emb = new EmbedBuilder()
             
             emb.setImage(image)
             emb.setTitle(`${id} => ${name}`)

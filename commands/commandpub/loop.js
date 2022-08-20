@@ -1,7 +1,7 @@
 const config = require("../../config");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const {fetch} = require('cross-fetch')
-const {MessageEmbed} = require('discord.js');
+const {EmbedBuilder, InteractionType} = require('discord.js');
 const logger = require("../../utils/logger");
 
 module.exports={
@@ -9,7 +9,7 @@ module.exports={
     .setName('loop')
     .setDescription('Bota sua música em loop')
     .addStringOption((o)=>o.setName('modo').setDescription('Define o modo do loop').setRequired(true)
-                        .addChoices([['playlist','playlist'],['musica', 'song'], ['desabilitar', 'disable']])),
+                        .addChoices({name:'playlist', value:'playlist'},{name:'musica', value:'song'}, {name:'desabilitar', value:'disable'})),
     name: "loop",
     aliases: [],
     description: "Bota sua música em loop",
@@ -17,7 +17,7 @@ module.exports={
         try {
             let loop;
 
-            if(msg.type === "APPLICATION_COMMAND"){
+            if(msg.type === InteractionType.ApplicationCommand){
                 loop = msg.options._hoistedOptions[0].value
     
             }else{

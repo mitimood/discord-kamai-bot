@@ -10,6 +10,7 @@ module.exports={
 
     async execute (msg) {
         try {
+
             const msgArgs = TrimMsg(msg)
             if(msgArgs[1]){
                 let help_name = msgArgs[1].toLowerCase()
@@ -90,6 +91,7 @@ module.exports={
 
 async function full_help(msg){
     try {
+
         let help_commands = []
 
         const admcmd = fs.readdirSync(`./commands/admcmd`).filter(file => file.endsWith(`.js`));

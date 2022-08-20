@@ -71,6 +71,11 @@ module.exports = {
         purple:0x483D8B,
         red: 0x850707,
         orange: 0xff9b30,
+        yellow: 0xf7df05,
+        aqua: 0x05dff7,
+        dark_red: 0x8f0000,
+        pink: 0xff00d9,
+        grey: 0x3b3b3b
     },
     storage_role:{
         troph1:"619671485677699084",

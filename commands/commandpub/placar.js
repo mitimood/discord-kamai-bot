@@ -2,7 +2,7 @@ const { TrimMsg } = require("../../utils/auxiliarFunctions");
 
 const {fetch} = require("cross-fetch");
 const config = require("../../config");
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder, InteractionType } = require("discord.js");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const logger = require("../../utils/logger");
 
@@ -12,11 +12,11 @@ module.exports={
     .setName('placar')
     .setDescription('Exibe o placar de cada categoria')
     .addStringOption(option => option.setName('tipo').setDescription('Exibe o placar de cada categoria').setRequired(true)
-                                .addChoices([
-                                            ['kamaicoins', 'money'],
-                                            ['xp', 'xp'],
-                                            ['pontos-trofeu', 'points'],
-                                            ])
+                                .addChoices(
+                                    {name:'kamaicoins', value:'money'},
+                                    {name:'xp', value:'xp'},
+                                    {name:'pontos-trofeu', value:'points'},
+                                )
                                 .setRequired(true)
                     )
     .addIntegerOption(opt=> opt.setName("paginas")
@@ -29,7 +29,7 @@ module.exports={
         try {
             let msgArgs = [];
 
-            if(msg.type === "APPLICATION_COMMAND"){
+            if(msg.type === InteractionType.ApplicationCommand){
                 msgArgs[0] = "lb"
                 msgArgs[1] = msg.options._hoistedOptions[0].value
 
@@ -47,7 +47,7 @@ module.exports={
                 }
                 let membs = {}
 
-                const emb = new MessageEmbed()
+                const emb = new EmbedBuilder()
 
                 let desc = ""
                 membs = await fetch(`https://www.kamaitachi.com.br/api/leaderboard/xp/${--page}`).then(r=>r.json())
@@ -74,7 +74,7 @@ module.exports={
                 let membs = {}
 
                 membs = await fetch(`https://www.kamaitachi.com.br/api/leaderboard/money/${--page}`).then(r=>r.json())
-                const emb = new MessageEmbed()
+                const emb = new EmbedBuilder()
                 emb.setTitle("PLACAR DE MONEY")
                 let desc = ""
                 
@@ -99,7 +99,7 @@ module.exports={
 
                 membs = await fetch(`https://www.kamaitachi.com.br/api/leaderboard/points/${--page}`).then(r=>r.json())
                 
-                const emb = new MessageEmbed()
+                const emb = new EmbedBuilder()
                 
                 emb.setTitle("PLACAR DE TROFÉUS")
                 

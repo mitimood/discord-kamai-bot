@@ -1,10 +1,8 @@
 const config = require("../../config");
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const spotifyLinkToYoutubeLinks = require("../../utils/spotifyLinkToYoutubeLinks");
-const youtubeVideos = require("../../utils/youtubeVideos");
 const logger = require("../../utils/logger");
 const {fetch} = require('cross-fetch')
-const {MessageEmbed, MessageActionRow, MessageButton} = require('discord.js')
+const {EmbedBuilder, InteractionType} = require('discord.js')
 
 module.exports= {
     data: new SlashCommandBuilder()
@@ -18,7 +16,7 @@ module.exports= {
         try {
             let songPos;
 
-            if(msg.type === "APPLICATION_COMMAND"){
+            if(msg.type === InteractionType.ApplicationCommand){
                 songPos = msg.options._hoistedOptions[0].value
     
             }else{
@@ -42,14 +40,14 @@ module.exports= {
     
             const res = await mandaGerenteBot({botId:botId,songPos: songPos, action: 'REMOVESONG'})
             
-            const emb = new MessageEmbed()
+            const emb = new EmbedBuilder()
     
             if(res.status){
                 emb
                 .setThumbnail(res.bot.avatar)
                 .setDescription(`REMOVIDA ===>${res.status}`)
                 .setTitle('▶ ' + res.nowPlaying.original_title)
-                .setColor('ORANGE')
+                .setColor(config.color.orange)
                 .setFooter({'iconURL': res.bot.avatar ,text:res.bot.username})
     
             }else{
@@ -57,7 +55,7 @@ module.exports= {
                 .setThumbnail(res.bot.avatar)
                 .setDescription(`'Não achei nenhuma música nessa posição :/'`)
                 .setTitle('▶ ' + res.nowPlaying.original_title)
-                .setColor('RED')
+                .setColor(config.color.red)
                 .setFooter({text:res.bot.username})
             }
     

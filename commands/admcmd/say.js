@@ -1,7 +1,7 @@
 const { client } = require("../../index");
 const config = require("../../config");
 const logger = require("../../utils/logger");
-const { MessageActionRow, MessageButton } = require("discord.js");
+const { MessageActionRow, ButtonStyle, ButtonBuilder, ChannelType } = require("discord.js");
 
 /*
     say command, will reply a message content inside the especified channel
@@ -41,17 +41,17 @@ module.exports={
 
             const post = await channel.send(postText)
 
-            if (post.channel.type != 'GUILD_NEWS') return
+            if (post.channel.type != ChannelType.GuildNews) return
 
             const row = new MessageActionRow()
                         .addComponents(
-                            new MessageButton()
+                            new ButtonBuilder()
                                 .setCustomId("yes")
-                                .setStyle("SUCCESS")
+                                .setStyle(ButtonStyle.Success)
                                 .setLabel("POSTAR"),
-                            new MessageButton()
+                            new ButtonBuilder()
                                 .setCustomId("no")
-                                .setStyle("DANGER")
+                                .setStyle(ButtonStyle.Danger)
                                 .setLabel("NÃO POSTAR"),
                         );
 

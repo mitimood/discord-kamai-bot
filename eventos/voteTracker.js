@@ -1,5 +1,5 @@
 const { client } = require("..");
-const { MessageEmbed } = require("discord.js")
+const { EmbedBuilder } = require("discord.js")
 const config = require("../config");
 const { moneyAdd } = require("../mongodb");
 
@@ -17,7 +17,7 @@ client.on("messageCreate", async (msg) => {
         }
 
         if(member){
-            const emb = new MessageEmbed()
+            const emb = new EmbedBuilder()
 
             emb.setDescription(`**OBRIGADO POR TER VOTADO EM NOSSO SERVIDOR!**
             para votar [clique aqui](https://top.gg/servers/612117634909208576/vote) Você pode votar a cada 12h!

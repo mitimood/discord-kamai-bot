@@ -1,3 +1,4 @@
+const { ChannelType } = require("discord.js");
 const { client } = require("..");
 const config = require("../config");
 const logger = require("../utils/logger");
@@ -7,7 +8,7 @@ const logger = require("../utils/logger");
 */
 
 client.on("channelCreate", async channel=>{
-    if(channel.type == "text"){
+    if(channel.type == ChannelType.GuildText){
         try {
             console.log("Canal de texto criado " + new Date())
 
@@ -17,7 +18,7 @@ client.on("channelCreate", async channel=>{
             logger.error(error)
         }
     }
-    if(channel.type == "voice"){
+    if(channel.type == ChannelType.GuildVoice){
         try {
             console.log("Canal de voz " + new Date())
 

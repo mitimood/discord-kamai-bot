@@ -2,7 +2,7 @@ const config = require("../config")
 const { TrimMsg, punishments } = require("../utils/auxiliarFunctions")
 const {client, selfbotRegister} = require("../index")
 const {addReport, getReport, updateStateReport, warn_add, warn_list, getAllActiveReports, MongodbClient} = require("../mongodb")
-const { MessageActionRow, MessageSelectMenu, MessageEmbed, MessageButton, ButtonInteraction } = require('discord.js');
+const { MessageActionRow, SelectMenuBuilder, EmbedBuilder, ButtonStyle, ButtonBuilder } = require('discord.js');
 const logger = require("../utils/logger");
 
 let atvtsUP = 0
@@ -46,97 +46,97 @@ const compReasons = [
     {
         emoji: config.emojis.ban,
         label: 'Flood/spam.',
-        value: '1',
+        value: 1,
     },
     {
         emoji: config.emojis.ban,
         label: 'Divulgação inadequada.',
-        value: '2',
+        value: 2,
     },
     {
         emoji: config.emojis.ban,
         label: 'Off topic/mensagem fora de tópico.',
-        value: '3',
+        value: 3,
     },
     {
         emoji: config.emojis.ban,
         label: 'Menção desnecessária de membros e cargos.',
-        value: '4',
+        value: 4,
     },
     {
         emoji: config.emojis.ban,
         label: 'Provocação e brigas.',
-        value: '5',
+        value: 5,
     },
     {
         emoji: config.emojis.ban,
         label: 'Poluição sonora.',
-        value: '6',
+        value: 6,
     },
     {
         emoji: config.emojis.ban,
         label: 'Atrapalhar o andamento do Karaokê.',
-        value: '7',
+        value: 7,
     },
     {
         emoji: config.emojis.ban,
         label: 'Denúncias falsas.',
-        value: '8',
+        value: 8,
     },
     {
         emoji: config.emojis.ban,
         label: 'Linguagem discriminatória.',
-        value: '9',
+        value: 9,
     },
     {
         emoji: config.emojis.ban,
         label: 'Exposição de membros/ Assédio.',
-        value: '10',
+        value: 10,
     },
     {
         emoji: config.emojis.ban,
         label: 'Preconceito, discriminação, difamação e/ou desrespeito.',
-        value: '11',
+        value: 11,
     },
     {
         emoji: config.emojis.ban,
         label: 'Planejar ou exercer raids no servidor.',
-        value: '12',
+        value: 12,
     },
     {
         emoji: config.emojis.ban,
         label: 'NSFW/ (+18).',
-        value: '13',
+        value: 13,
     },
     {
         emoji: config.emojis.ban,
         label: 'Estimular ou praticar atividades ilegais ou que cause banimento de membros.',
-        value: '14',
+        value: 14,
     },
     {
         emoji: config.emojis.ban,
         label: 'Evasão de punição.',
-        value: '15',
+        value: 15,
     },
     {
         emoji: config.emojis.ban,
         label: 'Conteúdos graficamente chocantes.',
-        value: '16',
+        value: 16,
     },
     {
         emoji: config.emojis.ban,
         label: 'Quebra do ToS do Discord.',
-        value: '17',
+        value: 17,
     },
     {
         emoji: config.emojis.ban,
         label: 'Selfbot.',
-        value: '18',
+        value: 18,
     },
     {
         emoji: config.emojis.ban,
         label: 'Scam.',
-        value: '19',
+        value: 19,
     },
     
 ]
@@ -182,13 +182,13 @@ async function createReport(action, channel, reason, user_send, acc_action_users
         
         const approvalButtons = new MessageActionRow()
         .addComponents(
-            new MessageButton().setLabel("APROVAR").setStyle("SUCCESS").setCustomId("yes")
+            new ButtonBuilder().setLabel("APROVAR").setStyle(ButtonStyle.Success).setCustomId("yes")
         )
         .addComponents(
-            new MessageButton().setLabel("DELETAR").setStyle("DANGER").setCustomId("no")
+            new ButtonBuilder().setLabel("DELETAR").setStyle(ButtonStyle.Danger).setCustomId("no")
         )
     
-        const emb_aproval = new MessageEmbed()
+        const emb_aproval = new EmbedBuilder()
                     .setTitle(`[${action}] => ${acc_size} afetados ${ reason ? reason : "" }`)
                     .setDescription("Esperando aprovação...\n\nAberto por "+ user_send.toString())
                     .setColor(color)
@@ -205,7 +205,7 @@ async function createReport(action, channel, reason, user_send, acc_action_users
         
             acc_ids.push(user.id)
 
-            const emb = new MessageEmbed()
+            const emb = new EmbedBuilder()
                         .setThumbnail(user.avatarURL())
                         .setTitle(user.tag + (selfbot ? "DETECÇÃO AUTOMATICA!!!" : ""))
                         .setDescription(`${action} por ${user_send.toString()}
@@ -341,7 +341,7 @@ client.on("interactionCreate", async interac =>{
             const ActionRow = new MessageActionRow()
             interac.message.components.forEach(comp=>{
                 comp.components.forEach(button=>{
-                    let but = new MessageButton(button).setDisabled(true)
+                    let but = new ButtonBuilder(button).setDisabled(true)
                     ActionRow.addComponents(but)
                 })
             })
@@ -388,7 +388,7 @@ client.on("interactionCreate", async interac =>{
 
                         for(const [i,user] of users.users.entries()){
                             
-                            const emb = new MessageEmbed()
+                            const emb = new EmbedBuilder()
                                             .setThumbnail(user.avatarURL())
                                             .setTitle(user.tag)
                                             .setDescription(`Banido por: ${reportUser.toString()}, aprovado por: ${interac.user.toString()} \n Motivo: \`${doc.toDo.reason}\``)
@@ -440,7 +440,7 @@ client.on("interactionCreate", async interac =>{
                         
                         for(const [i,user] of usersWarn.users.entries()){
                             
-                            const emb = new MessageEmbed()
+                            const emb = new EmbedBuilder()
                                         .setThumbnail(user.avatarURL())
                                         .setTitle(user.tag)
                                         .setDescription(`Advertido por: ${reportUserWarn.toString()}, aprovado por: ${interac.user.toString()} \n Motivo: \`${doc.toDo.reason}\``)
@@ -579,7 +579,7 @@ client.on("interactionCreate", async interac =>{
             
             const row = new MessageActionRow()
             .addComponents(
-                new MessageSelectMenu()
+                new SelectMenuBuilder()
                     .setCustomId(interac.id)
                     .setPlaceholder('Motivo do banimento')
                     .setMinValues(1)
@@ -652,7 +652,7 @@ ${acc_action.invalids ? `Usuários invalidos: **${acc_action.invalids.length}**`
 
             const row = new MessageActionRow()
             .addComponents(
-                new MessageSelectMenu()
+                new SelectMenuBuilder()
                     .setCustomId(interac.id)
                     .setPlaceholder('Motivo da advertencia')
                     .setMinValues(1)
@@ -739,7 +739,7 @@ ${acc_action.invalids ? `Usuários invalidos: **${acc_action.invalids.length}**`
 
             const row = new MessageActionRow()
                         .addComponents(
-                            new MessageSelectMenu()
+                            new SelectMenuBuilder()
                                 .setCustomId(interac.id)
                                 .setPlaceholder('O que fazer?')
                                 .setMinValues(1)
@@ -748,12 +748,12 @@ ${acc_action.invalids ? `Usuários invalidos: **${acc_action.invalids.length}**`
                                     {
                                         emoji: config.emojis.check,
                                         label: 'Adicionar cargo.',
-                                        value: '1',
+                                        value: 1,
                                     },
                                     {
                                         emoji: config.emojis.false ,
                                         label: 'Remover cargo.',
-                                        value: '2',
+                                        value: 2,
                                     },
                         
                                 ]),

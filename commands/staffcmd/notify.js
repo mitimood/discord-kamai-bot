@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 const { client } = require("../..");
 const config = require("../../config");
 const { TrimMsg } = require("../../utils/auxiliarFunctions")
@@ -28,7 +28,7 @@ module.exports = {
     
                     let reason = (msgArgs[2]) ? msg.content.substring(msgArgs.slice(0, 2).join(" ").length + 1) : "Motivo não informado";
                     if (await warn_add(user.id, msg.author.id, 0, reason)) {
-                        const embPv = new MessageEmbed()
+                        const embPv = new EmbedBuilder()
                         embPv.setColor(config.color.sucess)
                         embPv.setDescription(`\`Olá tudo bem? Você recebeu uma notificação pelo motivo: ${reason}\`
 \`Lembre-se, Notificação não possui peso — você não sofreu advertência ou algo que gere seu banimento. As notificações existem apenas para te deixar mais por dentro do assunto.\` 
@@ -36,7 +36,7 @@ module.exports = {
                         embPv.setFooter({text: `id: ${user.id}`})
                         let mod_log = client.channels.cache.get(config.channels.modlog)
 
-                        const embModLog = new MessageEmbed()
+                        const embModLog = new EmbedBuilder()
 
                         embModLog.setColor(config.color.sucess)
                         embModLog.setDescription(`**Notificação**\n${user.tag} foi notificado por <@${msg.author.id}>\n` + "Motivo:`" + reason + "`")

@@ -7,6 +7,7 @@ const capsRoles = Object.values(config.roles.teams.caps)
 
 client.on("messageCreate", msg=>{
     try {
+
         if(!msg.author.bot && msg.guild && msg.content.startsWith(config.prefixo)){
 
             const command =  msg.content.toLowerCase().split(" ")[0].substr(config.prefixo.length)

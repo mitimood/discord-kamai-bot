@@ -18,7 +18,7 @@ module.exports={
         try {
             if(!msgArgs[1]) return await message.channel.send({embeds:[{description:"Como irei modificar o manuscrito se não me enviou o id da?",color:config.color.err}]})
 
-            const chatMessage = await message.channel.messages.fetch(msgArgs[1])
+            const chatMessage = await message.channel.messages.fetch({message:msgArgs[1]})
 
             if(chatMessage==undefined) return await message.channel.send({embeds:[{description:"Você não enviou o id da mensagem certo",color:config.color.err}]})
             

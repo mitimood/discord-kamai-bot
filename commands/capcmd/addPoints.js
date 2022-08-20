@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 const { changePoints } = require("../../mongodb");
 const logger = require("../../utils/logger");
 const config = require("../../config");
@@ -32,7 +32,7 @@ module.exports={
                           .setRequired(true))
     .addUserOption(i=>i.setName("eligo")
                           .setDescription("O eligo que aplicou"))
-    .setDefaultPermission(false),
+    .setDefaultMemberPermissions(0),
     name: "adicionar-ponto",
     aliases: ["adicionarponto"],
     description: "Adiciona pontos de troféu",
@@ -48,9 +48,9 @@ module.exports={
 
             await changePoints(userId, pointsAdd)
 
-            await msg.followUp({embeds:[new MessageEmbed().setTitle(`🎉PONTOS ADICIONADOS🎈`)
+            await msg.followUp({embeds:[new EmbedBuilder().setTitle(`🎉PONTOS ADICIONADOS🎈`)
                                                         .setDescription(`<@${userId}> recebeu ${pointsAdd} pontinhos ${ eligo ? `,dado por <@${eligo}>` : ""}✨`)
-                                                        .setColor("YELLOW")
+                                                        .setColor(config.color.yellow)
                                         ]
                                 })
 

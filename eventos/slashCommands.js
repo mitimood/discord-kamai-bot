@@ -1,9 +1,10 @@
+const { InteractionType } = require("discord.js");
 const { client } = require("..");
 const logger = require("../utils/logger");
 
 client.on("interactionCreate", async interac=>{
 
-    if(!interac.isCommand()) return
+    if(!interac.type === InteractionType.ApplicationCommand) return
     
     try {
 

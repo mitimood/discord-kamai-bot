@@ -4,7 +4,7 @@ const spotifyLinkToYoutubeLinks = require("../../utils/spotifyLinkToYoutubeLinks
 const youtubeVideos = require("../../utils/youtubeVideos");
 const logger = require("../../utils/logger");
 const {fetch} = require('cross-fetch')
-const {MessageEmbed, MessageActionRow, MessageButton} = require('discord.js')
+const {EmbedBuilder, MessageActionRow, ButtonStyle, ButtonBuilder, InteractionType} = require('discord.js')
 
 module.exports= {
     data: new SlashCommandBuilder()
@@ -15,7 +15,7 @@ module.exports= {
     description: "Mostra a playlist do canal",
     async execute(msg) {
         try {
-            if(msg.type != "APPLICATION_COMMAND") return await msg.followUp('Utilize esse comando com "/" antes')
+            if(msg.type != InteractionType.ApplicationCommand) return await msg.followUp('Utilize esse comando com "/" antes')
         
             if(!msg?.member?.voice?.channel) return await msg.followUp({content: 'Entre em um canal de voz primeiro'})
             
@@ -70,18 +70,18 @@ module.exports= {
                 let comps = []
     
                 if(0 < pos){
-                    comps.push( new MessageButton()
+                    comps.push( new ButtonBuilder()
                     .setCustomId("prev")
-                    .setStyle('PRIMARY')
+                    .setStyle(ButtonStyle.Primary)
                     .setLabel("ANTERIOR")
                     .setDisabled(disabled)
                     )
                 }
     
                 if(pages.length > pos + 1){
-                    comps.push(new MessageButton()
+                    comps.push(new ButtonBuilder()
                     .setCustomId("next")
-                    .setStyle("PRIMARY")
+                    .setStyle(ButtonStyle.Primary)
                     .setLabel("PRÓXIMA")
                     .setDisabled(disabled))
                 }
@@ -94,10 +94,10 @@ module.exports= {
             }
             let pos = 0
             function geraEmb(pages, pos){
-                return new MessageEmbed()
+                return new EmbedBuilder()
                 .setThumbnail(res.bot.avatar)
                 .setTitle('▶ ' + res.nowPlaying.original_title)
-                .setColor('BLURPLE')
+                .setColor(config.color.blurple)
                 .setDescription(pages[pos] ? pages[pos] : `Só tem essa mesmo ¯\\_(ツ)_/¯${res.nowPlaying.original_title}`)
                 .setFooter({'iconURL': res.bot.avatar ,text:res.bot.username+ `==> página: ${pos + 1} de ${pages.length}`})
             }

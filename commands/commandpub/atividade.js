@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
+const { InteractionType } = require("discord.js");
 const client = require("../../utils/loader/discordClient");
 const logger = require("../../utils/logger");
 
@@ -7,21 +8,21 @@ module.exports={
     .setName('atividade')
     .setDescription('Inicia uma atividade/jogo')
     .addStringOption(option => option.setName('tipo').setDescription('Exibe o placar de cada categoria').setRequired(true)
-                                .addChoices([
-                                            ['▶ Youtube', 'youtube'],
-                                            ['♠ Poker', 'poker'],
-                                            ['♟ Xadrez', 'chess'],
-                                            ['🎮 Checkers', 'checkers'],
-                                            ['🎮 Betrayal', 'betrayal'],
-                                            ['🎮 Fishing', 'fishing'],
-                                            ['🎮 Lettertile', 'lettertile'],
-                                            ['🎮 Wordsnack', 'wordsnack'],
-                                            ['🎮 Spellcast', 'spellcast'],
-                                            ['🎮 Awkword', 'awkword'],
-                                            ['🎮 Puttparty', 'puttparty'],
-                                            ['🎮 Sketchheads', 'sketchheads'],
-                                            ['🎮 Ocho', 'ocho'],
-                                            ])
+                                .addChoices(
+                                    {name: '▶ Youtube', value:'youtube'},
+                                    {name: '♠ Poker', value:'poker'},
+                                    {name: '♟ Xadrez', value:'chess'},
+                                    {name: '🎮 Checkers', value:'checkers'},
+                                    {name: '🎮 Betrayal', value:'betrayal'},
+                                    {name: '🎮 Fishing', value:'fishing'},
+                                    {name: '🎮 Lettertile', value:'lettertile'},
+                                    {name: '🎮 Wordsnack', value:'wordsnack'},
+                                    {name: '🎮 Spellcast', value:'spellcast'},
+                                    {name: '🎮 Awkword', value:'awkword'},
+                                    {name: '🎮 Puttparty', value:'puttparty'},
+                                    {name: '🎮 Sketchheads', value:'sketchheads'},
+                                    {name: '🎮 Ocho', value:'ocho'}
+                                )
                                 .setRequired(true)
     ),
     name: "atividade",
@@ -30,7 +31,7 @@ module.exports={
 
     async execute(msg) {
         try {
-            if(msg.type != "APPLICATION_COMMAND") return
+            if(msg.type != InteractionType.ApplicationCommand) return
 
             if(!msg?.member?.voice?.channel) return await msg.followUp({content:`Você precisa estar em um canal de voz primeiro`})
 

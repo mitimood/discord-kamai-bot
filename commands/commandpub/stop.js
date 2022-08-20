@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const {fetch} = require('cross-fetch')
-const {MessageEmbed} = require('discord.js');
+const {EmbedBuilder, InteractionType} = require('discord.js');
 const config = require("../../config");
 const logger = require("../../utils/logger");
 
@@ -14,7 +14,7 @@ module.exports={
 
     async execute(msg) {
         try {
-            if(msg.type != "APPLICATION_COMMAND") return await msg.followUp('Utilize esse comando com "/" antes')
+            if(msg.type != InteractionType.ApplicationCommand) return await msg.followUp('Utilize esse comando com "/" antes')
         
             if(!msg?.member?.voice?.channel) return await msg.followUp({content: 'Entre em um canal de voz primeiro'})
             
@@ -34,11 +34,11 @@ module.exports={
     
             const res = await mandaGerenteBot({botId:botId, action: 'STOP'})
             
-            const emb = new MessageEmbed()
+            const emb = new EmbedBuilder()
                 .setThumbnail(res.bot.avatar)
                 .setDescription(`Tchauzinho ${res.bot.username}`)
                 .setTitle('▶ ' + res.nowPlaying.original_title)
-                .setColor('RED')
+                .setColor(config.color.red)
                 .setFooter({'iconURL': res.bot.avatar ,text:res.bot.username})
     
             await msg.followUp({embeds:[emb]})

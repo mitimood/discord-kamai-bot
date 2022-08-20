@@ -1,17 +1,17 @@
 const { embDb } = require("..");
 const config = require(`../config`);
-const { MessageEmbed } = require("discord.js")
+const { EmbedBuilder } = require("discord.js")
 const logger = require("./logger");
 const {fetch} = require("cross-fetch");
 
 module.exports = { emb };
 
-async function emb(msg, embed = new MessageEmbed().setDescription(`Descrição ainda não definida`)) {
+async function emb(msg, embed = new EmbedBuilder().setDescription(`Descrição ainda não definida`)) {
     returnemb(embed)
 
     async function returnemb(embed) {
         try {
-            embed = new MessageEmbed(embed)
+            embed = new EmbedBuilder(embed)
             //Menu embed creation
             var m = await msg.channel.send({
                 embeds: [{
@@ -140,7 +140,7 @@ async function emb(msg, embed = new MessageEmbed().setDescription(`Descrição a
                         if (msgRecemp.first().emoji.name == `✔`) {
                             await msgLast.delete();
                             
-                            embed.addField(`\u200B`, `\u200B`, true)
+                            embed.addFields(`\u200B`, `\u200B`, true)
                             
                             await msg.channel.send({ embeds: [embed] })
                             
@@ -173,12 +173,12 @@ async function emb(msg, embed = new MessageEmbed().setDescription(`Descrição a
                             
                             if (msgReac.first().emoji.name == `❌`) {
                                 await msgLast.delete();
-                                embed.addField(msgNom.first().content, msgVal.first().content)
+                                embed.addFields(msgNom.first().content, msgVal.first().content)
                                 msg.channel.send({ embeds: [embed] })
                                 returnemb(embed);
                             } else {
                                 await msgLast.delete();
-                                embed.addField(msgNom.first().content, msgVal.first().content, true)
+                                embed.addFields(msgNom.first().content, msgVal.first().content, true)
                                 msg.channel.send({ embeds: [embed] })
                                 returnemb(embed);
                             }
@@ -304,7 +304,7 @@ async function emb(msg, embed = new MessageEmbed().setDescription(`Descrição a
                 case 7:
                     try {
                         
-                        await msg.reply({embeds: [ new MessageEmbed().setDescription(`\`\`\`${embed.description}\`\`\``) ] })
+                        await msg.reply({embeds: [ new EmbedBuilder().setDescription(`\`\`\`${embed.description}\`\`\``) ] })
 
                         return returnemb(embed)
 

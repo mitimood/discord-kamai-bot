@@ -2,7 +2,7 @@ const config = require("../../config");
 const { client } = require(`../../index`)
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const logger = require("../../utils/logger");
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder, InteractionType } = require("discord.js");
 
 /* 
 This should be a module that contains a function that performs the banishment of a user
@@ -21,31 +21,31 @@ module.exports = {
     .setName('ban')
     .setDescription('bane bobinhos')
     .addStringOption(option => option.setName('motivo-banimento').setDescription('Define o motivo de banimento').setRequired(true)
-                                .addChoices([
-                                            ['flood/spam', '1'],
-                                            ['divulgação-inadequada', '2'],
-                                            ['off topic/mensagem fora de tópico', '3'],
-                                            ['menção desnecessária de membros e cargos', '4'],
-                                            ['Provocação e brigas', '5'],
-                                            ['Poluição sonora', '6'],
-                                            ['Atrapalhar o andamento do Karaokê', '7'],
-                                            ['Denúncias falsas', '8'],
-                                            ['Linguagem discriminatória', '9'],
-                                            ['Exposição de membros/ Assédio', '10'],
-                                            ['Preconceito, discriminação, difamação e/ou desrespeito', '11'],
-                                            ['Planejar ou exercer raids no servidor', '12'],
-                                            ['NSFW/ (+18)', '13'],
-                                            ['Estimular ou praticar atividades ilegais ou que cause banimento de membros', '14'],
-                                            ['Evasão de punição', '15'],
-                                            ['Conteúdos graficamente chocantes', '16'],
-                                            ['Quebra do ToS do Discord', '17'],
-                                            ['Selfbot', '18'],
-                                            ['Scam', '19']
-                                        ])
+                                .addChoices(
+                                    {name:'flood/spam', value:'1'},
+                                    {name:'divulgação-inadequada', value:'2'},
+                                    {name:'off topic/mensagem fora de tópico', value:'3'},
+                                    {name:'menção desnecessária de membros e cargos', value:'4'},
+                                    {name:'Provocação e brigas', value:'5'},
+                                    {name:'Poluição sonora', value:'6'},
+                                    {name:'Atrapalhar o andamento do Karaokê', value:'7'},
+                                    {name:'Denúncias falsas', value:'8'},
+                                    {name:'Linguagem discriminatória', value:'9'},
+                                    {name:'Exposição de membros/ Assédio', value:'10'},
+                                    {name:'Preconceito, discriminação, difamação e/ou desrespeito', value:'11'},
+                                    {name:'Planejar ou exercer raids no servidor', value:'12'},
+                                    {name:'NSFW/ (+18)', value:'13'},
+                                    {name:'Estimular ou praticar atividades ilegais ou que cause banimento de membros', value:'14'},
+                                    {name:'Evasão de punição', value:'15'},
+                                    {name:'Conteúdos graficamente chocantes', value:'16'},
+                                    {name:'Quebra do ToS do Discord', value:'17'},
+                                    {name:'Selfbot', value:'18'},
+                                    {name:'Scam', value:'19'}
+                                        )
                     )
     .addStringOption(option=> option.setName('contas-a-banir').setDescription('Joga ai os usuários pra rolo').setRequired(true))
     .addBooleanOption(option=> option.setName('apagar-mensagens').setDescription('Apaga a mensagem das ultimas 24h desse membro').setRequired(false))
-    .setDefaultPermission(false),
+    .setDefaultMemberPermissions(0),
     name: "ban",
     aliases: ["bn"],
     description: "bane os membros",
@@ -61,7 +61,7 @@ module.exports = {
 
         try {
 
-            if(msg.type != "APPLICATION_COMMAND") return
+            if(msg.type != InteractionType.ApplicationCommand) return
         
             const getReason = reason => {
                 return {
@@ -113,7 +113,7 @@ module.exports = {
             for(const user of accs.users){
                 try {
                    
-                    await msg.guild.members.ban(user, {reason: `[${user.id}] ${reason}`, days: deleteMsg ? 1 : 0 })
+                    await msg.guild.members.ban(user, {reason: `[${user.id}] ${reason}`, deleteMessageDays: deleteMsg ? 1 : 0 })
         
                 } catch (error) {
                     logger.error(error)
@@ -124,7 +124,7 @@ module.exports = {
     
             for(const [i,user] of accs.users.entries()){
                 try {
-                    const emb = new MessageEmbed()
+                    const emb = new EmbedBuilder()
                                 .setThumbnail(user.avatarURL())
                                 .setTitle(user.tag)
                                 .setDescription(`Banido por: ${msg.user.toString()}, aprovado por: ${msg.user.toString()} \n Motivo: \`${reason}\``)
@@ -349,8 +349,8 @@ module.exports = {
         //     }
 
         //     const ChannelLog = client.channels.cache.get(config.channels.modlog);
-        //     const ModloguMem = new Discord.MessageEmbed().setAuthor(`Kamaitachi ban`, `https://images.genius.com/93a16c1f0873bdfdfaac3b0b6e23f680.300x300x1.jpg`).setColor(config.color.red)
-        //     const ModloguUser = new Discord.MessageEmbed().setAuthor(`Kamaitachi ban`, `https://images.genius.com/93a16c1f0873bdfdfaac3b0b6e23f680.300x300x1.jpg`).setColor(config.color.red)
+        //     const ModloguMem = new Discord.EmbedBuilder().setAuthor(`Kamaitachi ban`, `https://images.genius.com/93a16c1f0873bdfdfaac3b0b6e23f680.300x300x1.jpg`).setColor(config.color.red)
+        //     const ModloguUser = new Discord.EmbedBuilder().setAuthor(`Kamaitachi ban`, `https://images.genius.com/93a16c1f0873bdfdfaac3b0b6e23f680.300x300x1.jpg`).setColor(config.color.red)
             
         //     const banRegTimestamp = Date.now()  
 
@@ -375,7 +375,7 @@ module.exports = {
         //                 await msg.channel.send(answer);
         //                 answer = ``;
         //             }
-        //             ModloguMem.addField(reason, result.members[i].user.tag + `  ` + result.members[i].user.id)
+        //             ModloguMem.addFields(reason, result.members[i].user.tag + `  ` + result.members[i].user.id)
         //             answer = answer.concat("\n" + result.members[i].user.tag + " " + result.members[i].user.id)
 
         //             if (result.members.length == i + 1) {
@@ -405,7 +405,7 @@ module.exports = {
         //                 await msg.channel.send(answer);
         //                 answer = ``;
         //             }
-        //             ModloguUser.addField(reason, result.users[i].tag + `  ` + result.users[i].id)
+        //             ModloguUser.addFields(reason, result.users[i].tag + `  ` + result.users[i].id)
         //             answer = answer.concat("\n" + result.users[i].tag + " " + result.users[i].id)
         //             if (result.users.length == i + 1) {
         //                 ChannelLog.send({ embeds: [ModloguUser] });

@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const { InteractionType } = require('discord.js');
 const { moneyGet, moneyRemove, moneyAdd } = require('../../../mongodb');
 const { TrimMsg } = require('../../../utils/auxiliarFunctions');
 const logger = require('../../../utils/logger');
@@ -28,7 +29,7 @@ module.exports={
         let userTransf = {}
         let moneyTransf = 0
 
-        if (msg.type === "APPLICATION_COMMAND"){
+        if (msg.type === InteractionType.ApplicationCommand){
           userCmd = interac.user
           userTransf = interac.options.getUser('usuario')
           moneyTransf = interac.options.getInteger('quantidade')
@@ -42,7 +43,7 @@ module.exports={
           if(parseInt(moneyTransf)>0){
             moneyTransf = parseInt(moneyTransf)
           }else{
-            if(msg.type === "APPLICATION_COMMAND"){
+            if(msg.type === InteractionType.ApplicationCommand){
               return await interac.editReply({content: "Quantidade invalida"})
 
             }else{
@@ -55,7 +56,7 @@ module.exports={
           
           if(users.length) userTransf = users[0]
           else {
-            if(msg.type === "APPLICATION_COMMAND"){
+            if(msg.type === InteractionType.ApplicationCommand){
               return await interac.editReply("Usuarios invalidos")
 
             }else{
@@ -67,7 +68,7 @@ module.exports={
 
         if(userCmd === userTransf){
 
-          if(msg.type === "APPLICATION_COMMAND"){
+          if(msg.type === InteractionType.ApplicationCommand){
             return await interac.editReply(`-Seu madruga, me vende um churros por favor?
             --Claro chavinho, foi para isso que te dei o dinheiro`)
 
@@ -83,7 +84,7 @@ module.exports={
         if(userMoney >= moneyTransf){
           await moneyRemove(userCmd.id, moneyTransf)
           await moneyAdd(userTransf.id, moneyTransf)
-          if(msg.type === "APPLICATION_COMMAND"){
+          if(msg.type === InteractionType.ApplicationCommand){
             await interac.editReply({content:`Você transferiu <:Coin_kamai:881917666829414430> ${moneyTransf}, para ${userTransf.toString()} `})
 
 
@@ -92,7 +93,7 @@ module.exports={
 
           }
         }else{
-          if(msg.type === "APPLICATION_COMMAND"){
+          if(msg.type === InteractionType.ApplicationCommand){
             await interac.editReply({content:`Você não tem kamaicoins suficientes, faltam <:Coin_kamai:881917666829414430> ${ userMoney - moneyTransf}`})
 
 

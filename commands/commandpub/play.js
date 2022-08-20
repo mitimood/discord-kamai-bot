@@ -4,7 +4,7 @@ const spotifyLinkToYoutubeLinks = require("../../utils/spotifyLinkToYoutubeLinks
 const youtubeVideos = require("../../utils/youtubeVideos");
 const logger = require("../../utils/logger");
 const {fetch} = require('cross-fetch')
-const {MessageEmbed} = require('discord.js')
+const {EmbedBuilder, ChannelType, InteractionType} = require('discord.js')
 
 module.exports= {
     data: new SlashCommandBuilder()
@@ -19,7 +19,7 @@ module.exports= {
         try {
             let link;
 
-            if(msg.type === "APPLICATION_COMMAND"){
+            if(msg.type === InteractionType.ApplicationCommand){
                 link = msg.options._hoistedOptions[0].value
 
             }else{
@@ -56,7 +56,7 @@ module.exports= {
 
             let res = await mandaGerenteBot({botId:botId, videos: videos, action: botInVoice ? 'ADD_SONG' :'CREATE', data:{}, channelId: msg.member.voice.channel.id})
 
-            const emb = new MessageEmbed()
+            const emb = new EmbedBuilder()
             .setThumbnail(res.bot.avatar)
             .setDescription(`${videos.length } música${videos.length > 1?"s" : ""} adicionada${videos.length > 1?"s" : ""}
 
@@ -68,7 +68,7 @@ module.exports= {
 > Pausar? **/pause**
 > Resumir? **/resume**`)
             .setTitle('▶ ' + res.nowPlaying.original_title)
-            .setColor('LUMINOUS_VIVID_PINK')
+            .setColor(config.color.pink)
             .setFooter({'iconURL': res.bot.avatar ,text:res.bot.username})
 
             await msg.followUp({embeds:[emb]})
@@ -124,7 +124,7 @@ function getBotId(msg){
         botId = msg.member.voice.channel.members.find((v,k)=> bots.find(id=> k==id))?.id
         
         if(!botId){
-            const voiceChannels = msg.guild.channels.cache.filter(c=>c.isVoice())
+            const voiceChannels = msg.guild.channels.cache.filter(c=>c.type === ChannelType.GuildVoice)
             
             voiceChannels.map((c)=>c.members.map((v,k)=>bots.find(id=> k==id)? bots.splice( bots.findIndex(id=> k==id), 1): false) )
             

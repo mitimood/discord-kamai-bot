@@ -1,5 +1,5 @@
 const { joinVoiceChannel, NoSubscriberBehavior, createAudioPlayer, AudioPlayerStatus, createAudioResource, StreamType } = require('@discordjs/voice');
-const {Client} = require('discord.js')
+const {Client, ChannelType} = require('discord.js')
 
 const http = require('http')
 const {stream, video_info} = require('play-dl')
@@ -376,7 +376,7 @@ Object.values(config.music.bots).forEach(async (id)=>{
 
 client.guilds.cache.get(config.guild_id).channels.cache.forEach(async(c)=>{
 
-    if(c.isVoice() && c.members.size) c.members.forEach(async(m)=>{
+    if(c.type === ChannelType.GuildVoice && c.members.size) c.members.forEach(async(m)=>{
         try {
             if(Object.values(config.music.bots).includes(m.user.id) && m.voice.channel) await m.voice.disconnect()
         } catch (error) {

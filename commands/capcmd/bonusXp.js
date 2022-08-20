@@ -1,3 +1,4 @@
+const { ChannelType } = require('discord.js');
 const { client } = require('../..');
 const config = require('../../config');
 const { add_bonus_xp } = require('../../mongodb');
@@ -37,7 +38,7 @@ module.exports={
                 try {
                     if(!activated) clearInterval(bonusFunc)
 
-                    const voice = client.guilds.cache.get(config.guild_id).channels.cache.filter(channels => channels.isVoice())
+                    const voice = client.guilds.cache.get(config.guild_id).channels.cache.filter(channels => channels.type === ChannelType.GuildVoice)
 
                     voice.forEach(voice_channel => {
                         if (voice_channel.parentId == config.channels.event) {
