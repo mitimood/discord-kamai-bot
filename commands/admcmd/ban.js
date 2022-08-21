@@ -49,13 +49,6 @@ module.exports = {
     name: "ban",
     aliases: ["bn"],
     description: "bane os membros",
-    permissions: [
-        {
-            id: config.roles.staff.admin,
-            type: 'ROLE',
-            permission: true,
-        },
-    ],
 
     async execute(msg) {
 

@@ -1,3 +1,4 @@
+const { AuditLogEvent } = require("discord.js");
 const config = require("../config");
 const { client } = require("../index");
 const logger = require("../utils/logger");
@@ -14,7 +15,7 @@ const logger = require("../utils/logger");
 
             const fetchedLogs = await newState.guild.fetchAuditLogs({
                 limit: 1, 
-                type: 'MEMBER_UPDATE'
+                type: AuditLogEvent.MemberUpdate
             })
 
             const mutado = fetchedLogs.entries.first();

@@ -140,7 +140,7 @@ async function emb(msg, embed = new EmbedBuilder().setDescription(`Descrição a
                         if (msgRecemp.first().emoji.name == `✔`) {
                             await msgLast.delete();
                             
-                            embed.addFields(`\u200B`, `\u200B`, true)
+                            embed.addFields({name:`\u200B`, value:`\u200B`, inline:true})
                             
                             await msg.channel.send({ embeds: [embed] })
                             
@@ -173,12 +173,12 @@ async function emb(msg, embed = new EmbedBuilder().setDescription(`Descrição a
                             
                             if (msgReac.first().emoji.name == `❌`) {
                                 await msgLast.delete();
-                                embed.addFields(msgNom.first().content, msgVal.first().content)
+                                embed.addFields({name:msgNom.first().content, value:msgVal.first().content})
                                 msg.channel.send({ embeds: [embed] })
                                 returnemb(embed);
                             } else {
                                 await msgLast.delete();
-                                embed.addFields(msgNom.first().content, msgVal.first().content, true)
+                                embed.addFields({name: msgNom.first().content, value:msgVal.first().content, inline:true})
                                 msg.channel.send({ embeds: [embed] })
                                 returnemb(embed);
                             }

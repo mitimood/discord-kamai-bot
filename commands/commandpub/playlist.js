@@ -4,7 +4,7 @@ const spotifyLinkToYoutubeLinks = require("../../utils/spotifyLinkToYoutubeLinks
 const youtubeVideos = require("../../utils/youtubeVideos");
 const logger = require("../../utils/logger");
 const {fetch} = require('cross-fetch')
-const {EmbedBuilder, MessageActionRow, ButtonStyle, ButtonBuilder, InteractionType} = require('discord.js')
+const {EmbedBuilder, MessageActionRow, ButtonStyle, ButtonBuilder, InteractionType, ComponentType} = require('discord.js')
 
 module.exports= {
     data: new SlashCommandBuilder()
@@ -108,7 +108,7 @@ module.exports= {
     
             let filter = (m)=> m.user.id === msg.user.id
             
-            const collectBtn = playlistMsg.createMessageComponentCollector({idle: 50_000,  filter: filter, componentType: 'BUTTON'})
+            const collectBtn = playlistMsg.createMessageComponentCollector({idle: 50_000,  filter: filter, componentType: ComponentType.Button})
     
             collectBtn.on('collect', async (btnInt)=>{
                 if(btnInt.customId === 'prev') pos -= 1

@@ -1,7 +1,7 @@
 const config = require("../../config");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const {fetch} = require('cross-fetch')
-const {EmbedBuilder, MessageActionRow, ButtonBuilder, ButtonStyle, InteractionType} = require('discord.js');
+const {EmbedBuilder, MessageActionRow, ButtonBuilder, ButtonStyle, InteractionType, ComponentType} = require('discord.js');
 const logger = require("../../utils/logger");
 
 
@@ -109,7 +109,7 @@ module.exports={
     
             let filter = (m)=> m.user.id === msg.user.id
             
-            const collectBtn = playlistMsg.createMessageComponentCollector({idle: 50_000,  filter: filter, componentType: 'BUTTON'})
+            const collectBtn = playlistMsg.createMessageComponentCollector({idle: 50_000,  filter: filter, componentType: ComponentType.Button})
     
             collectBtn.on('collect', async (btnInt)=>{
                 if(btnInt.customId === 'prev') pos -= 1

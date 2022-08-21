@@ -2,7 +2,7 @@ const config = require("../config")
 const { TrimMsg, punishments } = require("../utils/auxiliarFunctions")
 const {client, selfbotRegister} = require("../index")
 const {addReport, getReport, updateStateReport, warn_add, warn_list, getAllActiveReports, MongodbClient} = require("../mongodb")
-const { MessageActionRow, SelectMenuBuilder, EmbedBuilder, ButtonStyle, ButtonBuilder } = require('discord.js');
+const { MessageActionRow, SelectMenuBuilder, EmbedBuilder, ButtonStyle, ButtonBuilder, ComponentType } = require('discord.js');
 const logger = require("../utils/logger");
 
 let atvtsUP = 0
@@ -600,7 +600,7 @@ ${acc_action.invalids ? `Usuários invalidos: **${acc_action.invalids.length}**`
 
                 filter = (interaction) => interaction.customId === interac.id && interaction.user.id === interac.user.id;
                 
-                const collector = interac.channel.createMessageComponentCollector({ filter,max:1,componentType:"SELECT_MENU", time: 120000 });
+                const collector = interac.channel.createMessageComponentCollector({ filter,max:1,componentType:ComponentType.SelectMenu, time: 120000 });
                 
                 collector.on('collect',async i =>{
                     try {
@@ -668,7 +668,7 @@ ${acc_action.invalids ? `Usuários invalidos: **${acc_action.invalids.length}**`
 
             filter = (interaction) => interaction.customId === interac.id && interaction.user.id === interac.user.id;
 
-            const collector = interac.channel.createMessageComponentCollector({ filter,max:1,componentType:"SELECT_MENU", time: 120000 });
+            const collector = interac.channel.createMessageComponentCollector({ filter,max:1,componentType:ComponentType.SelectMenu, time: 120000 });
 
             collector.on('collect',async i =>{
                 try {
@@ -766,7 +766,7 @@ ${acc_action.invalids ? `Usuários invalidos: **${acc_action.invalids.length + a
 
             filter = (interaction) => interaction.customId === interac.id && interaction.user.id === interac.user.id;
             
-            const collector = interac.channel.createMessageComponentCollector({ filter,max:1,componentType:"SELECT_MENU", time: 60000 });
+            const collector = interac.channel.createMessageComponentCollector({ filter,max:1,componentType:ComponentType.SelectMenu, time: 60000 });
             
             collector.on('collect',async i =>{
                 try {

@@ -1,3 +1,4 @@
+const { ChannelType, PermissionFlagsBits, OverwriteType } = require("discord.js");
 const config = require("../config");
 const {client, LocalDb} = require(`../index`);
 const logger = require("../utils/logger");
@@ -34,7 +35,12 @@ client.on("voiceStateUpdate", async (oldstate,newstate)=>
             const everyone = newstate.guild.roles.cache.get(newstate.guild.id)
             const bots = newstate.guild.roles.cache.get(config.roles.bots)
 
-            const prmChannel = await newstate.guild.channels.create(`PV [${newstate.member.user.username}]`,{type:"GUILD_VOICE",parent: newstate.channel.parent,permissionOverwrites:[{id:newstate.member.id, allow:["MOVE_MEMBERS","CONNECT"],type:"member"},{id:everyone,deny:"CONNECT",allow:"STREAM",type:"role"}, {id:bots,allow:"CONNECT",type:"role"}]})
+            const prmChannel = await newstate.guild.channels.create(`PV [${newstate.member.user.username}]`,
+            {type:ChannelType.GuildVoice,parent: newstate.channel.parent,
+                permissionOverwrites:[
+                    {id:newstate.member.id, allow:[PermissionFlagsBits.MoveMembers,PermissionFlagsBits.Connect], type:OverwriteType.Member},
+                    {id:everyone, deny: PermissionFlagsBits.Connect, allow: PermissionFlagsBits.Stream, type:OverwriteType.Role}, 
+                    {id:bots, allow: PermissionFlagsBits.Connect, type:OverwriteType.Role}]})
             
             LocalDb.attactivity(newstate.id,1)
             LocalDb.savechan(prmChannel,newstate.id)

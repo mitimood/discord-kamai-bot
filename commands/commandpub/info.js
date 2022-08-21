@@ -26,7 +26,7 @@ module.exports={
             
             let msgArgs = TrimMsg(msg)
             let userid = ""
-    
+            
             if (msg.mentions.members.first()){
                 userid =  msg.mentions.members.first().user.id
             }else if( !msgArgs[1] || !msgArgs[1].match(/[0-9]/g) ){
@@ -67,7 +67,7 @@ module.exports={
                     let badges = badge(joined_duration_month)
                     
                     if(badges){
-                        embed.addFields('⭐Badges', badges, false)
+                        embed.addFields({name:'⭐Badges', value:badges, inline:false})
                     }
 
                     var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: "numeric", minute: "numeric", second: "numeric"};
@@ -82,7 +82,7 @@ ${durJoined.getHours() ? ` ${durJoined.getHours()} hora${durJoined.getHours() >1
 ${durJoined.getMinutes() ? ` ${durJoined.getMinutes()} minuto${durJoined.getMinutes() >1 ? 's': ''}` : ""}\
 ${durJoined.getSeconds() ? ` ${durJoined.getSeconds()} segundo${durJoined.getSeconds() >1 ? 's': ''}` : ""}\``
 
-                    embed.addFields('📅 Entrou em', joinedString, false)
+                    embed.addFields({name:'📅 Entrou em', value:joinedString, inline:false})
 
                 }
                 
@@ -99,18 +99,18 @@ ${durCreated.getMinutes() ? ` ${durCreated.getMinutes()} minuto${durCreated.getM
 ${durCreated.getSeconds() ? ` ${durCreated.getSeconds()} segundo${durCreated.getSeconds()>1 ? 's': ''}` : ""}\``
 
 
-                embed.addFields('📅 Criada em', createdString, false)
+                embed.addFields({name:'📅 Criada em', value:createdString, inline:false})
                 
                 const coins = await moneyGet(userid)
                 
                 if(coins){
-                    embed.addFields('<:Coin_kamai:881917666829414430> Kamaicoins', `₵**${coins}**`, true)
+                    embed.addFields({name:'<:Coin_kamai:881917666829414430> Kamaicoins', value:`₵**${coins}**`, inline:true})
                 }
                 
                 try {
                     const points = await getPoints(userid)
                     
-                    if(points) embed.addFields('🏆 Pontos troféu 🏆', `**${points}**`, true)
+                    if(points) embed.addFields({name:'🏆 Pontos troféu 🏆', value:`**${points}**`, inline:true})
 
                 } catch (error) {
                     logger.error(error)
