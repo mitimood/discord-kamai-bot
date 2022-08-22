@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { EmbedBuilder, MessageActionRow, ButtonStyle, ButtonBuilder, InteractionType } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonStyle, ButtonBuilder, InteractionType } = require("discord.js");
 const config = require("../../config");
 const { getAllActivityarte: mongoAllActivityarte, getAllActivityKaraoke:  mongoAllActivityKaraoke,
         getAllActivityPoems: mongoAllActivityPoems, getAllMemberManagement: mongoAllMemberManagement,
@@ -85,7 +85,7 @@ module.exports={
                 }
             }
             
-            var row = new MessageActionRow()
+            var row = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
                     .setCustomId("transferir")
@@ -109,7 +109,7 @@ module.exports={
     
                 const mandaComp = await mandaAprova.awaitMessageComponent({filter, time: 120_00})
     
-                var rowCancel = new MessageActionRow()
+                var rowCancel = new ActionRowBuilder()
                 .addComponents(
                     new ButtonBuilder()
                         .setCustomId("transferir")

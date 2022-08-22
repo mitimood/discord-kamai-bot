@@ -1,7 +1,7 @@
 const config = require("../../config");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const {fetch} = require('cross-fetch')
-const {EmbedBuilder, MessageActionRow, ButtonBuilder, ButtonStyle, InteractionType, ComponentType} = require('discord.js');
+const {EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, InteractionType, ComponentType} = require('discord.js');
 const logger = require("../../utils/logger");
 
 
@@ -67,7 +67,7 @@ module.exports={
             });
             
             function genNavButtons(pages, pos, disabled = false){
-                let row = new MessageActionRow()
+                let row = new ActionRowBuilder()
                 
                 let comps = []
     

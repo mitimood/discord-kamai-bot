@@ -1,7 +1,7 @@
 const { client } = require("../../index");
 const config = require("../../config");
 const logger = require("../../utils/logger");
-const { MessageActionRow, ButtonStyle, ButtonBuilder, ChannelType } = require("discord.js");
+const { ActionRowBuilder, ButtonStyle, ButtonBuilder, ChannelType } = require("discord.js");
 
 /*
     say command, will reply a message content inside the especified channel
@@ -43,7 +43,7 @@ module.exports={
 
             if (post.channel.type != ChannelType.GuildNews) return
 
-            const row = new MessageActionRow()
+            const row = new ActionRowBuilder()
                         .addComponents(
                             new ButtonBuilder()
                                 .setCustomId("yes")

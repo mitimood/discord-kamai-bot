@@ -2,7 +2,7 @@ const config = require("../config")
 const { TrimMsg, punishments } = require("../utils/auxiliarFunctions")
 const {client, selfbotRegister} = require("../index")
 const {addReport, getReport, updateStateReport, warn_add, warn_list, getAllActiveReports, MongodbClient} = require("../mongodb")
-const { MessageActionRow, SelectMenuBuilder, EmbedBuilder, ButtonStyle, ButtonBuilder, ComponentType } = require('discord.js');
+const {  SelectMenuBuilder, EmbedBuilder, ButtonStyle, ButtonBuilder, ComponentType, ActionRowBuilder, ComponentBuilder } = require('discord.js');
 const logger = require("../utils/logger");
 
 let atvtsUP = 0
@@ -22,8 +22,6 @@ MongodbClient.on("connectionReady",async connection=>{
 
 } )
 
-
-slowdown = new Promise((res,rej) => setTimeout(()=> res() ,1000))
 
 let lastCount;
 
@@ -48,97 +46,97 @@ const compReasons = [
     {
         emoji: config.emojis.ban,
         label: 'Flood/spam.',
-        value: 1,
+        value: '1',
     },
     {
         emoji: config.emojis.ban,
         label: 'Divulgação inadequada.',
-        value: 2,
+        value: '2',
     },
     {
         emoji: config.emojis.ban,
         label: 'Off topic/mensagem fora de tópico.',
-        value: 3,
+        value: '3',
     },
     {
         emoji: config.emojis.ban,
         label: 'Menção desnecessária de membros e cargos.',
-        value: 4,
+        value: '4',
     },
     {
         emoji: config.emojis.ban,
         label: 'Provocação e brigas.',
-        value: 5,
+        value: '5',
     },
     {
         emoji: config.emojis.ban,
         label: 'Poluição sonora.',
-        value: 6,
+        value: '6',
     },
     {
         emoji: config.emojis.ban,
         label: 'Atrapalhar o andamento do Karaokê.',
-        value: 7,
+        value: '7',
     },
     {
         emoji: config.emojis.ban,
         label: 'Denúncias falsas.',
-        value: 8,
+        value: '8',
     },
     {
         emoji: config.emojis.ban,
         label: 'Linguagem discriminatória.',
-        value: 9,
+        value: '9',
     },
     {
         emoji: config.emojis.ban,
         label: 'Exposição de membros/ Assédio.',
-        value: 10,
+        value: '10',
     },
     {
         emoji: config.emojis.ban,
         label: 'Preconceito, discriminação, difamação e/ou desrespeito.',
-        value: 11,
+        value: '11',
     },
     {
         emoji: config.emojis.ban,
         label: 'Planejar ou exercer raids no servidor.',
-        value: 12,
+        value: '12',
     },
     {
         emoji: config.emojis.ban,
         label: 'NSFW/ (+18).',
-        value: 13,
+        value: '13',
     },
     {
         emoji: config.emojis.ban,
         label: 'Estimular ou praticar atividades ilegais ou que cause banimento de membros.',
-        value: 14,
+        value: '14',
     },
     {
         emoji: config.emojis.ban,
         label: 'Evasão de punição.',
-        value: 15,
+        value: '15',
     },
     {
         emoji: config.emojis.ban,
         label: 'Conteúdos graficamente chocantes.',
-        value: 16,
+        value: '16',
     },
     {
         emoji: config.emojis.ban,
         label: 'Quebra do ToS do Discord.',
-        value: 17,
+        value: '17',
     },
     {
         emoji: config.emojis.ban,
         label: 'Selfbot.',
-        value: 18,
+        value: '18',
     },
     {
         emoji: config.emojis.ban,
         label: 'Scam.',
-        value: 19,
+        value: '19',
     },
     
 ]
@@ -181,8 +179,8 @@ async function msgDeleteMass(channel, ids){
 
 async function createReport(action, channel, reason, user_send, acc_action_users, acc_size, color, role = false, selfbot = false){
     try {
-        
-        const approvalButtons = new MessageActionRow()
+        ComponentBuilder
+        const approvalButtons = new ActionRowBuilder()
         .addComponents(
             new ButtonBuilder().setLabel("APROVAR").setStyle(ButtonStyle.Success).setCustomId("yes")
         )
@@ -340,7 +338,7 @@ client.on("interactionCreate", async interac =>{
     
             if(!interac.member.roles.cache.has(config.roles.staff.admin)) return await interac.reply({content:"Faltam permissões", ephemeral:true})
 
-            const ActionRow = new MessageActionRow()
+            const ActionRow = new ActionRowBuilder()
             interac.message.components.forEach(comp=>{
                 comp.components.forEach(button=>{
                     let but = new ButtonBuilder(button).setDisabled(true)
@@ -578,7 +576,7 @@ client.on("interactionCreate", async interac =>{
                 
             if(acc_action.members == [] && acc_action.users == []) return await interac.editReply({content:"Nenhuma conta valida passada", ephemeral:true})
             
-            const row = new MessageActionRow()
+            const row = new ActionRowBuilder()
             .addComponents(
                 new SelectMenuBuilder()
                     .setCustomId(interac.id)
@@ -651,7 +649,7 @@ ${acc_action.invalids ? `Usuários invalidos: **${acc_action.invalids.length}**`
                 
             if(acc_action.members == [] && acc_action.users == []) await interac.editReply({content:"Nenhuma conta valida passada", ephemeral:true})
 
-            const row = new MessageActionRow()
+            const row = new ActionRowBuilder()
             .addComponents(
                 new SelectMenuBuilder()
                     .setCustomId(interac.id)
@@ -738,7 +736,7 @@ ${acc_action.invalids ? `Usuários invalidos: **${acc_action.invalids.length}**`
                 
             if(acc_action.members == [] && acc_action.users == []) await interac.editReply({content:"Nenhuma conta valida passada", ephemeral:true})
 
-            const row = new MessageActionRow()
+            const row = new ActionRowBuilder()
                         .addComponents(
                             new SelectMenuBuilder()
                                 .setCustomId(interac.id)
@@ -749,12 +747,12 @@ ${acc_action.invalids ? `Usuários invalidos: **${acc_action.invalids.length}**`
                                     {
                                         emoji: config.emojis.check,
                                         label: 'Adicionar cargo.',
-                                        value: 1,
+                                        value: '1',
                                     },
                                     {
                                         emoji: config.emojis.false ,
                                         label: 'Remover cargo.',
-                                        value: 2,
+                                        value: '2',
                                     },
                         
                                 ]),

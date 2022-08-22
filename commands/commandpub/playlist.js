@@ -4,7 +4,7 @@ const spotifyLinkToYoutubeLinks = require("../../utils/spotifyLinkToYoutubeLinks
 const youtubeVideos = require("../../utils/youtubeVideos");
 const logger = require("../../utils/logger");
 const {fetch} = require('cross-fetch')
-const {EmbedBuilder, MessageActionRow, ButtonStyle, ButtonBuilder, InteractionType, ComponentType} = require('discord.js')
+const {EmbedBuilder, ActionRowBuilder, ButtonStyle, ButtonBuilder, InteractionType, ComponentType} = require('discord.js')
 
 module.exports= {
     data: new SlashCommandBuilder()
@@ -65,7 +65,7 @@ module.exports= {
             });
             
             function genNavButtons(pages, pos, disabled = false){
-                let row = new MessageActionRow()
+                let row = new ActionRowBuilder()
                 
                 let comps = []
     
