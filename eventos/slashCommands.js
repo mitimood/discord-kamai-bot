@@ -8,7 +8,7 @@ client.on("interactionCreate", async interac=>{
     
     try {
 
-        await interac.deferReply()
+        // await interac.deferReply()
         const {commandName} = interac
 
         const command = client.commands.get(commandName)

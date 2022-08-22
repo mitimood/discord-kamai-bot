@@ -23,6 +23,8 @@ MongodbClient.on("connectionReady",async connection=>{
 } )
 
 
+slowdown = new Promise((res,rej) => setTimeout(()=> res() ,1000))
+
 let lastCount;
 
 setInterval(async()=>{
@@ -550,7 +552,6 @@ client.on("interactionCreate", async interac =>{
             }
     }
     async function banCreate(){
-
         await interac.reply({content:"Envie os ids dos membros", ephemeral:true}).catch(err=>console.log(err))
         
         try {
