@@ -11,8 +11,6 @@ module.exports = {
     async execute(msg) {
 
         try {
-            let embListed = await embDb.EmbList()
-
             await msg.channel.send({
                 embeds: [{
                     title: "O que deseja fazer com o embed", color: config.color.blurple, description: `
@@ -20,11 +18,14 @@ module.exports = {
             2- Criar um embed
             3- Editar um embed
             4- Deletar embed
-            5- Traz um embed que não esta dentro ainda no bot, mas esta em um canal`}]
+            5- Traz um embed que não esta dentro ainda no bot, mas esta em um canal
+            6- Editar uma mensagem que contem um embed`}]
             })
             
             var filter = m => /[0-9]+/.test(m.content) && m.author.id === msg.author.id
-            const msgOpc = await msg.channel.awaitMessages({ filter, max: 1, time: 120000, errors: [`Time`] })
+            var msgOpc = await msg.channel.awaitMessages({ filter, max: 1, time: 120000, errors: [`Time`] })
+            
+            var embListed = await embDb.EmbList()
 
             switch (msgOpc.first().content) {
                 case "1":
@@ -46,9 +47,9 @@ module.exports = {
 
                     await msg.channel.send(`Envie id do canal que deseja enviar a mensagem`)
                     filter = m => /[0-9]+/.test(m.content) && m.author.id === msg.author.id
-                    const msgChanCol = await msg.channel.awaitMessages({ filter, max: 1, time: 120000, errors: [`Time`] })
+                    var msgChanCol = await msg.channel.awaitMessages({ filter, max: 1, time: 120000, errors: [`Time`] })
                     
-                    let channel = client.channels.cache.get(msgChanCol?.first()?.content)
+                    var channel = client.channels.cache.get(msgChanCol?.first()?.content)
                     
                     if (!channel) return await msg.channel.send("Id de canal invalido")
                     
@@ -58,7 +59,7 @@ module.exports = {
 
                     break;
                 case "2":
-                    let createmb = require('../../utils/createEmbed')
+                    var createmb = require('../../utils/createEmbed')
                     createmb.emb(msg);
                     break;
                 case "3":
@@ -75,7 +76,7 @@ module.exports = {
                     
                     if (recvdb) {
                         await msg.channel.send({ embeds: [recvdb.embed] })
-                        let createmb = require(`../../utils/createEmbed`)
+                        var createmb = require(`../../utils/createEmbed`)
                         createmb.emb(msg, recvdb.embed);                        
                     } else {
                         await msg.channel.send(`Id invalido`)
@@ -127,6 +128,48 @@ module.exports = {
                     var nameEmb = await msg.channel.awaitMessages({ filter, max: 1, time: 120000, errors: [`time`] })
 
                     embDb.saveEmb(emb, nameEmb.first().content, msg.author.username)
+
+                    await msg.channel.send('Embed salvo com sucesso!')
+
+                    break;
+                case "6":
+
+                    embListed.forEach(emb => {
+                        msg.channel.send(emb)
+                    });
+                    
+                    await msg.channel.send("Envie o id do embed que deseja usar")
+                    var filter = (m) => m.author.id == msg.author.id && /[0-9]/.test(m.content)
+                    var msgEmbs = await msg.channel.awaitMessages({ filter, max: 1, time: 120000, errors: [`time`] })
+                    
+                    var recvdb = await embDb.getEmb(msgEmbs?.first()?.content)
+                   
+                    if (!recvdb) return await msg.channel.send(`Id invalido`)
+
+                    await msg.channel.send({ embeds: [recvdb.embed] })
+
+                    await msg.channel.send(`Envie id do **CANAL** que contem o embed que deseja editar`)
+                    filter = m => /[0-9]+/.test(m.content) && m.author.id === msg.author.id
+                    var msgChanCol = await msg.channel.awaitMessages({ filter, max: 1, time: 120000, errors: [`Time`] })
+                    
+                    var channel = client.channels.cache.get(msgChanCol?.first()?.content)
+                    
+                    if (!channel) return await msg.channel.send("Id de canal invalido")
+
+                    await msg.channel.send(`Envie id da **MENSAGEM** que contem o embed que deseja editar`)
+                    var msgMsgCol = await msg.channel.awaitMessages({ filter, max: 1, time: 120000, errors: [`Time`] })
+                    try {
+                        var msgToEdit = await channel.messages.fetch(msgMsgCol?.first()?.content)
+
+                        await msgToEdit.edit({embeds:[recvdb.embed]})
+
+                        await msg.channel.send(`Mensagem editada`)
+                    } catch (error) {
+                        logger.error(error)
+                        await msg.channel.send('Id da mensagem invalido')
+                    }
+
+                break;
 
             }
         } catch (error) {

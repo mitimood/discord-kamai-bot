@@ -7,11 +7,12 @@ const {fetch} = require("cross-fetch");
 module.exports = { emb };
 
 async function emb(msg, embed = new EmbedBuilder().setDescription(`Descrição ainda não definida`)) {
+
     returnemb(embed)
 
     async function returnemb(embed) {
         try {
-            embed = new EmbedBuilder(embed)
+            embed = new EmbedBuilder(embed?.data ? embed.data : embed)
             //Menu embed creation
             var m = await msg.channel.send({
                 embeds: [{
