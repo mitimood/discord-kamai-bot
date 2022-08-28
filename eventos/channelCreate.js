@@ -12,7 +12,7 @@ client.on("channelCreate", async channel=>{
         try {
             console.log("Canal de texto criado " + new Date())
 
-            await channel.updateOverwrite(config.roles.muted, {SEND_MESSAGES:false})
+            await channel.permissionOverwrites.create(config.roles.muted, {SendMessages:false})
 
         } catch (error) {
             logger.error(error)
@@ -22,7 +22,7 @@ client.on("channelCreate", async channel=>{
         try {
             console.log("Canal de voz " + new Date())
 
-            await channel.updateOverwrite(config.roles.muted, {CONNECT:false})
+            await channel.permissionOverwrites.create(config.roles.muted, {Connect:false})
 
         } catch (error) {
             logger.error(error)
