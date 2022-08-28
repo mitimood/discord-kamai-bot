@@ -4,7 +4,7 @@ const logger = require("../utils/logger");
 
 client.on("interactionCreate", async interac=>{
 
-    if(!interac.type === InteractionType.ApplicationCommand) return
+    if(interac.type != InteractionType.ApplicationCommand) return
     
     try {
 
