@@ -20,7 +20,7 @@ client.on("guildMemberAdd", async member=>{
             {id:config.ban_recover.staff_adm,type:OverwriteType.Role,"allow":[PermissionFlagsBits.ViewChannel]}
         ]
         
-        let ticket = await member.guild.channels.create(`${member.id}`,{type:ChannelType.GuildText, topic:"Ticket para recorrimento de ban, envie seus apontamentos",permissionOverwrites: permissionsTicket})
+        let ticket = await member.guild.channels.create({name: `${member.id}`, type:ChannelType.GuildText, topic:"Ticket para recorrimento de ban, envie seus apontamentos",permissionOverwrites: permissionsTicket})
         
         await ticket.send({embeds:[{title:"Revogação de bans",color:config.color.red, description:"\
         O unico motivo para unban é a contestação da aplicação de uma punição. O ban só pode ser removido caso a punição tenha sido aplicada de uma forma inapropriada, onde o contexto da situação seja permitido nas regras do servidor. As regras se encontram em #:small_orange_diamond:regras\

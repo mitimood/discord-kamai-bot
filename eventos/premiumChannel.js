@@ -35,8 +35,7 @@ client.on("voiceStateUpdate", async (oldstate,newstate)=>
             const everyone = newstate.guild.roles.cache.get(newstate.guild.id)
             const bots = newstate.guild.roles.cache.get(config.roles.bots)
 
-            const prmChannel = await newstate.guild.channels.create(`PV [${newstate.member.user.username}]`,
-            {type:ChannelType.GuildVoice,parent: newstate.channel.parent,
+            const prmChannel = await newstate.guild.channels.create({ name: `PV [${newstate.member.user.username}]`, type:ChannelType.GuildVoice,parent: newstate.channel.parent,
                 permissionOverwrites:[
                     {id:newstate.member.id, allow:[PermissionFlagsBits.MoveMembers,PermissionFlagsBits.Connect], type:OverwriteType.Member},
                     {id:everyone, deny: PermissionFlagsBits.Connect, allow: PermissionFlagsBits.Stream, type:OverwriteType.Role}, 
