@@ -59,7 +59,8 @@ module.exports = {
         commands: "612121513960669227",
         modReports: "903238831417991228",
         scamLog: "932619563919630376",
-        capitaes: "946906926338420808"
+        capitaes: "946906926338420808",
+        pergunta: "816449419159142440"
 
     },
     color:{
