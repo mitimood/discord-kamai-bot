@@ -5,7 +5,7 @@ const logger = require('../utils/logger');
 
 let usersToSend = ["233744977258217473", "562749430223077398"]
 
-const hoursToAlert = [0,10,15,20,22]
+const hoursToAlert = [10,15,20,22]
 
 class RuleSp{
     constructor(hour){
