@@ -6,6 +6,7 @@ LocalDb.json
 config_secret.js
 db/storage
 node_modules
-.env
+.env*
 mongo_backup
 utils/logs
+
