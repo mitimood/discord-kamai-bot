@@ -26,13 +26,13 @@ client.on("guildMemberAdd", async (member) => {
         if (warns["points"] == 2) await member.roles.add([config.roles.adv1, config.roles.adv2])
         if (warns["points"] == 3) await member.roles.add([config.roles.adv1, config.roles.adv2, config.roles.adv3])
         
-        const regTst = /milena[0-9]+|^! cd17z\W*\w*|Bruninhaa+|Amandaa+|Amandinhaa+|Larinhaa+|Thalitaa+|clarinhaa+|Plyss|! Baixinhaa*|Safiraa+|Mirelinha dos pack/ig
-        if((member.displayName.toLowerCase()).match(regTst)){
-                await ban_member_send_message(member.id,"Selfbot!!", member.guild, client.user)
-                selfbotRegister.selfbotAdd(Date.now().valueOf(), member.avatar, member.id, member.user.tag, member.user.createdTimestamp, member.joinedTimestamp)
+        // const regTst = /milena[0-9]+|^! cd17z\W*\w*|Bruninhaa+|Amandaa+|Amandinhaa+|Larinhaa+|Thalitaa+|clarinhaa+|Plyss|! Baixinhaa*|Safiraa+|Mirelinha dos pack/ig
+        // if((member.displayName.toLowerCase()).match(regTst)){
+        //         await ban_member_send_message(member.id,"Selfbot!!", member.guild, client.user)
+        //         selfbotRegister.selfbotAdd(Date.now().valueOf(), member.avatar, member.id, member.user.tag, member.user.createdTimestamp, member.joinedTimestamp)
     
-        await member.guild.channels.cache.get(config.channels.acacus).send("Segurei um possivel invasor ==> " + member.displayName + ` [${member.id}]`)
-        }
+        // await member.guild.channels.cache.get(config.channels.acacus).send("Segurei um possivel invasor ==> " + member.displayName + ` [${member.id}]`)
+        // }
 
         setTimeout(async ()=>{
             try {
