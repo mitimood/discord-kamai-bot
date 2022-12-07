@@ -50,7 +50,7 @@ module.exports={
                 const emb = new EmbedBuilder()
 
                 let desc = ""
-                membs = await fetch(`https://www.kamaitachi.com.br/api/leaderboard/xp/${--page}`).then(r=>r.json())
+                membs = await fetch(`https://kamaitachi-mitimood.vercel.app/api/leaderboard/xp/${--page}`).then(r=>r.json())
                 
                 for(const [i, user] of membs.entries()){
                     desc += `**${1 + i + page * 10}** => ${user.user.username} \`[ LVL ${user.xp.global.level} ]\`\n`
