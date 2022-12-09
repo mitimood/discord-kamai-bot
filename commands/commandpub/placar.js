@@ -73,7 +73,7 @@ module.exports={
 
                 let membs = {}
 
-                membs = await fetch(`https://www.kamaitachi.com.br/api/leaderboard/money/${--page}`).then(r=>r.json())
+                membs = await fetch(`https://kamaitachi-mitimood.vercel.app/api/leaderboard/money/${--page}`).then(r=>r.json())
                 const emb = new EmbedBuilder()
                 emb.setTitle("PLACAR DE MONEY")
                 let desc = ""
@@ -97,7 +97,7 @@ module.exports={
 
                 let membs = {}
 
-                membs = await fetch(`https://www.kamaitachi.com.br/api/leaderboard/points/${--page}`).then(r=>r.json())
+                membs = await fetch(`https://kamaitachi-mitimood.vercel.app/api/leaderboard/points/${--page}`).then(r=>r.json())
                 
                 const emb = new EmbedBuilder()
                 
