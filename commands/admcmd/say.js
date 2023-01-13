@@ -40,7 +40,7 @@ module.exports={
                 else{
                     const userIdMesg = msgArgs[1].search(/[0-9]/)
 
-                    memberToSend = client.members.cache.get(userIdMesg)
+                    memberToSend = message.guild.members.cache.get(userIdMesg)
 
                     if(memberToSend){
                         toUser = true
