@@ -7,7 +7,7 @@ client.on("voiceStateUpdate", async (oldstate,newstate)=>
 {
     try {
 
-        const premiumRoles = [config.roles.levels["100"], config.roles.nitro, config.roles.trofeu]
+        const premiumRoles = [config.roles.levels["100"], config.roles.nitro, config.roles.trofeu, config.roles.teams.valak]
         
         const hasPremium = newstate.member.roles.cache.filter((r)=>premiumRoles.includes(r.id)).size >= 1
 

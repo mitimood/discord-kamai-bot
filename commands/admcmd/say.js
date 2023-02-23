@@ -34,46 +34,52 @@ module.exports={
 
                 if (!channel){
                 
-                    return await message.channel.send({content: message.author.toString(),embeds:[{description:"Não foi possivel achar o canal no servidor",color: config.color.err,}]})
+                    let userIdMesg = msgArgs[1].match(/[0-9]+/)
                     
-                }
-                else{
-                    const userIdMesg = msgArgs[1].search(/[0-9]/)
+                    userIdMesg = userIdMesg ?  userIdMesg[0] : userIdMesg
 
                     memberToSend = message.guild.members.cache.get(userIdMesg)
 
                     if(memberToSend){
                         toUser = true
-                    }
+                    }else{
+                        return await message.channel.send({content: message.author.toString(),embeds:[{description:"Não foi possivel achar o canal no servidor",color: config.color.err,}]})
+
+                    }                    
                 }
+                
                 postText = message.content.substring(msgArgs.slice(0, 2).join(" ").length + 1);
 
                 
 
             }
 
-            if( !postText || postText?.length >= 2000){
+            if( !postText || postText?.length >= 3000){
 
-                let compToSend
-                if (toUser){
-                    compToSend = memberToSend
-
-                }else{
-                    compToSend = message.channel
-
-                }
                 const messageToSend = {content: message.author.toString(),embeds:[{description:"Ouve um erro ao enviar a mensagem. Verifique o conteudo do texto passado",color: config.color.err,}]}
+                
                 try {
-                    return await compToSend.send(messageToSend)
+                    return await message.channel.send(messageToSend)
 
                 } catch (error) {
                     return await message.channel.send({content: message.author.toString(),embeds:[{description:"Não foi possivel enviar a mensagem",color: config.color.err,}]})
 
                 }
-                
             }
 
-            const post = await channel.send(postText)
+            let compToSend
+
+            if (toUser){
+                compToSend = memberToSend
+
+            }else{
+                compToSend = channel
+
+            }
+
+            const post = await compToSend.send(postText)
+
+            message.channel.send({content: 'Mensagem enviada com sucesso!'})
 
             if (post.channel.type != ChannelType.GuildNews) return
 

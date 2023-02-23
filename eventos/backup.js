@@ -16,61 +16,61 @@ const MongodbClient = new MongoClient(uri, {
 const job = schedule.scheduleJob('0 3 * * *', async function(){
   const nodejsondb = require("node-json-db").JsonDB;
     try{
-      console.log("Backup iniciado " + new Date() )
+      logger.info("Backup iniciado " + new Date())
       await MongodbClient.connect()
 
-      // const database = MongodbClient.db('kamaibot');
-      // const members_adm = database.collection('member_management');
-      // const members_admb = new nodejsondb(`./mongo_backup/members_adm`, false, true);
+      const database = MongodbClient.db('kamaibot');
+      const members_adm = database.collection('member_management');
+      const members_admb = new nodejsondb(`./mongo_backup/members_adm`, false, true);
       
-      // const activitypoems = database.collection('activitypoems');
-      // const activitypoemsb = new nodejsondb(`./mongo_backup/activitypoems`, false, true);
+      const activitypoems = database.collection('activitypoems');
+      const activitypoemsb = new nodejsondb(`./mongo_backup/activitypoems`, false, true);
       
-      // const activitykaraoke = database.collection('activitykaraoke');
-      // const activitykaraokeb = new nodejsondb(`./mongo_backup/activitykaraoke`, false, true);
+      const activitykaraoke = database.collection('activitykaraoke');
+      const activitykaraokeb = new nodejsondb(`./mongo_backup/activitykaraoke`, false, true);
       
-      // const activityarte = database.collection('activityarte');
-      // const activityarteb = new nodejsondb(`./mongo_backup/activityarte`, false, true);
-      
-
-      // const arrayMember = await members_adm.find().toArray()
-      // const arrayPoems = await activitypoems.find().toArray()
-      // const arrayKaraoke = await activitykaraoke.find().toArray()
-      // const arrayArte = await activityarte.find().toArray()
-
-      // console.log("Download concluido MONGODB CONCLUIDO")
-      // console.log("Salvando...")
-
-      // members_admb.resetData()
-      // arrayMember.forEach(doc=>{
-      //   members_admb.push(`/${doc["_id"]}/`, doc, true)
-
-      // })
-      // members_admb.save()
+      const activityarte = database.collection('activityarte');
+      const activityarteb = new nodejsondb(`./mongo_backup/activityarte`, false, true);
       
 
-      // activitypoemsb.resetData()
-      // arrayPoems.forEach(doc=>{
-      //   activitypoemsb.push(`/${doc["_id"]}/`, doc, true)
+      const arrayMember = await members_adm.find().toArray()
+      const arrayPoems = await activitypoems.find().toArray()
+      const arrayKaraoke = await activitykaraoke.find().toArray()
+      const arrayArte = await activityarte.find().toArray()
 
-      // })
-      // activitypoemsb.save()
+      logger.info("Download concluido MONGODB CONCLUIDO")
+      logger.info("Salvando...")
 
-      // activitykaraokeb.resetData()
-      // arrayKaraoke.forEach(doc=>{
-      //   activitykaraokeb.push(`/${doc["_id"]}/`, doc, true)
+      members_admb.resetData()
+      arrayMember.forEach(doc=>{
+        members_admb.push(`/${doc["_id"]}/`, doc, true)
 
-      // })
-      // activitykaraokeb.save()
+      })
+      members_admb.save()
+      
 
-      // activityarteb.resetData()
-      // arrayArte.forEach(doc=>{
-      //   activityarteb.push(`/${doc["_id"]}/`, doc, true)
+      activitypoemsb.resetData()
+      arrayPoems.forEach(doc=>{
+        activitypoemsb.push(`/${doc["_id"]}/`, doc, true)
 
-      // })
-      // activityarteb.save()
+      })
+      activitypoemsb.save()
 
-      console.log("Começando a zippar")
+      activitykaraokeb.resetData()
+      arrayKaraoke.forEach(doc=>{
+        activitykaraokeb.push(`/${doc["_id"]}/`, doc, true)
+
+      })
+      activitykaraokeb.save()
+
+      activityarteb.resetData()
+      arrayArte.forEach(doc=>{
+        activityarteb.push(`/${doc["_id"]}/`, doc, true)
+
+      })
+      activityarteb.save()
+
+      logger.info("Começando a zippar")
       
       const path = require('path')
 
@@ -90,7 +90,7 @@ const job = schedule.scheduleJob('0 3 * * *', async function(){
       });
       zip.writeZip(path.resolve(__dirname, `../backup.zip`))
       
-      console.log("Arquivos zipados com sucesso")
+      logger.info("Arquivos zipados com sucesso")
 
       var nodemailer = require('nodemailer'); 
 
@@ -109,35 +109,30 @@ const job = schedule.scheduleJob('0 3 * * *', async function(){
       new Transfer(path.resolve(__dirname, '../backup.zip'))
         .upload()
         .then(function (link) { 
-          console.log(`${link} upload terminado`)
+          logger.info(`${link} upload terminado`)
           const mailOptions = {
             from: 'eliaskamel2021@gmail.com',
             to: ['eliaskamel2011@gmail.com', "Kamaitachisocial@gmail.com"],
             subject: 'backup diario',
             text: link,
             };
-      
-          mail.sendMail(mailOptions, function(error, info){
-            if (error) {
-                console.log(error);
+            try {
+                mail.sendMail(mailOptions, function(error, info){
+                if (error) {
+                    delete_file(path.resolve(__dirname, '../backup.zip'))
+                } else {
+                    logger.info('Email enviado: ' + info.response);
+                    delete_file(path.resolve(__dirname, '../backup.zip'))
+                    logger.info("Arquivo removido")
+                    logger.info("Backup Terminado com sucesso! " + new Date())
 
-                fs.unlinkSync(path.resolve(__dirname, '../backup.zip'))
-
-            } else {
-              
-                console.log('Email enviado: ' + info.response);
-                fs.unlinkSync(path.resolve(__dirname, '../backup.zip'))
-                console.log("Arquivo removido")
-                console.log("Backup Terminado com sucesso! " + new Date() )
-
+                }
+                });
+            } catch (error) {
+                logger.error(error)
             }
-            });
-
           })
         .catch(function (err) { logger.error(err) })
-
-
-      
 
     }catch(err){
       logger.error(err)
@@ -145,12 +140,22 @@ const job = schedule.scheduleJob('0 3 * * *', async function(){
 })
 
 
+
+
+function delete_file(path){
+    try {
+        fs.unlinkSync(path)
+    } catch (error) {
+        logger.error(error)
+    }
+}
+
 module.exports = job
 
 
 
 // MongodbClient.connect().then(async a=>{
-//   console.log(2)
+//   logger.info(2)
 //    const nodejsondb = require("node-json-db").JsonDB;
 
 //   const database = MongodbClient.db('kamaibot')
@@ -161,7 +166,7 @@ module.exports = job
 //   const obj = await members_admb.getObject("/")
 
 //   const docs = await members_adm.find().toArray()
-//   console.log("baixou tudo")
+//   logger.info("baixou tudo")
 
  
 //   const deleteKeys = []
@@ -171,16 +176,16 @@ module.exports = job
 //     if( typeof(key.id) != typeof("a") )  key._id = key._id.toString()
     
 //     if( !key?._id.toString().match(/\d\d\d\d\d\d\d\d\d\d\d\d/) && key._id != "0"){
-//       console.log(key._id)
+//       logger.info(key._id)
 //       deleteKeys.push(new ObjectId(key._id))
 //     }
 //   }
-//   console.log(deleteKeys)
+//   logger.info(deleteKeys)
 //   await members_adm.deleteMany({_id:{$in:deleteKeys}})
 
-//   console.log("terminou")
+//   logger.info("terminou")
 //   // members_adm.deleteMany({_id:{$in:deleteKeys}})
-//   // console.log(4)
+//   // logger.info(4)
 //   // const database = MongodbClient.db('kamaibot');
 //   // const members_adm = database.collection('member_management');
 //   // const members_admb = new nodejsondb(`./mongo_backup/members_adm`, true, true);
@@ -189,6 +194,6 @@ module.exports = job
 
 //   // })
 
-//   // console.log(1)
+//   // logger.info(1)
 // })
 
